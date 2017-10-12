@@ -1264,7 +1264,7 @@ public final class MVStore {
         Set<Integer> referenced = collectReferencedChunks();
         long time = getTimeSinceCreation();
 
-        for (Iterator<Chunk> it = chunks.values().iterator(); it.hasNext(); ) {
+        for (Iterator<Chunk> it = chunks.values().iterator(); it.hasNext();) {
             Chunk c = it.next();
             if (!referenced.contains(c.id)) {
                 if (canOverwriteChunk(c, time)) {
@@ -2356,7 +2356,7 @@ public final class MVStore {
 
     private void revertTemp(long storeVersion) {
         for (Iterator<Entry<Long, ConcurrentHashMap<Integer, Chunk>>> it =
-                            freedPageSpace.entrySet().iterator(); it.hasNext(); ) {
+                            freedPageSpace.entrySet().iterator(); it.hasNext();) {
             Entry<Long, ConcurrentHashMap<Integer, Chunk>> entry = it.next();
             Long v = entry.getKey();
             if (v <= storeVersion) {
