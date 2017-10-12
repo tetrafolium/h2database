@@ -67,7 +67,7 @@ public class Update extends Prepared {
     public void setAssignment(Column column, Expression expression) {
         if (expressionMap.containsKey(column)) {
             throw DbException.get(ErrorCode.DUPLICATE_COLUMN_NAME_1, column
-                    .getName());
+                                  .getName());
         }
         columns.add(column);
         expressionMap.put(column, expression);
@@ -193,7 +193,7 @@ public class Update extends Prepared {
         }
         TableFilter[] filters = new TableFilter[] { tableFilter };
         PlanItem item = tableFilter.getBestPlanItem(session, filters, 0,
-                ExpressionVisitor.allColumnsForTableFilters(filters));
+                        ExpressionVisitor.allColumnsForTableFilters(filters));
         tableFilter.setPlanItem(item);
         tableFilter.prepare();
     }

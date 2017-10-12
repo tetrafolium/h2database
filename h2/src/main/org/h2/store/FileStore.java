@@ -105,9 +105,9 @@ public class FileStore {
      * @return the created object
      */
     public static FileStore open(DataHandler handler, String name, String mode,
-            String cipher, byte[] key) {
+                                 String cipher, byte[] key) {
         return open(handler, name, mode, cipher, key,
-                Constants.ENCRYPTION_KEY_HASH_ITERATIONS);
+                    Constants.ENCRYPTION_KEY_HASH_ITERATIONS);
     }
 
     /**
@@ -122,13 +122,13 @@ public class FileStore {
      * @return the created object
      */
     public static FileStore open(DataHandler handler, String name, String mode,
-            String cipher, byte[] key, int keyIterations) {
+                                 String cipher, byte[] key, int keyIterations) {
         FileStore store;
         if (cipher == null) {
             store = new FileStore(handler, name, mode);
         } else {
             store = new SecureFileStore(handler, name, mode,
-                    cipher, key, keyIterations);
+                                        cipher, key, keyIterations);
         }
         return store;
     }
@@ -318,7 +318,7 @@ public class FileStore {
      */
     public void write(byte[] b, int off, int len) {
         if (SysProperties.CHECK && (len < 0 ||
-                len % Constants.FILE_BLOCK_SIZE != 0)) {
+                                    len % Constants.FILE_BLOCK_SIZE != 0)) {
             DbException.throwInternalError(
                     "unaligned write " + name + " len " + len);
         }
@@ -379,7 +379,7 @@ public class FileStore {
             }
             if (SysProperties.CHECK2 && len % Constants.FILE_BLOCK_SIZE != 0) {
                 long newLength = len + Constants.FILE_BLOCK_SIZE -
-                        (len % Constants.FILE_BLOCK_SIZE);
+                                 (len % Constants.FILE_BLOCK_SIZE);
                 file.truncate(newLength);
                 fileLength = newLength;
                 DbException.throwInternalError(

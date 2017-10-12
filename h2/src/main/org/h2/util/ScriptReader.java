@@ -267,9 +267,9 @@ public class ScriptReader implements Closeable {
                 // protect against NegativeArraySizeException
                 if (src.length >= Integer.MAX_VALUE / 2) {
                     throw new IOException("Error in parsing script, " +
-                            "statement size exceeds 1G, " +
-                            "first 80 characters of statement looks like: " +
-                            new String(buffer, bufferStart, 80));
+                                          "statement size exceeds 1G, " +
+                                          "first 80 characters of statement looks like: " +
+                                          new String(buffer, bufferStart, 80));
                 }
                 buffer = new char[src.length * 2];
             }

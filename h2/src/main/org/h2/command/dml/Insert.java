@@ -89,7 +89,7 @@ public class Insert extends Prepared implements ResultTarget {
         }
         if (duplicateKeyAssignmentMap.containsKey(column)) {
             throw DbException.get(ErrorCode.DUPLICATE_COLUMN_NAME_1,
-                    column.getName());
+                                  column.getName());
         }
         duplicateKeyAssignmentMap.put(column, expression);
     }
@@ -310,7 +310,7 @@ public class Insert extends Prepared implements ResultTarget {
     @Override
     public boolean isCacheable() {
         return duplicateKeyAssignmentMap == null ||
-                duplicateKeyAssignmentMap.isEmpty();
+               duplicateKeyAssignmentMap.isEmpty();
     }
 
     private void handleOnDuplicate(DbException de) {
@@ -326,10 +326,10 @@ public class Insert extends Prepared implements ResultTarget {
                 duplicateKeyAssignmentMap.size());
         for (int i = 0; i < columns.length; i++) {
             String key = table.getSchema().getName() + "." +
-                    table.getName() + "." + columns[i].getName();
+                         table.getName() + "." + columns[i].getName();
             variableNames.add(key);
             session.setVariable(key,
-                    list.get(getCurrentRowNumber() - 1)[i].getValue(session));
+                                list.get(getCurrentRowNumber() - 1)[i].getValue(session));
         }
 
         StatementBuilder buff = new StatementBuilder("UPDATE ");
@@ -368,7 +368,8 @@ public class Insert extends Prepared implements ResultTarget {
         if (foundIndex instanceof MVPrimaryIndex) {
             MVPrimaryIndex foundMV = (MVPrimaryIndex) foundIndex;
             indexedColumns = new Column[] { foundMV.getIndexColumns()[foundMV
-                    .getMainIndexColumn()].column };
+                                            .getMainIndexColumn()].column
+                                          };
         } else {
             indexedColumns = foundIndex.getColumns();
         }
@@ -382,12 +383,12 @@ public class Insert extends Prepared implements ResultTarget {
                 if (expr.getColumnName().equals(columns[i].getName())) {
                     if (condition == null) {
                         condition = new Comparison(session, Comparison.EQUAL,
-                                expr, list.get(getCurrentRowNumber() - 1)[i++]);
+                                                   expr, list.get(getCurrentRowNumber() - 1)[i++]);
                     } else {
                         condition = new ConditionAndOr(ConditionAndOr.AND,
-                                condition,
-                                new Comparison(session, Comparison.EQUAL, expr,
-                                        list.get(0)[i++]));
+                                                       condition,
+                                                       new Comparison(session, Comparison.EQUAL, expr,
+                                                               list.get(0)[i++]));
                     }
                 }
             }

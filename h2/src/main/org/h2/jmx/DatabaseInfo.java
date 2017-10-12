@@ -52,7 +52,7 @@ public class DatabaseInfo implements DatabaseInfoMBean {
      * @throws JMException if the ObjectName could not be created
      */
     private static ObjectName getObjectName(String name, String path)
-            throws JMException {
+    throws JMException {
         name = name.replace(':', '_');
         path = path.replace(':', '_');
         Hashtable<String, String> map = new Hashtable<>();
@@ -68,7 +68,7 @@ public class DatabaseInfo implements DatabaseInfoMBean {
      * @param database database
      */
     public static void registerMBean(ConnectionInfo connectionInfo,
-            Database database) throws JMException {
+                                     Database database) throws JMException {
         String path = connectionInfo.getName();
         if (!MBEANS.containsKey(path)) {
             MBeanServer mbeanServer = ManagementFactory.getPlatformMBeanServer();
@@ -230,7 +230,7 @@ public class DatabaseInfo implements DatabaseInfoMBean {
         StringBuilder buff = new StringBuilder();
         for (Map.Entry<String, String> e :
                 new TreeMap<>(
-                database.getSettings().getSettings()).entrySet()) {
+                        database.getSettings().getSettings()).entrySet()) {
             buff.append(e.getKey()).append(" = ").append(e.getValue()).append('\n');
         }
         return buff.toString();
@@ -242,21 +242,21 @@ public class DatabaseInfo implements DatabaseInfoMBean {
         for (Session session : database.getSessions(false)) {
             buff.append("session id: ").append(session.getId());
             buff.append(" user: ").
-                    append(session.getUser().getName()).
-                    append('\n');
+            append(session.getUser().getName()).
+            append('\n');
             buff.append("connected: ").
-                    append(new Timestamp(session.getSessionStart())).
-                    append('\n');
+            append(new Timestamp(session.getSessionStart())).
+            append('\n');
             Command command = session.getCurrentCommand();
             if (command != null) {
                 buff.append("statement: ").
-                        append(session.getCurrentCommand()).
-                        append('\n');
+                append(session.getCurrentCommand()).
+                append('\n');
                 long commandStart = session.getCurrentCommandStart();
                 if (commandStart != 0) {
                     buff.append("started: ").append(
                             new Timestamp(commandStart)).
-                            append('\n');
+                    append('\n');
                 }
             }
             Table[] t = session.getLocks();
@@ -268,8 +268,8 @@ public class DatabaseInfo implements DatabaseInfoMBean {
                         buff.append("read lock on ");
                     }
                     buff.append(table.getSchema().getName()).
-                            append('.').append(table.getName()).
-                            append('\n');
+                    append('.').append(table.getName()).
+                    append('\n');
                 }
             }
             buff.append('\n');

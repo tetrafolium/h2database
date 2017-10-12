@@ -331,7 +331,7 @@ public class Aggregate extends Expression {
             }
             StatementBuilder buff = new StatementBuilder();
             String sep = groupConcatSeparator == null ?
-                    "," : groupConcatSeparator.getValue(session).getString();
+                         "," : groupConcatSeparator.getValue(session).getString();
             for (Value val : list) {
                 String s;
                 if (val.getType() == Value.ARRAY) {

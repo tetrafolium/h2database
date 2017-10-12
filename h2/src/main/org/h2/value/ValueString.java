@@ -37,7 +37,7 @@ public class ValueString extends Value {
     @Override
     public boolean equals(Object other) {
         return other instanceof ValueString
-                && value.equals(((ValueString) other).value);
+               && value.equals(((ValueString) other).value);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class ValueString extends Value {
 
     @Override
     public void set(PreparedStatement prep, int parameterIndex)
-            throws SQLException {
+    throws SQLException {
         prep.setString(parameterIndex, value);
     }
 

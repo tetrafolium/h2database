@@ -48,7 +48,7 @@ public final class MVSecondaryIndex extends BaseIndex implements MVIndex {
     private final TransactionMap<Value,Value> dataMap;
 
     public MVSecondaryIndex(Database db, MVTable table, int id, String indexName,
-                IndexColumn[] columns, IndexType indexType) {
+                            IndexColumn[] columns, IndexType indexType) {
         this.mvTable = table;
         initBaseIndex(table, id, indexName, columns, indexType);
         if (!database.isStarting()) {
@@ -172,7 +172,7 @@ public final class MVSecondaryIndex extends BaseIndex implements MVIndex {
         MVMap.Builder<ValueArray, Value> builder =
                 new MVMap.Builder<ValueArray, Value>().keyType(keyType).valueType(valueType);
         MVMap<ValueArray, Value> map = database.getMvStore().
-                getStore().openMap(mapName, builder);
+                                       getStore().openMap(mapName, builder);
         if (!keyType.equals(map.getKeyType())) {
             throw DbException.throwInternalError("Incompatible key type");
         }
@@ -248,7 +248,7 @@ public final class MVSecondaryIndex extends BaseIndex implements MVIndex {
             Value old = map.remove(array);
             if (old == null) {
                 throw DbException.get(ErrorCode.ROW_NOT_FOUND_WHEN_DELETING_1,
-                        getSQL() + ": " + row.getKey());
+                                      getSQL() + ": " + row.getKey());
             }
         } catch (IllegalStateException e) {
             throw mvTable.convertException(e);
@@ -309,7 +309,7 @@ public final class MVSecondaryIndex extends BaseIndex implements MVIndex {
             }
             if (min == null) {
                 return new MVStoreCursor(session,
-                        Collections.<Value>emptyList().iterator(), null);
+                                         Collections.<Value>emptyList().iterator(), null);
             }
         }
         return new MVStoreCursor(session, map.keyIterator(min), last);
@@ -359,11 +359,11 @@ public final class MVSecondaryIndex extends BaseIndex implements MVIndex {
 
     @Override
     public double getCost(Session session, int[] masks,
-            TableFilter[] filters, int filter, SortOrder sortOrder,
-            HashSet<Column> allColumnsSet) {
+                          TableFilter[] filters, int filter, SortOrder sortOrder,
+                          HashSet<Column> allColumnsSet) {
         try {
             return 10 * getCostRangeIndex(masks, dataMap.sizeAsLongMax(),
-                    filters, filter, sortOrder, false, allColumnsSet);
+                                          filters, filter, sortOrder, false, allColumnsSet);
         } catch (IllegalStateException e) {
             throw DbException.get(ErrorCode.OBJECT_CLOSED, e);
         }
@@ -396,7 +396,7 @@ public final class MVSecondaryIndex extends BaseIndex implements MVIndex {
         while (true) {
             if (key == null) {
                 return new MVStoreCursor(session,
-                        Collections.<Value>emptyList().iterator(), null);
+                                         Collections.<Value>emptyList().iterator(), null);
             }
             if (((ValueArray) key).getList()[0] != ValueNull.INSTANCE) {
                 break;

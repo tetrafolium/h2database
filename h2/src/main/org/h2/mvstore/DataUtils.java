@@ -298,7 +298,7 @@ public final class DataUtils {
      * @param len the number of characters
      */
     public static void writeStringData(ByteBuffer buff,
-            String s, int len) {
+                                       String s, int len) {
         for (int i = 0; i < len; i++) {
             int c = s.charAt(i);
             if (c < 0x80) {
@@ -329,7 +329,7 @@ public final class DataUtils {
                 chars[i] = (char) x;
             } else if (x >= 0xe0) {
                 chars[i] = (char) (((x & 0xf) << 12)
-                        + ((buff.get() & 0x3f) << 6) + (buff.get() & 0x3f));
+                                   + ((buff.get() & 0x3f) << 6) + (buff.get() & 0x3f));
             } else {
                 chars[i] = (char) (((x & 0x1f) << 6) + (buff.get() & 0x3f));
             }
@@ -358,7 +358,7 @@ public final class DataUtils {
      * @param x the value
      */
     public static void writeVarLong(OutputStream out, long x)
-            throws IOException {
+    throws IOException {
         while ((x & ~0x7f) != 0) {
             out.write((byte) (0x80 | (x & 0x7f)));
             x >>>= 7;
@@ -375,13 +375,13 @@ public final class DataUtils {
      * @param gapIndex the index of the gap
      */
     public static void copyWithGap(Object src, Object dst, int oldSize,
-            int gapIndex) {
+                                   int gapIndex) {
         if (gapIndex > 0) {
             System.arraycopy(src, 0, dst, 0, gapIndex);
         }
         if (gapIndex < oldSize) {
             System.arraycopy(src, gapIndex, dst, gapIndex + 1, oldSize
-                    - gapIndex);
+                             - gapIndex);
         }
     }
 
@@ -394,13 +394,13 @@ public final class DataUtils {
      * @param removeIndex the index of the entry to remove
      */
     public static void copyExcept(Object src, Object dst, int oldSize,
-            int removeIndex) {
+                                  int removeIndex) {
         if (removeIndex > 0 && oldSize > 0) {
             System.arraycopy(src, 0, dst, 0, removeIndex);
         }
         if (removeIndex < oldSize) {
             System.arraycopy(src, removeIndex + 1, dst, removeIndex, oldSize
-                    - removeIndex - 1);
+                             - removeIndex - 1);
         }
     }
 
@@ -550,7 +550,7 @@ public final class DataUtils {
      * @return the position
      */
     public static long getPagePos(int chunkId, int offset,
-            int length, int type) {
+                                  int length, int type) {
         long pos = (long) chunkId << 38;
         pos |= (long) offset << 6;
         pos |= encodeLength(length) << 1;
@@ -578,7 +578,7 @@ public final class DataUtils {
      * @return the string builder
      */
     public static StringBuilder appendMap(StringBuilder buff,
-            HashMap<String, ?> map) {
+                                          HashMap<String, ?> map) {
         ArrayList<String> list = New.arrayList(map.keySet());
         Collections.sort(list);
         for (String k : list) {
@@ -708,7 +708,7 @@ public final class DataUtils {
      * @throws IllegalArgumentException if the argument is invalid
      */
     public static void checkArgument(boolean test, String message,
-            Object... arguments) {
+                                     Object... arguments) {
         if (!test) {
             throw newIllegalArgumentException(message, arguments);
         }
@@ -724,8 +724,8 @@ public final class DataUtils {
     public static IllegalArgumentException newIllegalArgumentException(
             String message, Object... arguments) {
         return initCause(new IllegalArgumentException(
-                formatMessage(0, message, arguments)),
-                arguments);
+                                 formatMessage(0, message, arguments)),
+                         arguments);
     }
 
     /**
@@ -735,7 +735,7 @@ public final class DataUtils {
      * @return the exception
      */
     public static UnsupportedOperationException
-            newUnsupportedOperationException(String message) {
+    newUnsupportedOperationException(String message) {
         return new UnsupportedOperationException(formatMessage(0, message));
     }
 
@@ -750,8 +750,8 @@ public final class DataUtils {
     public static IllegalStateException newIllegalStateException(
             int errorCode, String message, Object... arguments) {
         return initCause(new IllegalStateException(
-                formatMessage(errorCode, message, arguments)),
-                arguments);
+                                 formatMessage(errorCode, message, arguments)),
+                         arguments);
     }
 
     private static <T extends Exception> T initCause(T e, Object... arguments) {
@@ -774,7 +774,7 @@ public final class DataUtils {
      * @return the formatted message
      */
     public static String formatMessage(int errorCode, String message,
-            Object... arguments) {
+                                       Object... arguments) {
         // convert arguments to strings, to avoid locale specific formatting
         arguments = arguments.clone();
         for (int i = 0; i < arguments.length; i++) {
@@ -788,9 +788,9 @@ public final class DataUtils {
             }
         }
         return MessageFormat.format(message, arguments) +
-                " [" + Constants.VERSION_MAJOR + "." +
-                Constants.VERSION_MINOR + "." + Constants.BUILD_ID +
-                "/" + errorCode + "]";
+               " [" + Constants.VERSION_MAJOR + "." +
+               Constants.VERSION_MINOR + "." + Constants.BUILD_ID +
+               "/" + errorCode + "]";
     }
 
     /**
@@ -850,7 +850,7 @@ public final class DataUtils {
      * @throws IllegalStateException if parsing fails
      */
     public static long readHexLong(Map<String, ? extends Object> map,
-            String key, long defaultValue) {
+                                   String key, long defaultValue) {
         Object v = map.get(key);
         if (v == null) {
             return defaultValue;
@@ -861,7 +861,7 @@ public final class DataUtils {
             return parseHexLong((String) v);
         } catch (NumberFormatException e) {
             throw newIllegalStateException(ERROR_FILE_CORRUPT,
-                    "Error parsing the value {0}", v, e);
+                                           "Error parsing the value {0}", v, e);
         }
     }
 
@@ -878,12 +878,12 @@ public final class DataUtils {
                 // avoid problems with overflow
                 // in Java 8, this special case is not needed
                 return (Long.parseLong(x.substring(0, 8), 16) << 32) |
-                        Long.parseLong(x.substring(8, 16), 16);
+                       Long.parseLong(x.substring(8, 16), 16);
             }
             return Long.parseLong(x, 16);
         } catch (NumberFormatException e) {
             throw newIllegalStateException(ERROR_FILE_CORRUPT,
-                    "Error parsing the value {0}", x, e);
+                                           "Error parsing the value {0}", x, e);
         }
     }
 
@@ -901,7 +901,7 @@ public final class DataUtils {
             return (int) Long.parseLong(x, 16);
         } catch (NumberFormatException e) {
             throw newIllegalStateException(ERROR_FILE_CORRUPT,
-                    "Error parsing the value {0}", x, e);
+                                           "Error parsing the value {0}", x, e);
         }
     }
 
@@ -915,7 +915,7 @@ public final class DataUtils {
      * @throws IllegalStateException if parsing fails
      */
     public static int readHexInt(HashMap<String, ? extends Object> map,
-            String key, int defaultValue) {
+                                 String key, int defaultValue) {
         Object v = map.get(key);
         if (v == null) {
             return defaultValue;
@@ -927,7 +927,7 @@ public final class DataUtils {
             return (int) Long.parseLong((String) v, 16);
         } catch (NumberFormatException e) {
             throw newIllegalStateException(ERROR_FILE_CORRUPT,
-                    "Error parsing the value {0}", v, e);
+                                           "Error parsing the value {0}", v, e);
         }
     }
 

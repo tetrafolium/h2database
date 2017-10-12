@@ -48,7 +48,7 @@ public class Query<T> {
     static <T> Query<T> from(Db db, T alias) {
         Query<T> query = new Query<>(db);
         TableDefinition<T> def = (TableDefinition<T>) db.define(alias
-                .getClass());
+                                 .getClass());
         query.from = new SelectTable<>(db, query, alias, false);
         def.initSelectObject(query.from, alias, query.aliasMap);
         return query;
@@ -415,7 +415,7 @@ public class Query<T> {
     @SuppressWarnings("unchecked")
     public <U> QueryJoin innerJoin(U alias) {
         TableDefinition<T> def = (TableDefinition<T>) db.define(alias
-                .getClass());
+                                 .getClass());
         SelectTable<T> join = new SelectTable(db, this, alias, false);
         def.initSelectObject(join, alias, aliasMap);
         joins.add(join);

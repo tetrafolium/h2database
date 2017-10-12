@@ -43,10 +43,10 @@ public class MultiVersionIndex implements Index {
         IndexType deltaIndexType = IndexType.createNonUnique(false);
         if (base instanceof SpatialIndex) {
             throw DbException.get(ErrorCode.FEATURE_NOT_SUPPORTED_1,
-                    "MVCC & spatial index");
+                                  "MVCC & spatial index");
         }
         this.delta = new TreeIndex(table, -1, "DELTA", base.getIndexColumns(),
-                deltaIndexType);
+                                   deltaIndexType);
         delta.setMultiVersion(true);
         this.sync = base.getDatabase();
         this.firstColumn = base.getColumns()[0];
@@ -78,7 +78,7 @@ public class MultiVersionIndex implements Index {
             Cursor baseCursor = base.find(filter, first, last);
             Cursor deltaCursor = delta.find(filter, first, last);
             return new MultiVersionCursor(filter.getSession(), this,
-                    baseCursor, deltaCursor, sync);
+                                          baseCursor, deltaCursor, sync);
         }
     }
 
@@ -142,8 +142,8 @@ public class MultiVersionIndex implements Index {
 
     @Override
     public double getCost(Session session, int[] masks,
-            TableFilter[] filters, int filter, SortOrder sortOrder,
-            HashSet<Column> allColumnsSet) {
+                          TableFilter[] filters, int filter, SortOrder sortOrder,
+                          HashSet<Column> allColumnsSet) {
         return base.getCost(session, masks, filters, filter, sortOrder, allColumnsSet);
     }
 

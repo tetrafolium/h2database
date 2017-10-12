@@ -65,10 +65,10 @@ public class Variable extends Expression {
     public boolean isEverything(ExpressionVisitor visitor) {
         switch (visitor.getType()) {
         case ExpressionVisitor.EVALUATABLE:
-            // the value will be evaluated at execute time
+        // the value will be evaluated at execute time
         case ExpressionVisitor.SET_MAX_DATA_MODIFICATION_ID:
-            // it is checked independently if the value is the same as the last
-            // time
+        // it is checked independently if the value is the same as the last
+        // time
         case ExpressionVisitor.OPTIMIZABLE_MIN_MAX_COUNT_ALL:
         case ExpressionVisitor.READONLY:
         case ExpressionVisitor.INDEPENDENT:

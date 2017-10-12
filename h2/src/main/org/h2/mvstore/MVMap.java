@@ -34,7 +34,7 @@ import org.h2.util.New;
  * @param <V> the value class
  */
 public class MVMap<K, V> extends AbstractMap<K, V>
-        implements ConcurrentMap<K, V> {
+    implements ConcurrentMap<K, V> {
 
     /**
      * The store.
@@ -144,13 +144,13 @@ public class MVMap<K, V> extends AbstractMap<K, V>
         Page split = p.split(at);
         Object[] keys = { k };
         Page.PageReference[] children = {
-                new Page.PageReference(p, p.getPos(), p.getTotalCount()),
-                new Page.PageReference(split, split.getPos(), split.getTotalCount()),
+            new Page.PageReference(p, p.getPos(), p.getTotalCount()),
+            new Page.PageReference(split, split.getPos(), split.getTotalCount()),
         };
         p = Page.create(this, writeVersion,
-                keys, null,
-                children,
-                totalCount, 0);
+                        keys, null,
+                        children,
+                        totalCount, 0);
         return p;
     }
 
@@ -1073,16 +1073,16 @@ public class MVMap<K, V> extends AbstractMap<K, V>
                     "the method on the writable map");
         }
         DataUtils.checkArgument(version >= createVersion,
-                "Unknown version {0}; this map was created in version is {1}",
-                version, createVersion);
+                                "Unknown version {0}; this map was created in version is {1}",
+                                version, createVersion);
         Page newest = null;
         // need to copy because it can change
         Page r = root;
         if (version >= r.getVersion() &&
                 (version == writeVersion ||
-                r.getVersion() >= 0 ||
-                version <= createVersion ||
-                store.getFileStore() == null)) {
+                 r.getVersion() >= 0 ||
+                 version <= createVersion ||
+                 store.getFileStore() == null)) {
             newest = r;
         } else {
             Page last = oldRoots.peekFirst();

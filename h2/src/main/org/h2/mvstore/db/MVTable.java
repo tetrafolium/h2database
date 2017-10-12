@@ -120,7 +120,7 @@ public class MVTable extends TableBase {
      */
     void init(Session session) {
         primaryIndex = new MVPrimaryIndex(session.getDatabase(), this, getId(),
-                IndexColumn.wrap(getColumns()), IndexType.createScan(true));
+                                          IndexColumn.wrap(getColumns()), IndexType.createScan(true));
         indexes.add(primaryIndex);
     }
 
@@ -130,7 +130,7 @@ public class MVTable extends TableBase {
 
     @Override
     public boolean lock(Session session, boolean exclusive,
-            boolean forceLockEvenInMvcc) {
+                        boolean forceLockEvenInMvcc) {
         int lockMode = database.getLockMode();
         if (lockMode == Constants.LOCK_MODE_OFF) {
             return false;
@@ -207,7 +207,7 @@ public class MVTable extends TableBase {
                 ArrayList<Session> sessions = checkDeadlock(session, null, null);
                 if (sessions != null) {
                     throw DbException.get(ErrorCode.DEADLOCK_1,
-                            getDeadlockDetails(sessions, exclusive));
+                                          getDeadlockDetails(sessions, exclusive));
                 }
             } else {
                 // check for deadlocks from now on
@@ -219,7 +219,7 @@ public class MVTable extends TableBase {
                 max = now + TimeUnit.MILLISECONDS.toNanos(session.getLockTimeout());
             } else if (now >= max) {
                 traceLock(session, exclusive,
-                        "timeout after " + session.getLockTimeout());
+                          "timeout after " + session.getLockTimeout());
                 throw DbException.get(ErrorCode.LOCK_TIMEOUT_1, getName());
             }
             try {
@@ -236,7 +236,7 @@ public class MVTable extends TableBase {
                 }
                 // don't wait too long so that deadlocks are detected early
                 long sleep = Math.min(Constants.DEADLOCK_CHECK,
-                        TimeUnit.NANOSECONDS.toMillis(max - now));
+                                      TimeUnit.NANOSECONDS.toMillis(max - now));
                 if (sleep == 0) {
                     sleep = 1;
                 }
@@ -262,7 +262,7 @@ public class MVTable extends TableBase {
                     }
                     return true;
                 } else if (lockSharedSessions.size() == 1 &&
-                        lockSharedSessions.containsKey(session)) {
+                           lockSharedSessions.containsKey(session)) {
                     traceLock(session, exclusive, "add (upgraded) for ");
                     lockExclusiveSession = session;
                     if (SysProperties.THREAD_DEADLOCK_DETECTOR) {
@@ -313,10 +313,10 @@ public class MVTable extends TableBase {
             Table lock = s.getWaitForLock();
             Thread thread = s.getWaitForLockThread();
             buff.append("\nSession ").append(s.toString())
-                    .append(" on thread ").append(thread.getName())
-                    .append(" is waiting to lock ").append(lock.toString())
-                    .append(exclusive ? " (exclusive)" : " (shared)")
-                    .append(" while locking ");
+            .append(" on thread ").append(thread.getName())
+            .append(" is waiting to lock ").append(lock.toString())
+            .append(exclusive ? " (exclusive)" : " (shared)")
+            .append(" while locking ");
             int i = 0;
             for (Table t : s.getLocks()) {
                 if (i++ > 0) {
@@ -338,7 +338,7 @@ public class MVTable extends TableBase {
 
     @Override
     public ArrayList<Session> checkDeadlock(Session session, Session clash,
-            Set<Session> visited) {
+                                            Set<Session> visited) {
         // only one deadlock check at any given time
         synchronized (MVTable.class) {
             if (clash == null) {
@@ -377,7 +377,7 @@ public class MVTable extends TableBase {
                 Table t = copyOfLockExclusiveSession.getWaitForLock();
                 if (t != null) {
                     error = t.checkDeadlock(copyOfLockExclusiveSession, clash,
-                            visited);
+                                            visited);
                     if (error != null) {
                         error.add(session);
                     }
@@ -390,8 +390,8 @@ public class MVTable extends TableBase {
     private void traceLock(Session session, boolean exclusive, String s) {
         if (traceLock.isDebugEnabled()) {
             traceLock.debug("{0} {1} {2} {3}", session.getId(),
-                    exclusive ? "exclusive write lock" : "shared read lock", s,
-                    getName());
+                            exclusive ? "exclusive write lock" : "shared read lock", s,
+                            getName());
         }
     }
 
@@ -466,8 +466,8 @@ public class MVTable extends TableBase {
 
     @Override
     public Index addIndex(Session session, String indexName, int indexId,
-            IndexColumn[] cols, IndexType indexType, boolean create,
-            String indexComment) {
+                          IndexColumn[] cols, IndexType indexType, boolean create,
+                          String indexComment) {
         if (indexType.isPrimaryKey()) {
             for (IndexColumn c : cols) {
                 Column column = c.column;
@@ -496,13 +496,13 @@ public class MVTable extends TableBase {
         if (mainIndexColumn != -1) {
             primaryIndex.setMainIndexColumn(mainIndexColumn);
             index = new MVDelegateIndex(this, indexId, indexName, primaryIndex,
-                    indexType);
+                                        indexType);
         } else if (indexType.isSpatial()) {
             index = new MVSpatialIndex(session.getDatabase(), this, indexId,
-                    indexName, cols, indexType);
+                                       indexName, cols, indexType);
         } else {
             index = new MVSecondaryIndex(session.getDatabase(), this, indexId,
-                    indexName, cols, indexType);
+                                         indexName, cols, indexType);
         }
         if (index.needRebuild()) {
             rebuildIndex(session, index, indexName);
@@ -573,7 +573,7 @@ public class MVTable extends TableBase {
             Row row = cursor.get();
             buffer.add(row);
             database.setProgress(DatabaseEventListener.STATE_CREATE_INDEX, n,
-                    MathUtils.convertLongToInt(i++), t);
+                                 MathUtils.convertLongToInt(i++), t);
             if (buffer.size() >= bufferSize) {
                 sortRows(buffer, index);
                 String mapName = store.nextTemporaryMapName();
@@ -595,7 +595,7 @@ public class MVTable extends TableBase {
         }
         if (SysProperties.CHECK && remaining != 0) {
             DbException.throwInternalError("rowcount remaining=" + remaining +
-                    " " + getName());
+                                           " " + getName());
         }
     }
 
@@ -613,7 +613,7 @@ public class MVTable extends TableBase {
             Row row = cursor.get();
             buffer.add(row);
             database.setProgress(DatabaseEventListener.STATE_CREATE_INDEX, n,
-                    MathUtils.convertLongToInt(i++), t);
+                                 MathUtils.convertLongToInt(i++), t);
             if (buffer.size() >= bufferSize) {
                 addRowsToIndex(session, buffer, index);
             }
@@ -622,7 +622,7 @@ public class MVTable extends TableBase {
         addRowsToIndex(session, buffer, index);
         if (SysProperties.CHECK && remaining != 0) {
             DbException.throwInternalError("rowcount remaining=" + remaining +
-                    " " + getName());
+                                           " " + getName());
         }
     }
 
@@ -650,7 +650,7 @@ public class MVTable extends TableBase {
     }
 
     private static void addRowsToIndex(Session session, ArrayList<Row> list,
-            Index index) {
+                                       Index index) {
         sortRows(list, index);
         for (Row row : list) {
             index.add(session, row);
@@ -815,7 +815,7 @@ public class MVTable extends TableBase {
                 Index index = (Index) obj;
                 if (index.getTable() == this) {
                     DbException.throwInternalError("index not dropped: " +
-                            index.getName());
+                                                   index.getName());
                 }
             }
         }
@@ -894,7 +894,7 @@ public class MVTable extends TableBase {
         if (DataUtils.getErrorCode(e.getMessage()) ==
                 DataUtils.ERROR_TRANSACTION_LOCKED) {
             throw DbException.get(ErrorCode.CONCURRENT_UPDATE_1,
-                    e, getName());
+                                  e, getName());
         }
         return store.convertIllegalStateException(e);
     }

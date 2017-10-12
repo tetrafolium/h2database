@@ -53,8 +53,8 @@ public class TcpServerThread implements Runnable {
             new SmallMap(SysProperties.SERVER_CACHED_OBJECTS);
     private final SmallLRUCache<Long, CachedInputStream> lobs =
             SmallLRUCache.newInstance(Math.max(
-                SysProperties.SERVER_CACHED_OBJECTS,
-                SysProperties.SERVER_RESULT_SET_FETCH_SIZE * 5));
+                    SysProperties.SERVER_CACHED_OBJECTS,
+                    SysProperties.SERVER_RESULT_SET_FETCH_SIZE * 5));
     private final int threadId;
     private int clientVersion;
     private String sessionId;
@@ -85,10 +85,10 @@ public class TcpServerThread implements Runnable {
                 int maxClientVersion = transfer.readInt();
                 if (maxClientVersion < Constants.TCP_PROTOCOL_VERSION_6) {
                     throw DbException.get(ErrorCode.DRIVER_VERSION_ERROR_2,
-                            "" + clientVersion, "" + Constants.TCP_PROTOCOL_VERSION_6);
+                                          "" + clientVersion, "" + Constants.TCP_PROTOCOL_VERSION_6);
                 } else if (minClientVersion > Constants.TCP_PROTOCOL_VERSION_16) {
                     throw DbException.get(ErrorCode.DRIVER_VERSION_ERROR_2,
-                            "" + clientVersion, "" + Constants.TCP_PROTOCOL_VERSION_16);
+                                          "" + clientVersion, "" + Constants.TCP_PROTOCOL_VERSION_16);
                 }
                 if (maxClientVersion >= Constants.TCP_PROTOCOL_VERSION_16) {
                     clientVersion = Constants.TCP_PROTOCOL_VERSION_16;
@@ -232,8 +232,8 @@ public class TcpServerThread implements Runnable {
                 sql = null;
             }
             transfer.writeInt(SessionRemote.STATUS_ERROR).
-                    writeString(e.getSQLState()).writeString(message).
-                    writeString(sql).writeInt(e.getErrorCode()).writeString(trace).flush();
+            writeString(e.getSQLState()).writeString(message).
+            writeString(sql).writeInt(e.getErrorCode()).writeString(trace).flush();
         } catch (Exception e2) {
             if (!transfer.isClosed()) {
                 server.traceError(e2);
@@ -267,7 +267,7 @@ public class TcpServerThread implements Runnable {
             boolean isQuery = command.isQuery();
 
             transfer.writeInt(getState(old)).writeBoolean(isQuery).
-                    writeBoolean(readonly);
+            writeBoolean(readonly);
 
             if (operation == SessionRemote.SESSION_PREPARE_READ_PARAMS2) {
                 transfer.writeInt(command.getCommandType());
@@ -309,7 +309,7 @@ public class TcpServerThread implements Runnable {
             cache.addObject(objectId, result);
             int columnCount = result.getVisibleColumnCount();
             transfer.writeInt(SessionRemote.STATUS_OK).
-                    writeInt(columnCount).writeInt(0);
+            writeInt(columnCount).writeInt(0);
             for (int i = 0; i < columnCount; i++) {
                 ResultColumn.writeColumn(transfer, result, i);
             }
@@ -361,7 +361,7 @@ public class TcpServerThread implements Runnable {
                 status = getState(old);
             }
             transfer.writeInt(status).writeInt(updateCount).
-                    writeBoolean(session.getAutoCommit());
+            writeBoolean(session.getAutoCommit());
             transfer.flush();
             break;
         }
@@ -425,7 +425,7 @@ public class TcpServerThread implements Runnable {
         }
         case SessionRemote.SESSION_HAS_PENDING_TRANSACTION: {
             transfer.writeInt(SessionRemote.STATUS_OK).
-                writeInt(session.hasPendingTransaction() ? 1 : 0).flush();
+            writeInt(session.hasPendingTransaction() ? 1 : 0).flush();
             break;
         }
         case SessionRemote.LOB_READ: {

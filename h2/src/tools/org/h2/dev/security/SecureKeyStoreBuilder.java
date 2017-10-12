@@ -47,10 +47,10 @@ public class SecureKeyStoreBuilder {
     }
 
     private static void printKeystore(KeyStore store, String password)
-            throws KeyStoreException, NoSuchAlgorithmException,
-            UnrecoverableKeyException, CertificateEncodingException {
+    throws KeyStoreException, NoSuchAlgorithmException,
+        UnrecoverableKeyException, CertificateEncodingException {
         System.out.println("KeyStore store = KeyStore.getInstance(\""
-                + store.getType() + "\");");
+                           + store.getType() + "\");");
         System.out.println("store.load(null, password.toCharArray());");
         // System.out.println("keystore provider=" +
         //         store.getProvider().getName());
@@ -88,7 +88,7 @@ public class SecureKeyStoreBuilder {
             }
             System.out.println("};");
             System.out.println("store.setKeyEntry(\"" + alias
-                    + "\", privateKey, password.toCharArray(), certs);");
+                               + "\", privateKey, password.toCharArray(), certs);");
         }
     }
 

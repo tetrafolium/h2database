@@ -54,7 +54,7 @@ public class OsgiDataSourceFactory implements DataSourceFactory {
      */
     @Override
     public DataSource createDataSource(Properties properties)
-            throws SQLException {
+    throws SQLException {
         // Make copy of properties
         Properties propertiesCopy = new Properties();
         if (properties != null) {
@@ -114,7 +114,7 @@ public class OsgiDataSourceFactory implements DataSourceFactory {
      */
     @Override
     public XADataSource createXADataSource(Properties properties)
-            throws SQLException {
+    throws SQLException {
         // Make copy of properties
         Properties propertiesCopy = new Properties();
         if (properties != null) {
@@ -143,7 +143,7 @@ public class OsgiDataSourceFactory implements DataSourceFactory {
      */
     @Override
     public java.sql.Driver createDriver(Properties properties)
-            throws SQLException {
+    throws SQLException {
         if (properties != null && !properties.isEmpty()) {
             // No properties supported
             throw new SQLException();
@@ -160,7 +160,7 @@ public class OsgiDataSourceFactory implements DataSourceFactory {
      *             present
      */
     private static void rejectUnsupportedOptions(Properties p)
-            throws SQLFeatureNotSupportedException {
+    throws SQLFeatureNotSupportedException {
         // Unsupported standard properties in OSGi
         if (p.containsKey(DataSourceFactory.JDBC_ROLE_NAME)) {
             throw new SQLFeatureNotSupportedException("The " +
@@ -182,20 +182,20 @@ public class OsgiDataSourceFactory implements DataSourceFactory {
      * @param p the properties to apply to the data source
      */
     private static void setupH2DataSource(JdbcDataSource dataSource,
-            Properties p) {
+                                          Properties p) {
         // Setting user and password
         if (p.containsKey(DataSourceFactory.JDBC_USER)) {
             dataSource.setUser((String) p.remove(DataSourceFactory.JDBC_USER));
         }
         if (p.containsKey(DataSourceFactory.JDBC_PASSWORD)) {
             dataSource.setPassword((String) p
-                    .remove(DataSourceFactory.JDBC_PASSWORD));
+                                   .remove(DataSourceFactory.JDBC_PASSWORD));
         }
 
         // Setting description
         if (p.containsKey(DataSourceFactory.JDBC_DESCRIPTION)) {
             dataSource.setDescription((String) p
-                    .remove(DataSourceFactory.JDBC_DESCRIPTION));
+                                      .remove(DataSourceFactory.JDBC_DESCRIPTION));
         }
 
         // Setting URL
@@ -231,12 +231,12 @@ public class OsgiDataSourceFactory implements DataSourceFactory {
 
                 connectionUrl.append("/");
             } else if (p.containsKey(
-                    DataSourceFactory.JDBC_PORT_NUMBER)) {
+                               DataSourceFactory.JDBC_PORT_NUMBER)) {
                 // Assume local host if only port was set
                 connectionUrl
-                        .append("//localhost:")
-                        .append(p.remove(DataSourceFactory.JDBC_PORT_NUMBER))
-                        .append("/");
+                .append("//localhost:")
+                .append(p.remove(DataSourceFactory.JDBC_PORT_NUMBER))
+                .append("/");
             } else if (protocol.equals("tcp") || protocol.equals("ssl")) {
                 // Assume local host if network protocol is set, but no host or
                 // port is set
@@ -253,7 +253,7 @@ public class OsgiDataSourceFactory implements DataSourceFactory {
         // Add remaining properties as options
         for (Object option : p.keySet()) {
             connectionUrl.append(";").append(option).append("=")
-                    .append(p.get(option));
+            .append(p.get(option));
         }
 
         if (connectionUrl.length() > Constants.START_URL.length()) {
@@ -270,7 +270,7 @@ public class OsgiDataSourceFactory implements DataSourceFactory {
      *             present
      */
     private static void rejectPoolingOptions(Properties p)
-            throws SQLFeatureNotSupportedException {
+    throws SQLFeatureNotSupportedException {
         if (p.containsKey(DataSourceFactory.JDBC_INITIAL_POOL_SIZE) ||
                 p.containsKey(DataSourceFactory.JDBC_MAX_IDLE_TIME) ||
                 p.containsKey(DataSourceFactory.JDBC_MAX_POOL_SIZE) ||
@@ -289,7 +289,7 @@ public class OsgiDataSourceFactory implements DataSourceFactory {
      * @param driver the driver
      */
     static void registerService(BundleContext bundleContext,
-            org.h2.Driver driver) {
+                                org.h2.Driver driver) {
         Properties properties = new Properties();
         properties.put(
                 DataSourceFactory.OSGI_JDBC_DRIVER_CLASS,

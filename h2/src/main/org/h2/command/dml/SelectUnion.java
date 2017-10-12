@@ -392,7 +392,7 @@ public class SelectUnion extends Query {
 
     @Override
     public void addGlobalCondition(Parameter param, int columnId,
-            int comparisonType) {
+                                   int comparisonType) {
         addParameter(param);
         switch (unionType) {
         case UNION_ALL:

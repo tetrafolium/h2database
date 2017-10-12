@@ -35,7 +35,7 @@ public class ValueStringIgnoreCase extends ValueString {
     @Override
     public boolean equals(Object other) {
         return other instanceof ValueString
-                && value.equalsIgnoreCase(((ValueString) other).value);
+               && value.equalsIgnoreCase(((ValueString) other).value);
     }
 
     @Override

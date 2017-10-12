@@ -105,39 +105,39 @@ public class CipherFactory {
      * @return the socket
      */
     public static Socket createSocket(InetAddress address, int port)
-            throws IOException {
+    throws IOException {
         Socket socket = null;
         setKeystore();
         SSLSocketFactory f = (SSLSocketFactory) SSLSocketFactory.getDefault();
         SSLSocket secureSocket = (SSLSocket) f.createSocket();
         secureSocket.connect(new InetSocketAddress(address, port),
-                SysProperties.SOCKET_CONNECT_TIMEOUT);
+                             SysProperties.SOCKET_CONNECT_TIMEOUT);
         secureSocket.setEnabledProtocols(
                 disableSSL(secureSocket.getEnabledProtocols()));
         if (SysProperties.ENABLE_ANONYMOUS_TLS) {
             String[] list = enableAnonymous(
-                    secureSocket.getEnabledCipherSuites(),
-                    secureSocket.getSupportedCipherSuites());
+                                    secureSocket.getEnabledCipherSuites(),
+                                    secureSocket.getSupportedCipherSuites());
             secureSocket.setEnabledCipherSuites(list);
         }
         socket = secureSocket;
         return socket;
     }
 
-/**
-     * Create a secure server socket. If a bind address is specified, the
-     * socket is only bound to this address.
-     * If h2.enableAnonymousTLS is true, an attempt is made to modify
-     * the security property jdk.tls.legacyAlgorithms (in newer JVMs) to allow
-     * anonymous TLS. This system change is effectively permanent for the
-     * lifetime of the JVM.
-     * @see #removeAnonFromLegacyAlgorithms()
-     *
-     * @param port the port to listen on
-     * @param bindAddress the address to bind to, or null to bind to all
-     *            addresses
-     * @return the server socket
-     */
+    /**
+         * Create a secure server socket. If a bind address is specified, the
+         * socket is only bound to this address.
+         * If h2.enableAnonymousTLS is true, an attempt is made to modify
+         * the security property jdk.tls.legacyAlgorithms (in newer JVMs) to allow
+         * anonymous TLS. This system change is effectively permanent for the
+         * lifetime of the JVM.
+         * @see #removeAnonFromLegacyAlgorithms()
+         *
+         * @param port the port to listen on
+         * @param bindAddress the address to bind to, or null to bind to all
+         *            addresses
+         * @return the server socket
+         */
     public static ServerSocket createServerSocket(int port,
             InetAddress bindAddress) throws IOException {
         ServerSocket socket = null;
@@ -156,8 +156,8 @@ public class CipherFactory {
                 disableSSL(secureSocket.getEnabledProtocols()));
         if (SysProperties.ENABLE_ANONYMOUS_TLS) {
             String[] list = enableAnonymous(
-                    secureSocket.getEnabledCipherSuites(),
-                    secureSocket.getSupportedCipherSuites());
+                                    secureSocket.getEnabledCipherSuites(),
+                                    secureSocket.getSupportedCipherSuites());
             secureSocket.setEnabledCipherSuites(list);
         }
 
@@ -255,7 +255,7 @@ public class CipherFactory {
     }
 
     private static byte[] getKeyStoreBytes(KeyStore store, String password)
-            throws IOException {
+    throws IOException {
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         try {
             store.store(bout, password.toCharArray());
@@ -322,30 +322,31 @@ public class CipherFactory {
                             "6a215c97d354fdace7e781e4a63e8b"));
             PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
             Certificate[] certs = { CertificateFactory
-                    .getInstance("X.509")
-                    .generateCertificate(
-                            new ByteArrayInputStream(
-                                    StringUtils.convertHexToBytes(
-                            "3082018b3081f502044295ce6b300d06092a8648" +
-                            "86f70d0101040500300d310b3009060355040313" +
-                            "024832301e170d3035303532363133323630335a" +
-                            "170d3337303933303036353734375a300d310b30" +
-                            "0906035504031302483230819f300d06092a8648" +
-                            "86f70d010101050003818d0030818902818100dc" +
-                            "0a13c602b7141110eade2f051b54777b060d0f74" +
-                            "e6a110f9cce81159f271ebc88d8e8aa1f743b505" +
-                            "fc2e7dfe38d33b8d3f64d1b363d1af4d87783389" +
-                            "7954cbaec2fa384c22a415498cf306bb07ac09b7" +
-                            "6b001cd68bf77ea0a628f5101959cf2993a9c23d" +
-                            "bee79b19305977f8715ae78d023471194cc900b2" +
-                            "31eecb0aaea98d0203010001300d06092a864886" +
-                            "f70d01010405000381810083f4401a279453701b" +
-                            "ef9a7681a5b8b24f153f7d18c7c892133d97bd5f" +
-                            "13736be7505290a445a7d5ceb75522403e509751" +
-                            "5cd966ded6351ff60d5193de34cd36e5cb04d380" +
-                            "398e66286f99923fd92296645fd4ada45844d194" +
-                            "dfd815e6cd57f385c117be982809028bba1116c8" +
-                            "5740b3d27a55b1a0948bf291ddba44bed337b9"))), };
+                                    .getInstance("X.509")
+                                    .generateCertificate(
+                                            new ByteArrayInputStream(
+                                                    StringUtils.convertHexToBytes(
+                                                            "3082018b3081f502044295ce6b300d06092a8648" +
+                                                            "86f70d0101040500300d310b3009060355040313" +
+                                                            "024832301e170d3035303532363133323630335a" +
+                                                            "170d3337303933303036353734375a300d310b30" +
+                                                            "0906035504031302483230819f300d06092a8648" +
+                                                            "86f70d010101050003818d0030818902818100dc" +
+                                                            "0a13c602b7141110eade2f051b54777b060d0f74" +
+                                                            "e6a110f9cce81159f271ebc88d8e8aa1f743b505" +
+                                                            "fc2e7dfe38d33b8d3f64d1b363d1af4d87783389" +
+                                                            "7954cbaec2fa384c22a415498cf306bb07ac09b7" +
+                                                            "6b001cd68bf77ea0a628f5101959cf2993a9c23d" +
+                                                            "bee79b19305977f8715ae78d023471194cc900b2" +
+                                                            "31eecb0aaea98d0203010001300d06092a864886" +
+                                                            "f70d01010405000381810083f4401a279453701b" +
+                                                            "ef9a7681a5b8b24f153f7d18c7c892133d97bd5f" +
+                                                            "13736be7505290a445a7d5ceb75522403e509751" +
+                                                            "5cd966ded6351ff60d5193de34cd36e5cb04d380" +
+                                                            "398e66286f99923fd92296645fd4ada45844d194" +
+                                                            "dfd815e6cd57f385c117be982809028bba1116c8" +
+                                                            "5740b3d27a55b1a0948bf291ddba44bed337b9"))),
+                                  };
             store.setKeyEntry("h2", privateKey, password.toCharArray(), certs);
             // --- generated code end ---
             return store;
@@ -359,7 +360,7 @@ public class CipherFactory {
         if (p.getProperty(KEYSTORE_KEY) == null) {
             String fileName = KEYSTORE;
             byte[] data = getKeyStoreBytes(getKeyStore(
-                    KEYSTORE_PASSWORD), KEYSTORE_PASSWORD);
+                                                   KEYSTORE_PASSWORD), KEYSTORE_PASSWORD);
             boolean needWrite = true;
             if (FileUtils.exists(fileName) && FileUtils.size(fileName) == data.length) {
                 // don't need to overwrite the file if it did not change

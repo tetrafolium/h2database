@@ -192,7 +192,7 @@ class ConditionalExpr extends ExprBase {
     @Override
     public String asString() {
         return condition.asString() + " ? " + ifTrue.asString() + " : "
-                + ifFalse.asString();
+               + ifFalse.asString();
     }
 
     @Override
@@ -327,7 +327,7 @@ class OpExpr extends ExprBase {
 
     private static boolean isComparison(String op) {
         return op.equals("==") || op.equals(">") || op.equals("<") ||
-                op.equals(">=") || op.equals("<=") || op.equals("!=");
+               op.equals(">=") || op.equals("<=") || op.equals("!=");
     }
 
     @Override
@@ -523,11 +523,11 @@ class StringExpr extends ExprBase {
                 int ch = c & 0xffff;
                 if (ch >= ' ' && (ch < 0x80)) {
                     buff.append(c);
-                // not supported in properties files
-                // } else if(ch < 0xff) {
-                // buff.append("\\");
-                // // make sure it's three characters (0x200 is octal 1000)
-                // buff.append(Integer.toOctalString(0x200 | ch).substring(1));
+                    // not supported in properties files
+                    // } else if(ch < 0xff) {
+                    // buff.append("\\");
+                    // // make sure it's three characters (0x200 is octal 1000)
+                    // buff.append(Integer.toOctalString(0x200 | ch).substring(1));
                 } else {
                     buff.append("\\u");
                     // make sure it's four characters

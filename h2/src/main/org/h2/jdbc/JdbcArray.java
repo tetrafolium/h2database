@@ -106,7 +106,7 @@ public class JdbcArray extends TraceObject implements Array {
      */
     @Override
     public Object getArray(long index, int count, Map<String, Class<?>> map)
-            throws SQLException {
+    throws SQLException {
         try {
             if (isDebugEnabled()) {
                 debugCode("getArray(" + index + ", " + count + ", " + quoteMap(map)+");");
@@ -229,7 +229,7 @@ public class JdbcArray extends TraceObject implements Array {
      */
     @Override
     public ResultSet getResultSet(long index, int count,
-            Map<String, Class<?>> map) throws SQLException {
+                                  Map<String, Class<?>> map) throws SQLException {
         try {
             if (isDebugEnabled()) {
                 debugCode("getResultSet("+index+", " + count+", " + quoteMap(map)+");");
@@ -294,6 +294,6 @@ public class JdbcArray extends TraceObject implements Array {
     @Override
     public String toString() {
         return value == null ? "null" :
-            (getTraceObjectName() + ": " + value.getTraceSQL());
+               (getTraceObjectName() + ": " + value.getTraceSQL());
     }
 }

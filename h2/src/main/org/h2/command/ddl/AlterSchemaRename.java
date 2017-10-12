@@ -42,12 +42,12 @@ public class AlterSchemaRename extends DefineCommand {
         Database db = session.getDatabase();
         if (!oldSchema.canDrop()) {
             throw DbException.get(ErrorCode.SCHEMA_CAN_NOT_BE_DROPPED_1,
-                    oldSchema.getName());
+                                  oldSchema.getName());
         }
         if (db.findSchema(newSchemaName) != null ||
                 newSchemaName.equals(oldSchema.getName())) {
             throw DbException.get(ErrorCode.SCHEMA_ALREADY_EXISTS_1,
-                    newSchemaName);
+                                  newSchemaName);
         }
         session.getUser().checkSchemaAdmin();
         db.renameDatabaseObject(session, oldSchema, newSchemaName);

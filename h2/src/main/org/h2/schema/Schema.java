@@ -69,7 +69,7 @@ public class Schema extends DbObjectBase {
      *            dropped)
      */
     public Schema(Database database, int id, String schemaName, User owner,
-            boolean system) {
+                  boolean system) {
         tablesAndViews = database.newConcurrentStringMap();
         synonyms = database.newConcurrentStringMap();
         indexes = database.newConcurrentStringMap();
@@ -108,7 +108,7 @@ public class Schema extends DbObjectBase {
             return null;
         }
         return "CREATE SCHEMA IF NOT EXISTS " +
-            getSQL() + " AUTHORIZATION " + owner.getSQL();
+               getSQL() + " AUTHORIZATION " + owner.getSQL();
     }
 
     @Override
@@ -417,7 +417,7 @@ public class Schema extends DbObjectBase {
     }
 
     private String getUniqueName(DbObject obj,
-            Map<String, ? extends SchemaObject> map, String prefix) {
+                                 Map<String, ? extends SchemaObject> map, String prefix) {
         String hash = StringUtils.toUpperEnglish(Integer.toHexString(obj.getName().hashCode()));
         String name = null;
         synchronized (temporaryUniqueNames) {
@@ -686,12 +686,12 @@ public class Schema extends DbObjectBase {
      * @return the {@link TableLink} object
      */
     public TableLink createTableLink(int id, String tableName, String driver,
-            String url, String user, String password, String originalSchema,
-            String originalTable, boolean emitUpdates, boolean force) {
+                                     String url, String user, String password, String originalSchema,
+                                     String originalTable, boolean emitUpdates, boolean force) {
         synchronized (database) {
             return new TableLink(this, id, tableName,
-                    driver, url, user, password,
-                    originalSchema, originalTable, emitUpdates, force);
+                                 driver, url, user, password,
+                                 originalSchema, originalTable, emitUpdates, force);
         }
     }
 

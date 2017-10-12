@@ -27,7 +27,7 @@ public class XTEA implements BlockCipher {
         int[] key = new int[4];
         for (int i = 0; i < 16;) {
             key[i / 4] = (b[i++] << 24) + ((b[i++] & 255) << 16)
-                    + ((b[i++] & 255) << 8) + (b[i++] & 255);
+                         + ((b[i++] & 255) << 8) + (b[i++] & 255);
         }
         int[] r = new int[32];
         for (int i = 0, sum = 0; i < 32;) {

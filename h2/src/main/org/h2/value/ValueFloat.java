@@ -144,7 +144,7 @@ public class ValueFloat extends Value {
 
     @Override
     public void set(PreparedStatement prep, int parameterIndex)
-            throws SQLException {
+    throws SQLException {
         prep.setFloat(parameterIndex, value);
     }
 

@@ -18,9 +18,9 @@ public class SynchronizedVerifier {
 
     private static volatile boolean enabled;
     private static final Map<Class<?>, AtomicBoolean> DETECT =
-        Collections.synchronizedMap(new HashMap<Class<?>, AtomicBoolean>());
+            Collections.synchronizedMap(new HashMap<Class<?>, AtomicBoolean>());
     private static final Map<Object, Object> CURRENT =
-        Collections.synchronizedMap(new IdentityHashMap<>());
+            Collections.synchronizedMap(new IdentityHashMap<>());
 
     /**
      * Enable or disable detection for a given class.

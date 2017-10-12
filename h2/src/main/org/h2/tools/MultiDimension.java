@@ -155,15 +155,15 @@ public class MultiDimension implements Comparator<long[]> {
      * @return the query
      */
     public String generatePreparedQuery(String table, String scalarColumn,
-            String[] columns) {
+                                        String[] columns) {
         StringBuilder buff = new StringBuilder("SELECT D.* FROM ");
         buff.append(StringUtils.quoteIdentifier(table)).
-            append(" D, TABLE(_FROM_ BIGINT=?, _TO_ BIGINT=?) WHERE ").
-            append(StringUtils.quoteIdentifier(scalarColumn)).
-            append(" BETWEEN _FROM_ AND _TO_");
+        append(" D, TABLE(_FROM_ BIGINT=?, _TO_ BIGINT=?) WHERE ").
+        append(StringUtils.quoteIdentifier(scalarColumn)).
+        append(" BETWEEN _FROM_ AND _TO_");
         for (String col : columns) {
             buff.append(" AND ").append(StringUtils.quoteIdentifier(col)).
-                append("+1 BETWEEN ?+1 AND ?+1");
+            append("+1 BETWEEN ?+1 AND ?+1");
         }
         return buff.toString();
     }
@@ -177,7 +177,7 @@ public class MultiDimension implements Comparator<long[]> {
      * @return the result set
      */
     public ResultSet getResult(PreparedStatement prep, int[] min, int[] max)
-            throws SQLException {
+    throws SQLException {
         long[][] ranges = getMortonRanges(min, max);
         int len = ranges.length;
         Long[] from = new Long[len];
@@ -270,7 +270,7 @@ public class MultiDimension implements Comparator<long[]> {
     }
 
     private void addMortonRanges(ArrayList<long[]> list, int[] min, int[] max,
-            int len, int level) {
+                                 int len, int level) {
         if (level > 100) {
             throw new IllegalArgumentException("" + level);
         }

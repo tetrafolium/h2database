@@ -99,9 +99,9 @@ public class FileUtils {
      */
     public static boolean isAbsolute(String fileName) {
         return FilePath.get(fileName).isAbsolute()
-                // Allows Windows to recognize "/path" as absolute.
-                // Makes the same configuration work on all platforms.
-                || fileName.startsWith("/");
+               // Allows Windows to recognize "/path" as absolute.
+               // Makes the same configuration work on all platforms.
+               || fileName.startsWith("/");
     }
 
     /**
@@ -204,7 +204,7 @@ public class FileUtils {
      * @return the file object
      */
     public static FileChannel open(String fileName, String mode)
-            throws IOException {
+    throws IOException {
         return FilePath.get(fileName).open(mode);
     }
 
@@ -217,7 +217,7 @@ public class FileUtils {
      * @return the input stream
      */
     public static InputStream newInputStream(String fileName)
-            throws IOException {
+    throws IOException {
         return FilePath.get(fileName).newInputStream();
     }
 
@@ -232,7 +232,7 @@ public class FileUtils {
      * @return the output stream
      */
     public static OutputStream newOutputStream(String fileName, boolean append)
-            throws IOException {
+    throws IOException {
         return FilePath.get(fileName).newOutputStream(append);
     }
 
@@ -341,9 +341,9 @@ public class FileUtils {
      * @return the name of the created file
      */
     public static String createTempFile(String prefix, String suffix,
-            boolean deleteOnExit, boolean inTempDir) throws IOException {
+                                        boolean deleteOnExit, boolean inTempDir) throws IOException {
         return FilePath.get(prefix).createTempFile(
-                suffix, deleteOnExit, inTempDir).toString();
+                       suffix, deleteOnExit, inTempDir).toString();
     }
 
     /**
@@ -354,7 +354,7 @@ public class FileUtils {
      * @param dst the byte buffer
      */
     public static void readFully(FileChannel channel, ByteBuffer dst)
-            throws IOException {
+    throws IOException {
         do {
             int r = channel.read(dst);
             if (r < 0) {
@@ -370,7 +370,7 @@ public class FileUtils {
      * @param src the byte buffer
      */
     public static void writeFully(FileChannel channel, ByteBuffer src)
-            throws IOException {
+    throws IOException {
         do {
             channel.write(src);
         } while (src.remaining() > 0);

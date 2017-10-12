@@ -41,8 +41,8 @@ public class PageBtreeIndex extends PageIndex {
     private int memoryCount;
 
     public PageBtreeIndex(RegularTable table, int id, String indexName,
-            IndexColumn[] columns,
-            IndexType indexType, boolean create, Session session) {
+                          IndexColumn[] columns,
+                          IndexType indexType, boolean create, Session session) {
         initBaseIndex(table, id, indexName, columns, indexType);
         if (!database.isStarting() && create) {
             checkIndexColumnTypes(columns);
@@ -72,7 +72,7 @@ public class PageBtreeIndex extends PageIndex {
         }
         this.needRebuild = create || (rowCount == 0 && store.isRecoveryRunning());
         if (trace.isDebugEnabled()) {
-            trace.debug("opened {0} rows: {1}", getName() , rowCount);
+            trace.debug("opened {0} rows: {1}", getName(), rowCount);
         }
         memoryPerPage = (Constants.MEMORY_PAGE_BTREE + store.getPageSize()) >> 2;
     }
@@ -111,7 +111,7 @@ public class PageBtreeIndex extends PageIndex {
             page1.setParentPageId(rootPageId);
             page2.setParentPageId(rootPageId);
             PageBtreeNode newRoot = PageBtreeNode.create(
-                    this, rootPageId, PageBtree.ROOT);
+                                            this, rootPageId, PageBtree.ROOT);
             store.logUndo(newRoot, null);
             newRoot.init(page1, pivot, page2);
             store.update(page1);
@@ -175,7 +175,7 @@ public class PageBtreeIndex extends PageIndex {
     }
 
     private Cursor find(Session session, SearchRow first, boolean bigger,
-            SearchRow last) {
+                        SearchRow last) {
         if (SysProperties.CHECK && store == null) {
             throw DbException.get(ErrorCode.OBJECT_CLOSED);
         }
@@ -219,10 +219,10 @@ public class PageBtreeIndex extends PageIndex {
 
     @Override
     public double getCost(Session session, int[] masks,
-            TableFilter[] filters, int filter, SortOrder sortOrder,
-            HashSet<Column> allColumnsSet) {
+                          TableFilter[] filters, int filter, SortOrder sortOrder,
+                          HashSet<Column> allColumnsSet) {
         return 10 * getCostRangeIndex(masks, tableData.getRowCount(session),
-                filters, filter, sortOrder, false, allColumnsSet);
+                                      filters, filter, sortOrder, false, allColumnsSet);
     }
 
     @Override
@@ -346,7 +346,7 @@ public class PageBtreeIndex extends PageIndex {
      * @return the row
      */
     SearchRow readRow(Data data, int offset, boolean onlyPosition,
-            boolean needData) {
+                      boolean needData) {
         synchronized (data) {
             data.setPos(offset);
             long key = data.readVarLong();
@@ -474,7 +474,7 @@ public class PageBtreeIndex extends PageIndex {
             memoryPerPage += (x - memoryPerPage) / ++memoryCount;
         } else {
             memoryPerPage += (x > memoryPerPage ? 1 : -1) +
-                    ((x - memoryPerPage) / Constants.MEMORY_FACTOR);
+                             ((x - memoryPerPage) / Constants.MEMORY_FACTOR);
         }
     }
 

@@ -100,12 +100,12 @@ public class Column {
     }
 
     public Column(String name, int type, long precision, int scale,
-            int displaySize) {
+                  int displaySize) {
         this(name, type, precision, scale, displaySize, null);
     }
 
     public Column(String name, int type, long precision, int scale,
-            int displaySize, String[] enumerators) {
+                  int displaySize, String[] enumerators) {
         this.name = name;
         this.type = type;
         if (precision == -1 && scale == -1 && displaySize == -1 && type != Value.UNKNOWN) {
@@ -181,7 +181,7 @@ public class Column {
         } catch (DbException e) {
             if (e.getErrorCode() == ErrorCode.DATA_CONVERSION_ERROR_1) {
                 String target = (table == null ? "" : table.getName() + ": ") +
-                        getCreateSQL();
+                                getCreateSQL();
                 throw DbException.get(
                         ErrorCode.DATA_CONVERSION_ERROR_1, e,
                         v.getSQL() + " (" + target + ")");
@@ -240,13 +240,13 @@ public class Column {
      * @param defaultExpression the default expression
      */
     public void setDefaultExpression(Session session,
-            Expression defaultExpression) {
+                                     Expression defaultExpression) {
         // also to test that no column names are used
         if (defaultExpression != null) {
             defaultExpression = defaultExpression.optimize(session);
             if (defaultExpression.isConstant()) {
                 defaultExpression = ValueExpression.get(
-                        defaultExpression.getValue(session));
+                                            defaultExpression.getValue(session));
             }
         }
         this.defaultExpression = defaultExpression;
@@ -345,8 +345,8 @@ public class Column {
                     } else if (dt.type == Value.TIMESTAMP_TZ) {
                         long ms = session.getTransactionStart();
                         value = ValueTimestampTimeZone.fromDateValueAndNanos(
-                                DateTimeUtils.dateValueFromDate(ms),
-                                DateTimeUtils.nanosFromDate(ms), (short) 0);
+                                        DateTimeUtils.dateValueFromDate(ms),
+                                        DateTimeUtils.nanosFromDate(ms), (short) 0);
                     } else if (dt.type == Value.TIME) {
                         value = ValueTime.fromNanos(0);
                     } else if (dt.type == Value.DATE) {
@@ -380,7 +380,7 @@ public class Column {
                     s = s.substring(0, 128) + "...";
                 }
                 throw DbException.get(ErrorCode.VALUE_TOO_LONG_2,
-                        getCreateSQL(), s + " (" + value.getPrecision() + ")");
+                                      getCreateSQL(), s + " (" + value.getPrecision() + ")");
             }
         }
         if (isEnumerated() && value != ValueNull.INSTANCE) {
@@ -390,7 +390,7 @@ public class Column {
                     s = s.substring(0, 128) + "...";
                 }
                 throw DbException.get(ErrorCode.ENUM_VALUE_NOT_PERMITTED,
-                        getCreateSQL(), s);
+                                      getCreateSQL(), s);
             }
 
             value = ValueEnum.get(enumerators, value.getInt());
@@ -465,7 +465,7 @@ public class Column {
     public void prepareExpression(Session session) {
         if (defaultExpression != null) {
             computeTableFilter = new TableFilter(session, table, null, false, null, 0,
-                    null);
+                                                 null);
             defaultExpression.mapColumns(computeTableFilter, 0);
             defaultExpression = defaultExpression.optimize(session);
         }
@@ -808,7 +808,7 @@ public class Column {
         name = source.name;
         precision = source.precision;
         enumerators = source.enumerators == null ? null :
-            Arrays.copyOf(source.enumerators, source.enumerators.length);
+                      Arrays.copyOf(source.enumerators, source.enumerators.length);
         scale = source.scale;
         // table is not set
         // columnId is not set

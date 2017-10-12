@@ -50,13 +50,13 @@ public class FunctionIndex extends BaseIndex {
             return new FunctionCursor(session, functionTable.getResult(session));
         }
         return new FunctionCursorResultSet(session,
-                functionTable.getResultSet(session));
+                                           functionTable.getResultSet(session));
     }
 
     @Override
     public double getCost(Session session, int[] masks,
-            TableFilter[] filters, int filter, SortOrder sortOrder,
-            HashSet<Column> allColumnsSet) {
+                          TableFilter[] filters, int filter, SortOrder sortOrder,
+                          HashSet<Column> allColumnsSet) {
         if (masks != null) {
             throw DbException.getUnsupportedException("ALIAS");
         }

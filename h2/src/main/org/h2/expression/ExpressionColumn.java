@@ -48,7 +48,7 @@ public class ExpressionColumn extends Expression {
     }
 
     public ExpressionColumn(Database database, String schemaName,
-            String tableAlias, String columnName) {
+                            String tableAlias, String columnName) {
         this.database = database;
         this.schemaName = schemaName;
         this.tableAlias = tableAlias;
@@ -82,11 +82,11 @@ public class ExpressionColumn extends Expression {
     @Override
     public void mapColumns(ColumnResolver resolver, int level) {
         if (tableAlias != null && !database.equalsIdentifiers(
-                tableAlias, resolver.getTableAlias())) {
+                        tableAlias, resolver.getTableAlias())) {
             return;
         }
         if (schemaName != null && !database.equalsIdentifiers(
-                schemaName, resolver.getSchemaName())) {
+                        schemaName, resolver.getSchemaName())) {
             return;
         }
         for (Column col : resolver.getColumns()) {
@@ -131,7 +131,7 @@ public class ExpressionColumn extends Expression {
     public Expression optimize(Session session) {
         if (columnResolver == null) {
             Schema schema = session.getDatabase().findSchema(
-                    tableAlias == null ? session.getCurrentSchemaName() : tableAlias);
+                                    tableAlias == null ? session.getCurrentSchemaName() : tableAlias);
             if (schema != null) {
                 Constant constant = schema.findConstant(columnName);
                 if (constant != null) {
@@ -325,8 +325,8 @@ public class ExpressionColumn extends Expression {
         TableFilter tf = getTableFilter();
         if (filter == tf && column.getType() == Value.BOOLEAN) {
             IndexCondition cond = IndexCondition.get(
-                    Comparison.EQUAL, this, ValueExpression.get(
-                            ValueBoolean.get(true)));
+                                          Comparison.EQUAL, this, ValueExpression.get(
+                                                  ValueBoolean.get(true)));
             filter.addIndexCondition(cond);
         }
     }
@@ -334,7 +334,7 @@ public class ExpressionColumn extends Expression {
     @Override
     public Expression getNotIfPossible(Session session) {
         return new Comparison(session, Comparison.EQUAL, this,
-                ValueExpression.get(ValueBoolean.get(false)));
+                              ValueExpression.get(ValueBoolean.get(false)));
     }
 
 }

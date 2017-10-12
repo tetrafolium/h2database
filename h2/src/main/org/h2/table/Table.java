@@ -84,7 +84,7 @@ public abstract class Table extends SchemaObjectBase {
     private volatile Row nullRow;
 
     public Table(Schema schema, int id, String name, boolean persistIndexes,
-            boolean persistData) {
+                 boolean persistData) {
         columnMap = schema.getDatabase().newStringMap();
         initSchemaObjectBase(schema, id, name, Trace.TABLE);
         this.persistIndexes = persistIndexes;
@@ -146,8 +146,8 @@ public abstract class Table extends SchemaObjectBase {
      * @return the index
      */
     public abstract Index addIndex(Session session, String indexName,
-            int indexId, IndexColumn[] cols, IndexType indexType,
-            boolean create, String indexComment);
+                                   int indexId, IndexColumn[] cols, IndexType indexType,
+                                   boolean create, String indexComment);
 
     /**
      * Get the given row.
@@ -231,8 +231,8 @@ public abstract class Table extends SchemaObjectBase {
      */
     @SuppressWarnings("unused")
     public Index getScanIndex(Session session, int[] masks,
-            TableFilter[] filters, int filter, SortOrder sortOrder,
-            HashSet<Column> allColumnsSet) {
+                              TableFilter[] filters, int filter, SortOrder sortOrder,
+                              HashSet<Column> allColumnsSet) {
         return getScanIndex(session);
     }
 
@@ -370,7 +370,7 @@ public abstract class Table extends SchemaObjectBase {
             }
         }
         ExpressionVisitor visitor = ExpressionVisitor.getDependenciesVisitor(
-                dependencies);
+                                            dependencies);
         for (Column col : columns) {
             col.isEverything(visitor);
         }
@@ -713,8 +713,8 @@ public abstract class Table extends SchemaObjectBase {
      * @return the plan item
      */
     public PlanItem getBestPlanItem(Session session, int[] masks,
-            TableFilter[] filters, int filter, SortOrder sortOrder,
-            HashSet<Column> allColumnsSet) {
+                                    TableFilter[] filters, int filter, SortOrder sortOrder,
+                                    HashSet<Column> allColumnsSet) {
         PlanItem item = new PlanItem();
         item.setIndex(getScanIndex(session));
         item.cost = item.getIndex().getCost(session, null, filters, filter, null, allColumnsSet);
@@ -735,7 +735,7 @@ public abstract class Table extends SchemaObjectBase {
                 }
 
                 double cost = index.getCost(session, masks, filters, filter,
-                        sortOrder, allColumnsSet);
+                                            sortOrder, allColumnsSet);
                 if (t.isDebugEnabled()) {
                     t.debug("Table      :     potential plan item cost {0} index {1}",
                             cost, index.getPlanSQL());
@@ -781,7 +781,7 @@ public abstract class Table extends SchemaObjectBase {
             return index;
         }
         throw DbException.get(ErrorCode.INDEX_NOT_FOUND_1,
-                Constants.PREFIX_PRIMARY_KEY);
+                              Constants.PREFIX_PRIMARY_KEY);
     }
 
     /**
@@ -979,7 +979,7 @@ public abstract class Table extends SchemaObjectBase {
      */
     public boolean fireRow() {
         return (constraints != null && constraints.size() > 0) ||
-                (triggers != null && triggers.size() > 0);
+               (triggers != null && triggers.size() > 0);
     }
 
     /**
@@ -997,7 +997,7 @@ public abstract class Table extends SchemaObjectBase {
     }
 
     private void fireConstraints(Session session, Row oldRow, Row newRow,
-            boolean before) {
+                                 boolean before) {
         if (constraints != null) {
             // don't use enhanced for loop to avoid creating objects
             for (int i = 0, size = constraints.size(); i < size; i++) {
@@ -1018,7 +1018,7 @@ public abstract class Table extends SchemaObjectBase {
      *  @param rollback when the operation occurred within a rollback
      */
     public void fireAfterRow(Session session, Row oldRow, Row newRow,
-            boolean rollback) {
+                             boolean rollback) {
         fireRow(session, oldRow, newRow, false, rollback);
         if (!rollback) {
             fireConstraints(session, oldRow, newRow, false);
@@ -1026,7 +1026,7 @@ public abstract class Table extends SchemaObjectBase {
     }
 
     private boolean fireRow(Session session, Row oldRow, Row newRow,
-            boolean beforeAction, boolean rollback) {
+                            boolean beforeAction, boolean rollback) {
         if (triggers != null) {
             for (TriggerObject trigger : triggers) {
                 boolean done = trigger.fireRow(session, oldRow, newRow, beforeAction, rollback);
@@ -1087,7 +1087,7 @@ public abstract class Table extends SchemaObjectBase {
      * @return the index or null
      */
     public Index getIndexForColumn(Column column,
-            boolean needGetFirstOrLast, boolean needFindNext) {
+                                   boolean needGetFirstOrLast, boolean needFindNext) {
         ArrayList<Index> indexes = getIndexes();
         Index result = null;
         if (indexes != null) {
@@ -1103,7 +1103,7 @@ public abstract class Table extends SchemaObjectBase {
                 // column to work consistently with execution plan from
                 // Optimizer
                 if (index.isFirstColumn(column) && (result == null ||
-                        result.getColumns().length > index.getColumns().length)) {
+                                                    result.getColumns().length > index.getColumns().length)) {
                     result = index;
                 }
             }
@@ -1168,7 +1168,7 @@ public abstract class Table extends SchemaObjectBase {
      */
     @SuppressWarnings("unused")
     public ArrayList<Session> checkDeadlock(Session session, Session clash,
-            Set<Session> visited) {
+                                            Set<Session> visited) {
         return null;
     }
 

@@ -135,19 +135,19 @@ public class ChangeFileEncryption extends Tool {
      * @param quiet don't print progress information
      */
     public static void execute(String dir, String db, String cipher,
-            char[] decryptPassword, char[] encryptPassword, boolean quiet)
-            throws SQLException {
+                               char[] decryptPassword, char[] encryptPassword, boolean quiet)
+    throws SQLException {
         try {
             new ChangeFileEncryption().process(dir, db, cipher,
-                    decryptPassword, encryptPassword, quiet);
+                                               decryptPassword, encryptPassword, quiet);
         } catch (Exception e) {
             throw DbException.toSQLException(e);
         }
     }
 
     private void process(String dir, String db, String cipher,
-            char[] decryptPassword, char[] encryptPassword, boolean quiet)
-            throws SQLException {
+                         char[] decryptPassword, char[] encryptPassword, boolean quiet)
+    throws SQLException {
         dir = FileLister.getDir(dir);
         ChangeFileEncryption change = new ChangeFileEncryption();
         if (encryptPassword != null) {
@@ -198,7 +198,7 @@ public class ChangeFileEncryption extends Tool {
                 copy(fileName, quiet);
             } catch (IOException e) {
                 throw DbException.convertIOException(e,
-                        "Error encrypting / decrypting file " + fileName);
+                                                     "Error encrypting / decrypting file " + fileName);
             }
             return;
         }

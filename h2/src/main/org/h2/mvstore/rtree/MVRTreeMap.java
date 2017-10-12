@@ -63,7 +63,7 @@ public class MVRTreeMap<V> extends MVMap<SpatialKey, V> {
         return new RTreeCursor(root, x) {
             @Override
             protected boolean check(boolean leaf, SpatialKey key,
-                    SpatialKey test) {
+                                    SpatialKey test) {
                 return keyType.isOverlap(key, test);
             }
         };
@@ -80,7 +80,7 @@ public class MVRTreeMap<V> extends MVMap<SpatialKey, V> {
         return new RTreeCursor(root, x) {
             @Override
             protected boolean check(boolean leaf, SpatialKey key,
-                    SpatialKey test) {
+                                    SpatialKey test) {
                 if (leaf) {
                     return keyType.isInside(key, test);
                 }
@@ -205,14 +205,14 @@ public class MVRTreeMap<V> extends MVMap<SpatialKey, V> {
                 Object k2 = getBounds(split);
                 Object[] keys = { k1, k2 };
                 Page.PageReference[] children = {
-                        new Page.PageReference(p, p.getPos(), p.getTotalCount()),
-                        new Page.PageReference(split, split.getPos(), split.getTotalCount()),
-                        new Page.PageReference(null, 0, 0)
+                    new Page.PageReference(p, p.getPos(), p.getTotalCount()),
+                    new Page.PageReference(split, split.getPos(), split.getTotalCount()),
+                    new Page.PageReference(null, 0, 0)
                 };
                 p = Page.create(this, v,
-                        keys, null,
-                        children,
-                        totalCount, 0);
+                                keys, null,
+                                children,
+                                totalCount, 0);
                 // now p is a node; continues
             }
             add(p, v, key, value);
@@ -303,8 +303,8 @@ public class MVRTreeMap<V> extends MVMap<SpatialKey, V> {
 
     private Page split(Page p, long writeVersion) {
         return quadraticSplit ?
-                splitQuadratic(p, writeVersion) :
-                splitLinear(p, writeVersion);
+               splitQuadratic(p, writeVersion) :
+               splitLinear(p, writeVersion);
     }
 
     private Page splitLinear(Page p, long writeVersion) {
@@ -408,11 +408,12 @@ public class MVRTreeMap<V> extends MVMap<SpatialKey, V> {
         } else {
             values = null;
             refs = new Page.PageReference[] {
-                    new Page.PageReference(null, 0, 0)};
+                    new Page.PageReference(null, 0, 0)
+            };
         }
         return Page.create(this, writeVersion,
-                Page.EMPTY_OBJECT_ARRAY, values,
-                refs, 0, 0);
+                           Page.EMPTY_OBJECT_ARRAY, values,
+                           refs, 0, 0);
     }
 
     private static void move(Page source, Page target, int sourceIndex) {
@@ -573,7 +574,7 @@ public class MVRTreeMap<V> extends MVMap<SpatialKey, V> {
      * @param <V> the value type
      */
     public static class Builder<V> implements
-            MVMap.MapBuilder<MVRTreeMap<V>, SpatialKey, V> {
+        MVMap.MapBuilder<MVRTreeMap<V>, SpatialKey, V> {
 
         private int dimensions = 2;
         private DataType valueType;

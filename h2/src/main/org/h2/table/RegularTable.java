@@ -81,14 +81,14 @@ public class RegularTable extends TableBase {
         }
         if (data.persistData && database.isPersistent()) {
             mainIndex = new PageDataIndex(this, data.id,
-                    IndexColumn.wrap(getColumns()),
-                    IndexType.createScan(data.persistData),
-                    data.create, data.session);
+                                          IndexColumn.wrap(getColumns()),
+                                          IndexType.createScan(data.persistData),
+                                          data.create, data.session);
             scanIndex = mainIndex;
         } else {
             mainIndex = null;
             scanIndex = new ScanIndex(this, data.id,
-                    IndexColumn.wrap(getColumns()), IndexType.createScan(data.persistData));
+                                      IndexColumn.wrap(getColumns()), IndexType.createScan(data.persistData));
         }
         indexes.add(scanIndex);
         traceLock = database.getTrace(Trace.LOCK);
@@ -196,8 +196,8 @@ public class RegularTable extends TableBase {
 
     @Override
     public Index addIndex(Session session, String indexName, int indexId,
-            IndexColumn[] cols, IndexType indexType, boolean create,
-            String indexComment) {
+                          IndexColumn[] cols, IndexType indexType, boolean create,
+                          String indexComment) {
         if (indexType.isPrimaryKey()) {
             for (IndexColumn c : cols) {
                 Column column = c.column;
@@ -226,13 +226,13 @@ public class RegularTable extends TableBase {
             if (mainIndexColumn != -1) {
                 mainIndex.setMainIndexColumn(mainIndexColumn);
                 index = new PageDelegateIndex(this, indexId, indexName,
-                        indexType, mainIndex, create, session);
+                                              indexType, mainIndex, create, session);
             } else if (indexType.isSpatial()) {
                 index = new SpatialTreeIndex(this, indexId, indexName, cols,
-                        indexType, true, create, session);
+                                             indexType, true, create, session);
             } else {
                 index = new PageBtreeIndex(this, indexId, indexName, cols,
-                        indexType, create, session);
+                                           indexType, create, session);
             }
         } else {
             if (indexType.isHash()) {
@@ -242,14 +242,14 @@ public class RegularTable extends TableBase {
                 }
                 if (indexType.isUnique()) {
                     index = new HashIndex(this, indexId, indexName, cols,
-                            indexType);
+                                          indexType);
                 } else {
                     index = new NonUniqueHashIndex(this, indexId, indexName,
-                            cols, indexType);
+                                                   cols, indexType);
                 }
             } else if (indexType.isSpatial()) {
                 index = new SpatialTreeIndex(this, indexId, indexName, cols,
-                        indexType, false, true, session);
+                                             indexType, false, true, session);
             } else {
                 index = new TreeIndex(this, indexId, indexName, cols, indexType);
             }
@@ -270,7 +270,7 @@ public class RegularTable extends TableBase {
                 int t = MathUtils.convertLongToInt(total);
                 while (cursor.next()) {
                     database.setProgress(DatabaseEventListener.STATE_CREATE_INDEX, n,
-                            MathUtils.convertLongToInt(i++), t);
+                                         MathUtils.convertLongToInt(i++), t);
                     Row row = cursor.get();
                     buffer.add(row);
                     if (buffer.size() >= bufferSize) {
@@ -281,7 +281,7 @@ public class RegularTable extends TableBase {
                 addRowsToIndex(session, buffer, index);
                 if (SysProperties.CHECK && remaining != 0) {
                     DbException.throwInternalError("rowcount remaining=" +
-                            remaining + " " + getName());
+                                                   remaining + " " + getName());
                 }
             } catch (DbException e) {
                 getSchema().freeUniqueName(indexName);
@@ -340,7 +340,7 @@ public class RegularTable extends TableBase {
     }
 
     private static void addRowsToIndex(Session session, ArrayList<Row> list,
-            Index index) {
+                                       Index index) {
         final Index idx = index;
         Collections.sort(list, new Comparator<Row>() {
             @Override
@@ -439,7 +439,7 @@ public class RegularTable extends TableBase {
 
     @Override
     public boolean lock(Session session, boolean exclusive,
-            boolean forceLockEvenInMvcc) {
+                        boolean forceLockEvenInMvcc) {
         int lockMode = database.getLockMode();
         if (lockMode == Constants.LOCK_MODE_OFF) {
             return lockExclusiveSession != null;
@@ -493,7 +493,7 @@ public class RegularTable extends TableBase {
                 ArrayList<Session> sessions = checkDeadlock(session, null, null);
                 if (sessions != null) {
                     throw DbException.get(ErrorCode.DEADLOCK_1,
-                            getDeadlockDetails(sessions, exclusive));
+                                          getDeadlockDetails(sessions, exclusive));
                 }
             } else {
                 // check for deadlocks from now on
@@ -521,7 +521,7 @@ public class RegularTable extends TableBase {
                 }
                 // don't wait too long so that deadlocks are detected early
                 long sleep = Math.min(Constants.DEADLOCK_CHECK,
-                        TimeUnit.NANOSECONDS.toMillis(max - now));
+                                      TimeUnit.NANOSECONDS.toMillis(max - now));
                 if (sleep == 0) {
                     sleep = 1;
                 }
@@ -541,7 +541,7 @@ public class RegularTable extends TableBase {
                     lockExclusiveSession = session;
                     return true;
                 } else if (lockSharedSessions.size() == 1 &&
-                        lockSharedSessions.contains(session)) {
+                           lockSharedSessions.contains(session)) {
                     traceLock(session, exclusive, "add (upgraded) for ");
                     lockExclusiveSession = session;
                     return true;
@@ -578,13 +578,13 @@ public class RegularTable extends TableBase {
             Table lock = s.getWaitForLock();
             Thread thread = s.getWaitForLockThread();
             buff.append("\nSession ").
-                append(s.toString()).
-                append(" on thread ").
-                append(thread.getName()).
-                append(" is waiting to lock ").
-                append(lock.toString()).
-                append(exclusive ? " (exclusive)" : " (shared)").
-                append(" while locking ");
+            append(s.toString()).
+            append(" on thread ").
+            append(thread.getName()).
+            append(" is waiting to lock ").
+            append(lock.toString()).
+            append(exclusive ? " (exclusive)" : " (shared)").
+            append(" while locking ");
             int i = 0;
             for (Table t : s.getLocks()) {
                 if (i++ > 0) {
@@ -606,7 +606,7 @@ public class RegularTable extends TableBase {
 
     @Override
     public ArrayList<Session> checkDeadlock(Session session, Session clash,
-            Set<Session> visited) {
+                                            Set<Session> visited) {
         // only one deadlock check at any given time
         synchronized (RegularTable.class) {
             if (clash == null) {
@@ -654,7 +654,7 @@ public class RegularTable extends TableBase {
     private void traceLock(Session session, boolean exclusive, String s) {
         if (traceLock.isDebugEnabled()) {
             traceLock.debug("{0} {1} {2} {3}", session.getId(),
-                    exclusive ? "exclusive write lock" : "shared read lock", s, getName());
+                            exclusive ? "exclusive write lock" : "shared read lock", s, getName());
         }
     }
 

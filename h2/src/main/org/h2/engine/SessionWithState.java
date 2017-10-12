@@ -48,8 +48,8 @@ abstract class SessionWithState implements SessionInterface {
         sessionStateChanged = false;
         sessionState = New.arrayList();
         CommandInterface ci = prepareCommand(
-                "SELECT * FROM INFORMATION_SCHEMA.SESSION_STATE",
-                Integer.MAX_VALUE);
+                                      "SELECT * FROM INFORMATION_SCHEMA.SESSION_STATE",
+                                      Integer.MAX_VALUE);
         ResultInterface result = ci.executeQuery(0, false);
         while (result.next()) {
             Value[] row = result.currentRow();

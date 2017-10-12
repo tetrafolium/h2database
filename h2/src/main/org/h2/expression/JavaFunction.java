@@ -96,7 +96,7 @@ public class JavaFunction extends Expression implements FunctionCall {
                 !functionAlias.getSchema().getName().equals(Constants.SCHEMA_MAIN)) {
             buff.append(
                     Parser.quoteIdentifier(functionAlias.getSchema().getName()))
-                    .append('.');
+            .append('.');
         }
         buff.append(Parser.quoteIdentifier(functionAlias.getName())).append('(');
         for (Expression e : args) {

@@ -148,7 +148,7 @@ public class ConditionAndOr extends Condition {
                 Comparison compLeft = (Comparison) left;
                 Comparison compRight = (Comparison) right;
                 Expression added = compLeft.getAdditional(
-                        session, compRight, true);
+                                           session, compRight, true);
                 if (added != null) {
                     added = added.optimize(session);
                     ConditionAndOr a = new ConditionAndOr(AND, this, added);
@@ -166,35 +166,35 @@ public class ConditionAndOr extends Condition {
                 Comparison compLeft = (Comparison) left;
                 Comparison compRight = (Comparison) right;
                 Expression added = compLeft.getAdditional(
-                        session, compRight, false);
+                                           session, compRight, false);
                 if (added != null) {
                     return added.optimize(session);
                 }
             } else if (left instanceof ConditionIn &&
-                    right instanceof Comparison) {
+                       right instanceof Comparison) {
                 Expression added = ((ConditionIn) left).
-                        getAdditional((Comparison) right);
+                                   getAdditional((Comparison) right);
                 if (added != null) {
                     return added.optimize(session);
                 }
             } else if (right instanceof ConditionIn &&
-                    left instanceof Comparison) {
+                       left instanceof Comparison) {
                 Expression added = ((ConditionIn) right).
-                        getAdditional((Comparison) left);
+                                   getAdditional((Comparison) left);
                 if (added != null) {
                     return added.optimize(session);
                 }
             } else if (left instanceof ConditionInConstantSet &&
-                    right instanceof Comparison) {
+                       right instanceof Comparison) {
                 Expression added = ((ConditionInConstantSet) left).
-                        getAdditional(session, (Comparison) right);
+                                   getAdditional(session, (Comparison) right);
                 if (added != null) {
                     return added.optimize(session);
                 }
             } else if (right instanceof ConditionInConstantSet &&
-                    left instanceof Comparison) {
+                       left instanceof Comparison) {
                 Expression added = ((ConditionInConstantSet) right).
-                        getAdditional(session, (Comparison) left);
+                                   getAdditional(session, (Comparison) left);
                 if (added != null) {
                     return added.optimize(session);
                 }

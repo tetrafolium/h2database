@@ -72,7 +72,7 @@ public class Restore extends Tool {
     }
 
     private static String getOriginalDbName(String fileName, String db)
-            throws IOException {
+    throws IOException {
 
         try (InputStream in = FileUtils.newInputStream(fileName)) {
             ZipInputStream zipIn = new ZipInputStream(in);
@@ -119,11 +119,11 @@ public class Restore extends Tool {
     private static String getDatabaseNameFromFileName(String fileName) {
         if (fileName.endsWith(Constants.SUFFIX_PAGE_FILE)) {
             return fileName.substring(0,
-                    fileName.length() - Constants.SUFFIX_PAGE_FILE.length());
+                                      fileName.length() - Constants.SUFFIX_PAGE_FILE.length());
         }
         if (fileName.endsWith(Constants.SUFFIX_MV_FILE)) {
             return fileName.substring(0,
-                    fileName.length() - Constants.SUFFIX_MV_FILE.length());
+                                      fileName.length() - Constants.SUFFIX_MV_FILE.length());
         }
         return null;
     }
@@ -179,7 +179,7 @@ public class Restore extends Tool {
                     OutputStream o = null;
                     try {
                         o = FileUtils.newOutputStream(
-                                directory + SysProperties.FILE_SEPARATOR + fileName, false);
+                                    directory + SysProperties.FILE_SEPARATOR + fileName, false);
                         IOUtils.copy(zipIn, o);
                         o.close();
                     } finally {

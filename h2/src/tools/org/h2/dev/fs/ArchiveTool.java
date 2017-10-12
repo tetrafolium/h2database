@@ -125,12 +125,12 @@ public class ArchiveTool {
             log.println();
         }
         log.println("Compressing " + size / MB + " MB at " +
-                new java.sql.Time(startMs).toString());
+                    new java.sql.Time(startMs).toString());
         InputStream in = getDirectoryInputStream(fromDir);
         String temp = toFile + ".temp";
         OutputStream out =
                 new BufferedOutputStream(
-                                new FileOutputStream(toFile), 1024 * 1024);
+                new FileOutputStream(toFile), 1024 * 1024);
         Deflater def = new Deflater();
         def.setLevel(level);
         out = new BufferedOutputStream(
@@ -140,9 +140,9 @@ public class ArchiveTool {
         out.close();
         log.println();
         log.println("Compressed to " +
-                new File(toFile).length() / MB + " MB in " +
-                TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - start)  +
-                " seconds");
+                    new File(toFile).length() / MB + " MB in " +
+                    TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - start)  +
+                    " seconds");
         log.println();
     }
 
@@ -154,7 +154,7 @@ public class ArchiveTool {
         log.println("Extracting " + size / MB + " MB at " + new java.sql.Time(startMs).toString());
         InputStream in =
                 new BufferedInputStream(
-                        new FileInputStream(fromFile), 1024 * 1024);
+                new FileInputStream(fromFile), 1024 * 1024);
         String temp = fromFile + ".temp";
         Inflater inflater = new Inflater();
         in = new InflaterInputStream(in, inflater, 1024 * 1024);
@@ -165,8 +165,8 @@ public class ArchiveTool {
         out.close();
         log.println();
         log.println("Extracted in " +
-                TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - start) +
-                " seconds");
+                    TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - start) +
+                    " seconds");
     }
 
     private static long getSize(File f, Runnable r) {
@@ -277,7 +277,7 @@ public class ArchiveTool {
                     remaining = f.length();
                     writeVarLong(out, remaining);
                     fileIn = new DataInputStream(new BufferedInputStream(
-                            new FileInputStream(current), 1024 * 1024));
+                                                         new FileInputStream(current), 1024 * 1024));
                 }
                 if (!current.startsWith(baseDir)) {
                     throw new IOException("File " + current + " does not start with " + baseDir);
@@ -402,10 +402,10 @@ public class ArchiveTool {
     }
 
     private static void sort(Log log, InputStream in, OutputStream out,
-            String tempFileName, long size) throws IOException {
+                             String tempFileName, long size) throws IOException {
         int bufferSize = 32 * 1024 * 1024;
         DataOutputStream tempOut = new DataOutputStream(new BufferedOutputStream(
-                new FileOutputStream(tempFileName), 1024 * 1024));
+                        new FileOutputStream(tempFileName), 1024 * 1024));
         byte[] bytes = new byte[bufferSize];
         List<Long> segmentStart = new ArrayList<>();
         long outPos = 0;
@@ -462,7 +462,7 @@ public class ArchiveTool {
             ArrayList<Long> segmentStart2 = new ArrayList<>();
             outPos = 0;
             DataOutputStream tempOut2 = new DataOutputStream(new BufferedOutputStream(
-                    new FileOutputStream(tempFileName + ".b"), 1024 * 1024));
+                            new FileOutputStream(tempFileName + ".b"), 1024 * 1024));
             while (segmentStart.size() > 0) {
                 segmentStart2.add(outPos);
                 int s = Math.min(segmentStart.size(), blockSize);
@@ -538,7 +538,7 @@ public class ArchiveTool {
     }
 
     private static long openSegments(List<Long> segmentStart, TreeSet<ChunkStream> segmentIn,
-            String tempFileName, boolean readKey) throws IOException {
+                                     String tempFileName, boolean readKey) throws IOException {
         long inPos = 0;
         int bufferTotal = 64 * 1024 * 1024;
         int bufferPerStream = bufferTotal / segmentStart.size();
@@ -601,7 +601,7 @@ public class ArchiveTool {
      * @return the number of bytes read (max unless EOF has been reached)
      */
     private static int readFully(InputStream in, byte[] buffer, int max)
-            throws IOException {
+    throws IOException {
         int result = 0, len = Math.min(max, buffer.length);
         while (len > 0) {
             int l = in.read(buffer, result, len);
@@ -665,7 +665,7 @@ public class ArchiveTool {
     }
 
     private static long getSipHash24(byte[] b, int start, int end, long k0,
-            long k1) {
+                                     long k1) {
         long v0 = k0 ^ 0x736f6d6570736575L;
         long v1 = k1 ^ 0x646f72616e646f6dL;
         long v2 = k0 ^ 0x6c7967656e657261L;
@@ -771,12 +771,12 @@ public class ArchiveTool {
     }
 
     private static void combine(Log log, InputStream in, OutputStream out,
-            String tempFileName) throws IOException {
+                                String tempFileName) throws IOException {
         int bufferSize = 16 * 1024 * 1024;
         DataOutputStream tempOut =
                 new DataOutputStream(
-                        new BufferedOutputStream(
-                                new FileOutputStream(tempFileName), 1024 * 1024));
+                new BufferedOutputStream(
+                        new FileOutputStream(tempFileName), 1024 * 1024));
 
         // File: header length chunk* 0
         // chunk: pos* 0 data
@@ -842,7 +842,7 @@ public class ArchiveTool {
             ArrayList<Long> segmentStart2 = new ArrayList<>();
             outPos = 0;
             DataOutputStream tempOut2 = new DataOutputStream(new BufferedOutputStream(
-                    new FileOutputStream(tempFileName + ".b"), 1024 * 1024));
+                            new FileOutputStream(tempFileName + ".b"), 1024 * 1024));
             while (segmentStart.size() > 0) {
                 segmentStart2.add(outPos);
                 int s = Math.min(segmentStart.size(), blockSize);
@@ -1125,7 +1125,7 @@ public class ArchiveTool {
      * @return the number of bytes written
      */
     static int writeVarLong(OutputStream out, long x)
-            throws IOException {
+    throws IOException {
         int len = 0;
         while ((x & ~0x7f) != 0) {
             out.write((byte) (0x80 | (x & 0x7f)));

@@ -33,13 +33,13 @@ public class FileViewer extends Tool {
     protected void showUsage() {
         out.println("A text file viewer that support very large files.");
         out.println("java "+getClass().getName() + "\n" +
-                " -file <file>     The name of the file to view\n" +
-                " [-find <text>]   Find a string and display the next lines\n" +
-                " [-start <x>]     Start at the given position\n" +
-                " [-head]          Display the first lines\n" +
-                " [-tail]          Display the last lines\n" +
-                " [-lines <x>]     Display only x lines (default: 30)\n" +
-                " [-quiet]         Do not print progress information");
+                    " -file <file>     The name of the file to view\n" +
+                    " [-find <text>]   Find a string and display the next lines\n" +
+                    " [-start <x>]     Start at the given position\n" +
+                    " [-head]          Display the first lines\n" +
+                    " [-tail]          Display the last lines\n" +
+                    " [-lines <x>]     Display only x lines (default: 30)\n" +
+                    " [-quiet]         Do not print progress information");
     }
 
     @Override
@@ -88,8 +88,8 @@ public class FileViewer extends Tool {
     }
 
     private static void process(String fileName, String find,
-            boolean head, boolean tail, long start, int lines,
-            boolean quiet) throws IOException {
+                                boolean head, boolean tail, long start, int lines,
+                                boolean quiet) throws IOException {
         RandomAccessFile file = new RandomAccessFile(fileName, "r");
         long length = file.length();
         if (head) {
@@ -125,7 +125,7 @@ public class FileViewer extends Tool {
     }
 
     private static long find(RandomAccessFile file, byte[] find, boolean quiet)
-            throws IOException {
+    throws IOException {
         long pos = file.getFilePointer();
         long length = file.length();
         int bufferSize = 4 * 1024;

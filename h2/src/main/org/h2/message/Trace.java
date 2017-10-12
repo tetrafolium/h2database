@@ -301,9 +301,9 @@ public class Trace {
             buff.append(' ');
         }
         buff.append("*/").
-            append(StringUtils.javaEncode(sql)).
-            append(StringUtils.javaEncode(params)).
-            append(';');
+        append(StringUtils.javaEncode(sql)).
+        append(StringUtils.javaEncode(params)).
+        append(';');
         sql = buff.toString();
         traceWriter.write(TraceSystem.INFO, module, sql, null);
     }
@@ -352,7 +352,7 @@ public class Trace {
     public void infoCode(String java) {
         if (isEnabled(TraceSystem.INFO)) {
             traceWriter.write(TraceSystem.INFO, module, lineSeparator +
-                    "/**/" + java, null);
+                              "/**/" + java, null);
         }
     }
 
@@ -364,7 +364,7 @@ public class Trace {
     void debugCode(String java) {
         if (isEnabled(TraceSystem.DEBUG)) {
             traceWriter.write(TraceSystem.DEBUG, module, lineSeparator +
-                    "/**/" + java, null);
+                              "/**/" + java, null);
         }
     }
 

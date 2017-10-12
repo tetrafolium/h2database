@@ -88,11 +88,12 @@ public class ObjectDataType implements DataType {
     static final long DOUBLE_ONE_BITS = Double.doubleToLongBits(1.0d);
 
     static final Class<?>[] COMMON_CLASSES = { boolean.class, byte.class,
-            short.class, char.class, int.class, long.class, float.class,
-            double.class, Object.class, Boolean.class, Byte.class, Short.class,
-            Character.class, Integer.class, Long.class, BigInteger.class,
-            Float.class, Double.class, BigDecimal.class, String.class,
-            UUID.class, Date.class };
+                                               short.class, char.class, int.class, long.class, float.class,
+                                               double.class, Object.class, Boolean.class, Byte.class, Short.class,
+                                               Character.class, Integer.class, Long.class, BigInteger.class,
+                                               Float.class, Double.class, BigDecimal.class, String.class,
+                                               UUID.class, Date.class
+                                             };
 
     private static final HashMap<Class<?>, Integer> COMMON_CLASSES_MAP = New
             .hashMap();
@@ -211,12 +212,12 @@ public class ObjectDataType implements DataType {
                 if (tag >= TAG_INTEGER_0_15 && tag <= TAG_INTEGER_0_15 + 15) {
                     typeId = TYPE_INT;
                 } else if (tag >= TAG_STRING_0_15
-                        && tag <= TAG_STRING_0_15 + 15) {
+                           && tag <= TAG_STRING_0_15 + 15) {
                     typeId = TYPE_STRING;
                 } else if (tag >= TAG_LONG_0_7 && tag <= TAG_LONG_0_7 + 7) {
                     typeId = TYPE_LONG;
                 } else if (tag >= TAG_BYTE_ARRAY_0_15
-                        && tag <= TAG_BYTE_ARRAY_0_15 + 15) {
+                           && tag <= TAG_BYTE_ARRAY_0_15 + 15) {
                     typeId = TYPE_ARRAY;
                 } else {
                     throw DataUtils.newIllegalStateException(
@@ -437,7 +438,7 @@ public class ObjectDataType implements DataType {
 
         @Override
         public void write(WriteBuffer buff, Object[] obj,
-                int len, boolean key) {
+                          int len, boolean key) {
             for (int i = 0; i < len; i++) {
                 write(buff, obj[i]);
             }
@@ -450,7 +451,7 @@ public class ObjectDataType implements DataType {
 
         @Override
         public void read(ByteBuffer buff, Object[] obj,
-                int len, boolean key) {
+                         int len, boolean key) {
             for (int i = 0; i < len; i++) {
                 obj[i] = read(buff);
             }
@@ -874,7 +875,7 @@ public class ObjectDataType implements DataType {
                 return buff.getFloat();
             }
             return Float.intBitsToFloat(Integer.reverse(DataUtils
-                    .readVarInt(buff)));
+                                        .readVarInt(buff)));
         }
 
     }
@@ -938,7 +939,7 @@ public class ObjectDataType implements DataType {
                 return buff.getDouble();
             }
             return Double.longBitsToDouble(Long.reverse(DataUtils
-                    .readVarLong(buff)));
+                                           .readVarLong(buff)));
         }
 
     }
@@ -986,7 +987,7 @@ public class ObjectDataType implements DataType {
                 } else {
                     byte[] bytes = x.toByteArray();
                     buff.put((byte) TYPE_BIG_INTEGER).putVarInt(bytes.length)
-                            .put(bytes);
+                    .put(bytes);
                 }
             }
         }
@@ -1053,13 +1054,13 @@ public class ObjectDataType implements DataType {
                         buff.put((byte) TAG_BIG_DECIMAL_SMALL);
                     } else {
                         buff.put((byte) TAG_BIG_DECIMAL_SMALL_SCALED)
-                                .putVarInt(scale);
+                        .putVarInt(scale);
                     }
                     buff.putVarLong(b.longValue());
                 } else {
                     byte[] bytes = b.toByteArray();
                     buff.put((byte) TYPE_BIG_DECIMAL).putVarInt(scale)
-                            .putVarInt(bytes.length).put(bytes);
+                    .putVarInt(bytes.length).put(bytes);
                 }
             }
         }
@@ -1313,23 +1314,23 @@ public class ObjectDataType implements DataType {
                     int x;
                     if (type == boolean.class) {
                         x = Integer.signum((((boolean[]) aObj)[i] ? 1 : 0)
-                                - (((boolean[]) bObj)[i] ? 1 : 0));
+                                           - (((boolean[]) bObj)[i] ? 1 : 0));
                     } else if (type == char.class) {
                         x = Integer.signum((((char[]) aObj)[i])
-                                - (((char[]) bObj)[i]));
+                                           - (((char[]) bObj)[i]));
                     } else if (type == short.class) {
                         x = Integer.signum((((short[]) aObj)[i])
-                                - (((short[]) bObj)[i]));
+                                           - (((short[]) bObj)[i]));
                     } else if (type == int.class) {
                         int a = ((int[]) aObj)[i];
                         int b = ((int[]) bObj)[i];
                         x = a == b ? 0 : a < b ? -1 : 1;
                     } else if (type == float.class) {
                         x = Float.compare(((float[]) aObj)[i],
-                                ((float[]) bObj)[i]);
+                                          ((float[]) bObj)[i]);
                     } else if (type == double.class) {
                         x = Double.compare(((double[]) aObj)[i],
-                                ((double[]) bObj)[i]);
+                                           ((double[]) bObj)[i]);
                     } else {
                         long a = ((long[]) aObj)[i];
                         long b = ((long[]) bObj)[i];
@@ -1369,15 +1370,15 @@ public class ObjectDataType implements DataType {
                             buff.put((byte) (TAG_BYTE_ARRAY_0_15 + len));
                         } else {
                             buff.put((byte) TYPE_ARRAY)
-                                    .put((byte) classId.intValue())
-                                    .putVarInt(len);
+                            .put((byte) classId.intValue())
+                            .putVarInt(len);
                         }
                         buff.put(data);
                         return;
                     }
                     int len = Array.getLength(obj);
                     buff.put((byte) TYPE_ARRAY).put((byte) classId.intValue())
-                            .putVarInt(len);
+                    .putVarInt(len);
                     for (int i = 0; i < len; i++) {
                         if (type == boolean.class) {
                             buff.put((byte) (((boolean[]) obj)[i] ? 1 : 0));
@@ -1541,7 +1542,7 @@ public class ObjectDataType implements DataType {
             // using an exponential moving average
             averageSize = (size + 15 * averageSize) / 16;
             buff.put((byte) TYPE_SERIALIZED_OBJECT).putVarInt(data.length)
-                    .put(data);
+            .put(data);
         }
 
         @Override

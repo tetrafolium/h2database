@@ -329,7 +329,7 @@ public class Shell extends Tool implements Runnable {
                 prop = new Properties();
             } else {
                 prop = SortedProperties.loadProperties(
-                        serverPropertiesDir + "/" + Constants.SERVER_PROPERTIES_NAME);
+                               serverPropertiesDir + "/" + Constants.SERVER_PROPERTIES_NAME);
             }
             String data = null;
             boolean found = false;
@@ -458,7 +458,7 @@ public class Shell extends Tool implements Runnable {
                     int rowCount = printResult(rs, listMode);
                     time = System.nanoTime() - time;
                     println("(" + rowCount + (rowCount == 1 ?
-                            " row, " : " rows, ") + TimeUnit.NANOSECONDS.toMillis(time) + " ms)");
+                                              " row, " : " rows, ") + TimeUnit.NANOSECONDS.toMillis(time) + " ms)");
                 } else {
                     int updateCount = stat.getUpdateCount();
                     time = System.nanoTime() - time;
@@ -514,7 +514,7 @@ public class Shell extends Tool implements Runnable {
     }
 
     private boolean loadRow(ResultSet rs, int len, ArrayList<String[]> rows)
-            throws SQLException {
+    throws SQLException {
         boolean truncated = false;
         String[] row = new String[len];
         for (int i = 0; i < len; i++) {

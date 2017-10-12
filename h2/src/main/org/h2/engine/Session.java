@@ -158,9 +158,9 @@ public class Session extends SessionWithState {
         this.user = user;
         this.id = id;
         Setting setting = database.findSetting(
-                SetTypes.getTypeName(SetTypes.DEFAULT_LOCK_TIMEOUT));
+                                  SetTypes.getTypeName(SetTypes.DEFAULT_LOCK_TIMEOUT));
         this.lockTimeout = setting == null ?
-                Constants.INITIAL_LOCK_TIMEOUT : setting.getIntValue();
+                           Constants.INITIAL_LOCK_TIMEOUT : setting.getIntValue();
         this.currentSchemaName = Constants.SCHEMA_MAIN;
     }
 
@@ -208,7 +208,7 @@ public class Session extends SessionWithState {
      * @param sortOrder the sort order
      */
     public void pushSubQueryInfo(int[] masks, TableFilter[] filters, int filter,
-            SortOrder sortOrder) {
+                                 SortOrder sortOrder) {
         subQueryInfo = new SubQueryInfo(subQueryInfo, masks, filters, filter, sortOrder);
     }
 
@@ -291,7 +291,7 @@ public class Session extends SessionWithState {
         } else {
             // link LOB values, to make sure we have our own object
             value = value.copy(database,
-                    LobStorageFrontend.TABLE_ID_SESSION_VARIABLE);
+                               LobStorageFrontend.TABLE_ID_SESSION_VARIABLE);
             old = variables.put(name, value);
         }
         if (old != null) {
@@ -361,7 +361,7 @@ public class Session extends SessionWithState {
         }
         if (localTempTables.get(table.getName()) != null) {
             throw DbException.get(ErrorCode.TABLE_OR_VIEW_ALREADY_EXISTS_1,
-                    table.getSQL());
+                                  table.getSQL());
         }
         modificationId++;
         localTempTables.put(table.getName(), table);
@@ -413,7 +413,7 @@ public class Session extends SessionWithState {
         }
         if (localTempTableIndexes.get(index.getName()) != null) {
             throw DbException.get(ErrorCode.INDEX_ALREADY_EXISTS_1,
-                    index.getSQL());
+                                  index.getSQL());
         }
         localTempTableIndexes.put(index.getName(), index);
     }
@@ -472,7 +472,7 @@ public class Session extends SessionWithState {
         String name = constraint.getName();
         if (localTempTableConstraints.get(name) != null) {
             throw DbException.get(ErrorCode.CONSTRAINT_ALREADY_EXISTS_1,
-                    constraint.getSQL());
+                                  constraint.getSQL());
         }
         localTempTableConstraints.put(name, constraint);
     }
@@ -556,7 +556,7 @@ public class Session extends SessionWithState {
     public Command prepareLocal(String sql) {
         if (closed) {
             throw DbException.get(ErrorCode.CONNECTION_BROKEN_1,
-                    "session closed");
+                                  "session closed");
         }
         Command command;
         if (queryCacheSize > 0) {
@@ -694,7 +694,7 @@ public class Session extends SessionWithState {
         }
         if (temporaryResultLobs != null && temporaryResultLobs.size() > 0) {
             long keepYoungerThan = System.nanoTime() -
-                    TimeUnit.MILLISECONDS.toNanos(database.getSettings().lobTimeout);
+                                   TimeUnit.MILLISECONDS.toNanos(database.getSettings().lobTimeout);
             while (temporaryResultLobs.size() > 0) {
                 TimeoutValue tv = temporaryResultLobs.getFirst();
                 if (onTimeout && tv.created >= keepYoungerThan) {
@@ -1141,9 +1141,9 @@ public class Session extends SessionWithState {
             }
         } else {
             ArrayList<InDoubtTransaction> list = database
-                    .getInDoubtTransactions();
+                                                 .getInDoubtTransactions();
             int state = commit ? InDoubtTransaction.COMMIT
-                    : InDoubtTransaction.ROLLBACK;
+                        : InDoubtTransaction.ROLLBACK;
             boolean found = false;
             if (list != null) {
                 for (InDoubtTransaction p: list) {
@@ -1156,7 +1156,7 @@ public class Session extends SessionWithState {
             }
             if (!found) {
                 throw DbException.get(ErrorCode.TRANSACTION_NOT_FOUND_1,
-                        transactionName);
+                                      transactionName);
             }
         }
     }
@@ -1608,7 +1608,7 @@ public class Session extends SessionWithState {
             return ValueNull.INSTANCE;
         }
         return ValueString.get(firstUncommittedLog + "-" + firstUncommittedPos +
-                "-" + id);
+                               "-" + id);
     }
 
     /**

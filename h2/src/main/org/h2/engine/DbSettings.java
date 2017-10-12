@@ -115,7 +115,7 @@ public class DbSettings extends SettingsBase {
      * FTL_SEARCH). This value is used by the optimizer.
      */
     public final int estimatedFunctionTableRows = get(
-            "ESTIMATED_FUNCTION_TABLE_ROWS", 1000);
+                    "ESTIMATED_FUNCTION_TABLE_ROWS", 1000);
 
     /**
      * Database setting <code>FUNCTIONS_IN_SCHEMA</code>
@@ -148,7 +148,7 @@ public class DbSettings extends SettingsBase {
      * The maximum number of pages to move when closing a database.
      */
     public final int maxCompactCount = get("MAX_COMPACT_COUNT",
-            Integer.MAX_VALUE);
+                                           Integer.MAX_VALUE);
 
     /**
      * Database setting <code>MAX_COMPACT_TIME</code> (default: 200).<br />
@@ -190,7 +190,7 @@ public class DbSettings extends SettingsBase {
      * Optimize subqueries that are not dependent on the outer query.
      */
     public final boolean optimizeEvaluatableSubqueries = get(
-            "OPTIMIZE_EVALUATABLE_SUBQUERIES", true);
+                    "OPTIMIZE_EVALUATABLE_SUBQUERIES", true);
 
     /**
      * Database setting <code>OPTIMIZE_INSERT_FROM_SELECT</code>
@@ -199,7 +199,7 @@ public class DbSettings extends SettingsBase {
      * This also applies to create table as select.
      */
     public final boolean optimizeInsertFromSelect = get(
-            "OPTIMIZE_INSERT_FROM_SELECT", true);
+                    "OPTIMIZE_INSERT_FROM_SELECT", true);
 
     /**
      * Database setting <code>OPTIMIZE_IN_LIST</code> (default: true).<br />
@@ -247,7 +247,7 @@ public class DbSettings extends SettingsBase {
      * The maximum number of pages the file grows at any time.
      */
     public final int pageStoreMaxGrowth = get("PAGE_STORE_MAX_GROWTH",
-            128 * 1024);
+                                          128 * 1024);
 
     /**
      * Database setting <code>PAGE_STORE_INTERNAL_COUNT</code>
@@ -255,7 +255,7 @@ public class DbSettings extends SettingsBase {
      * Update the row counts on a node level.
      */
     public final boolean pageStoreInternalCount = get(
-            "PAGE_STORE_INTERNAL_COUNT", false);
+                    "PAGE_STORE_INTERNAL_COUNT", false);
 
     /**
      * Database setting <code>PAGE_STORE_TRIM</code> (default: true).<br />
@@ -321,7 +321,7 @@ public class DbSettings extends SettingsBase {
      * database.
      */
     public final boolean shareLinkedConnections = get(
-            "SHARE_LINKED_CONNECTIONS", true);
+                    "SHARE_LINKED_CONNECTIONS", true);
 
     /**
      * Database setting <code>DEFAULT_TABLE_ENGINE</code>

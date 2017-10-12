@@ -56,14 +56,14 @@ public class DbInspector {
      * @return a list of complete model classes as strings, each element a class
      */
     public List<String> generateModel(String schema, String table,
-            String packageName, boolean annotateSchema, boolean trimStrings) {
+                                      String packageName, boolean annotateSchema, boolean trimStrings) {
         try {
             List<String> models = New.arrayList();
             List<TableInspector> tables = getTables(schema, table);
             for (TableInspector t : tables) {
                 t.read(metaData);
                 String model = t.generateModel(packageName, annotateSchema,
-                        trimStrings);
+                                               trimStrings);
                 models.add(model);
             }
             return models;
@@ -114,9 +114,9 @@ public class DbInspector {
         TableDefinition<T> def = db.define(clazz);
         boolean forceUpperCase = getMetaData().storesUpperCaseIdentifiers();
         String schema = (forceUpperCase && def.schemaName != null) ? def.schemaName
-                .toUpperCase() : def.schemaName;
+                        .toUpperCase() : def.schemaName;
         String table = forceUpperCase ? def.tableName.toUpperCase()
-                : def.tableName;
+                       : def.tableName;
         List<TableInspector> tables = getTables(schema, table);
         return tables.get(0);
     }
@@ -130,7 +130,7 @@ public class DbInspector {
      * @return a list of table inspectors (always contains at least one element)
      */
     private List<TableInspector> getTables(String schema, String table)
-            throws SQLException {
+    throws SQLException {
         ResultSet rs = null;
         try {
             rs = getMetaData().getSchemas();
@@ -141,7 +141,7 @@ public class DbInspector {
             JdbcUtils.closeSilently(rs);
 
             String jaquTables = DbVersion.class.getAnnotation(JQTable.class)
-                    .name();
+                                .name();
 
             List<TableInspector> tables = New.arrayList();
             if (schemaList.size() == 0) {
@@ -149,12 +149,12 @@ public class DbInspector {
             }
             for (String s : schemaList) {
                 rs = getMetaData().getTables(null, s, null,
-                        new String[] { "TABLE" });
+                                             new String[] { "TABLE" });
                 while (rs.next()) {
                     String t = rs.getString("TABLE_NAME");
                     if (!t.equalsIgnoreCase(jaquTables)) {
                         tables.add(new TableInspector(s, t, getMetaData()
-                                .storesUpperCaseIdentifiers(), dateTimeClass));
+                                                      .storesUpperCaseIdentifiers(), dateTimeClass));
                     }
                 }
             }
@@ -173,9 +173,9 @@ public class DbInspector {
             }
             if (matches.size() == 0) {
                 throw new RuntimeException(MessageFormat.format(
-                        "Failed to find schema={0} table={1}",
-                        schema == null ? "" : schema, table == null ? ""
-                                : table));
+                                                   "Failed to find schema={0} table={1}",
+                                                   schema == null ? "" : schema, table == null ? ""
+                                                   : table));
             }
             return matches;
         } finally {

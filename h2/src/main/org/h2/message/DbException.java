@@ -39,19 +39,19 @@ public class DbException extends RuntimeException {
     static {
         try {
             byte[] messages = Utils.getResource(
-                    "/org/h2/res/_messages_en.prop");
+                                      "/org/h2/res/_messages_en.prop");
             if (messages != null) {
                 MESSAGES.load(new ByteArrayInputStream(messages));
             }
             String language = Locale.getDefault().getLanguage();
             if (!"en".equals(language)) {
                 byte[] translations = Utils.getResource(
-                        "/org/h2/res/_messages_" + language + ".prop");
+                                              "/org/h2/res/_messages_" + language + ".prop");
                 // message: translated message + english
                 // (otherwise certain applications don't work)
                 if (translations != null) {
                     Properties p = SortedProperties.fromLines(
-                            new String(translations, Constants.UTF8));
+                                           new String(translations, Constants.UTF8));
                     for (Entry<Object, Object> e : p.entrySet()) {
                         String key = (String) e.getKey();
                         String translation = (String) e.getValue();
@@ -130,7 +130,7 @@ public class DbException extends RuntimeException {
             return this;
         }
         e = new JdbcSQLException(e.getMessage(), sql, e.getSQLState(),
-                e.getErrorCode(), e, null);
+                                 e.getErrorCode(), e, null);
         return new DbException(e);
     }
 
@@ -164,7 +164,7 @@ public class DbException extends RuntimeException {
      * @return the exception
      */
     public static DbException get(int errorCode, Throwable cause,
-            String... params) {
+                                  String... params) {
         return new DbException(getJdbcSQLException(errorCode, cause, params));
     }
 
@@ -203,7 +203,7 @@ public class DbException extends RuntimeException {
             String message) {
         sql = StringUtils.addAsterisk(sql, index);
         return new DbException(getJdbcSQLException(ErrorCode.SYNTAX_ERROR_2,
-                null, sql, message));
+                               null, sql, message));
     }
 
     /**
@@ -226,7 +226,7 @@ public class DbException extends RuntimeException {
     public static DbException getInvalidValueException(String param,
             Object value) {
         return get(ErrorCode.INVALID_VALUE_2,
-                value == null ? "null" : value.toString(), param);
+                   value == null ? "null" : value.toString(), param);
     }
 
     /**

@@ -38,7 +38,7 @@ public class Doclet {
     private static final boolean INTERFACES_ONLY = Boolean
             .getBoolean("h2.interfacesOnly");
     private String destDir = System.getProperty("h2.javadocDestDir",
-            "docs/javadoc");
+                             "docs/javadoc");
     private int errorCount;
     private final HashSet<String> errors = new HashSet<>();
 
@@ -87,25 +87,25 @@ public class Doclet {
         FileWriter out = new FileWriter(fileName);
         PrintWriter writer = new PrintWriter(new BufferedWriter(out));
         writer.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD " +
-                "XHTML 1.0 Strict//EN\" " +
-                "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">");
+                       "XHTML 1.0 Strict//EN\" " +
+                       "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">");
         String language = "en";
         writer.println("<html xmlns=\"http://www.w3.org/1999/xhtml\" " +
-                "lang=\"" + language + "\" xml:lang=\"" + language + "\">");
+                       "lang=\"" + language + "\" xml:lang=\"" + language + "\">");
         writer.println("<head>" +
-                "<meta http-equiv=\"Content-Type\" " +
-                "content=\"text/html;charset=utf-8\" /><title>");
+                       "<meta http-equiv=\"Content-Type\" " +
+                       "content=\"text/html;charset=utf-8\" /><title>");
         writer.println(className);
         writer.println("</title>" +
-                "<link rel=\"stylesheet\" type=\"text/css\" " +
-                "href=\"../../../stylesheet.css\" />");
+                       "<link rel=\"stylesheet\" type=\"text/css\" " +
+                       "href=\"../../../stylesheet.css\" />");
         writer.println("<script type=\"text/javascript\" " +
-                "src=\"../../../animate.js\"></script>");
+                       "src=\"../../../animate.js\"></script>");
         writer.println("</head><body onload=\"openLink();\">");
         writer.println("<table class=\"content\">" +
-                "<tr class=\"content\">" +
-                "<td class=\"content\">" +
-                "<div class=\"contentDiv\">");
+                       "<tr class=\"content\">" +
+                       "<td class=\"content\">" +
+                       "<div class=\"contentDiv\">");
         writer.println("<h1>" + className + "</h1>");
         writer.println(formatText(clazz.commentText()) + "<br /><br />");
 
@@ -114,11 +114,11 @@ public class Doclet {
         MethodDoc[] methods = clazz.methods();
         ExecutableMemberDoc[] constructorsMethods =
                 new ExecutableMemberDoc[constructors.length
-                + methods.length];
+                                        + methods.length];
         System.arraycopy(constructors, 0, constructorsMethods, 0,
-                constructors.length);
+                         constructors.length);
         System.arraycopy(methods, 0, constructorsMethods, constructors.length,
-                methods.length);
+                         methods.length);
         Arrays.sort(constructorsMethods, new Comparator<ExecutableMemberDoc>() {
             @Override
             public int compare(ExecutableMemberDoc a, ExecutableMemberDoc b) {
@@ -151,16 +151,16 @@ public class Doclet {
             }
             if (!hasMethods) {
                 writer.println("<table class=\"block\">" +
-                        "<tr onclick=\"return allDetails()\">" +
-                        "<th colspan=\"2\">Methods</th></tr>");
+                               "<tr onclick=\"return allDetails()\">" +
+                               "<th colspan=\"2\">Methods</th></tr>");
                 hasMethods = true;
             }
             String type = getTypeName(method.isStatic(), false,
-                    getReturnType(method));
+                                      getReturnType(method));
             writer.println("<tr id=\"__" + id + "\" onclick=\"return on(" +
-                    id + ")\">");
+                           id + ")\">");
             writer.println("<td class=\"return\">" + type +
-                    "</td><td class=\"method\">");
+                           "</td><td class=\"method\">");
             Parameter[] params = method.parameters();
             StringBuilder buff = new StringBuilder();
             StringBuilder buffSignature = new StringBuilder(name);
@@ -188,18 +188,18 @@ public class Doclet {
             }
             signatures.add(i, signature);
             writer.println("<a id=\"" + signature +
-                    "\" href=\"#" + signature + "\">" +
-                    name + "</a>" + buff.toString());
+                           "\" href=\"#" + signature + "\">" +
+                           name + "</a>" + buff.toString());
             String firstSentence = getFirstSentence(method.firstSentenceTags());
             if (firstSentence != null) {
                 writer.println("<div class=\"methodText\">" +
-                        formatText(firstSentence) + "</div>");
+                               formatText(firstSentence) + "</div>");
             }
             writer.println("</td></tr>");
             writer.println("<tr onclick=\"return off("+
-                    id +")\" class=\"detail\" id=\"_"+id+"\">");
+                           id +")\" class=\"detail\" id=\"_"+id+"\">");
             writer.println("<td class=\"return\">" +
-                    type + "</td><td>");
+                           type + "</td><td>");
             writeMethodDetails(writer, clazz, method, signature);
             writer.println("</td></tr>");
             id++;
@@ -228,7 +228,7 @@ public class Doclet {
             String text = field.commentText();
             if (text == null || text.trim().length() == 0) {
                 addError("Undocumented field (" +
-                        getLink(clazz, field.position().line()) + ") " + name);
+                         getLink(clazz, field.position().line()) + ") " + name);
             }
             if (text != null && text.startsWith("INTERNAL")) {
                 continue;
@@ -238,7 +238,7 @@ public class Doclet {
             }
             String type = getTypeName(true, false, field.type());
             writer.println("<tr><td class=\"return\">" + type +
-                    "</td><td class=\"method\">");
+                           "</td><td class=\"method\">");
             String constant = field.constantValueExpression();
 
             // add a link (a name) if there is a <code> tag
@@ -281,7 +281,7 @@ public class Doclet {
     }
 
     private void writeFieldDetails(PrintWriter writer, ClassDoc clazz,
-            FieldDoc field) {
+                                   FieldDoc field) {
         if (skipField(clazz, field)) {
             return;
         }
@@ -293,7 +293,7 @@ public class Doclet {
         String constant = field.constantValueExpression();
         String link = getFieldLink(text, constant, clazz, name);
         writer.println("<h4 id=\"" + link + "\"><span class=\"methodName\">" +
-                name);
+                       name);
         if (constant == null) {
             writer.println();
         } else {
@@ -305,7 +305,7 @@ public class Doclet {
     }
 
     private void writeMethodDetails(PrintWriter writer, ClassDoc clazz,
-            ExecutableMemberDoc method, String signature) {
+                                    ExecutableMemberDoc method, String signature) {
         String name = method.name();
         if (skipMethod(method)) {
             return;
@@ -335,11 +335,11 @@ public class Doclet {
             name = "<span class=\"deprecated\">" + name + "</span>";
         }
         writer.println("<a id=\"" + signature + "\" href=\"#" + signature + "\">" +
-                name + "</a>" + buff.toString());
+                       name + "</a>" + buff.toString());
         boolean hasComment = method.commentText() != null &&
-                method.commentText().trim().length() != 0;
+                             method.commentText().trim().length() != 0;
         writer.println("<div class=\"methodText\">" +
-                formatText(method.commentText()) + "</div>");
+                       formatText(method.commentText()) + "</div>");
         ParamTag[] paramTags = method.paramTags();
         ThrowsTag[] throwsTags = method.throwsTags();
         boolean hasThrowsTag = throwsTags != null && throwsTags.length > 0;
@@ -347,9 +347,9 @@ public class Doclet {
             if (hasComment && !method.commentText().startsWith("[")) {
                 // [Not supported] and such are not problematic
                 addError("Undocumented parameter(s) (" +
-                        getLink(clazz, method.position().line()) + ") " +
-                        name + " documented: " + paramTags.length +
-                        " params: "+ params.length);
+                         getLink(clazz, method.position().line()) + ") " +
+                         name + " documented: " + paramTags.length +
+                         " params: "+ params.length);
             }
         }
         for (int j = 0; j < paramTags.length; j++) {
@@ -357,8 +357,8 @@ public class Doclet {
             String comment = paramTags[j].parameterComment();
             if (comment.trim().length() == 0) {
                 addError("Undocumented parameter (" +
-                        getLink(clazz, method.position().line()) + ") " +
-                        name + " " + paramName);
+                         getLink(clazz, method.position().line()) + ") " +
+                         name + " " + paramName);
             }
             String p = paramName + " - " + comment;
             if (j == 0) {
@@ -373,7 +373,7 @@ public class Doclet {
             String returnComment = returnTags[0].text();
             if (returnComment.trim().length() == 0) {
                 addError("Undocumented return value (" +
-                        getLink(clazz, method.position().line()) + ") " + name);
+                         getLink(clazz, method.position().line()) + ") " + name);
             }
             writer.println("<div class=\"item\">" + returnComment + "</div>");
         } else if (returnType != null && !returnType.toString().equals("void")) {
@@ -383,8 +383,8 @@ public class Doclet {
                 // also not problematic are methods that always throw an
                 // exception
                 addError("Undocumented return value ("
-                        + getLink(clazz, method.position().line()) + ") "
-                        + name + " " + getReturnType(method));
+                         + getLink(clazz, method.position().line()) + ") "
+                         + name + " " + getReturnType(method));
             }
         }
         if (hasThrowsTag) {
@@ -410,7 +410,7 @@ public class Doclet {
     }
 
     private String getFieldLink(String text, String constant, ClassDoc clazz,
-            String name) {
+                                String name) {
         String link = constant != null ? constant : name.toLowerCase();
         int linkStart = text.indexOf("<code>");
         if (linkStart >= 0) {
@@ -418,8 +418,8 @@ public class Doclet {
             link = text.substring(linkStart + "<code>".length(), linkEnd);
             if (constant != null && !constant.equals(link)) {
                 System.out.println("Wrong code tag? " + clazz.name() + "." +
-                        name +
-                        " code: " + link + " constant: " + constant);
+                                   name +
+                                   " code: " + link + " constant: " + constant);
                 errorCount++;
             }
         }
@@ -449,9 +449,9 @@ public class Doclet {
     private boolean skipMethod(ExecutableMemberDoc method) {
         ClassDoc clazz = method.containingClass();
         boolean isAbstract = method instanceof MethodDoc
-                && ((MethodDoc) method).isAbstract();
+                             && ((MethodDoc) method).isAbstract();
         boolean isInterface = clazz.isInterface()
-                || (clazz.isAbstract() && isAbstract);
+                              || (clazz.isAbstract() && isAbstract);
         if (INTERFACES_ONLY && !isInterface) {
             return true;
         }
@@ -476,19 +476,19 @@ public class Doclet {
                 && raw.indexOf("{@inheritDoc}") < 0) {
             if (!doesOverride(method)) {
                 boolean setterOrGetter = name.startsWith("set")
-                        && method.parameters().length == 1;
+                                         && method.parameters().length == 1;
                 setterOrGetter |= name.startsWith("get")
-                        && method.parameters().length == 0;
+                                  && method.parameters().length == 0;
                 Type returnType = getReturnType(method);
                 setterOrGetter |= name.startsWith("is")
-                        && method.parameters().length == 0
-                        && returnType != null
-                        && returnType.toString().equals("boolean");
+                                  && method.parameters().length == 0
+                                  && returnType != null
+                                  && returnType.toString().equals("boolean");
                 boolean enumValueMethod = name.equals("values") || name.equals("valueOf");
                 if (!setterOrGetter && !enumValueMethod) {
                     addError("Undocumented method " + " ("
-                            + getLink(clazz, method.position().line()) + ") "
-                            + clazz + "." + name + " " + raw);
+                             + getLink(clazz, method.position().line()) + ") "
+                             + clazz + "." + name + " " + raw);
                     return true;
                 }
             }
@@ -521,7 +521,7 @@ public class Doclet {
     }
 
     private boolean foundMethod(ClassDoc clazz, boolean include,
-            String methodName, int parameterCount) {
+                                String methodName, int parameterCount) {
         if (include) {
             for (MethodDoc m : clazz.methods()) {
                 if (m.name().equals(methodName)
@@ -537,7 +537,7 @@ public class Doclet {
         }
         clazz = clazz.superclass();
         return clazz != null
-                && foundMethod(clazz, true, methodName, parameterCount);
+               && foundMethod(clazz, true, methodName, parameterCount);
     }
 
     private static String getFirstSentence(Tag[] tags) {
@@ -550,7 +550,7 @@ public class Doclet {
     }
 
     private static String getTypeName(boolean isStatic, boolean isVarArgs,
-            Type type) {
+                                      Type type) {
         if (type == null) {
             return "";
         }

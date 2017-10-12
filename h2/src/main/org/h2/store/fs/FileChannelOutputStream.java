@@ -25,7 +25,7 @@ public class FileChannelOutputStream extends OutputStream {
      * @param append true for append mode, false for truncate and overwrite
      */
     public FileChannelOutputStream(FileChannel channel, boolean append)
-            throws IOException {
+    throws IOException {
         this.channel = channel;
         if (append) {
             channel.position(channel.size());

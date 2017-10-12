@@ -65,7 +65,7 @@ public class ThreadDeadlockDetector {
             return;
         }
         dumpThreadsAndLocks("ThreadDeadlockDetector - deadlock found :",
-                threadBean, deadlockedThreadIds);
+                            threadBean, deadlockedThreadIds);
     }
 
     /**
@@ -80,7 +80,7 @@ public class ThreadDeadlockDetector {
     }
 
     private static void dumpThreadsAndLocks(String msg, ThreadMXBean threadBean,
-            long[] threadIds) {
+                                            long[] threadIds) {
         final StringWriter stringWriter = new StringWriter();
         final PrintWriter print = new PrintWriter(stringWriter);
 
@@ -91,11 +91,11 @@ public class ThreadDeadlockDetector {
         final HashMap<Long, ArrayList<String>> tableSharedLocksMap;
         if (SysProperties.THREAD_DEADLOCK_DETECTOR) {
             tableWaitingForLockMap = MVTable.WAITING_FOR_LOCK
-                    .getSnapshotOfAllThreads();
+                                     .getSnapshotOfAllThreads();
             tableExclusiveLocksMap = MVTable.EXCLUSIVE_LOCKS
-                    .getSnapshotOfAllThreads();
+                                     .getSnapshotOfAllThreads();
             tableSharedLocksMap = MVTable.SHARED_LOCKS
-                    .getSnapshotOfAllThreads();
+                                  .getSnapshotOfAllThreads();
         } else {
             tableWaitingForLockMap = New.hashMap();
             tableExclusiveLocksMap = New.hashMap();
@@ -103,13 +103,13 @@ public class ThreadDeadlockDetector {
         }
 
         final ThreadInfo[] infos = threadBean.getThreadInfo(threadIds, true,
-                true);
+                                   true);
         for (ThreadInfo ti : infos) {
             printThreadInfo(print, ti);
             printLockInfo(print, ti.getLockedSynchronizers(),
-                    tableWaitingForLockMap.get(ti.getThreadId()),
-                    tableExclusiveLocksMap.get(ti.getThreadId()),
-                    tableSharedLocksMap.get(ti.getThreadId()));
+                          tableWaitingForLockMap.get(ti.getThreadId()),
+                          tableExclusiveLocksMap.get(ti.getThreadId()),
+                          tableSharedLocksMap.get(ti.getThreadId()));
         }
 
         print.flush();
@@ -139,7 +139,7 @@ public class ThreadDeadlockDetector {
 
     private static void printThread(PrintWriter print, ThreadInfo ti) {
         print.print("\"" + ti.getThreadName() + "\"" + " Id="
-                + ti.getThreadId() + " in " + ti.getThreadState());
+                    + ti.getThreadId() + " in " + ti.getThreadState());
         if (ti.getLockName() != null) {
             print.append(" on lock=" + ti.getLockName());
         }
@@ -152,14 +152,14 @@ public class ThreadDeadlockDetector {
         print.println();
         if (ti.getLockOwnerName() != null) {
             print.println(INDENT + " owned by " + ti.getLockOwnerName() + " Id="
-                    + ti.getLockOwnerId());
+                          + ti.getLockOwnerId());
         }
     }
 
     private static void printLockInfo(PrintWriter print, LockInfo[] locks,
-            String tableWaitingForLock,
-            ArrayList<String> tableExclusiveLocks,
-            ArrayList<String> tableSharedLocksMap) {
+                                      String tableWaitingForLock,
+                                      ArrayList<String> tableExclusiveLocks,
+                                      ArrayList<String> tableSharedLocksMap) {
         print.println(INDENT + "Locked synchronizers: count = " + locks.length);
         for (LockInfo li : locks) {
             print.println(INDENT + "  - " + li);

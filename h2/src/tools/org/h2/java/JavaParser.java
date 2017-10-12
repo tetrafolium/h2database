@@ -73,14 +73,15 @@ public class JavaParser {
 
     private void addBuiltInTypes() {
         String[] list = { "abstract", "continue", "for", "new", "switch",
-                "assert", "default", "if", "package", "synchronized",
-                "boolean", "do", "goto", "private", "this", "break", "double",
-                "implements", "protected", "throw", "byte", "else", "import",
-                "public", "throws", "case", "enum", "instanceof", "return",
-                "transient", "catch", "extends", "int", "short", "try", "char",
-                "final", "interface", "static", "void", "class", "finally",
-                "long", "strictfp", "volatile", "const", "float", "native",
-                "super", "while", "true", "false", "null" };
+                          "assert", "default", "if", "package", "synchronized",
+                          "boolean", "do", "goto", "private", "this", "break", "double",
+                          "implements", "protected", "throw", "byte", "else", "import",
+                          "public", "throws", "case", "enum", "instanceof", "return",
+                          "transient", "catch", "extends", "int", "short", "try", "char",
+                          "final", "interface", "static", "void", "class", "finally",
+                          "long", "strictfp", "volatile", "const", "float", "native",
+                          "super", "while", "true", "false", "null"
+                        };
         for (String s : list) {
             RESERVED.add(s);
         }
@@ -95,10 +96,11 @@ public class JavaParser {
         addBuiltInType(id++, true, 7, "float");
         addBuiltInType(id++, true, 8, "double");
         String[] java = { "Boolean", "Byte", "Character", "Class",
-                "ClassLoader", "Double", "Float", "Integer", "Long", "Math",
-                "Number", "Object", "Runtime", "Short", "String",
-                "StringBuffer", "StringBuilder", "System", "Thread",
-                "ThreadGroup", "ThreadLocal", "Throwable", "Void" };
+                          "ClassLoader", "Double", "Float", "Integer", "Long", "Math",
+                          "Number", "Object", "Runtime", "Short", "String",
+                          "StringBuffer", "StringBuilder", "System", "Thread",
+                          "ThreadGroup", "ThreadLocal", "Throwable", "Void"
+                        };
         for (String s : java) {
             JAVA_IMPORT_MAP.put(s, "java.lang." + s);
             addBuiltInType(id++, false, 0, "java.lang." + s);
@@ -135,7 +137,7 @@ public class JavaParser {
     }
 
     private void addBuiltInType(int id, boolean primitive, int primitiveType,
-            String type) {
+                                String type) {
         ClassObj c = new ClassObj();
         c.id = id;
         c.className = type;
@@ -178,7 +180,7 @@ public class JavaParser {
             parseCompilationUnit();
         } catch (Exception e) {
             throw new RuntimeException(source.substring(0, current.index)
-                    + "[*]" + source.substring(current.index), e);
+                                       + "[*]" + source.substring(current.index), e);
         }
     }
 
@@ -198,7 +200,7 @@ public class JavaParser {
         while (readIf("import")) {
             String importPackageName = cleanPackageName(readQualifiedIdentifier());
             String importClass = importPackageName.substring(importPackageName
-                    .lastIndexOf('.') + 1);
+                                 .lastIndexOf('.') + 1);
             importMap.put(importClass, importPackageName);
             read(";");
         }
@@ -227,7 +229,7 @@ public class JavaParser {
             classObj.isPublic = isPublic;
             classObj.isInterface = isInterface;
             classObj.className = packageName == null ? "" : (packageName + ".")
-                    + name;
+                                 + name;
             // import this class
             importMap.put(name, classObj.className);
             addClass(classObj);
@@ -373,7 +375,7 @@ public class JavaParser {
                 if (readIf("(")) {
                     if (type.classObj != classObj) {
                         throw getSyntaxException("Constructor of wrong type: "
-                                + type);
+                                                 + type);
                     }
                     method.name = "";
                     method.isConstructor = true;
@@ -387,7 +389,7 @@ public class JavaParser {
                     String name = readIdentifier();
                     if (name.endsWith("Method")) {
                         name = name.substring(0,
-                                name.length() - "Method".length());
+                                              name.length() - "Method".length());
                     }
                     method.name = name;
                     if (readIf("(")) {
@@ -1203,7 +1205,7 @@ public class JavaParser {
     private String readIdentifier() {
         if (current.type != TOKEN_IDENTIFIER) {
             throw getSyntaxException("identifier expected, got "
-                    + current.token);
+                                     + current.token);
         }
         String result = current.token;
         readToken();
@@ -1234,7 +1236,7 @@ public class JavaParser {
 
     private RuntimeException getSyntaxException(String message) {
         return new RuntimeException(message, new ParseException(source,
-                current.index));
+                                    current.index));
     }
 
     /**
@@ -1347,8 +1349,8 @@ public class JavaParser {
             }
             return;
         } else if (Character.isDigit(ch)
-                || (ch == '.' && Character.isDigit(source
-                        .charAt(current.index + 1)))) {
+                   || (ch == '.' && Character.isDigit(source
+                           .charAt(current.index + 1)))) {
             String s = source.substring(current.index);
             current.token = "0" + readNumber(s);
             current.index += current.token.length() - 1;
@@ -1562,7 +1564,7 @@ public class JavaParser {
                 case 'u': {
                     try {
                         c = (char) (Integer.parseInt(s.substring(i + 1, i + 5),
-                                16));
+                                                     16));
                     } catch (NumberFormatException e) {
                         throw getFormatException(s, i);
                     }
@@ -1574,7 +1576,7 @@ public class JavaParser {
                     if (c >= '0' && c <= '9') {
                         try {
                             c = (char) (Integer.parseInt(s.substring(i, i + 3),
-                                    8));
+                                                         8));
                         } catch (NumberFormatException e) {
                             throw getFormatException(s, i);
                         }
@@ -1671,7 +1673,7 @@ public class JavaParser {
                         out.print("    " + toC(c.className) + "(");
                     } else {
                         out.print("    " + m.returnType.asString() + " "
-                                + m.name + "(");
+                                  + m.name + "(");
                     }
                     int i = 0;
                     for (FieldObj p : m.parameters.values()) {
@@ -1688,16 +1690,16 @@ public class JavaParser {
             out.println("};");
         }
         ArrayList<String> constantNames = New
-                .arrayList(stringConstantToStringMap.keySet());
+                                          .arrayList(stringConstantToStringMap.keySet());
         Collections.sort(constantNames);
         for (String c : constantNames) {
             String s = stringConstantToStringMap.get(c);
             if (JavaParser.REF_COUNT_STATIC) {
                 out.println("ptr<java_lang_String> " + c + " = STRING(L\"" + s
-                        + "\");");
+                            + "\");");
             } else {
                 out.println("java_lang_String* " + c + " = STRING(L\"" + s
-                        + "\");");
+                            + "\");");
             }
         }
     }
@@ -1733,13 +1735,13 @@ public class JavaParser {
                     }
                     if (m.isStatic) {
                         out.print(m.returnType.asString() + " "
-                                + toC(c.className + "_" + m.name) + "(");
+                                  + toC(c.className + "_" + m.name) + "(");
                     } else if (m.isConstructor) {
                         out.print(toC(c.className) + "::" + toC(c.className)
-                                + "(");
+                                  + "(");
                     } else {
                         out.print(m.returnType.asString() + " "
-                                + toC(c.className) + "::" + m.name + "(");
+                                  + toC(c.className) + "::" + m.name + "(");
                     }
                     int i = 0;
                     for (FieldObj p : m.parameters.values()) {

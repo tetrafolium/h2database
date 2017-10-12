@@ -134,7 +134,7 @@ public class ValueTimestamp extends Value {
             return parseTry(s, mode);
         } catch (Exception e) {
             throw DbException.get(ErrorCode.INVALID_DATETIME_CONSTANT_2,
-                    e, "TIMESTAMP", s);
+                                  e, "TIMESTAMP", s);
         }
     }
 
@@ -215,10 +215,10 @@ public class ValueTimestamp extends Value {
                 int hour = minute / 60;
                 minute -= hour * 60;
                 long millis = DateTimeUtils.getMillis(
-                        tz, year, month, day, hour, minute, (int) second, (int) ms);
+                                      tz, year, month, day, hour, minute, (int) second, (int) ms);
                 ms = DateTimeUtils.convertToLocal(
-                        new Date(millis),
-                        Calendar.getInstance(TimeZone.getTimeZone("UTC")));
+                             new Date(millis),
+                             Calendar.getInstance(TimeZone.getTimeZone("UTC")));
                 long md = DateTimeUtils.MILLIS_PER_DAY;
                 long absoluteDay = (ms >= 0 ? ms : ms - md + 1) / md;
                 dateValue = DateTimeUtils.dateValueFromAbsoluteDay(absoluteDay);
@@ -340,7 +340,7 @@ public class ValueTimestamp extends Value {
 
     @Override
     public void set(PreparedStatement prep, int parameterIndex)
-            throws SQLException {
+    throws SQLException {
         prep.setTimestamp(parameterIndex, getTimestamp());
     }
 

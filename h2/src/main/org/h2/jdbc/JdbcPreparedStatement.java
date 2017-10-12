@@ -56,7 +56,7 @@ import org.h2.value.ValueTimestamp;
  * Represents a prepared statement.
  */
 public class JdbcPreparedStatement extends JdbcStatement implements
-        PreparedStatement {
+    PreparedStatement {
 
     protected CommandInterface command;
     private final String sqlStatement;
@@ -65,8 +65,8 @@ public class JdbcPreparedStatement extends JdbcStatement implements
     private HashMap<String, Integer> cachedColumnLabelMap;
 
     JdbcPreparedStatement(JdbcConnection conn, String sql, int id,
-            int resultSetType, int resultSetConcurrency,
-            boolean closeWithResultSet) {
+                          int resultSetType, int resultSetConcurrency,
+                          boolean closeWithResultSet) {
         super(conn, id, resultSetType, resultSetConcurrency, closeWithResultSet);
         setTrace(session.getTrace(), TraceObject.PREPARED_STATEMENT, id);
         this.sqlStatement = sql;
@@ -116,7 +116,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
                     }
                 }
                 resultSet = new JdbcResultSet(conn, this, command, result, id,
-                        closedByResultSet, scrollable, updatable, cachedColumnLabelMap);
+                                              closedByResultSet, scrollable, updatable, cachedColumnLabelMap);
             }
             return resultSet;
         } catch (Exception e) {
@@ -200,8 +200,8 @@ public class JdbcPreparedStatement extends JdbcStatement implements
                             ResultInterface result = command.executeQuery(maxRows, scrollable);
                             lazy = result.isLazy();
                             resultSet = new JdbcResultSet(conn, this, command, result,
-                                    id, closedByResultSet, scrollable,
-                                    updatable, cachedColumnLabelMap);
+                                                          id, closedByResultSet, scrollable,
+                                                          updatable, cachedColumnLabelMap);
                         } else {
                             returnsResultSet = false;
                             updateCount = command.executeUpdate();
@@ -375,7 +375,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public void setBigDecimal(int parameterIndex, BigDecimal x)
-            throws SQLException {
+    throws SQLException {
         try {
             if (isDebugEnabled()) {
                 debugCode("setBigDecimal("+parameterIndex+", " + quoteBigDecimal(x) + ");");
@@ -396,7 +396,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public void setDate(int parameterIndex, java.sql.Date x)
-            throws SQLException {
+    throws SQLException {
         try {
             if (isDebugEnabled()) {
                 debugCode("setDate("+parameterIndex+", " + quoteDate(x) + ");");
@@ -417,7 +417,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public void setTime(int parameterIndex, java.sql.Time x)
-            throws SQLException {
+    throws SQLException {
         try {
             if (isDebugEnabled()) {
                 debugCode("setTime("+parameterIndex+", " + quoteTime(x) + ");");
@@ -438,7 +438,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public void setTimestamp(int parameterIndex, java.sql.Timestamp x)
-            throws SQLException {
+    throws SQLException {
         try {
             if (isDebugEnabled()) {
                 debugCode("setTimestamp("+parameterIndex+", " + quoteTimestamp(x) + ");");
@@ -469,7 +469,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
                 setParameter(parameterIndex, ValueNull.INSTANCE);
             } else {
                 setParameter(parameterIndex,
-                        DataType.convertToValue(session, x, Value.UNKNOWN));
+                             DataType.convertToValue(session, x, Value.UNKNOWN));
             }
         } catch (Exception e) {
             throw logAndConvert(e);
@@ -488,7 +488,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public void setObject(int parameterIndex, Object x, int targetSqlType)
-            throws SQLException {
+    throws SQLException {
         try {
             if (isDebugEnabled()) {
                 debugCode("setObject("+parameterIndex+", x, "+targetSqlType+");");
@@ -518,7 +518,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public void setObject(int parameterIndex, Object x, int targetSqlType,
-            int scale) throws SQLException {
+                          int scale) throws SQLException {
         try {
             if (isDebugEnabled()) {
                 debugCode("setObject("+parameterIndex+", x, "+targetSqlType+", "+scale+");");
@@ -662,7 +662,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public void setDate(int parameterIndex, java.sql.Date x, Calendar calendar)
-            throws SQLException {
+    throws SQLException {
         try {
             if (isDebugEnabled()) {
                 debugCode("setDate("+parameterIndex+", " + quoteDate(x) + ", calendar);");
@@ -688,7 +688,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public void setTime(int parameterIndex, java.sql.Time x, Calendar calendar)
-            throws SQLException {
+    throws SQLException {
         try {
             if (isDebugEnabled()) {
                 debugCode("setTime("+parameterIndex+", " + quoteTime(x) + ", calendar);");
@@ -714,11 +714,11 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public void setTimestamp(int parameterIndex, java.sql.Timestamp x,
-            Calendar calendar) throws SQLException {
+                             Calendar calendar) throws SQLException {
         try {
             if (isDebugEnabled()) {
                 debugCode("setTimestamp(" + parameterIndex + ", " +
-                        quoteTimestamp(x) + ", calendar);");
+                          quoteTimestamp(x) + ", calendar);");
             }
             if (x == null) {
                 setParameter(parameterIndex, ValueNull.INSTANCE);
@@ -738,7 +738,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
     @Deprecated
     @Override
     public void setUnicodeStream(int parameterIndex, InputStream x, int length)
-            throws SQLException {
+    throws SQLException {
         throw unsupported("unicodeStream");
     }
 
@@ -752,7 +752,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public void setNull(int parameterIndex, int sqlType, String typeName)
-            throws SQLException {
+    throws SQLException {
         try {
             if (isDebugEnabled()) {
                 debugCode("setNull("+parameterIndex+", "+sqlType+", "+quote(typeName)+");");
@@ -940,7 +940,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public void setBinaryStream(int parameterIndex, InputStream x, long length)
-            throws SQLException {
+    throws SQLException {
         try {
             if (isDebugEnabled()) {
                 debugCode("setBinaryStream("+parameterIndex+", x, "+length+"L);");
@@ -969,7 +969,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public void setBinaryStream(int parameterIndex, InputStream x, int length)
-            throws SQLException {
+    throws SQLException {
         setBinaryStream(parameterIndex, x, (long) length);
     }
 
@@ -984,7 +984,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public void setBinaryStream(int parameterIndex, InputStream x)
-            throws SQLException {
+    throws SQLException {
         setBinaryStream(parameterIndex, x, -1);
     }
 
@@ -1000,7 +1000,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public void setAsciiStream(int parameterIndex, InputStream x, int length)
-            throws SQLException {
+    throws SQLException {
         setAsciiStream(parameterIndex, x, (long) length);
     }
 
@@ -1016,7 +1016,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public void setAsciiStream(int parameterIndex, InputStream x, long length)
-            throws SQLException {
+    throws SQLException {
         try {
             if (isDebugEnabled()) {
                 debugCode("setAsciiStream("+parameterIndex+", x, "+length+"L);");
@@ -1044,7 +1044,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public void setAsciiStream(int parameterIndex, InputStream x)
-            throws SQLException {
+    throws SQLException {
         setAsciiStream(parameterIndex, x, -1);
     }
 
@@ -1060,7 +1060,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public void setCharacterStream(int parameterIndex, Reader x, int length)
-            throws SQLException {
+    throws SQLException {
         setCharacterStream(parameterIndex, x, (long) length);
     }
 
@@ -1075,7 +1075,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public void setCharacterStream(int parameterIndex, Reader x)
-            throws SQLException {
+    throws SQLException {
         setCharacterStream(parameterIndex, x, -1);
     }
 
@@ -1091,7 +1091,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public void setCharacterStream(int parameterIndex, Reader x, long length)
-            throws SQLException {
+    throws SQLException {
         try {
             if (isDebugEnabled()) {
                 debugCode("setCharacterStream("+parameterIndex+", x, "+length+"L);");
@@ -1135,7 +1135,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
             int id = getNextId(TraceObject.RESULT_SET_META_DATA);
             if (isDebugEnabled()) {
                 debugCodeAssign("ResultSetMetaData",
-                        TraceObject.RESULT_SET_META_DATA, id, "getMetaData()");
+                                TraceObject.RESULT_SET_META_DATA, id, "getMetaData()");
             }
             String catalog = conn.getCatalog();
             JdbcResultSetMetaData meta = new JdbcResultSetMetaData(
@@ -1248,7 +1248,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
         if (batchIdentities != null && !batchIdentities.isEmpty()) {
             SimpleResultSet rs = new SimpleResultSet();
             rs.addColumn("identity", java.sql.Types.INTEGER,
-                    10, 0);
+                         10, 0);
             for (Object o : batchIdentities) {
                 rs.addRow(o);
             }
@@ -1296,7 +1296,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public int executeUpdate(String sql, int autoGeneratedKeys)
-            throws SQLException {
+    throws SQLException {
         try {
             if (isDebugEnabled()) {
                 debugCode("executeUpdate("+quote(sql)+", "+autoGeneratedKeys+");");
@@ -1317,11 +1317,11 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public int executeUpdate(String sql, int[] columnIndexes)
-            throws SQLException {
+    throws SQLException {
         try {
             if (isDebugEnabled()) {
                 debugCode("executeUpdate(" + quote(sql) + ", " +
-                                quoteIntArray(columnIndexes) + ");");
+                          quoteIntArray(columnIndexes) + ");");
             }
             throw DbException.get(ErrorCode.METHOD_NOT_ALLOWED_FOR_PREPARED_STATEMENT);
         } catch (Exception e) {
@@ -1338,11 +1338,11 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public int executeUpdate(String sql, String[] columnNames)
-            throws SQLException {
+    throws SQLException {
         try {
             if (isDebugEnabled()) {
                 debugCode("executeUpdate(" + quote(sql) + ", " +
-                                quoteArray(columnNames) + ");");
+                          quoteArray(columnNames) + ");");
             }
             throw DbException.get(
                     ErrorCode.METHOD_NOT_ALLOWED_FOR_PREPARED_STATEMENT);
@@ -1360,7 +1360,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public boolean execute(String sql, int autoGeneratedKeys)
-            throws SQLException {
+    throws SQLException {
         try {
             if (isDebugEnabled()) {
                 debugCode("execute(" + quote(sql) + ", " + autoGeneratedKeys + ");");
@@ -1400,7 +1400,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public boolean execute(String sql, String[] columnNames)
-            throws SQLException {
+    throws SQLException {
         try {
             if (isDebugEnabled()) {
                 debugCode("execute(" + quote(sql) + ", " + quoteArray(columnNames) + ");");
@@ -1423,7 +1423,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
             int id = getNextId(TraceObject.PARAMETER_META_DATA);
             if (isDebugEnabled()) {
                 debugCodeAssign("ParameterMetaData",
-                        TraceObject.PARAMETER_META_DATA, id, "getParameterMetaData()");
+                                TraceObject.PARAMETER_META_DATA, id, "getParameterMetaData()");
             }
             checkClosed();
             JdbcParameterMetaData meta = new JdbcParameterMetaData(
@@ -1489,11 +1489,11 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public void setNCharacterStream(int parameterIndex, Reader x, long length)
-            throws SQLException {
+    throws SQLException {
         try {
             if (isDebugEnabled()) {
                 debugCode("setNCharacterStream("+
-                    parameterIndex+", x, "+length+"L);");
+                          parameterIndex+", x, "+length+"L);");
             }
             checkClosedForWrite();
             try {
@@ -1518,7 +1518,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public void setNCharacterStream(int parameterIndex, Reader x)
-            throws SQLException {
+    throws SQLException {
         setNCharacterStream(parameterIndex, x, -1);
     }
 
@@ -1586,7 +1586,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public void setClob(int parameterIndex, Reader x, long length)
-            throws SQLException {
+    throws SQLException {
         try {
             if (isDebugEnabled()) {
                 debugCode("setClob("+parameterIndex+", x, "+length+"L);");
@@ -1615,7 +1615,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public void setBlob(int parameterIndex, InputStream x, long length)
-            throws SQLException {
+    throws SQLException {
         try {
             if (isDebugEnabled()) {
                 debugCode("setBlob("+parameterIndex+", x, "+length+"L);");
@@ -1644,7 +1644,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public void setNClob(int parameterIndex, Reader x, long length)
-            throws SQLException {
+    throws SQLException {
         try {
             if (isDebugEnabled()) {
                 debugCode("setNClob("+parameterIndex+", x, "+length+"L);");

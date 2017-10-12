@@ -135,7 +135,7 @@ public class JdbcBlob extends TraceObject implements Blob {
      */
     @Override
     public int setBytes(long pos, byte[] bytes, int offset, int len)
-            throws SQLException {
+    throws SQLException {
         throw unsupported("LOB update");
     }
 
@@ -328,7 +328,7 @@ public class JdbcBlob extends TraceObject implements Blob {
     @Override
     public String toString() {
         return getTraceObjectName() + ": " +
-                (value == null ? "null" : value.getTraceSQL());
+               (value == null ? "null" : value.getTraceSQL());
     }
 
 }

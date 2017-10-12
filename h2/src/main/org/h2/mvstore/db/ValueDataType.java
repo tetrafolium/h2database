@@ -76,7 +76,7 @@ public class ValueDataType implements DataType {
     SpatialDataType spatialType;
 
     public ValueDataType(CompareMode compareMode, DataHandler handler,
-            int[] sortTypes) {
+                         int[] sortTypes) {
         this.compareMode = compareMode;
         this.handler = handler;
         this.sortTypes = sortTypes;
@@ -193,7 +193,7 @@ public class ValueDataType implements DataType {
         switch (type) {
         case Value.BOOLEAN:
             buff.put((byte) (v.getBoolean().booleanValue() ?
-                    BOOLEAN_TRUE : BOOLEAN_FALSE));
+                             BOOLEAN_TRUE : BOOLEAN_FALSE));
             break;
         case Value.BYTE:
             buff.put((byte) type).put(v.getByte());
@@ -237,18 +237,18 @@ public class ValueDataType implements DataType {
                 if (bits <= 63) {
                     if (scale == 0) {
                         buff.put((byte) DECIMAL_SMALL_0).
-                            putVarLong(b.longValue());
+                        putVarLong(b.longValue());
                     } else {
                         buff.put((byte) DECIMAL_SMALL).
-                            putVarInt(scale).
-                            putVarLong(b.longValue());
+                        putVarInt(scale).
+                        putVarLong(b.longValue());
                     }
                 } else {
                     byte[] bytes = b.toByteArray();
                     buff.put((byte) type).
-                        putVarInt(scale).
-                        putVarInt(bytes.length).
-                        put(bytes);
+                    putVarInt(scale).
+                    putVarInt(bytes.length).
+                    put(bytes);
                 }
             }
             break;
@@ -259,8 +259,8 @@ public class ValueDataType implements DataType {
             long millis = nanos / 1000000;
             nanos -= millis * 1000000;
             buff.put((byte) type).
-                putVarLong(millis).
-                putVarLong(nanos);
+            putVarLong(millis).
+            putVarLong(nanos);
             break;
         }
         case Value.DATE: {
@@ -275,9 +275,9 @@ public class ValueDataType implements DataType {
             long millis = nanos / 1000000;
             nanos -= millis * 1000000;
             buff.put((byte) type).
-                putVarLong(dateValue).
-                putVarLong(millis).
-                putVarLong(nanos);
+            putVarLong(dateValue).
+            putVarLong(millis).
+            putVarLong(nanos);
             break;
         }
         case Value.TIMESTAMP_TZ: {
@@ -287,17 +287,17 @@ public class ValueDataType implements DataType {
             long millis = nanos / 1000000;
             nanos -= millis * 1000000;
             buff.put((byte) type).
-                putVarLong(dateValue).
-                putVarLong(millis).
-                putVarLong(nanos).
-                putVarInt(ts.getTimeZoneOffsetMins());
+            putVarLong(dateValue).
+            putVarLong(millis).
+            putVarLong(nanos).
+            putVarInt(ts.getTimeZoneOffsetMins());
             break;
         }
         case Value.JAVA_OBJECT: {
             byte[] b = v.getBytesNoCopy();
             buff.put((byte) type).
-                putVarInt(b.length).
-                put(b);
+            putVarInt(b.length).
+            put(b);
             break;
         }
         case Value.BYTES: {
@@ -305,19 +305,19 @@ public class ValueDataType implements DataType {
             int len = b.length;
             if (len < 32) {
                 buff.put((byte) (BYTES_0_31 + len)).
-                    put(b);
+                put(b);
             } else {
                 buff.put((byte) type).
-                    putVarInt(b.length).
-                    put(b);
+                putVarInt(b.length).
+                put(b);
             }
             break;
         }
         case Value.UUID: {
             ValueUuid uuid = (ValueUuid) v;
             buff.put((byte) type).
-                putLong(uuid.getHigh()).
-                putLong(uuid.getLow());
+            putLong(uuid.getHigh()).
+            putLong(uuid.getLow());
             break;
         }
         case Value.STRING: {
@@ -325,7 +325,7 @@ public class ValueDataType implements DataType {
             int len = s.length();
             if (len < 32) {
                 buff.put((byte) (STRING_0_31 + len)).
-                    putStringData(s, len);
+                putStringData(s, len);
             } else {
                 buff.put((byte) type);
                 writeString(buff, s);
@@ -347,7 +347,7 @@ public class ValueDataType implements DataType {
                     buff.put((byte) DOUBLE_0_1);
                 } else {
                     buff.put((byte) type).
-                        putVarLong(Long.reverse(d));
+                    putVarLong(Long.reverse(d));
                 }
             }
             break;
@@ -362,7 +362,7 @@ public class ValueDataType implements DataType {
                     buff.put((byte) FLOAT_0_1);
                 } else {
                     buff.put((byte) type).
-                        putVarInt(Integer.reverse(f));
+                    putVarInt(Integer.reverse(f));
                 }
             }
             break;
@@ -374,12 +374,12 @@ public class ValueDataType implements DataType {
             byte[] small = lob.getSmall();
             if (small == null) {
                 buff.putVarInt(-3).
-                    putVarInt(lob.getTableId()).
-                    putVarLong(lob.getLobId()).
-                    putVarLong(lob.getPrecision());
+                putVarInt(lob.getTableId()).
+                putVarLong(lob.getLobId()).
+                putVarLong(lob.getPrecision());
             } else {
                 buff.putVarInt(small.length).
-                    put(small);
+                put(small);
             }
             break;
         }
@@ -402,8 +402,8 @@ public class ValueDataType implements DataType {
                 for (int i = 0; i < columnCount; i++) {
                     writeString(buff, meta.getColumnName(i + 1));
                     buff.putVarInt(meta.getColumnType(i + 1)).
-                        putVarInt(meta.getPrecision(i + 1)).
-                        putVarInt(meta.getScale(i + 1));
+                    putVarInt(meta.getPrecision(i + 1)).
+                    putVarInt(meta.getScale(i + 1));
                 }
                 while (rs.next()) {
                     buff.put((byte) 1);
@@ -411,7 +411,7 @@ public class ValueDataType implements DataType {
                         int t = org.h2.value.DataType.
                                 getValueTypeFromResultSet(meta, i + 1);
                         Value val = org.h2.value.DataType.readValue(
-                                null, rs, i + 1, t);
+                                            null, rs, i + 1, t);
                         writeValue(buff, val);
                     }
                 }
@@ -426,17 +426,17 @@ public class ValueDataType implements DataType {
             byte[] b = v.getBytes();
             int len = b.length;
             buff.put((byte) type).
-                putVarInt(len).
-                put(b);
+            putVarInt(len).
+            put(b);
             break;
         }
         default:
             if (JdbcUtils.customDataTypesHandler != null) {
                 byte[] b = v.getBytesNoCopy();
                 buff.put((byte)CUSTOM_DATA_TYPE).
-                    putVarInt(type).
-                    putVarInt(b.length).
-                    put(b);
+                putVarInt(type).
+                putVarInt(b.length).
+                put(b);
                 break;
             }
             DbException.throwInternalError("type=" + v.getType());
@@ -481,11 +481,11 @@ public class ValueDataType implements DataType {
             return ValueDecimal.ONE;
         case DECIMAL_SMALL_0:
             return ValueDecimal.get(BigDecimal.valueOf(
-                    readVarLong(buff)));
+                                            readVarLong(buff)));
         case DECIMAL_SMALL: {
             int scale = readVarInt(buff);
             return ValueDecimal.get(BigDecimal.valueOf(
-                    readVarLong(buff), scale));
+                                            readVarLong(buff), scale));
         }
         case Value.DECIMAL: {
             int scale = readVarInt(buff);
@@ -543,10 +543,10 @@ public class ValueDataType implements DataType {
             return ValueDouble.get(1);
         case Value.DOUBLE:
             return ValueDouble.get(Double.longBitsToDouble(
-                    Long.reverse(readVarLong(buff))));
+                                           Long.reverse(readVarLong(buff))));
         case Value.FLOAT:
             return ValueFloat.get(Float.intBitsToFloat(
-                    Integer.reverse(readVarInt(buff))));
+                                          Integer.reverse(readVarInt(buff))));
         case Value.BLOB:
         case Value.CLOB: {
             int smallLen = readVarInt(buff);
@@ -559,11 +559,11 @@ public class ValueDataType implements DataType {
                 long lobId = readVarLong(buff);
                 long precision = readVarLong(buff);
                 ValueLobDb lob = ValueLobDb.create(type,
-                        handler, tableId, lobId, null, precision);
+                                                   handler, tableId, lobId, null, precision);
                 return lob;
             } else {
                 throw DbException.get(ErrorCode.FILE_CORRUPTED_1,
-                        "lob type: " + smallLen);
+                                      "lob type: " + smallLen);
             }
         }
         case Value.ARRAY: {
@@ -580,9 +580,9 @@ public class ValueDataType implements DataType {
             int columns = readVarInt(buff);
             for (int i = 0; i < columns; i++) {
                 rs.addColumn(readString(buff),
-                        readVarInt(buff),
-                        readVarInt(buff),
-                        readVarInt(buff));
+                             readVarInt(buff),
+                             readVarInt(buff),
+                             readVarInt(buff));
             }
             while (true) {
                 if (buff.get() == 0) {
@@ -611,10 +611,10 @@ public class ValueDataType implements DataType {
                 byte[] b = DataUtils.newBytes(len);
                 buff.get(b, 0, len);
                 return JdbcUtils.customDataTypesHandler.convert(
-                        ValueBytes.getNoCopy(b), customType);
+                               ValueBytes.getNoCopy(b), customType);
             }
             throw DbException.get(ErrorCode.UNKNOWN_DATA_TYPE_1,
-                    "No CustomDataTypesHandler has been set up");
+                                  "No CustomDataTypesHandler has been set up");
         }
         default:
             if (type >= INT_0_15 && type < INT_0_15 + 16) {

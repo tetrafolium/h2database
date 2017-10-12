@@ -59,7 +59,7 @@ public class ConstraintCheck extends Constraint {
             buff.append(" COMMENT ").append(StringUtils.quoteStringSQL(comment));
         }
         buff.append(" CHECK").append(StringUtils.enclose(expr.getSQL()))
-                .append(" NOCHECK");
+        .append(" NOCHECK");
         return buff.toString();
     }
 
@@ -98,12 +98,12 @@ public class ConstraintCheck extends Constraint {
             b = expr.getValue(session).getBoolean();
         } catch (DbException ex) {
             throw DbException.get(ErrorCode.CHECK_CONSTRAINT_INVALID, ex,
-                    getShortDescription());
+                                  getShortDescription());
         }
         // Both TRUE and NULL are ok
         if (Boolean.FALSE.equals(b)) {
             throw DbException.get(ErrorCode.CHECK_CONSTRAINT_VIOLATED_1,
-                    getShortDescription());
+                                  getShortDescription());
         }
     }
 
@@ -145,7 +145,7 @@ public class ConstraintCheck extends Constraint {
             return;
         }
         String sql = "SELECT 1 FROM " + filter.getTable().getSQL() +
-                " WHERE NOT(" + expr.getSQL() + ")";
+                     " WHERE NOT(" + expr.getSQL() + ")";
         ResultInterface r = session.prepare(sql).query(1);
         if (r.next()) {
             throw DbException.get(ErrorCode.CHECK_CONSTRAINT_VIOLATED_1, getName());

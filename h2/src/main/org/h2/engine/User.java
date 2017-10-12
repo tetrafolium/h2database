@@ -166,10 +166,10 @@ public class User extends RightOwner {
         }
         if (password) {
             buff.append(" SALT '").
-                append(StringUtils.convertBytesToHex(salt)).
-                append("' HASH '").
-                append(StringUtils.convertBytesToHex(passwordHash)).
-                append('\'');
+            append(StringUtils.convertBytesToHex(salt)).
+            append("' HASH '").
+            append(StringUtils.convertBytesToHex(passwordHash)).
+            append('\'');
         } else {
             buff.append(" PASSWORD ''");
         }

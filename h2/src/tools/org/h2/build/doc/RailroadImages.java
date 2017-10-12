@@ -48,7 +48,7 @@ public class RailroadImages {
         Graphics2D g;
 
         img = new BufferedImage(SIZE * 64, SIZE * LINE_REPEAT,
-                BufferedImage.TYPE_INT_ARGB);
+                                BufferedImage.TYPE_INT_ARGB);
         g = img.createGraphics();
         for (int i = 0; i < 2; i++) {
             setStroke(g, i);
@@ -108,7 +108,7 @@ public class RailroadImages {
         BufferedImage smaller = new BufferedImage(w / DIV, h / DIV, img.getType());
         Graphics2D g = smaller.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                           RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g.drawImage(img, 0, 0, w / DIV, h / DIV, 0, 0, w, h, null);
         g.dispose();
         try {

@@ -213,7 +213,7 @@ public class PageStore implements CacheWriter {
      * @param cacheSizeDefault the default cache size
      */
     public PageStore(Database database, String fileName, String accessMode,
-            int cacheSizeDefault) {
+                     int cacheSizeDefault) {
         this.fileName = fileName;
         this.accessMode = accessMode;
         this.database = database;
@@ -258,7 +258,7 @@ public class PageStore implements CacheWriter {
      * @return the new position, or -1 if there is no more data to copy
      */
     public synchronized int copyDirect(int pageId, OutputStream out)
-            throws IOException {
+    throws IOException {
         byte[] buffer = new byte[pageSize];
         if (pageId >= pageCount) {
             return -1;
@@ -349,7 +349,7 @@ public class PageStore implements CacheWriter {
         if (pageCount < MIN_PAGE_COUNT) {
             if (database.isReadOnly()) {
                 throw DbException.get(ErrorCode.FILE_CORRUPTED_1,
-                        fileName + " pageCount: " + pageCount);
+                                      fileName + " pageCount: " + pageCount);
             }
             file.releaseLock();
             file.close();
@@ -509,9 +509,9 @@ public class PageStore implements CacheWriter {
         }
         long start = System.nanoTime();
         boolean isCompactFully = compactMode ==
-                CommandInterface.SHUTDOWN_COMPACT;
+                                 CommandInterface.SHUTDOWN_COMPACT;
         boolean isDefrag = compactMode ==
-                CommandInterface.SHUTDOWN_DEFRAG;
+                           CommandInterface.SHUTDOWN_DEFRAG;
 
         if (database.getSettings().defragAlways) {
             isCompactFully = isDefrag = true;
@@ -756,7 +756,7 @@ public class PageStore implements CacheWriter {
         data.readInt();
         if (!checksumTest(data.getBytes(), pageId, pageSize)) {
             throw DbException.get(ErrorCode.FILE_CORRUPTED_1,
-                    "wrong checksum");
+                                  "wrong checksum");
         }
         switch (type & ~Page.FLAG_LAST) {
         case Page.TYPE_FREE_LIST:
@@ -767,16 +767,16 @@ public class PageStore implements CacheWriter {
             PageIndex idx = metaObjects.get(indexId);
             if (idx == null) {
                 throw DbException.get(ErrorCode.FILE_CORRUPTED_1,
-                        "index not found " + indexId);
+                                      "index not found " + indexId);
             }
             if (!(idx instanceof PageDataIndex)) {
                 throw DbException.get(ErrorCode.FILE_CORRUPTED_1,
-                        "not a data index " + indexId + " " + idx);
+                                      "not a data index " + indexId + " " + idx);
             }
             PageDataIndex index = (PageDataIndex) idx;
             if (statistics != null) {
                 statisticsIncrement(index.getTable().getName() + "." +
-                        index.getName() + " read");
+                                    index.getName() + " read");
             }
             p = PageDataLeaf.read(index, data, pageId);
             break;
@@ -786,16 +786,16 @@ public class PageStore implements CacheWriter {
             PageIndex idx = metaObjects.get(indexId);
             if (idx == null) {
                 throw DbException.get(ErrorCode.FILE_CORRUPTED_1,
-                        "index not found " + indexId);
+                                      "index not found " + indexId);
             }
             if (!(idx instanceof PageDataIndex)) {
                 throw DbException.get(ErrorCode.FILE_CORRUPTED_1,
-                        "not a data index " + indexId + " " + idx);
+                                      "not a data index " + indexId + " " + idx);
             }
             PageDataIndex index = (PageDataIndex) idx;
             if (statistics != null) {
                 statisticsIncrement(index.getTable().getName() + "." +
-                        index.getName() + " read");
+                                    index.getName() + " read");
             }
             p = PageDataNode.read(index, data, pageId);
             break;
@@ -812,16 +812,16 @@ public class PageStore implements CacheWriter {
             PageIndex idx = metaObjects.get(indexId);
             if (idx == null) {
                 throw DbException.get(ErrorCode.FILE_CORRUPTED_1,
-                        "index not found " + indexId);
+                                      "index not found " + indexId);
             }
             if (!(idx instanceof PageBtreeIndex)) {
                 throw DbException.get(ErrorCode.FILE_CORRUPTED_1,
-                        "not a btree index " + indexId + " " + idx);
+                                      "not a btree index " + indexId + " " + idx);
             }
             PageBtreeIndex index = (PageBtreeIndex) idx;
             if (statistics != null) {
                 statisticsIncrement(index.getTable().getName() + "." +
-                        index.getName() + " read");
+                                    index.getName() + " read");
             }
             p = PageBtreeLeaf.read(index, data, pageId);
             break;
@@ -831,16 +831,16 @@ public class PageStore implements CacheWriter {
             PageIndex idx = metaObjects.get(indexId);
             if (idx == null) {
                 throw DbException.get(ErrorCode.FILE_CORRUPTED_1,
-                        "index not found " + indexId);
+                                      "index not found " + indexId);
             }
             if (!(idx instanceof PageBtreeIndex)) {
                 throw DbException.get(ErrorCode.FILE_CORRUPTED_1,
-                        "not a btree index " + indexId + " " + idx);
+                                      "not a btree index " + indexId + " " + idx);
             }
             PageBtreeIndex index = (PageBtreeIndex) idx;
             if (statistics != null) {
                 statisticsIncrement(index.getTable().getName() +
-                        "." + index.getName() + " read");
+                                    "." + index.getName() + " read");
             }
             p = PageBtreeNode.read(index, data, pageId);
             break;
@@ -853,7 +853,7 @@ public class PageStore implements CacheWriter {
             break;
         default:
             throw DbException.get(ErrorCode.FILE_CORRUPTED_1,
-                    "page=" + pageId + " type=" + type);
+                                  "page=" + pageId + " type=" + type);
         }
         cache.put(p);
         return p;
@@ -877,9 +877,9 @@ public class PageStore implements CacheWriter {
     private void readStaticHeader() {
         file.seek(FileStore.HEADER_LENGTH);
         Data page = Data.create(database,
-                new byte[PAGE_SIZE_MIN - FileStore.HEADER_LENGTH]);
+                                new byte[PAGE_SIZE_MIN - FileStore.HEADER_LENGTH]);
         file.readFully(page.getBytes(), 0,
-                PAGE_SIZE_MIN - FileStore.HEADER_LENGTH);
+                       PAGE_SIZE_MIN - FileStore.HEADER_LENGTH);
         readCount++;
         setPageSize(page.readInt());
         int writeVersion = page.readByte();
@@ -928,7 +928,7 @@ public class PageStore implements CacheWriter {
     public void setPageSize(int size) {
         if (size < PAGE_SIZE_MIN || size > PAGE_SIZE_MAX) {
             throw DbException.get(ErrorCode.FILE_CORRUPTED_1,
-                    fileName + " pageSize: " + size);
+                                  fileName + " pageSize: " + size);
         }
         boolean good = false;
         int shift = 0;
@@ -968,7 +968,7 @@ public class PageStore implements CacheWriter {
     void setLogFirstPage(int logKey, int trunkPageId, int dataPageId) {
         if (trace.isDebugEnabled()) {
             trace.debug("setLogFirstPage key: " + logKey +
-                    " trunk: "+ trunkPageId +" data: " + dataPageId);
+                        " trunk: "+ trunkPageId +" data: " + dataPageId);
         }
         this.logKey = logKey;
         this.logFirstTrunkPage = trunkPageId;
@@ -1161,7 +1161,7 @@ public class PageStore implements CacheWriter {
      * @param after all allocated pages are higher than this page
      */
     void allocatePages(IntArray list, int pagesToAllocate, BitField exclude,
-            int after) {
+                       int after) {
         list.ensureCapacity(list.size() + pagesToAllocate);
         for (int i = 0; i < pagesToAllocate; i++) {
             int page = allocatePage(exclude, after);
@@ -1320,7 +1320,7 @@ public class PageStore implements CacheWriter {
         }
         if (pos < 0 || pos >= pageCount) {
             throw DbException.get(ErrorCode.FILE_CORRUPTED_1, pos +
-                    " of " + pageCount);
+                                  " of " + pageCount);
         }
         file.seek((long) pos << pageSizeShift);
         file.readFully(page.getBytes(), 0, pageSize);
@@ -1358,7 +1358,7 @@ public class PageStore implements CacheWriter {
         byte[] bytes = data.getBytes();
         if (SysProperties.CHECK) {
             boolean shouldBeFreeList = (pageId - PAGE_ID_FREE_LIST_ROOT) %
-                    freeListPagesPerList == 0;
+                                       freeListPagesPerList == 0;
             boolean isFreeList = bytes[0] == Page.TYPE_FREE_LIST;
             if (bytes[0] != 0 && shouldBeFreeList != isFreeList) {
                 throw DbException.throwInternalError();
@@ -1493,8 +1493,8 @@ public class PageStore implements CacheWriter {
             if (!ignoreBigLog) {
                 ignoreBigLog = true;
                 trace.error(null,
-                        "Transaction log could not be truncated; size: " +
-                        (newSize / 1024 / 1024) + " MB");
+                            "Transaction log could not be truncated; size: " +
+                            (newSize / 1024 / 1024) + " MB");
             }
             logSizeBase = log.getSize();
         }
@@ -1548,7 +1548,7 @@ public class PageStore implements CacheWriter {
         Row row = scan.getRowWithKey(key);
         if (row == null || row.getKey() != key) {
             trace.error(null, "Entry not found: " + key +
-                    " found instead: " + row + " - ignoring");
+                        " found instead: " + row + " - ignoring");
             return;
         }
         redo(tableId, row, false);
@@ -1613,7 +1613,7 @@ public class PageStore implements CacheWriter {
         data.session = pageStoreSession;
         metaTable = new RegularTable(data);
         metaIndex = (PageDataIndex) metaTable.getScanIndex(
-                pageStoreSession);
+                            pageStoreSession);
         metaObjects.clear();
         metaObjects.put(-1, metaIndex);
     }
@@ -1661,13 +1661,13 @@ public class PageStore implements CacheWriter {
         int parent = row.getValue(2).getInt();
         int rootPageId = row.getValue(3).getInt();
         String[] options = StringUtils.arraySplit(
-                row.getValue(4).getString(), ',', false);
+                                   row.getValue(4).getString(), ',', false);
         String columnList = row.getValue(5).getString();
         String[] columns = StringUtils.arraySplit(columnList, ',', false);
         Index meta;
         if (trace.isDebugEnabled()) {
             trace.debug("addMeta id="+ id +" type=" + type +
-                    " root=" + rootPageId + " parent=" + parent + " columns=" + columnList);
+                        " root=" + rootPageId + " parent=" + parent + " columns=" + columnList);
         }
         if (redo && rootPageId != 0) {
             // ensure the page is empty, but not used by regular data
@@ -1700,14 +1700,14 @@ public class PageStore implements CacheWriter {
                 binaryUnsigned = Boolean.parseBoolean(options[3]);
             }
             CompareMode mode = CompareMode.getInstance(
-                    options[0], Integer.parseInt(options[1]), binaryUnsigned);
+                                       options[0], Integer.parseInt(options[1]), binaryUnsigned);
             table.setCompareMode(mode);
             meta = table.getScanIndex(session);
         } else {
             Index p = metaObjects.get(parent);
             if (p == null) {
                 throw DbException.get(ErrorCode.FILE_CORRUPTED_1,
-                        "Table not found:" + parent + " for " + row + " meta:" + metaObjects);
+                                      "Table not found:" + parent + " for " + row + " meta:" + metaObjects);
             }
             RegularTable table = (RegularTable) p.getTable();
             Column[] tableCols = table.getColumns();
@@ -1777,7 +1777,7 @@ public class PageStore implements CacheWriter {
         }
         synchronized (this) {
             int type = index instanceof PageDataIndex ?
-                    META_TYPE_DATA_INDEX : META_TYPE_BTREE_INDEX;
+                       META_TYPE_DATA_INDEX : META_TYPE_BTREE_INDEX;
             IndexColumn[] columns = index.getIndexColumns();
             StatementBuilder buff = new StatementBuilder();
             for (IndexColumn col : columns) {
@@ -1844,8 +1844,8 @@ public class PageStore implements CacheWriter {
         Row row = metaIndex.getRow(session, key);
         if (row.getKey() != key) {
             throw DbException.get(ErrorCode.FILE_CORRUPTED_1,
-                    "key: " + key + " index: " + index +
-                    " table: " + index.getTable() + " row: " + row);
+                                  "key: " + key + " index: " + index +
+                                  " table: " + index.getTable() + " row: " + row);
         }
         metaIndex.remove(session, row);
     }

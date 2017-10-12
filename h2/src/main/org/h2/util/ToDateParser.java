@@ -74,7 +74,7 @@ public class ToDateParser {
     private Timestamp getResultingTimestamp() {
         Calendar cal = (Calendar) getResultCalendar().clone();
         int nanosToSet = nanos == null ?
-                cal.get(Calendar.MILLISECOND) * 1000000 : nanos.intValue();
+                         cal.get(Calendar.MILLISECOND) * 1000000 : nanos.intValue();
         cal.set(Calendar.MILLISECOND, 0);
         Timestamp ts = new Timestamp(cal.getTimeInMillis());
         ts.setNanos(nanosToSet);
@@ -164,11 +164,11 @@ public class ToDateParser {
 
         StringBuilder sb = new StringBuilder();
         sb.append(format("\n    %s('%s', '%s')", functionName,
-                unmodifiedInputStr, unmodifiedFormatStr));
+                         unmodifiedInputStr, unmodifiedFormatStr));
         sb.append(format("\n      %s^%s ,  %s^ <-- Parsing failed at this point",
-                format("%" + (functionName.name().length() + currentInputPos) + "s", ""),
-                restInputLen <= 0 ? "" : format("%" + restInputLen + "s", ""),
-                currentFormatPos <= 0 ? "" : format("%" + currentFormatPos + "s", "")));
+                         format("%" + (functionName.name().length() + currentInputPos) + "s", ""),
+                         restInputLen <= 0 ? "" : format("%" + restInputLen + "s", ""),
+                         currentFormatPos <= 0 ? "" : format("%" + currentFormatPos + "s", "")));
 
         return sb.toString();
     }

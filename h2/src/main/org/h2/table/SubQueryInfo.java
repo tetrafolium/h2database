@@ -29,7 +29,7 @@ public class SubQueryInfo {
      * @param sortOrder sort order
      */
     public SubQueryInfo(SubQueryInfo upper, int[] masks, TableFilter[] filters, int filter,
-            SortOrder sortOrder) {
+                        SortOrder sortOrder) {
         this.upper = upper;
         this.masks = masks;
         this.filters = filters;

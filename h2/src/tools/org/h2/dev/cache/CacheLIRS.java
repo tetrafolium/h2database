@@ -78,12 +78,12 @@ public class CacheLIRS<K, V> extends AbstractMap<K, V> {
      */
     @SuppressWarnings("unchecked")
     public CacheLIRS(long maxMemory, int segmentCount,
-            int stackMoveDistance) {
+                     int stackMoveDistance) {
         setMaxMemory(maxMemory);
         if (Integer.bitCount(segmentCount) != 1) {
             throw new IllegalArgumentException(
                     "The segment count must be a power of 2, is "
-                            + segmentCount);
+                    + segmentCount);
         }
         this.segmentCount = segmentCount;
         this.segmentMask = segmentCount - 1;

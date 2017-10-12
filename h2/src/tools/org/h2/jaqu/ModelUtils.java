@@ -140,7 +140,7 @@ public class ModelUtils {
      * @return Class of type
      */
     static Class<?> getClassForSqlType(String sqlType,
-            Class<? extends java.util.Date> dateTimeClass) {
+                                       Class<? extends java.util.Date> dateTimeClass) {
         sqlType = sqlType.toUpperCase();
         // TODO dropping "UNSIGNED" or parts like that could be trouble
         sqlType = sqlType.split(" ")[0].trim();
@@ -213,7 +213,7 @@ public class ModelUtils {
         Pattern literalDefault = Pattern.compile("'.*'");
         Pattern functionDefault = Pattern.compile("[^'].*[^']");
         return literalDefault.matcher(defaultValue).matches()
-            || functionDefault.matcher(defaultValue).matches();
+               || functionDefault.matcher(defaultValue).matches();
     }
 
     /**
@@ -224,7 +224,7 @@ public class ModelUtils {
      * @return true if it does
      */
     static boolean isValidDefaultValue(Class<?> modelClass,
-            String defaultValue) {
+                                       String defaultValue) {
 
         if (defaultValue == null) {
             // NULL

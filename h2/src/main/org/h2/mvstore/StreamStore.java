@@ -120,7 +120,7 @@ public class StreamStore {
     }
 
     private boolean put(ByteArrayOutputStream id, InputStream in, int level)
-            throws IOException {
+    throws IOException {
         if (level > 0) {
             ByteArrayOutputStream id2 = new ByteArrayOutputStream();
             while (true) {
@@ -164,7 +164,7 @@ public class StreamStore {
     }
 
     private static byte[] read(InputStream in, byte[] target)
-            throws IOException {
+    throws IOException {
         int copied = 0;
         int remaining = target.length;
         while (remaining > 0) {
@@ -183,7 +183,7 @@ public class StreamStore {
     }
 
     private ByteArrayOutputStream putIndirectId(ByteArrayOutputStream id)
-            throws IOException {
+    throws IOException {
         byte[] data = id.toByteArray();
         id = new ByteArrayOutputStream();
         // indirect: 2, total len (long), blockId (long)
@@ -509,9 +509,9 @@ public class StreamStore {
                         buffer = nextBuffer();
                     } catch (IllegalStateException e) {
                         String msg = DataUtils.formatMessage(
-                                DataUtils.ERROR_BLOCK_NOT_FOUND,
-                                "Block not found in id {0}",
-                                Arrays.toString(idBuffer.array()));
+                                             DataUtils.ERROR_BLOCK_NOT_FOUND,
+                                             "Block not found in id {0}",
+                                             Arrays.toString(idBuffer.array()));
                         throw new IOException(msg, e);
                     }
                     if (buffer == null) {
@@ -563,7 +563,7 @@ public class StreamStore {
                     }
                     byte[] k = store.getBlock(key);
                     ByteBuffer newBuffer = ByteBuffer.allocate(k.length
-                            + idBuffer.limit() - idBuffer.position());
+                                           + idBuffer.limit() - idBuffer.position());
                     newBuffer.put(k);
                     newBuffer.put(idBuffer);
                     newBuffer.flip();

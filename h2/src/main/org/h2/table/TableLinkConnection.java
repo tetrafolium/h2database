@@ -96,9 +96,9 @@ public class TableLinkConnection {
     @Override
     public int hashCode() {
         return Utils.hashCode(driver)
-                ^ Utils.hashCode(url)
-                ^ Utils.hashCode(user)
-                ^ Utils.hashCode(password);
+               ^ Utils.hashCode(url)
+               ^ Utils.hashCode(user)
+               ^ Utils.hashCode(password);
     }
 
     @Override
@@ -106,9 +106,9 @@ public class TableLinkConnection {
         if (o instanceof TableLinkConnection) {
             TableLinkConnection other = (TableLinkConnection) o;
             return StringUtils.equals(driver, other.driver)
-                    && StringUtils.equals(url, other.url)
-                    && StringUtils.equals(user, other.user)
-                    && StringUtils.equals(password, other.password);
+                   && StringUtils.equals(url, other.url)
+                   && StringUtils.equals(user, other.user)
+                   && StringUtils.equals(password, other.password);
         }
         return false;
     }

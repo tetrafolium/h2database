@@ -47,7 +47,9 @@ public class TableSynonym extends SchemaObjectBase {
     }
 
     @Override
-    public void rename(String newName) { throw DbException.getUnsupportedException("SYNONYM"); }
+    public void rename(String newName) {
+        throw DbException.getUnsupportedException("SYNONYM");
+    }
 
     @Override
     public void removeChildrenAndResources(Session session) {

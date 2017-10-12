@@ -89,7 +89,7 @@ public class ValueLong extends Value {
 
     private DbException getOverflow() {
         return DbException.get(ErrorCode.NUMERIC_VALUE_OUT_OF_RANGE_1,
-                Long.toString(value));
+                               Long.toString(value));
     }
 
     @Override
@@ -196,7 +196,7 @@ public class ValueLong extends Value {
 
     @Override
     public void set(PreparedStatement prep, int parameterIndex)
-            throws SQLException {
+    throws SQLException {
         prep.setLong(parameterIndex, value);
     }
 

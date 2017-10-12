@@ -100,7 +100,7 @@ public class DeleteDbFiles extends Tool {
             // only delete empty directories
             FileUtils.tryDelete(fileName);
         } else if (quiet || fileName.endsWith(Constants.SUFFIX_TEMP_FILE) ||
-                fileName.endsWith(Constants.SUFFIX_TRACE_FILE)) {
+                   fileName.endsWith(Constants.SUFFIX_TRACE_FILE)) {
             FileUtils.tryDelete(fileName);
         } else {
             FileUtils.delete(fileName);

@@ -35,11 +35,11 @@ public class FileLister {
      * @throws SQLException if it failed
      */
     public static void tryUnlockDatabase(List<String> files, String message)
-            throws SQLException {
+    throws SQLException {
         for (String fileName : files) {
             if (fileName.endsWith(Constants.SUFFIX_LOCK_FILE)) {
                 FileLock lock = new FileLock(new TraceSystem(null), fileName,
-                        Constants.LOCK_SLEEP);
+                                             Constants.LOCK_SLEEP);
                 try {
                     lock.lock(FileLock.LOCK_FILE);
                     lock.unlock();

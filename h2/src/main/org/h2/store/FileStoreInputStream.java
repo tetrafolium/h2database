@@ -25,7 +25,7 @@ public class FileStoreInputStream extends InputStream {
     private final boolean alwaysClose;
 
     public FileStoreInputStream(FileStore store, DataHandler handler,
-            boolean compression, boolean alwaysClose) {
+                                boolean compression, boolean alwaysClose) {
         this.store = store;
         this.alwaysClose = alwaysClose;
         if (compression) {

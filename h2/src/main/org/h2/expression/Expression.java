@@ -311,8 +311,8 @@ public abstract class Expression {
         for (int i = 0, len = list.length; i < len; i++) {
             Value v = list[i];
             Column col = new Column("C" + (i + 1), v.getType(),
-                    v.getPrecision(), v.getScale(),
-                    v.getDisplaySize());
+                                    v.getPrecision(), v.getScale(),
+                                    v.getDisplaySize());
             expr[i] = new ExpressionColumn(session.getDatabase(), col);
         }
         return expr;

@@ -128,7 +128,7 @@ public interface Table {
          * You must specify a DbUpgrader on your Db object to
          * use this parameter.
          */
-        int version() default 0;
+    int version() default 0;
 
     }
 
@@ -143,7 +143,7 @@ public interface Table {
          * The schema may be optionally specified.
          * Default: unspecified.
          */
-        String name() default "";
+    String name() default "";
 
     }
 
@@ -172,7 +172,7 @@ public interface Table {
          * the model class is not annotated with JQTable.
          * Default: unspecified.
          */
-        String[] standard() default {};
+    String[] standard() default {};
 
         /**
          * Unique indexes may be optionally specified.
@@ -185,7 +185,7 @@ public interface Table {
          * the model class is not annotated with JQTable.
          * Default: unspecified.
          */
-        String[] unique() default {};
+    String[] unique() default {};
 
         /**
          * Hash indexes may be optionally specified.
@@ -197,7 +197,7 @@ public interface Table {
          * the model class is not annotated with JQTable.
          * Default: unspecified.
          */
-        String[] hash() default {};
+    String[] hash() default {};
 
         /**
          * Unique hash indexes may be optionally specified.
@@ -210,7 +210,7 @@ public interface Table {
          * the model class is not annotated with JQTable.
          * Default: unspecified.
          */
-        String[] uniqueHash() default {};
+    String[] uniqueHash() default {};
 
     }
 
@@ -229,7 +229,7 @@ public interface Table {
          * if the model class is not annotated with JQTable.
          * Default: unspecified.
          */
-        String name() default "";
+    String name() default "";
 
         /**
          * The primary key may be optionally specified. If it is not
@@ -243,7 +243,7 @@ public interface Table {
          * if the model class is not annotated with JQTable.
          * Default: unspecified.
          */
-        String primaryKey() default "";
+    String primaryKey() default "";
 
         /**
          * The inherit columns allows this model class to inherit columns from
@@ -251,13 +251,13 @@ public interface Table {
          * ignored.
          * Default: false.
          */
-        boolean inheritColumns() default false;
+    boolean inheritColumns() default false;
 
         /**
          * Whether or not JaQu tries to create the table and indexes. Default:
          * true.
          */
-        boolean createIfRequired() default true;
+    boolean createIfRequired() default true;
 
         /**
          * Whether only supported types are mapped.
@@ -265,7 +265,7 @@ public interface Table {
          * If false, unsupported mapped types will default to VARCHAR.
          * Default: true.
          */
-        boolean strictTypeMapping() default true;
+    boolean strictTypeMapping() default true;
 
         /**
          * If true, only fields that are explicitly
@@ -273,7 +273,7 @@ public interface Table {
          *
          * Default: true.
          */
-        boolean annotationsOnly() default true;
+    boolean annotationsOnly() default true;
 
         /**
          * If true, this table is created as a memory table where data is
@@ -283,7 +283,7 @@ public interface Table {
          *
          * Default: false.
          */
-        boolean memoryTable() default false;
+    boolean memoryTable() default false;
 
         /**
          * If non-zero, JaQu will
@@ -295,7 +295,7 @@ public interface Table {
          * You must specify a DbUpgrader on your Db object to
          * use this parameter.
          */
-        int version() default 0;
+    int version() default 0;
     }
 
     /**
@@ -311,20 +311,20 @@ public interface Table {
          * If not specified, the field name is used as the column name.
          * Default: the field name.
          */
-        String name() default "";
+    String name() default "";
 
         /**
          * This column is the primary key.
          * Default: false.
          */
-        boolean primaryKey() default false;
+    boolean primaryKey() default false;
 
         /**
          * The column is created with a
          * sequence as the default value.
          * Default: false.
          */
-        boolean autoIncrement() default false;
+    boolean autoIncrement() default false;
 
         /**
          * If larger than zero, it is used during the CREATE TABLE phase. It
@@ -335,7 +335,7 @@ public interface Table {
          * setting if the model class is not annotated with JQTable.
          * Default: 0.
          */
-        int maxLength() default 0;
+    int maxLength() default 0;
 
         /**
          * If true, JaQu will automatically trim the
@@ -343,14 +343,14 @@ public interface Table {
          * (value.substring(0, maxLength)).
          * Default: false.
          */
-        boolean trimString() default false;
+    boolean trimString() default false;
 
         /**
          * If false, JaQu will set
          * the column NOT NULL during the CREATE TABLE phase.
          * Default: false.
          */
-        boolean allowNull() default false;
+    boolean allowNull() default false;
 
         /**
          * The default value assigned to the column during the CREATE TABLE
@@ -368,7 +368,7 @@ public interface Table {
          * "DEFAULT ..." phrase of a column during the CREATE TABLE process.
          * Default: unspecified (null).
          */
-        String defaultValue() default "";
+    String defaultValue() default "";
 
     }
 

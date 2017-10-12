@@ -83,8 +83,8 @@ public class FileContentHash {
                 }
                 long length = FileUtils.size(f);
                 String entry = "name_" + name +
-                        "-mod_" + FileUtils.lastModified(f) +
-                        "-size_" + length;
+                               "-mod_" + FileUtils.lastModified(f) +
+                               "-size_" + length;
                 String hash = propOld.getProperty(entry);
                 if (hash == null || FileUtils.isDirectory(f)) {
                     Info info = hash(f);

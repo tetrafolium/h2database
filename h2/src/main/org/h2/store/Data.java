@@ -231,11 +231,11 @@ public class Data {
                 chars[i] = (char) x;
             } else if (x >= 0xe0) {
                 chars[i] = (char) (((x & 0xf) << 12) +
-                        ((buff[p++] & 0x3f) << 6) +
-                        (buff[p++] & 0x3f));
+                                   ((buff[p++] & 0x3f) << 6) +
+                                   (buff[p++] & 0x3f));
             } else {
                 chars[i] = (char) (((x & 0x1f) << 6) +
-                        (buff[p++] & 0x3f));
+                                   (buff[p++] & 0x3f));
             }
         }
         pos = p;
@@ -428,7 +428,7 @@ public class Data {
         switch (type) {
         case Value.BOOLEAN:
             writeByte((byte) (v.getBoolean().booleanValue() ?
-                    BOOLEAN_TRUE : BOOLEAN_FALSE));
+                              BOOLEAN_TRUE : BOOLEAN_FALSE));
             break;
         case Value.BYTE:
             writeByte((byte) type);
@@ -547,7 +547,7 @@ public class Data {
             break;
         }
         case Value.GEOMETRY:
-            // fall though
+        // fall though
         case Value.JAVA_OBJECT: {
             writeByte((byte) type);
             byte[] b = v.getBytesNoCopy();
@@ -706,8 +706,8 @@ public class Data {
         if (SysProperties.CHECK2) {
             if (pos - start != getValueLen(v, handler)) {
                 throw DbException.throwInternalError(
-                            "value size error: got " + (pos - start) +
-                            " expected " + getValueLen(v, handler));
+                        "value size error: got " + (pos - start) +
+                        " expected " + getValueLen(v, handler));
             }
         }
     }
@@ -770,7 +770,7 @@ public class Data {
         case Value.TIME:
             // need to normalize the year, month and day
             return ValueTime.fromMillis(
-                    DateTimeUtils.getTimeUTCWithoutDst(readVarLong()));
+                           DateTimeUtils.getTimeUTCWithoutDst(readVarLong()));
         case LOCAL_TIMESTAMP: {
             long dateValue = readVarLong();
             long nanos = readVarLong() * 1000000 + readVarLong();
@@ -778,8 +778,8 @@ public class Data {
         }
         case Value.TIMESTAMP: {
             return ValueTimestamp.fromMillisNanos(
-                    DateTimeUtils.getTimeUTCWithoutDst(readVarLong()),
-                    readVarInt());
+                           DateTimeUtils.getTimeUTCWithoutDst(readVarLong()),
+                           readVarInt());
         }
         case Value.TIMESTAMP_TZ: {
             long dateValue = readVarLong();
@@ -823,10 +823,10 @@ public class Data {
             return ValueDouble.get(1);
         case Value.DOUBLE:
             return ValueDouble.get(Double.longBitsToDouble(
-                    Long.reverse(readVarLong())));
+                                           Long.reverse(readVarLong())));
         case Value.FLOAT:
             return ValueFloat.get(Float.intBitsToFloat(
-                    Integer.reverse(readVarInt())));
+                                          Integer.reverse(readVarInt())));
         case Value.BLOB:
         case Value.CLOB: {
             int smallLen = readVarInt();
@@ -839,7 +839,7 @@ public class Data {
                 long lobId = readVarLong();
                 long precision = readVarLong();
                 ValueLobDb lob = ValueLobDb.create(type, handler, tableId,
-                        lobId, null, precision);
+                                                   lobId, null, precision);
                 return lob;
             } else {
                 int tableId = readVarInt();
@@ -855,10 +855,10 @@ public class Data {
                 if (smallLen == -2) {
                     String filename = readString();
                     return ValueLob.openUnlinked(type, handler, tableId,
-                            objectId, precision, compression, filename);
+                                                 objectId, precision, compression, filename);
                 }
                 return ValueLob.openLinked(type, handler, tableId,
-                        objectId, precision, compression);
+                                           objectId, precision, compression);
             }
         }
         case Value.ARRAY: {
@@ -1029,11 +1029,11 @@ public class Data {
                 long millis = nanos / 1000000;
                 nanos -= millis * 1000000;
                 return 1 + getVarLongLen(dateValue) + getVarLongLen(millis) +
-                        getVarLongLen(nanos);
+                       getVarLongLen(nanos);
             }
             Timestamp ts = v.getTimestamp();
             return 1 + getVarLongLen(DateTimeUtils.getTimeLocalWithoutDst(ts)) +
-                    getVarIntLen(ts.getNanos() % 1000000);
+                   getVarIntLen(ts.getNanos() % 1000000);
         }
         case Value.TIMESTAMP_TZ: {
             ValueTimestampTimeZone ts = (ValueTimestampTimeZone) v;
@@ -1041,7 +1041,7 @@ public class Data {
             long nanos = ts.getTimeNanos();
             short tz = ts.getTimeZoneOffsetMins();
             return 1 + getVarLongLen(dateValue) + getVarLongLen(nanos) +
-                    getVarIntLen(tz);
+                   getVarIntLen(tz);
         }
         case Value.GEOMETRY:
         case Value.JAVA_OBJECT: {
@@ -1347,7 +1347,7 @@ public class Data {
      * @param target the output stream
      */
     public static void copyString(Reader source, OutputStream target)
-            throws IOException {
+    throws IOException {
         char[] buff = new char[Constants.IO_BUFFER_SIZE];
         Data d = new Data(null, new byte[3 * Constants.IO_BUFFER_SIZE]);
         while (true) {

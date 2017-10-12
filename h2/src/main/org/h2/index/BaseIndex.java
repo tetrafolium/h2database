@@ -50,7 +50,7 @@ public abstract class BaseIndex extends SchemaObjectBase implements Index {
      * @param newIndexType the index type
      */
     protected void initBaseIndex(Table newTable, int id, String name,
-            IndexColumn[] newIndexColumns, IndexType newIndexType) {
+                                 IndexColumn[] newIndexColumns, IndexType newIndexType) {
         initSchemaObjectBase(newTable.getSchema(), id, name, Trace.INDEX);
         this.indexType = newIndexType;
         this.table = newTable;
@@ -96,7 +96,7 @@ public abstract class BaseIndex extends SchemaObjectBase implements Index {
      */
     protected DbException getDuplicateKeyException(String key) {
         String sql = getName() + " ON " + table.getSQL() +
-                "(" + getColumnListSQL() + ")";
+                     "(" + getColumnListSQL() + ")";
         if (key != null) {
             sql += " VALUES " + key;
         }
@@ -160,8 +160,8 @@ public abstract class BaseIndex extends SchemaObjectBase implements Index {
      * @return the estimated cost
      */
     protected final long getCostRangeIndex(int[] masks, long rowCount,
-            TableFilter[] filters, int filter, SortOrder sortOrder,
-            boolean isScanIndex, HashSet<Column> allColumnsSet) {
+                                           TableFilter[] filters, int filter, SortOrder sortOrder,
+                                           boolean isScanIndex, HashSet<Column> allColumnsSet) {
         rowCount += Constants.COST_ROW_OFFSET;
         int totalSelectivity = 0;
         long rowsCost = rowCount;
@@ -176,7 +176,7 @@ public abstract class BaseIndex extends SchemaObjectBase implements Index {
                         break;
                     }
                     totalSelectivity = 100 - ((100 - totalSelectivity) *
-                            (100 - column.getSelectivity()) / 100);
+                                              (100 - column.getSelectivity()) / 100);
                     long distinctRows = rowCount * totalSelectivity / 100;
                     if (distinctRows <= 0) {
                         distinctRows = 1;

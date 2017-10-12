@@ -119,7 +119,7 @@ public class JavaProcessKiller {
                     throw new RuntimeException(e);
                 }
             }
-        }.start();
+        } .start();
     }
 
 }

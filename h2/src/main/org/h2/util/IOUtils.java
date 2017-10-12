@@ -120,7 +120,7 @@ public class IOUtils {
      * @return the number of bytes copied
      */
     public static long copyAndClose(InputStream in, OutputStream out)
-            throws IOException {
+    throws IOException {
         try {
             long len = copyAndCloseInput(in, out);
             out.close();
@@ -141,7 +141,7 @@ public class IOUtils {
      * @return the number of bytes copied
      */
     public static long copyAndCloseInput(InputStream in, OutputStream out)
-            throws IOException {
+    throws IOException {
         try {
             return copy(in, out);
         } catch (Exception e) {
@@ -160,7 +160,7 @@ public class IOUtils {
      * @return the number of bytes copied
      */
     public static long copy(InputStream in, OutputStream out)
-            throws IOException {
+    throws IOException {
         return copy(in, out, Long.MAX_VALUE);
     }
 
@@ -174,7 +174,7 @@ public class IOUtils {
      * @return the number of bytes copied
      */
     public static long copy(InputStream in, OutputStream out, long length)
-            throws IOException {
+    throws IOException {
         try {
             long copied = 0;
             int len = (int) Math.min(length, Constants.IO_BUFFER_SIZE);
@@ -207,7 +207,7 @@ public class IOUtils {
      * @return the number of characters copied
      */
     public static long copyAndCloseInput(Reader in, Writer out, long length)
-            throws IOException {
+    throws IOException {
         try {
             long copied = 0;
             int len = (int) Math.min(length, Constants.IO_BUFFER_SIZE);
@@ -288,7 +288,7 @@ public class IOUtils {
      * @return the bytes read
      */
     public static byte[] readBytesAndClose(InputStream in, int length)
-            throws IOException {
+    throws IOException {
         try {
             if (length <= 0) {
                 length = Integer.MAX_VALUE;
@@ -313,7 +313,7 @@ public class IOUtils {
      * @return the string read
      */
     public static String readStringAndClose(Reader in, int length)
-            throws IOException {
+    throws IOException {
         try {
             if (length <= 0) {
                 length = Integer.MAX_VALUE;
@@ -338,7 +338,7 @@ public class IOUtils {
      * @return the number of bytes read, 0 meaning EOF
      */
     public static int readFully(InputStream in, byte[] buffer, int max)
-            throws IOException {
+    throws IOException {
         try {
             int result = 0, len = Math.min(max, buffer.length);
             while (len > 0) {
@@ -366,7 +366,7 @@ public class IOUtils {
      * @return the number of characters read, 0 meaning EOF
      */
     public static int readFully(Reader in, char[] buffer, int max)
-            throws IOException {
+    throws IOException {
         try {
             int result = 0, len = Math.min(max, buffer.length);
             while (len > 0) {
@@ -394,7 +394,7 @@ public class IOUtils {
      */
     public static Reader getBufferedReader(InputStream in) {
         return in == null ? null : new BufferedReader(
-                new InputStreamReader(in, Constants.UTF8));
+                       new InputStreamReader(in, Constants.UTF8));
     }
 
     /**
@@ -409,7 +409,7 @@ public class IOUtils {
     public static Reader getReader(InputStream in) {
         // InputStreamReader may read some more bytes
         return in == null ? null : new BufferedReader(
-                new InputStreamReader(in, Constants.UTF8));
+                       new InputStreamReader(in, Constants.UTF8));
     }
 
     /**
@@ -421,7 +421,7 @@ public class IOUtils {
      */
     public static Writer getBufferedWriter(OutputStream out) {
         return out == null ? null : new BufferedWriter(
-                new OutputStreamWriter(out, Constants.UTF8));
+                       new OutputStreamWriter(out, Constants.UTF8));
     }
 
     /**

@@ -90,7 +90,7 @@ public class RecoverTester implements Recorder {
         try {
             out = new PrintWriter(
                     new OutputStreamWriter(
-                    FileUtils.newOutputStream(fileName + ".log", true)));
+                            FileUtils.newOutputStream(fileName + ".log", true)));
             testDatabase(fileName, out);
         } catch (IOException e) {
             throw DbException.convertIOException(e, null);
@@ -105,8 +105,8 @@ public class RecoverTester implements Recorder {
         try {
             IOUtils.copyFiles(fileName, testDatabase + Constants.SUFFIX_PAGE_FILE);
             String mvFileName = fileName.substring(0, fileName.length() -
-                    Constants.SUFFIX_PAGE_FILE.length()) +
-                    Constants.SUFFIX_MV_FILE;
+                                                   Constants.SUFFIX_PAGE_FILE.length()) +
+                                Constants.SUFFIX_MV_FILE;
             if (FileUtils.exists(mvFileName)) {
                 IOUtils.copyFiles(mvFileName, testDatabase + Constants.SUFFIX_MV_FILE);
             }
@@ -116,7 +116,7 @@ public class RecoverTester implements Recorder {
             p.setProperty("user", "");
             p.setProperty("password", "");
             ConnectionInfo ci = new ConnectionInfo("jdbc:h2:" + testDatabase +
-                    ";FILE_LOCK=NO;TRACE_LEVEL_FILE=0", p);
+                                                   ";FILE_LOCK=NO;TRACE_LEVEL_FILE=0", p);
             Database database = new Database(ci, null);
             // close the database
             Session sysSession = database.getSystemSession();
@@ -159,7 +159,7 @@ public class RecoverTester implements Recorder {
             // avoid using the Engine class to avoid deadlocks
             Properties p = new Properties();
             ConnectionInfo ci = new ConnectionInfo("jdbc:h2:" +
-                        testDatabase + ";FILE_LOCK=NO", p);
+                                                   testDatabase + ";FILE_LOCK=NO", p);
             Database database = new Database(ci, null);
             // close the database
             database.removeSession(null);

@@ -75,48 +75,48 @@ public class WebServer implements Service {
 
     private static final String[] GENERIC = {
         "Generic JNDI Data Source|javax.naming.InitialContext|" +
-                "java:comp/env/jdbc/Test|sa",
+        "java:comp/env/jdbc/Test|sa",
         "Generic Teradata|com.teradata.jdbc.TeraDriver|" +
-                "jdbc:teradata://whomooz/|",
+        "jdbc:teradata://whomooz/|",
         "Generic Snowflake|com.snowflake.client.jdbc.SnowflakeDriver|" +
-                "jdbc:snowflake://accountName.snowflakecomputing.com|",
+        "jdbc:snowflake://accountName.snowflakecomputing.com|",
         "Generic Redshift|com.amazon.redshift.jdbc42.Driver|" +
-                "jdbc:redshift://endpoint:5439/database|",
+        "jdbc:redshift://endpoint:5439/database|",
         "Generic Impala|org.cloudera.impala.jdbc41.Driver|" +
-                "jdbc:impala://clustername:21050/default|",
+        "jdbc:impala://clustername:21050/default|",
         "Generic Hive 2|org.apache.hive.jdbc.HiveDriver|" +
-                "jdbc:hive2://clustername:10000/default|",
+        "jdbc:hive2://clustername:10000/default|",
         "Generic Hive|org.apache.hadoop.hive.jdbc.HiveDriver|" +
-                "jdbc:hive://clustername:10000/default|",
+        "jdbc:hive://clustername:10000/default|",
         "Generic Azure SQL|com.microsoft.sqlserver.jdbc.SQLServerDriver|" +
-                "jdbc:sqlserver://name.database.windows.net:1433|",
+        "jdbc:sqlserver://name.database.windows.net:1433|",
         "Generic Firebird Server|org.firebirdsql.jdbc.FBDriver|" +
-                "jdbc:firebirdsql:localhost:c:/temp/firebird/test|sysdba",
+        "jdbc:firebirdsql:localhost:c:/temp/firebird/test|sysdba",
         "Generic SQLite|org.sqlite.JDBC|" +
-                "jdbc:sqlite:test|sa",
+        "jdbc:sqlite:test|sa",
         "Generic DB2|com.ibm.db2.jcc.DB2Driver|" +
-                "jdbc:db2://localhost/test|" ,
+        "jdbc:db2://localhost/test|",
         "Generic Oracle|oracle.jdbc.driver.OracleDriver|" +
-                    "jdbc:oracle:thin:@localhost:1521:XE|sa" ,
+        "jdbc:oracle:thin:@localhost:1521:XE|sa",
         "Generic MS SQL Server 2000|com.microsoft.jdbc.sqlserver.SQLServerDriver|" +
-                "jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=sqlexpress|sa",
+        "jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=sqlexpress|sa",
         "Generic MS SQL Server 2005|com.microsoft.sqlserver.jdbc.SQLServerDriver|" +
-                "jdbc:sqlserver://localhost;DatabaseName=test|sa",
+        "jdbc:sqlserver://localhost;DatabaseName=test|sa",
         "Generic PostgreSQL|org.postgresql.Driver|" +
-                "jdbc:postgresql:test|" ,
+        "jdbc:postgresql:test|",
         "Generic MySQL|com.mysql.jdbc.Driver|" +
-                "jdbc:mysql://localhost:3306/test|" ,
+        "jdbc:mysql://localhost:3306/test|",
         "Generic HSQLDB|org.hsqldb.jdbcDriver|" +
-                "jdbc:hsqldb:test;hsqldb.default_table_type=cached|sa" ,
+        "jdbc:hsqldb:test;hsqldb.default_table_type=cached|sa",
         "Generic Derby (Server)|org.apache.derby.jdbc.ClientDriver|" +
-                "jdbc:derby://localhost:1527/test;create=true|sa",
+        "jdbc:derby://localhost:1527/test;create=true|sa",
         "Generic Derby (Embedded)|org.apache.derby.jdbc.EmbeddedDriver|" +
-                "jdbc:derby:test;create=true|sa",
+        "jdbc:derby:test;create=true|sa",
         "Generic H2 (Server)|org.h2.Driver|" +
-                "jdbc:h2:tcp://localhost/~/test|sa",
+        "jdbc:h2:tcp://localhost/~/test|sa",
         // this will be listed on top for new installations
         "Generic H2 (Embedded)|org.h2.Driver|" +
-                "jdbc:h2:~/test|sa",
+        "jdbc:h2:~/test|sa",
     };
 
     private static int ticker;
@@ -289,11 +289,11 @@ public class WebServer implements Service {
         }
         Properties prop = loadProperties();
         port = SortedProperties.getIntProperty(prop,
-                "webPort", Constants.DEFAULT_HTTP_PORT);
+                                               "webPort", Constants.DEFAULT_HTTP_PORT);
         ssl = SortedProperties.getBooleanProperty(prop,
                 "webSSL", false);
         allowOthers = SortedProperties.getBooleanProperty(prop,
-                "webAllowOthers", false);
+                      "webAllowOthers", false);
         commandHistoryString = prop.getProperty(COMMAND_HISTORY);
         for (int i = 0; args != null && i < args.length; i++) {
             String a = args[i];
@@ -345,7 +345,7 @@ public class WebServer implements Service {
     private void updateURL() {
         try {
             url = (ssl ? "https" : "http") + "://" +
-                    NetUtils.getLocalAddress() + ":" + port;
+                  NetUtils.getLocalAddress() + ":" + port;
         } catch (NoClassDefFoundError e) {
             // Google App Engine does not allow java.net.InetAddress
         }
@@ -562,7 +562,7 @@ public class WebServer implements Service {
                     break;
                 }
             } else if (commandHistoryString.charAt(end) == '\\' &&
-                    end < commandHistoryString.length() - 1) {
+                       end < commandHistoryString.length() - 1) {
                 sb.append(commandHistoryString.charAt(++end));
             } else {
                 sb.append(commandHistoryString.charAt(end));
@@ -623,7 +623,7 @@ public class WebServer implements Service {
                 return new Properties();
             }
             return SortedProperties.loadProperties(
-                    serverPropertiesDir + "/" + Constants.SERVER_PROPERTIES_NAME);
+                           serverPropertiesDir + "/" + Constants.SERVER_PROPERTIES_NAME);
         } catch (Exception e) {
             DbException.traceThrowable(e);
             return new Properties();
@@ -688,14 +688,14 @@ public class WebServer implements Service {
                 Properties old = loadProperties();
                 prop = new SortedProperties();
                 prop.setProperty("webPort",
-                        "" + SortedProperties.getIntProperty(old,
-                        "webPort", port));
+                                 "" + SortedProperties.getIntProperty(old,
+                                         "webPort", port));
                 prop.setProperty("webAllowOthers",
-                        "" + SortedProperties.getBooleanProperty(old,
-                        "webAllowOthers", allowOthers));
+                                 "" + SortedProperties.getBooleanProperty(old,
+                                         "webAllowOthers", allowOthers));
                 prop.setProperty("webSSL",
-                        "" + SortedProperties.getBooleanProperty(old,
-                        "webSSL", ssl));
+                                 "" + SortedProperties.getBooleanProperty(old,
+                                         "webSSL", ssl));
                 if (commandHistoryString != null) {
                     prop.setProperty(COMMAND_HISTORY, commandHistoryString);
                 }
@@ -710,7 +710,7 @@ public class WebServer implements Service {
             }
             if (!"null".equals(serverPropertiesDir)) {
                 OutputStream out = FileUtils.newOutputStream(
-                        serverPropertiesDir + "/" + Constants.SERVER_PROPERTIES_NAME, false);
+                                           serverPropertiesDir + "/" + Constants.SERVER_PROPERTIES_NAME, false);
                 prop.store(out, "H2 Server Properties");
                 out.close();
             }
@@ -729,7 +729,7 @@ public class WebServer implements Service {
      * @return the database connection
      */
     Connection getConnection(String driver, String databaseUrl, String user,
-            String password) throws SQLException {
+                             String password) throws SQLException {
         driver = driver.trim();
         databaseUrl = databaseUrl.trim();
         org.h2.Driver.load();

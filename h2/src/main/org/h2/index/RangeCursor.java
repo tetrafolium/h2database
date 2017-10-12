@@ -53,7 +53,7 @@ class RangeCursor implements Cursor {
         } else {
             current += step;
         }
-        currentRow = session.createRow(new Value[]{ValueLong.get(current)}, 1);
+        currentRow = session.createRow(new Value[] {ValueLong.get(current)}, 1);
         return step > 0 ? current <= end : current >= end;
     }
 

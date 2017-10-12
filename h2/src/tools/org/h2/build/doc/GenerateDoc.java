@@ -69,37 +69,37 @@ public class GenerateDoc {
         session.put("stableVersionDate", Constants.BUILD_DATE_STABLE);
         // String help = "SELECT * FROM INFORMATION_SCHEMA.HELP WHERE SECTION";
         String help = "SELECT ROWNUM ID, * FROM CSVREAD('" +
-                IN_HELP + "', NULL, 'lineComment=#') WHERE SECTION ";
+                      IN_HELP + "', NULL, 'lineComment=#') WHERE SECTION ";
         map("commands",
-                help + "LIKE 'Commands%' ORDER BY ID", true);
+            help + "LIKE 'Commands%' ORDER BY ID", true);
         map("commandsDML",
-                help + "= 'Commands (DML)' ORDER BY ID", false);
+            help + "= 'Commands (DML)' ORDER BY ID", false);
         map("commandsDDL",
-                help + "= 'Commands (DDL)' ORDER BY ID", false);
+            help + "= 'Commands (DDL)' ORDER BY ID", false);
         map("commandsOther",
-                help + "= 'Commands (Other)' ORDER BY ID", false);
+            help + "= 'Commands (Other)' ORDER BY ID", false);
         map("otherGrammar",
-                help + "= 'Other Grammar' ORDER BY ID", true);
+            help + "= 'Other Grammar' ORDER BY ID", true);
         map("functionsAggregate",
-                help + "= 'Functions (Aggregate)' ORDER BY ID", false);
+            help + "= 'Functions (Aggregate)' ORDER BY ID", false);
         map("functionsNumeric",
-                help + "= 'Functions (Numeric)' ORDER BY ID", false);
+            help + "= 'Functions (Numeric)' ORDER BY ID", false);
         map("functionsString",
-                help + "= 'Functions (String)' ORDER BY ID", false);
+            help + "= 'Functions (String)' ORDER BY ID", false);
         map("functionsTimeDate",
-                help + "= 'Functions (Time and Date)' ORDER BY ID", false);
+            help + "= 'Functions (Time and Date)' ORDER BY ID", false);
         map("functionsSystem",
-                help + "= 'Functions (System)' ORDER BY ID", false);
+            help + "= 'Functions (System)' ORDER BY ID", false);
         map("functionsAll",
-                help + "LIKE 'Functions%' ORDER BY SECTION, ID", true);
+            help + "LIKE 'Functions%' ORDER BY SECTION, ID", true);
         map("dataTypes",
-                help + "LIKE 'Data Types%' ORDER BY SECTION, ID", true);
+            help + "LIKE 'Data Types%' ORDER BY SECTION, ID", true);
         map("informationSchema", "SELECT TABLE_NAME TOPIC, " +
-                "GROUP_CONCAT(COLUMN_NAME " +
-                "ORDER BY ORDINAL_POSITION SEPARATOR ', ') SYNTAX " +
-                "FROM INFORMATION_SCHEMA.COLUMNS " +
-                "WHERE TABLE_SCHEMA='INFORMATION_SCHEMA' " +
-                "GROUP BY TABLE_NAME ORDER BY TABLE_NAME", false);
+            "GROUP_CONCAT(COLUMN_NAME " +
+            "ORDER BY ORDINAL_POSITION SEPARATOR ', ') SYNTAX " +
+            "FROM INFORMATION_SCHEMA.COLUMNS " +
+            "WHERE TABLE_SCHEMA='INFORMATION_SCHEMA' " +
+            "GROUP BY TABLE_NAME ORDER BY TABLE_NAME", false);
         processAll("");
         conn.close();
     }
@@ -135,7 +135,7 @@ public class GenerateDoc {
     }
 
     private void map(String key, String sql, boolean railroads)
-            throws Exception {
+    throws Exception {
         ResultSet rs = null;
         Statement stat = null;
         try {
@@ -168,9 +168,9 @@ public class GenerateDoc {
                 if (text != null) {
                     // text is enclosed in <p> .. </p> so this works.
                     text = StringUtils.replaceAll(text,
-                            "<br /><br />", "</p><p>");
+                                                  "<br /><br />", "</p><p>");
                     text = StringUtils.replaceAll(text,
-                            "<br />", " ");
+                                                  "<br />", " ");
                     text = addCode(text);
                     map.put("text", text);
                 }

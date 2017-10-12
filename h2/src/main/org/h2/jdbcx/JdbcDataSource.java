@@ -60,8 +60,8 @@ import org.h2.util.StringUtils;
  * well; this may be a security problem in some cases.
  */
 public class JdbcDataSource extends TraceObject implements XADataSource,
-        DataSource, ConnectionPoolDataSource, Serializable, Referenceable,
-        JdbcDataSourceBackwardsCompat {
+    DataSource, ConnectionPoolDataSource, Serializable, Referenceable,
+    JdbcDataSourceBackwardsCompat {
 
     private static final long serialVersionUID = 1288136338451857771L;
 
@@ -92,7 +92,7 @@ public class JdbcDataSource extends TraceObject implements XADataSource,
      * @param in the input stream
      */
     private void readObject(ObjectInputStream in) throws IOException,
-            ClassNotFoundException {
+        ClassNotFoundException {
         initFactory();
         in.defaultReadObject();
     }
@@ -157,7 +157,7 @@ public class JdbcDataSource extends TraceObject implements XADataSource,
     public Connection getConnection() throws SQLException {
         debugCodeCall("getConnection");
         return getJdbcConnection(userName,
-                StringUtils.cloneCharArray(passwordChars));
+                                 StringUtils.cloneCharArray(passwordChars));
     }
 
     /**
@@ -170,7 +170,7 @@ public class JdbcDataSource extends TraceObject implements XADataSource,
      */
     @Override
     public Connection getConnection(String user, String password)
-            throws SQLException {
+    throws SQLException {
         if (isDebugEnabled()) {
             debugCode("getConnection("+quote(user)+", \"\");");
         }
@@ -178,7 +178,7 @@ public class JdbcDataSource extends TraceObject implements XADataSource,
     }
 
     private JdbcConnection getJdbcConnection(String user, char[] password)
-            throws SQLException {
+    throws SQLException {
         if (isDebugEnabled()) {
             debugCode("getJdbcConnection("+quote(user)+", new char[0]);");
         }
@@ -188,7 +188,7 @@ public class JdbcDataSource extends TraceObject implements XADataSource,
         Connection conn = Driver.load().connect(url, info);
         if (conn == null) {
             throw new SQLException("No suitable driver found for " + url,
-                    "08001", 8001);
+                                   "08001", 8001);
         } else if (!(conn instanceof JdbcConnection)) {
             throw new SQLException(
                     "Connecting with old version is not supported: " + url,
@@ -349,7 +349,7 @@ public class JdbcDataSource extends TraceObject implements XADataSource,
         debugCodeCall("getXAConnection");
         int id = getNextId(XA_DATA_SOURCE);
         return new JdbcXAConnection(factory, id, getJdbcConnection(userName,
-                StringUtils.cloneCharArray(passwordChars)));
+                                    StringUtils.cloneCharArray(passwordChars)));
     }
 
     /**
@@ -362,13 +362,13 @@ public class JdbcDataSource extends TraceObject implements XADataSource,
      */
     @Override
     public XAConnection getXAConnection(String user, String password)
-            throws SQLException {
+    throws SQLException {
         if (isDebugEnabled()) {
             debugCode("getXAConnection("+quote(user)+", \"\");");
         }
         int id = getNextId(XA_DATA_SOURCE);
         return new JdbcXAConnection(factory, id, getJdbcConnection(user,
-                convertToCharArray(password)));
+                                    convertToCharArray(password)));
     }
 
     /**
@@ -393,7 +393,7 @@ public class JdbcDataSource extends TraceObject implements XADataSource,
      */
     @Override
     public PooledConnection getPooledConnection(String user, String password)
-            throws SQLException {
+    throws SQLException {
         if (isDebugEnabled()) {
             debugCode("getPooledConnection("+quote(user)+", \"\");");
         }

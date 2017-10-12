@@ -35,7 +35,7 @@ public class ResultRemote implements ResultInterface {
     private final Trace trace;
 
     public ResultRemote(SessionRemote session, Transfer transfer, int id,
-            int columnCount, int fetchSize) throws IOException {
+                        int columnCount, int fetchSize) throws IOException {
         this.session = session;
         trace = session.getTrace();
         this.transfer = transfer;
@@ -225,7 +225,7 @@ public class ResultRemote implements ResultInterface {
                 if (sendFetch) {
                     session.traceOperation("RESULT_FETCH_ROWS", id);
                     transfer.writeInt(SessionRemote.RESULT_FETCH_ROWS).
-                            writeInt(id).writeInt(fetch);
+                    writeInt(id).writeInt(fetch);
                     session.done(transfer);
                 }
                 for (int r = 0; r < fetch; r++) {

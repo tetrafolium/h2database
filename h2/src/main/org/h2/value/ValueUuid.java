@@ -133,7 +133,7 @@ public class ValueUuid extends Value {
     private static void appendHex(StringBuilder buff, long x, int bytes) {
         for (int i = bytes * 8 - 4; i >= 0; i -= 8) {
             buff.append(Integer.toHexString((int) (x >> i) & 0xf)).
-                append(Integer.toHexString((int) (x >> (i - 4)) & 0xf));
+            append(Integer.toHexString((int) (x >> (i - 4)) & 0xf));
         }
     }
 
@@ -186,7 +186,7 @@ public class ValueUuid extends Value {
 
     @Override
     public void set(PreparedStatement prep, int parameterIndex)
-            throws SQLException {
+    throws SQLException {
         prep.setBytes(parameterIndex, getBytes());
     }
 

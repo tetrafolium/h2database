@@ -28,8 +28,7 @@ import org.h2.value.Value;
 /**
  * Represents a CLOB value.
  */
-public class JdbcClob extends TraceObject implements NClob
-{
+public class JdbcClob extends TraceObject implements NClob {
 
     Value value;
     private final JdbcConnection conn;
@@ -231,7 +230,7 @@ public class JdbcClob extends TraceObject implements NClob
      */
     @Override
     public int setString(long pos, String str, int offset, int len)
-            throws SQLException {
+    throws SQLException {
         throw unsupported("LOB update");
     }
 
@@ -281,7 +280,7 @@ public class JdbcClob extends TraceObject implements NClob
     @Override
     public String toString() {
         return getTraceObjectName() + ": " + (value == null ?
-                "null" : value.getTraceSQL());
+                                              "null" : value.getTraceSQL());
     }
 
 }

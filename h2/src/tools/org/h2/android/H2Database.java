@@ -111,7 +111,7 @@ public class H2Database {
      * @return a connection to this database
      */
     public static H2Database openDatabase(String path,
-            H2Database.CursorFactory factory, int flags) {
+                                          H2Database.CursorFactory factory, int flags) {
         ConnectionInfo ci = new ConnectionInfo(path);
         if ((flags & OPEN_READWRITE) != 0) {
             // TODO readonly connections
@@ -310,7 +310,7 @@ public class H2Database {
      * @return TODO
      */
     public long insertOrThrow(String table, String nullColumnHack,
-            ContentValues values) {
+                              ContentValues values) {
         return 0;
     }
 
@@ -324,7 +324,7 @@ public class H2Database {
      * @return TODO
      */
     public long insertWithOnConflict(String table, String nullColumnHack,
-            ContentValues initialValues, int conflictAlgorithm) {
+                                     ContentValues initialValues, int conflictAlgorithm) {
         return 0;
     }
 
@@ -382,7 +382,7 @@ public class H2Database {
      * @param updateTable TODO
      */
     public void markTableSyncable(String table, String foreignKey,
-            String updateTable) {
+                                  String updateTable) {
         // TODO
     }
 
@@ -411,8 +411,8 @@ public class H2Database {
      * @return the cursor
      */
     public Cursor query(boolean distinct, String table, String[] columns,
-            String selection, String[] selectionArgs, String groupBy,
-            String having, String orderBy, String limit) {
+                        String selection, String[] selectionArgs, String groupBy,
+                        String having, String orderBy, String limit) {
         return null;
     }
 
@@ -429,8 +429,8 @@ public class H2Database {
      * @return the cursor
      */
     public Cursor query(String table, String[] columns, String selection,
-            String[] selectionArgs, String groupBy, String having,
-            String orderBy) {
+                        String[] selectionArgs, String groupBy, String having,
+                        String orderBy) {
         return null;
     }
 
@@ -448,8 +448,8 @@ public class H2Database {
      * @return the cursor
      */
     public Cursor query(String table, String[] columns, String selection,
-            String[] selectionArgs, String groupBy, String having,
-            String orderBy, String limit) {
+                        String[] selectionArgs, String groupBy, String having,
+                        String orderBy, String limit) {
         return null;
     }
 
@@ -469,9 +469,9 @@ public class H2Database {
      * @return the cursor
      */
     public Cursor queryWithFactory(H2Database.CursorFactory cursorFactory,
-            boolean distinct, String table, String[] columns, String selection,
-            String[] selectionArgs, String groupBy, String having,
-            String orderBy, String limit) {
+                                   boolean distinct, String table, String[] columns, String selection,
+                                   String[] selectionArgs, String groupBy, String having,
+                                   String orderBy, String limit) {
         return null;
     }
 
@@ -498,7 +498,7 @@ public class H2Database {
      * @return the cursor
      */
     public Cursor rawQueryWithFactory(H2Database.CursorFactory cursorFactory,
-            String sql, String[] selectionArgs, String editTable) {
+                                      String sql, String[] selectionArgs, String editTable) {
         return null;
     }
 
@@ -520,7 +520,7 @@ public class H2Database {
      * @return TODO
      */
     public long replace(String table, String nullColumnHack,
-            ContentValues initialValues) {
+                        ContentValues initialValues) {
         return 0;
     }
 
@@ -533,7 +533,7 @@ public class H2Database {
      * @return TODO
      */
     public long replaceOrThrow(String table, String nullColumnHack,
-            ContentValues initialValues) {
+                               ContentValues initialValues) {
         return 0;
     }
 
@@ -601,7 +601,7 @@ public class H2Database {
      * @return the number of rows updated
      */
     public int update(String table, ContentValues values, String whereClause,
-            String[] whereArgs) {
+                      String[] whereArgs) {
         return 0;
     }
 
@@ -616,7 +616,7 @@ public class H2Database {
      * @return the number of rows updated
      */
     public int updateWithOnConflict(String table, ContentValues values,
-            String whereClause, String[] whereArgs, int conflictAlgorithm) {
+                                    String whereClause, String[] whereArgs, int conflictAlgorithm) {
         return 0;
     }
 
@@ -665,7 +665,7 @@ public class H2Database {
          * @return the cursor
          */
         Cursor newCursor(H2Database db, H2CursorDriver masterQuery,
-                String editTable, H2Query query);
+                         String editTable, H2Query query);
     }
 
     private Prepared prepare(String sql, Object[] args) {

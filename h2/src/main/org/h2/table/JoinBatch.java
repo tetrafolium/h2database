@@ -441,8 +441,8 @@ public final class JoinBatch {
     @Override
     public String toString() {
         return "JoinBatch->\n" + "prev->" + (current == null ? null : current.prev) +
-                "\n" + "curr->" + current +
-                "\n" + "next->" + (current == null ? null : current.next);
+               "\n" + "curr->" + current +
+               "\n" + "next->" + (current == null ? null : current.next);
     }
 
     /**
@@ -770,7 +770,7 @@ public final class JoinBatch {
      * @param <R> Runner type.
      */
     private abstract static class ViewIndexLookupBatchBase<R extends QueryRunnerBase>
-            implements IndexLookupBatch {
+        implements IndexLookupBatch {
         protected final ViewIndex viewIndex;
         private final ArrayList<Future<Cursor>> result = New.arrayList();
         private int resultSize;
@@ -924,9 +924,9 @@ public final class JoinBatch {
             List<Future<Cursor>> topFutureCursors = top.find();
             if (topFutureCursors.size() != resultSize) {
                 throw DbException
-                        .throwInternalError("Unexpected result size: " +
-                                topFutureCursors.size() + ", expected :" +
-                                resultSize);
+                .throwInternalError("Unexpected result size: " +
+                                    topFutureCursors.size() + ", expected :" +
+                                    resultSize);
             }
             for (int i = 0; i < resultSize; i++) {
                 QueryRunner r = queryRunner(i);
@@ -983,7 +983,7 @@ public final class JoinBatch {
      * View index lookup batch for UNION queries.
      */
     private static final class ViewIndexLookupBatchUnion
-            extends ViewIndexLookupBatchBase<QueryRunnerUnion> {
+        extends ViewIndexLookupBatchBase<QueryRunnerUnion> {
         ArrayList<JoinFilter> filters;
         ArrayList<JoinBatch> joinBatches;
         private boolean onlyBatchedQueries = true;
@@ -1000,7 +1000,7 @@ public final class JoinBatch {
             if (query.isUnion()) {
                 SelectUnion union = (SelectUnion) query;
                 return collectJoinBatches(union.getLeft()) &&
-                        collectJoinBatches(union.getRight());
+                       collectJoinBatches(union.getRight());
             }
             Select select = (Select) query;
             JoinBatch jb = select.getJoinBatch();

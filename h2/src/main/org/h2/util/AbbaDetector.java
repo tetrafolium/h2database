@@ -20,11 +20,11 @@ public class AbbaDetector {
     private static final boolean TRACE = false;
 
     private static final ThreadLocal<Deque<Object>> STACK =
-            new ThreadLocal<Deque<Object>>() {
-                @Override protected Deque<Object> initialValue() {
-                    return new ArrayDeque<>();
-            }
-        };
+    new ThreadLocal<Deque<Object>>() {
+        @Override protected Deque<Object> initialValue() {
+            return new ArrayDeque<>();
+        }
+    };
 
     /**
      * Map of (object A) -> (
@@ -47,7 +47,7 @@ public class AbbaDetector {
         if (o == null) {
             o = new SecurityManager() {
                 Class<?> clazz = getClassContext()[2];
-            }.clazz;
+            } .clazz;
         }
         Deque<Object> stack = STACK.get();
         if (!stack.isEmpty()) {
@@ -69,7 +69,7 @@ public class AbbaDetector {
             String thread = "[thread " + Thread.currentThread().getId() + "]";
             String indent = new String(new char[stack.size() * 2]).replace((char) 0, ' ');
             System.out.println(thread + " " + indent +
-                    "sync " + getObjectName(o));
+                               "sync " + getObjectName(o));
         }
         if (stack.size() > 0) {
             markHigher(o, stack);
@@ -107,8 +107,8 @@ public class AbbaDetector {
                     String deadlockType = test.getClass() + " " + oldTest.getClass();
                     if (!KNOWN_DEADLOCKS.contains(deadlockType)) {
                         String message = getObjectName(test) +
-                                " synchronized after \n " + getObjectName(oldTest) +
-                                ", but in the past before";
+                                         " synchronized after \n " + getObjectName(oldTest) +
+                                         ", but in the past before";
                         RuntimeException ex = new RuntimeException(message);
                         ex.initCause(e);
                         ex.printStackTrace(System.out);

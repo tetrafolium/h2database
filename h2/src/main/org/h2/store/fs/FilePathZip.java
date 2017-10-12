@@ -236,7 +236,7 @@ public class FilePathZip extends FilePath {
 
     @Override
     public FilePath createTempFile(String suffix, boolean deleteOnExit,
-            boolean inTempDir) throws IOException {
+                                   boolean inTempDir) throws IOException {
         if (!inTempDir) {
             throw new IOException("File system is read-only");
         }
@@ -288,7 +288,7 @@ class FileZip extends FileBase {
     public int read(ByteBuffer dst) throws IOException {
         seek();
         int len = in.read(dst.array(), dst.arrayOffset() + dst.position(),
-                dst.remaining());
+                          dst.remaining());
         if (len > 0) {
             dst.position(dst.position() + len);
             pos += len;
@@ -352,7 +352,7 @@ class FileZip extends FileBase {
 
     @Override
     public synchronized FileLock tryLock(long position, long size,
-            boolean shared) throws IOException {
+                                         boolean shared) throws IOException {
         if (shared) {
             // cast to FileChannel to avoid JDK 1.7 ambiguity
             return new FileLock((FileChannel) null, position, size, shared) {
@@ -365,7 +365,8 @@ class FileZip extends FileBase {
                 @Override
                 public void release() throws IOException {
                     // ignore
-                }};
+                }
+            };
         }
         return null;
     }

@@ -67,7 +67,7 @@ public class FunctionAlias extends SchemaObjectBase {
         FunctionAlias alias = new FunctionAlias(schema, id, name);
         int paren = javaClassMethod.indexOf('(');
         int lastDot = javaClassMethod.lastIndexOf('.', paren < 0 ?
-                javaClassMethod.length() : paren);
+                      javaClassMethod.length() : paren);
         if (lastDot < 0) {
             throw DbException.get(ErrorCode.SYNTAX_ERROR_1, javaClassMethod);
         }
@@ -156,8 +156,8 @@ public class FunctionAlias extends SchemaObjectBase {
                 for (JavaMethod old : list) {
                     if (old.getParameterCount() == javaMethod.getParameterCount()) {
                         throw DbException.get(ErrorCode.
-                                METHODS_MUST_HAVE_DIFFERENT_PARAMETER_COUNTS_2,
-                                old.toString(), javaMethod.toString());
+                                              METHODS_MUST_HAVE_DIFFERENT_PARAMETER_COUNTS_2,
+                                              old.toString(), javaMethod.toString());
                     }
                 }
                 list.add(javaMethod);
@@ -227,7 +227,7 @@ public class FunctionAlias extends SchemaObjectBase {
             buff.append(" AS ").append(StringUtils.quoteStringSQL(source));
         } else {
             buff.append(" FOR ").append(Parser.quoteIdentifier(
-                    className + "." + methodName));
+                                                className + "." + methodName));
         }
         return buff.toString();
     }
@@ -264,12 +264,12 @@ public class FunctionAlias extends SchemaObjectBase {
         for (JavaMethod m : javaMethods) {
             int count = m.getParameterCount();
             if (count == parameterCount || (m.isVarArgs() &&
-                    count <= parameterCount + 1)) {
+                                            count <= parameterCount + 1)) {
                 return m;
             }
         }
         throw DbException.get(ErrorCode.METHOD_NOT_FOUND_1, getName() + " (" +
-                className + ", parameter count: " + parameterCount + ")");
+                              className + ", parameter count: " + parameterCount + ")");
     }
 
     public String getJavaClassName() {
@@ -395,7 +395,7 @@ public class FunctionAlias extends SchemaObjectBase {
          * @return the value
          */
         public Value getValue(Session session, Expression[] args,
-                boolean columnList) {
+                              boolean columnList) {
             Class<?>[] paramClasses = method.getParameterTypes();
             Object[] params = new Object[paramClasses.length];
             int p = 0;
@@ -407,14 +407,14 @@ public class FunctionAlias extends SchemaObjectBase {
             Object varArg = null;
             if (varArgs) {
                 int len = args.length - params.length + 1 +
-                        (hasConnectionParam ? 1 : 0);
+                          (hasConnectionParam ? 1 : 0);
                 varArg = Array.newInstance(varArgClass, len);
                 params[params.length - 1] = varArg;
             }
 
             for (int a = 0, len = args.length; a < len; a++, p++) {
                 boolean currentIsVarArg = varArgs &&
-                        p >= paramClasses.length - 1;
+                                          p >= paramClasses.length - 1;
                 Class<?> paramClass;
                 if (currentIsVarArg) {
                     paramClass = varArgClass;
@@ -427,13 +427,13 @@ public class FunctionAlias extends SchemaObjectBase {
                 if (Value.class.isAssignableFrom(paramClass)) {
                     o = v;
                 } else if (v.getType() == Value.ARRAY &&
-                        paramClass.isArray() &&
-                        paramClass.getComponentType() != Object.class) {
+                           paramClass.isArray() &&
+                           paramClass.getComponentType() != Object.class) {
                     Value[] array = ((ValueArray) v).getList();
                     Object[] objArray = (Object[]) Array.newInstance(
-                            paramClass.getComponentType(), array.length);
+                                                paramClass.getComponentType(), array.length);
                     int componentType = DataType.getTypeFromClass(
-                            paramClass.getComponentType());
+                                                paramClass.getComponentType());
                     for (int i = 0; i < objArray.length; i++) {
                         objArray[i] = array[i].convertTo(componentType).getObject();
                     }
@@ -468,7 +468,7 @@ public class FunctionAlias extends SchemaObjectBase {
             boolean old = session.getAutoCommit();
             Value identity = session.getLastScopeIdentity();
             boolean defaultConnection = session.getDatabase().
-                    getSettings().defaultConnection;
+                                        getSettings().defaultConnection;
             try {
                 session.setAutoCommit(false);
                 Object returnValue;

@@ -79,7 +79,7 @@ public class ValueDate extends Value {
             return fromDateValue(DateTimeUtils.parseDateValue(s, 0, s.length()));
         } catch (Exception e) {
             throw DbException.get(ErrorCode.INVALID_DATETIME_CONSTANT_2,
-                    e, "DATE", s);
+                                  e, "DATE", s);
         }
     }
 
@@ -130,7 +130,7 @@ public class ValueDate extends Value {
             return true;
         }
         return other instanceof ValueDate
-                && dateValue == (((ValueDate) other).dateValue);
+               && dateValue == (((ValueDate) other).dateValue);
     }
 
     @Override
@@ -145,7 +145,7 @@ public class ValueDate extends Value {
 
     @Override
     public void set(PreparedStatement prep, int parameterIndex)
-            throws SQLException {
+    throws SQLException {
         prep.setDate(parameterIndex, getDate());
     }
 

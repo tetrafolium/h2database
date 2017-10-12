@@ -57,7 +57,7 @@ public class FilePathNioMem extends FilePath {
             if (!atomicReplace && !name.equals(newName.name) &&
                     MEMORY_FILES.containsKey(newName.name)) {
                 throw DbException.get(ErrorCode.FILE_RENAME_FAILED_2,
-                        new String[] { name, newName + " (exists)" });
+                                      new String[] { name, newName + " (exists)" });
             }
             FileNioMemData f = getMemoryFile();
             f.setName(newName.name);
@@ -160,7 +160,7 @@ public class FilePathNioMem extends FilePath {
     public void createDirectory() {
         if (exists() && isDirectory()) {
             throw DbException.get(ErrorCode.FILE_CREATION_FAILED_1,
-                    name + " (a file with this name already exists)");
+                                  name + " (a file with this name already exists)");
         }
         // TODO directories are not really supported
     }
@@ -246,7 +246,7 @@ class FilePathNioMemLZF extends FilePathNioMem {
     public FilePathNioMem getPath(String path) {
         if (!path.startsWith(getScheme())) {
             throw new IllegalArgumentException(path +
-                    " doesn't start with " + getScheme());
+                                               " doesn't start with " + getScheme());
         }
         int idx1 = path.indexOf(":");
         int idx2 = path.lastIndexOf(":");
@@ -375,7 +375,7 @@ class FileNioMem extends FileBase {
 
     @Override
     public synchronized FileLock tryLock(long position, long size,
-            boolean shared) throws IOException {
+                                         boolean shared) throws IOException {
         if (shared) {
             if (!data.lockShared()) {
                 return null;
@@ -423,7 +423,7 @@ class FileNioMemData {
     private static final ByteBuffer COMPRESSED_EMPTY_BLOCK;
 
     private static final ThreadLocal<CompressLZF> LZF_THREAD_LOCAL =
-            new ThreadLocal<CompressLZF>() {
+    new ThreadLocal<CompressLZF>() {
         @Override
         protected CompressLZF initialValue() {
             return new CompressLZF();
@@ -431,7 +431,7 @@ class FileNioMemData {
     };
     /** the output buffer when compressing */
     private static final ThreadLocal<byte[] > COMPRESS_OUT_BUF_THREAD_LOCAL =
-            new ThreadLocal<byte[] >() {
+    new ThreadLocal<byte[] >() {
         @Override
         protected byte[] initialValue() {
             return new byte[BLOCK_SIZE * 2];
@@ -444,7 +444,7 @@ class FileNioMemData {
     final int nameHashCode;
 
     private final CompressLaterCache<CompressItem, CompressItem> compressLaterCache =
-        new CompressLaterCache<>(CACHE_MIN_SIZE);
+            new CompressLaterCache<>(CACHE_MIN_SIZE);
 
     private String name;
     private final boolean compress;
@@ -680,14 +680,14 @@ class FileNioMemData {
         if (blocks != buffers.length) {
             final AtomicReference<ByteBuffer>[] newBuffers = new AtomicReference[blocks];
             System.arraycopy(buffers, 0, newBuffers, 0,
-                    Math.min(buffers.length, newBuffers.length));
+                             Math.min(buffers.length, newBuffers.length));
             for (int i = buffers.length; i < blocks; i++) {
                 newBuffers[i] = new AtomicReference<>(COMPRESSED_EMPTY_BLOCK);
             }
             buffers = newBuffers;
         }
         compressLaterCache.setCacheSize(Math.max(CACHE_MIN_SIZE, (int) (blocks *
-                compressLaterCachePercent / 100)));
+                                        compressLaterCachePercent / 100)));
     }
 
     /**

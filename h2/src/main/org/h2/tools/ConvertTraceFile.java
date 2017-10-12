@@ -108,16 +108,16 @@ public class ConvertTraceFile extends Tool {
      * Converts a trace file to a Java class file and a script file.
      */
     private void convertFile(String traceFileName, String javaClassName,
-            String script) throws IOException {
+                             String script) throws IOException {
         LineNumberReader reader = new LineNumberReader(
                 IOUtils.getBufferedReader(
-                FileUtils.newInputStream(traceFileName)));
+                        FileUtils.newInputStream(traceFileName)));
         PrintWriter javaWriter = new PrintWriter(
                 IOUtils.getBufferedWriter(
-                FileUtils.newOutputStream(javaClassName + ".java", false)));
+                        FileUtils.newOutputStream(javaClassName + ".java", false)));
         PrintWriter scriptWriter = new PrintWriter(
                 IOUtils.getBufferedWriter(
-                FileUtils.newOutputStream(script, false)));
+                        FileUtils.newOutputStream(script, false)));
         javaWriter.println("import java.io.*;");
         javaWriter.println("import java.sql.*;");
         javaWriter.println("import java.math.*;");
@@ -129,7 +129,7 @@ public class ConvertTraceFile extends Tool {
         }
         javaWriter.println("public class " + cn + " {");
         javaWriter.println("    public static void main(String... args) " +
-                "throws Exception {");
+                           "throws Exception {");
         javaWriter.println("        Class.forName(\"org.h2.Driver\");");
         while (true) {
             String line = reader.readLine();
@@ -190,15 +190,15 @@ public class ConvertTraceFile extends Tool {
                 accumTime += stat.time;
                 StringBuilder buff = new StringBuilder(100);
                 buff.append("-- ").
-                    append(padNumberLeft(100 * stat.time / timeTotal, 3)).
-                    append("% ").
-                    append(padNumberLeft(100 * accumTime / timeTotal, 3)).
-                    append('%').
-                    append(padNumberLeft(stat.time, 8)).
-                    append(padNumberLeft(stat.executeCount, 8)).
-                    append(padNumberLeft(stat.resultCount, 8)).
-                    append(' ').
-                    append(removeNewlines(stat.sql));
+                append(padNumberLeft(100 * stat.time / timeTotal, 3)).
+                append("% ").
+                append(padNumberLeft(100 * accumTime / timeTotal, 3)).
+                append('%').
+                append(padNumberLeft(stat.time, 8)).
+                append(padNumberLeft(stat.executeCount, 8)).
+                append(padNumberLeft(stat.resultCount, 8)).
+                append(' ').
+                append(removeNewlines(stat.sql));
                 scriptWriter.println(buff.toString());
             }
         }

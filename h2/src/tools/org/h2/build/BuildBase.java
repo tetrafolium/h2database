@@ -58,7 +58,7 @@ public class BuildBase {
     @Target(ElementType.METHOD)
     @Documented
     public static @interface Description {
-        String summary() default "";
+    String summary() default "";
     }
 
     /**
@@ -148,7 +148,7 @@ public class BuildBase {
             if (pattern.indexOf('*') >= 0) {
                 throw new RuntimeException(
                         "Unsupported pattern, may only start or end with *:"
-                                + pattern);
+                        + pattern);
             }
             // normalize / and \
             pattern = BuildBase.replaceAll(pattern, "/", File.separator);
@@ -179,13 +179,13 @@ public class BuildBase {
      * The full path to the executable of the current JRE.
      */
     protected String javaExecutable = System.getProperty("java.home") +
-            File.separator + "bin" + File.separator + "java";
+                                      File.separator + "bin" + File.separator + "java";
 
     /**
      * The full path to the tools jar of the current JDK.
      */
     protected String javaToolsJar = System.getProperty("java.home") + File.separator + ".." +
-            File.separator + "lib" + File.separator + "tools.jar";
+                                    File.separator + "lib" + File.separator + "tools.jar";
 
     /**
      * This method should be called by the main method.
@@ -242,7 +242,7 @@ public class BuildBase {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String last = "", line;
         System.out.println("Shell mode. Type the target, then [Enter]. " +
-                "Just [Enter] repeats the last target.");
+                           "Just [Enter] repeats the last target.");
         while (true) {
             System.out.print("build> ");
             try {
@@ -319,7 +319,7 @@ public class BuildBase {
                     && m.getParameterTypes().length == 0) {
                 if (m.isAnnotationPresent(Description.class)) {
                     description = String.format("%1$-20s %2$s",
-                            m.getName(), m.getAnnotation(Description.class).summary());
+                                                m.getName(), m.getAnnotation(Description.class).summary());
                 } else {
                     description = m.getName();
                 }
@@ -416,7 +416,7 @@ public class BuildBase {
                     throw new RuntimeException(e);
                 }
             }
-        }.start();
+        } .start();
     }
 
     /**
@@ -433,7 +433,7 @@ public class BuildBase {
             return field.get(null).toString();
         } catch (Exception e) {
             throw new RuntimeException("Can not read field " + className + "."
-                    + fieldName, e);
+                                       + fieldName, e);
         }
     }
 
@@ -451,7 +451,7 @@ public class BuildBase {
             return method.invoke(null).toString();
         } catch (Exception e) {
             throw new RuntimeException("Can not read value " + className + "."
-                    + methodName + "()", e);
+                                       + methodName + "()", e);
         }
     }
 
@@ -529,19 +529,19 @@ public class BuildBase {
             println("Javadoc");
             if (quiet) {
                 System.setOut(filter(System.out, new String[] {
-                        "Loading source files for package",
-                        "Constructing Javadoc information...",
-                        "Generating ",
-                        "Standard Doclet",
-                        "Building tree for all the packages and classes...",
-                        "Building index for all the packages and classes...",
-                        "Building index for all classes..."
-                }));
+                                             "Loading source files for package",
+                                             "Constructing Javadoc information...",
+                                             "Generating ",
+                                             "Standard Doclet",
+                                             "Building tree for all the packages and classes...",
+                                             "Building index for all the packages and classes...",
+                                             "Building index for all classes..."
+                                     }));
             } else {
                 System.setOut(filter(System.out, new String[] {
-                        "Loading source files for package ",
-                        "Generating ",
-                }));
+                                             "Loading source files for package ",
+                                             "Generating ",
+                                     }));
             }
             Class<?> clazz = Class.forName("com.sun.tools.javadoc.Main");
             Method execute = clazz.getMethod("execute", String[].class);
@@ -561,7 +561,7 @@ public class BuildBase {
         for (byte c : value) {
             int x = c & 0xff;
             buff.append(Integer.toString(x >> 4, 16)).
-                append(Integer.toString(x & 0xf, 16));
+            append(Integer.toString(x & 0xf, 16));
         }
         return buff.toString();
     }
@@ -594,14 +594,14 @@ public class BuildBase {
      * @param sha1Checksum the SHA-1 checksum or null
      */
     protected void downloadUsingMaven(String target, String group,
-            String artifact, String version, String sha1Checksum) {
+                                      String artifact, String version, String sha1Checksum) {
         String repoDir = "http://repo1.maven.org/maven2";
         File targetFile = new File(target);
         if (targetFile.exists()) {
             return;
         }
         String repoFile = group.replace('.', '/') + "/" + artifact + "/" + version + "/"
-                + artifact + "-" + version + ".jar";
+                          + artifact + "-" + version + ".jar";
         mkdirs(targetFile.getAbsoluteFile().getParentFile());
         String localMavenDir = getLocalMavenDir();
         if (new File(localMavenDir).exists()) {
@@ -609,9 +609,9 @@ public class BuildBase {
             if (!f.exists()) {
                 try {
                     execScript("mvn", args(
-                            "org.apache.maven.plugins:maven-dependency-plugin:2.1:get",
-                            "-D" + "repoUrl=" + repoDir,
-                            "-D" + "artifact="+ group +":"+ artifact +":" + version));
+                                       "org.apache.maven.plugins:maven-dependency-plugin:2.1:get",
+                                       "-D" + "repoUrl=" + repoDir,
+                                       "-D" + "artifact="+ group +":"+ artifact +":" + version));
                 } catch (RuntimeException e) {
                     println("Could not download using Maven: " + e.toString());
                 }
@@ -625,8 +625,8 @@ public class BuildBase {
                     if (!got.equals(sha1Checksum)) {
                         throw new RuntimeException(
                                 "SHA1 checksum mismatch; got: " + got +
-                                        " expected: " + sha1Checksum +
-                                        " for file " + f.getAbsolutePath());
+                                " expected: " + sha1Checksum +
+                                " for file " + f.getAbsolutePath());
                     }
                 }
                 writeFile(targetFile, data);
@@ -687,7 +687,7 @@ public class BuildBase {
         } else {
             if (!got.equals(sha1Checksum)) {
                 throw new RuntimeException("SHA1 checksum mismatch; got: " +
-                        got + " expected: " + sha1Checksum + " for file " + target);
+                                           got + " expected: " + sha1Checksum + " for file " + target);
 
             }
         }
@@ -823,13 +823,13 @@ public class BuildBase {
      * @param sortBySuffix if the file should be sorted by the file suffix
      */
     protected void zip(String destFile, FileList files, String basePath,
-            boolean storeOnly, boolean sortBySuffix) {
+                       boolean storeOnly, boolean sortBySuffix) {
         long kb = zipOrJar(destFile, files, basePath, storeOnly, sortBySuffix, false);
         println("Zip " + destFile + " (" + kb + " KB)");
     }
 
     private static long zipOrJar(String destFile, FileList files,
-            String basePath, boolean storeOnly, boolean sortBySuffix, boolean jar) {
+                                 String basePath, boolean storeOnly, boolean sortBySuffix, boolean jar) {
         if (sortBySuffix) {
             // for better compressibility, sort by suffix, then name
             Collections.sort(files, new Comparator<File>() {
@@ -852,7 +852,7 @@ public class BuildBase {
             if (new File(destFile).isDirectory()) {
                 throw new IOException(
                         "Can't create the file as a directory with this name already exists: "
-                                + destFile);
+                        + destFile);
             }
             OutputStream out = new BufferedOutputStream(new FileOutputStream(destFile));
             ZipOutputStream zipOut;
@@ -921,8 +921,8 @@ public class BuildBase {
             Class<?> clazz = Class.forName("com.sun.tools.javac.Main");
             if (quiet) {
                 System.setErr(filter(System.err, new String[] {
-                        "Note:"
-                }));
+                                             "Note:"
+                                     }));
             }
             Method compile = clazz.getMethod("compile", new Class<?>[] { String[].class });
             Object instance = clazz.newInstance();
@@ -966,7 +966,7 @@ public class BuildBase {
         if (f.exists()) {
             if (f.isFile()) {
                 throw new RuntimeException("Can not create directory " + dir
-                        + " because a file with this name exists");
+                                           + " because a file with this name exists");
             }
         } else {
             mkdirs(f);

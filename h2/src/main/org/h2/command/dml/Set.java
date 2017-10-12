@@ -121,7 +121,7 @@ public class Set extends Prepared {
         case SetTypes.COLLATION: {
             session.getUser().checkAdmin();
             final boolean binaryUnsigned = database.
-                    getCompareMode().isBinaryUnsigned();
+                                           getCompareMode().isBinaryUnsigned();
             CompareMode compareMode;
             StringBuilder buff = new StringBuilder(stringValue);
             if (stringValue.equals(CompareMode.OFF)) {
@@ -139,7 +139,7 @@ public class Set extends Prepared {
                     buff.append("TERTIARY");
                 }
                 compareMode = CompareMode.getInstance(stringValue, strength,
-                        binaryUnsigned);
+                                                      binaryUnsigned);
             }
             CompareMode old = database.getCompareMode();
             if (old.equals(compareMode)) {
@@ -167,10 +167,10 @@ public class Set extends Prepared {
             CompareMode newMode;
             if (stringValue.equals(CompareMode.SIGNED)) {
                 newMode = CompareMode.getInstance(currentMode.getName(),
-                        currentMode.getStrength(), false);
+                                                  currentMode.getStrength(), false);
             } else if (stringValue.equals(CompareMode.UNSIGNED)) {
                 newMode = CompareMode.getInstance(currentMode.getName(),
-                        currentMode.getStrength(), true);
+                                                  currentMode.getStrength(), true);
             } else {
                 throw DbException.getInvalidValueException("BINARY_COLLATION",
                         stringValue);
@@ -183,7 +183,7 @@ public class Set extends Prepared {
             session.getUser().checkAdmin();
             int algo = CompressTool.getCompressAlgorithm(stringValue);
             database.setLobCompressionAlgorithm(algo == Compressor.NO ?
-                    null : stringValue);
+                                                null : stringValue);
             addOrUpdateSetting(name, stringValue, 0);
             break;
         }
@@ -252,8 +252,8 @@ public class Set extends Prepared {
             Table table = database.getFirstUserTable();
             if (table != null) {
                 throw DbException.get(ErrorCode.
-                        JAVA_OBJECT_SERIALIZER_CHANGE_WITH_DATA_TABLE,
-                        table.getSQL());
+                                      JAVA_OBJECT_SERIALIZER_CHANGE_WITH_DATA_TABLE,
+                                      table.getSQL());
             }
             database.setJavaObjectSerializerName(stringValue);
             addOrUpdateSetting(name, stringValue, 0);
@@ -563,7 +563,7 @@ public class Set extends Prepared {
     }
 
     private void addOrUpdateSetting(Session session, String name, String s,
-            int v) {
+                                    int v) {
         Database database = session.getDatabase();
         if (database.isReadOnly()) {
             return;

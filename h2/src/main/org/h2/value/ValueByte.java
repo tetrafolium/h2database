@@ -43,7 +43,7 @@ public class ValueByte extends Value {
     private static ValueByte checkRange(int x) {
         if (x < Byte.MIN_VALUE || x > Byte.MAX_VALUE) {
             throw DbException.get(ErrorCode.NUMERIC_VALUE_OUT_OF_RANGE_1,
-                    Integer.toString(x));
+                                  Integer.toString(x));
         }
         return ValueByte.get((byte) x);
     }
@@ -131,7 +131,7 @@ public class ValueByte extends Value {
 
     @Override
     public void set(PreparedStatement prep, int parameterIndex)
-            throws SQLException {
+    throws SQLException {
         prep.setByte(parameterIndex, value);
     }
 

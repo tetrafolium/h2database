@@ -245,7 +245,7 @@ public abstract class Value {
      * @param parameterIndex the parameter index
      */
     public abstract void set(PreparedStatement prep, int parameterIndex)
-            throws SQLException;
+    throws SQLException;
 
     /**
      * Compare the value with another value of the same type.
@@ -714,7 +714,7 @@ public abstract class Value {
                 switch (getType()) {
                 case BOOLEAN:
                     return ValueDecimal.get(BigDecimal.valueOf(
-                            getBoolean().booleanValue() ? 1 : 0));
+                                                    getBoolean().booleanValue() ? 1 : 0));
                 case BYTE:
                     return ValueDecimal.get(BigDecimal.valueOf(getByte()));
                 case SHORT:
@@ -799,13 +799,13 @@ public abstract class Value {
                     // because the time has set the date to 1970-01-01,
                     // this will be the result
                     return ValueDate.fromDateValue(
-                            DateTimeUtils.dateValue(1970, 1, 1));
+                                   DateTimeUtils.dateValue(1970, 1, 1));
                 case TIMESTAMP:
                     return ValueDate.fromDateValue(
-                            ((ValueTimestamp) this).getDateValue());
+                                   ((ValueTimestamp) this).getDateValue());
                 case TIMESTAMP_TZ:
                     return ValueDate.fromDateValue(
-                            ((ValueTimestampTimeZone) this).getDateValue());
+                                   ((ValueTimestampTimeZone) this).getDateValue());
                 case ENUM:
                     throw DbException.get(
                             ErrorCode.DATA_CONVERSION_ERROR_1, getString());
@@ -820,10 +820,10 @@ public abstract class Value {
                     return ValueTime.fromNanos(0);
                 case TIMESTAMP:
                     return ValueTime.fromNanos(
-                            ((ValueTimestamp) this).getTimeNanos());
+                                   ((ValueTimestamp) this).getTimeNanos());
                 case TIMESTAMP_TZ:
                     return ValueTime.fromNanos(
-                            ((ValueTimestampTimeZone) this).getTimeNanos());
+                                   ((ValueTimestampTimeZone) this).getTimeNanos());
                 case ENUM:
                     throw DbException.get(
                             ErrorCode.DATA_CONVERSION_ERROR_1, getString());
@@ -834,14 +834,14 @@ public abstract class Value {
                 switch (getType()) {
                 case TIME:
                     return DateTimeUtils.normalizeTimestamp(
-                            0, ((ValueTime) this).getNanos());
+                                   0, ((ValueTime) this).getNanos());
                 case DATE:
                     return ValueTimestamp.fromDateValueAndNanos(
-                            ((ValueDate) this).getDateValue(), 0);
+                                   ((ValueDate) this).getDateValue(), 0);
                 case TIMESTAMP_TZ:
                     return ValueTimestamp.fromDateValueAndNanos(
-                            ((ValueTimestampTimeZone) this).getDateValue(),
-                            ((ValueTimestampTimeZone) this).getTimeNanos());
+                                   ((ValueTimestampTimeZone) this).getDateValue(),
+                                   ((ValueTimestampTimeZone) this).getTimeNanos());
                 case ENUM:
                     throw DbException.get(
                             ErrorCode.DATA_CONVERSION_ERROR_1, getString());
@@ -857,35 +857,35 @@ public abstract class Value {
                 case GEOMETRY:
                     return ValueBytes.getNoCopy(getBytes());
                 case BYTE:
-                    return ValueBytes.getNoCopy(new byte[]{getByte()});
+                    return ValueBytes.getNoCopy(new byte[] {getByte()});
                 case SHORT: {
                     int x = getShort();
-                    return ValueBytes.getNoCopy(new byte[]{
-                            (byte) (x >> 8),
-                            (byte) x
-                    });
+                    return ValueBytes.getNoCopy(new byte[] {
+                                                        (byte) (x >> 8),
+                                                        (byte) x
+                                                });
                 }
                 case INT: {
                     int x = getInt();
-                    return ValueBytes.getNoCopy(new byte[]{
-                            (byte) (x >> 24),
-                            (byte) (x >> 16),
-                            (byte) (x >> 8),
-                            (byte) x
-                    });
+                    return ValueBytes.getNoCopy(new byte[] {
+                                                        (byte) (x >> 24),
+                                                        (byte) (x >> 16),
+                                                        (byte) (x >> 8),
+                                                        (byte) x
+                                                });
                 }
                 case LONG: {
                     long x = getLong();
-                    return ValueBytes.getNoCopy(new byte[]{
-                            (byte) (x >> 56),
-                            (byte) (x >> 48),
-                            (byte) (x >> 40),
-                            (byte) (x >> 32),
-                            (byte) (x >> 24),
-                            (byte) (x >> 16),
-                            (byte) (x >> 8),
-                            (byte) x
-                    });
+                    return ValueBytes.getNoCopy(new byte[] {
+                                                        (byte) (x >> 56),
+                                                        (byte) (x >> 48),
+                                                        (byte) (x >> 40),
+                                                        (byte) (x >> 32),
+                                                        (byte) (x >> 24),
+                                                        (byte) (x >> 16),
+                                                        (byte) (x >> 8),
+                                                        (byte) x
+                                                });
                 }
                 case ENUM:
                 case TIMESTAMP_TZ:
@@ -899,7 +899,7 @@ public abstract class Value {
                 case BYTES:
                 case BLOB:
                     return ValueJavaObject.getNoCopy(
-                            null, getBytesNoCopy(), getDataHandler());
+                                   null, getBytesNoCopy(), getDataHandler());
                 case ENUM:
                 case TIMESTAMP_TZ:
                     throw DbException.get(
@@ -909,26 +909,26 @@ public abstract class Value {
             }
             case ENUM: {
                 switch (getType()) {
-                    case BYTE:
-                    case SHORT:
-                    case INT:
-                    case LONG:
-                    case DECIMAL:
-                        return ValueEnum.get(column.getEnumerators(), getInt());
-                    case STRING:
-                    case STRING_IGNORECASE:
-                    case STRING_FIXED:
-                        return ValueEnum.get(column.getEnumerators(), getString());
-                    default:
-                        throw DbException.get(
-                                ErrorCode.DATA_CONVERSION_ERROR_1, getString());
+                case BYTE:
+                case SHORT:
+                case INT:
+                case LONG:
+                case DECIMAL:
+                    return ValueEnum.get(column.getEnumerators(), getInt());
+                case STRING:
+                case STRING_IGNORECASE:
+                case STRING_FIXED:
+                    return ValueEnum.get(column.getEnumerators(), getString());
+                default:
+                    throw DbException.get(
+                            ErrorCode.DATA_CONVERSION_ERROR_1, getString());
                 }
             }
             case BLOB: {
                 switch (getType()) {
                 case BYTES:
                     return ValueLobDb.createSmallLob(
-                            Value.BLOB, getBytesNoCopy());
+                                   Value.BLOB, getBytesNoCopy());
                 case TIMESTAMP_TZ:
                     throw DbException.get(
                             ErrorCode.DATA_CONVERSION_ERROR_1, getString());
@@ -941,11 +941,11 @@ public abstract class Value {
                     return ValueUuid.get(getBytesNoCopy());
                 case JAVA_OBJECT:
                     Object object = JdbcUtils.deserialize(getBytesNoCopy(),
-                            getDataHandler());
+                                                          getDataHandler());
                     if (object instanceof java.util.UUID) {
                         java.util.UUID uuid = (java.util.UUID) object;
                         return ValueUuid.get(uuid.getMostSignificantBits(),
-                                uuid.getLeastSignificantBits());
+                                             uuid.getLeastSignificantBits());
                     }
                     throw DbException.get(ErrorCode.DATA_CONVERSION_ERROR_1, getString());
                 case TIMESTAMP_TZ:
@@ -982,9 +982,9 @@ public abstract class Value {
                         s.equalsIgnoreCase("y")) {
                     return ValueBoolean.get(true);
                 } else if (s.equalsIgnoreCase("false") ||
-                        s.equalsIgnoreCase("f") ||
-                        s.equalsIgnoreCase("no") ||
-                        s.equalsIgnoreCase("n")) {
+                           s.equalsIgnoreCase("f") ||
+                           s.equalsIgnoreCase("no") ||
+                           s.equalsIgnoreCase("n")) {
                     return ValueBoolean.get(false);
                 } else {
                     // convert to a number, and if it is not 0 then it is true
@@ -1011,10 +1011,10 @@ public abstract class Value {
                 return ValueTimestampTimeZone.parse(s.trim());
             case BYTES:
                 return ValueBytes.getNoCopy(
-                        StringUtils.convertHexToBytes(s.trim()));
+                               StringUtils.convertHexToBytes(s.trim()));
             case JAVA_OBJECT:
                 return ValueJavaObject.getNoCopy(null,
-                        StringUtils.convertHexToBytes(s.trim()), getDataHandler());
+                                                 StringUtils.convertHexToBytes(s.trim()), getDataHandler());
             case STRING:
                 return ValueString.get(s);
             case STRING_IGNORECASE:
@@ -1027,12 +1027,12 @@ public abstract class Value {
                 return ValueFloat.get(Float.parseFloat(s.trim()));
             case CLOB:
                 return ValueLobDb.createSmallLob(
-                        CLOB, s.getBytes(Constants.UTF8));
+                               CLOB, s.getBytes(Constants.UTF8));
             case BLOB:
                 return ValueLobDb.createSmallLob(
-                        BLOB, StringUtils.convertHexToBytes(s.trim()));
+                               BLOB, StringUtils.convertHexToBytes(s.trim()));
             case ARRAY:
-                return ValueArray.get(new Value[]{ValueString.get(s)});
+                return ValueArray.get(new Value[] {ValueString.get(s)});
             case RESULT_SET: {
                 SimpleResultSet rs = new SimpleResultSet();
                 rs.setAutoClose(false);
@@ -1289,7 +1289,7 @@ public abstract class Value {
         SimpleResultSet rs = new SimpleResultSet();
         rs.setAutoClose(false);
         rs.addColumn("X", DataType.convertTypeToSQLType(getType()),
-                MathUtils.convertLongToInt(getPrecision()), getScale());
+                     MathUtils.convertLongToInt(getPrecision()), getScale());
         rs.addRow(getObject());
         return rs;
     }

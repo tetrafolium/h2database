@@ -63,7 +63,7 @@ public class IndexType {
      * @return the index type
      */
     public static IndexType createNonUnique(boolean persistent, boolean hash,
-            boolean spatial) {
+                                            boolean spatial) {
         IndexType type = new IndexType();
         type.persistent = persistent;
         type.hash = hash;

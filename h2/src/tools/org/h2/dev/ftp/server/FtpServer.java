@@ -79,7 +79,7 @@ public class FtpServer extends Tool implements Service {
 
     private String root = DEFAULT_ROOT;
     private String writeUserName = DEFAULT_WRITE,
-            writePassword = DEFAULT_WRITE_PASSWORD;
+                   writePassword = DEFAULT_WRITE_PASSWORD;
     private String readUserName = DEFAULT_READ;
     private final HashMap<String, Process> tasks = new HashMap<>();
 
@@ -240,7 +240,7 @@ public class FtpServer extends Tool implements Service {
         String date;
         if (mod.after(now)
                 || Math.abs((now.getTime() - mod.getTime()) /
-                        1000 / 60 / 60 / 24) > 180) {
+                            1000 / 60 / 60 / 24) > 180) {
             synchronized (dateFormatOld) {
                 date = dateFormatOld.format(mod);
             }
@@ -319,7 +319,7 @@ public class FtpServer extends Tool implements Service {
      */
     boolean checkUserPasswordWrite(String userName, String password) {
         return userName.equals(this.writeUserName)
-                && password.equals(this.writePassword);
+               && password.equals(this.writePassword);
     }
 
     /**
@@ -460,9 +460,9 @@ public class FtpServer extends Tool implements Service {
         String command = prop.getProperty("command");
         String outFile = path.substring(0, path.length() - TASK_SUFFIX.length());
         String errorFile = root + "/"
-                + prop.getProperty("error", outFile + ".err.txt");
+                           + prop.getProperty("error", outFile + ".err.txt");
         String outputFile = root + "/"
-                + prop.getProperty("output", outFile + ".out.txt");
+                            + prop.getProperty("output", outFile + ".out.txt");
         trace("start process: " + path + " / " + command);
         Process p = Runtime.getRuntime().exec(command, null, new File(root));
         new StreamRedirect(path, p.getErrorStream(), errorFile).start();

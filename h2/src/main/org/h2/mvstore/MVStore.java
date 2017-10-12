@@ -193,7 +193,7 @@ public final class MVStore {
      */
     private final ConcurrentHashMap<Long,
             ConcurrentHashMap<Integer, Chunk>> freedPageSpace =
-            new ConcurrentHashMap<>();
+                    new ConcurrentHashMap<>();
 
     /**
      * The metadata map. Write access to this map needs to be synchronized on
@@ -333,7 +333,7 @@ public final class MVStore {
         backgroundExceptionHandler =
                 (UncaughtExceptionHandler)config.get("backgroundExceptionHandler");
         meta = new MVMap<>(StringDataType.INSTANCE,
-                StringDataType.INSTANCE);
+                           StringDataType.INSTANCE);
         HashMap<String, Object> c = New.hashMap();
         c.put("id", 0);
         c.put("createVersion", currentVersion);
@@ -573,10 +573,10 @@ public final class MVStore {
             // the following can fail for various reasons
             try {
                 String s = new String(buff, 0, BLOCK_SIZE,
-                        DataUtils.LATIN).trim();
+                                      DataUtils.LATIN).trim();
                 HashMap<String, String> m = DataUtils.parseMap(s);
                 int blockSize = DataUtils.readHexInt(
-                        m, "blockSize", BLOCK_SIZE);
+                                        m, "blockSize", BLOCK_SIZE);
                 if (blockSize != BLOCK_SIZE) {
                     throw DataUtils.newIllegalStateException(
                             DataUtils.ERROR_UNSUPPORTED_FORMAT,
@@ -588,7 +588,7 @@ public final class MVStore {
                 s = s.substring(0, s.lastIndexOf("fletcher") - 1);
                 byte[] bytes = s.getBytes(DataUtils.LATIN);
                 int checksum = DataUtils.getFletcher32(bytes,
-                        bytes.length);
+                                                       bytes.length);
                 if (check != checksum) {
                     continue;
                 }
@@ -798,7 +798,7 @@ public final class MVStore {
         try {
             // read the chunk footer of the last block of the file
             ByteBuffer lastBlock = fileStore.readFully(
-                    end - Chunk.FOOTER_LENGTH, Chunk.FOOTER_LENGTH);
+                                           end - Chunk.FOOTER_LENGTH, Chunk.FOOTER_LENGTH);
             byte[] buff = new byte[Chunk.FOOTER_LENGTH];
             lastBlock.get(buff);
             String s = new String(buff, DataUtils.LATIN).trim();
@@ -1080,8 +1080,8 @@ public final class MVStore {
             }
             if (old.block == Long.MAX_VALUE) {
                 IllegalStateException e = DataUtils.newIllegalStateException(
-                        DataUtils.ERROR_INTERNAL,
-                        "Last block not stored, possibly due to out-of-memory");
+                                                  DataUtils.ERROR_INTERNAL,
+                                                  "Last block not stored, possibly due to out-of-memory");
                 panic(e);
             }
         }
@@ -1150,7 +1150,7 @@ public final class MVStore {
 
         // add the store header and round to the next block
         int length = MathUtils.roundUpInt(chunkLength +
-                Chunk.FOOTER_LENGTH, BLOCK_SIZE);
+                                          Chunk.FOOTER_LENGTH, BLOCK_SIZE);
         buff.limit(length);
 
         // the length of the file that is still in use
@@ -1179,7 +1179,7 @@ public final class MVStore {
         if (reuseSpace) {
             int predictBlocks = c.len;
             long predictedNextStart = fileStore.allocate(
-                    predictBlocks * BLOCK_SIZE);
+                                              predictBlocks * BLOCK_SIZE);
             fileStore.free(predictedNextStart, predictBlocks * BLOCK_SIZE);
             c.next = predictedNextStart / BLOCK_SIZE;
         } else {
@@ -1207,7 +1207,7 @@ public final class MVStore {
                 writeStoreHeader = true;
             } else {
                 long headerVersion = DataUtils.readHexLong(
-                        storeHeader, "version", 0);
+                                             storeHeader, "version", 0);
                 if (lastChunk.version - headerVersion > 20) {
                     // we write after at least 20 entries
                     writeStoreHeader = true;
@@ -1249,7 +1249,7 @@ public final class MVStore {
         // some pages might have been changed in the meantime (in the newest
         // version)
         unsavedMemory = Math.max(0, unsavedMemory
-                - currentUnsavedPageCount);
+                                 - currentUnsavedPageCount);
 
         metaChanged = false;
         lastStoredVersion = storeVersion;
@@ -1309,7 +1309,7 @@ public final class MVStore {
     }
 
     private void collectReferencedChunks(Set<Integer> targetChunkSet,
-            int mapId, long pos, int level) {
+                                         int mapId, long pos, int level) {
         int c = DataUtils.getPageChunkId(pos);
         targetChunkSet.add(c);
         if (DataUtils.getPageType(pos) == DataUtils.PAGE_TYPE_LEAF) {
@@ -1328,7 +1328,7 @@ public final class MVStore {
             int i = 0;
             for (Integer p : target) {
                 children[i++] = DataUtils.getPagePos(p, 0, 0,
-                        DataUtils.PAGE_TYPE_LEAF);
+                                                     DataUtils.PAGE_TYPE_LEAF);
             }
             refs.children = children;
             refs.chunkList = true;
@@ -1860,10 +1860,10 @@ public final class MVStore {
             @Override
             public int compare(Chunk o1, Chunk o2) {
                 int comp = Integer.compare(o1.collectPriority,
-                        o2.collectPriority);
+                                           o2.collectPriority);
                 if (comp == 0) {
                     comp = Long.compare(o1.maxLenLive,
-                            o2.maxLenLive);
+                                        o2.maxLenLive);
                 }
                 return comp;
             }
@@ -1989,16 +1989,16 @@ public final class MVStore {
             }
         }
         registerFreePage(version, c.id,
-                DataUtils.getPageMaxLength(pos), 1);
+                         DataUtils.getPageMaxLength(pos), 1);
     }
 
     private void registerFreePage(long version, int chunkId,
-            long maxLengthLive, int pageCount) {
+                                  long maxLengthLive, int pageCount) {
         ConcurrentHashMap<Integer, Chunk> freed = freedPageSpace.get(version);
         if (freed == null) {
             freed = new ConcurrentHashMap<>();
             ConcurrentHashMap<Integer, Chunk> f2 = freedPageSpace.putIfAbsent(version,
-                    freed);
+                                                   freed);
             if (f2 != null) {
                 freed = f2;
             }
@@ -2356,7 +2356,7 @@ public final class MVStore {
 
     private void revertTemp(long storeVersion) {
         for (Iterator<Entry<Long, ConcurrentHashMap<Integer, Chunk>>> it =
-                            freedPageSpace.entrySet().iterator(); it.hasNext();) {
+                        freedPageSpace.entrySet().iterator(); it.hasNext();) {
             Entry<Long, ConcurrentHashMap<Integer, Chunk>> entry = it.next();
             Long v = entry.getKey();
             if (v <= storeVersion) {
@@ -2414,7 +2414,7 @@ public final class MVStore {
     public synchronized void renameMap(MVMap<?, ?> map, String newName) {
         checkOpen();
         DataUtils.checkArgument(map != meta,
-                "Renaming the meta map is not allowed");
+                                "Renaming the meta map is not allowed");
         int id = map.getId();
         String oldName = getMapName(id);
         if (oldName.equals(newName)) {
@@ -2439,7 +2439,7 @@ public final class MVStore {
     public synchronized void removeMap(MVMap<?, ?> map) {
         checkOpen();
         DataUtils.checkArgument(map != meta,
-                "Removing the meta map is not allowed");
+                                "Removing the meta map is not allowed");
         map.clear();
         int id = map.getId();
         String name = getMapName(id);
@@ -2584,7 +2584,7 @@ public final class MVStore {
             int sleep = Math.max(1, millis / 10);
             BackgroundWriterThread t =
                     new BackgroundWriterThread(this, sleep,
-                            fileStore.toString());
+                                               fileStore.toString());
             t.start();
             backgroundWriterThread = t;
         }

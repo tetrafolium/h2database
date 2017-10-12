@@ -36,7 +36,7 @@ public class RemovePasswords {
         RandomAccessFile f = new RandomAccessFile(fileName, "rw");
         long length = f.length();
         MappedByteBuffer buff = f.getChannel()
-                .map(MapMode.READ_WRITE, 0, length);
+                                .map(MapMode.READ_WRITE, 0, length);
         byte[] data = new byte[200];
         for (int i = 0; i < length - 200; i++) {
             if (buff.get(i) != 'C' || buff.get(i + 1) != 'R' ||
@@ -54,7 +54,7 @@ public class RemovePasswords {
                 continue;
             }
             String userName = s.substring("CREATE USER ".length(),
-                    s.indexOf("SALT ") - 1);
+                                          s.indexOf("SALT ") - 1);
             if (userName.startsWith("IF NOT EXISTS ")) {
                 userName = userName.substring("IF NOT EXISTS ".length());
             }
@@ -65,15 +65,15 @@ public class RemovePasswords {
             }
             System.out.println("User: " + userName);
             byte[] userPasswordHash = SHA256.getKeyPasswordHash(userName,
-                    "".toCharArray());
+                                      "".toCharArray());
             byte[] salt = MathUtils.secureRandomBytes(Constants.SALT_LEN);
             byte[] passwordHash = SHA256
-                    .getHashWithSalt(userPasswordHash, salt);
+                                  .getHashWithSalt(userPasswordHash, salt);
             StringBuilder b = new StringBuilder();
             b.append("SALT '").append(StringUtils.convertBytesToHex(salt))
-                    .append("' HASH '")
-                    .append(StringUtils.convertBytesToHex(passwordHash))
-                    .append('\'');
+            .append("' HASH '")
+            .append(StringUtils.convertBytesToHex(passwordHash))
+            .append('\'');
             byte[] replacement = b.toString().getBytes();
             buff.position(i + saltIndex);
             buff.put(replacement, 0, replacement.length);

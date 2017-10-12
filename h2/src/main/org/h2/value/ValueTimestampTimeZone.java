@@ -58,7 +58,7 @@ public class ValueTimestampTimeZone extends Value {
     private final short timeZoneOffsetMins;
 
     private ValueTimestampTimeZone(long dateValue, long timeNanos,
-            short timeZoneOffsetMins) {
+                                   short timeZoneOffsetMins) {
         if (timeNanos < 0 || timeNanos >= 24L * 60 * 60 * 1000 * 1000 * 1000) {
             throw new IllegalArgumentException(
                     "timeNanos out of range " + timeNanos);
@@ -85,7 +85,7 @@ public class ValueTimestampTimeZone extends Value {
     public static ValueTimestampTimeZone fromDateValueAndNanos(long dateValue,
             long timeNanos, short timeZoneOffsetMins) {
         return (ValueTimestampTimeZone) Value.cache(new ValueTimestampTimeZone(
-                dateValue, timeNanos, timeZoneOffsetMins));
+                        dateValue, timeNanos, timeZoneOffsetMins));
     }
 
     /**
@@ -96,8 +96,8 @@ public class ValueTimestampTimeZone extends Value {
      */
     public static ValueTimestampTimeZone get(TimestampWithTimeZone timestamp) {
         return fromDateValueAndNanos(timestamp.getYMD(),
-                timestamp.getNanosSinceMidnight(),
-                timestamp.getTimeZoneOffsetMins());
+                                     timestamp.getNanosSinceMidnight(),
+                                     timestamp.getTimeZoneOffsetMins());
     }
 
     /**
@@ -113,7 +113,7 @@ public class ValueTimestampTimeZone extends Value {
             return parseTry(s);
         } catch (Exception e) {
             throw DbException.get(ErrorCode.INVALID_DATETIME_CONSTANT_2, e,
-                    "TIMESTAMP WITH TIME ZONE", s);
+                                  "TIMESTAMP WITH TIME ZONE", s);
         }
     }
 
@@ -166,7 +166,7 @@ public class ValueTimestampTimeZone extends Value {
                 }
                 if (tz != null) {
                     long millis = DateTimeUtils
-                            .convertDateValueToMillis(GMT_TIMEZONE, dateValue);
+                                  .convertDateValueToMillis(GMT_TIMEZONE, dateValue);
                     tzMinutes = (short) (tz.getOffset(millis) / 1000 / 60);
                 }
             }
@@ -295,16 +295,16 @@ public class ValueTimestampTimeZone extends Value {
 
         // convert to minutes and add timezone offset
         long a = DateTimeUtils.convertDateValueToMillis(
-                TimeZone.getTimeZone("UTC"), dateValue) /
-                (1000L * 60L);
+                         TimeZone.getTimeZone("UTC"), dateValue) /
+                 (1000L * 60L);
         long ma = timeNanos / (1000L * 1000L * 1000L * 60L);
         a += ma;
         a -= timeZoneOffsetMins;
 
         // convert to minutes and add timezone offset
         long b = DateTimeUtils.convertDateValueToMillis(
-                TimeZone.getTimeZone("UTC"), t.dateValue) /
-                (1000L * 60L);
+                         TimeZone.getTimeZone("UTC"), t.dateValue) /
+                 (1000L * 60L);
         long mb = t.timeNanos / (1000L * 1000L * 1000L * 60L);
         b += mb;
         b -= t.timeZoneOffsetMins;
@@ -329,24 +329,24 @@ public class ValueTimestampTimeZone extends Value {
         }
         ValueTimestampTimeZone x = (ValueTimestampTimeZone) other;
         return dateValue == x.dateValue && timeNanos == x.timeNanos
-                && timeZoneOffsetMins == x.timeZoneOffsetMins;
+               && timeZoneOffsetMins == x.timeZoneOffsetMins;
     }
 
     @Override
     public int hashCode() {
         return (int) (dateValue ^ (dateValue >>> 32) ^ timeNanos
-                ^ (timeNanos >>> 32) ^ timeZoneOffsetMins);
+                      ^ (timeNanos >>> 32) ^ timeZoneOffsetMins);
     }
 
     @Override
     public Object getObject() {
         return new TimestampWithTimeZone(dateValue, timeNanos,
-                timeZoneOffsetMins);
+                                         timeZoneOffsetMins);
     }
 
     @Override
     public void set(PreparedStatement prep, int parameterIndex)
-            throws SQLException {
+    throws SQLException {
         prep.setString(parameterIndex, getString());
     }
 

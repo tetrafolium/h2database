@@ -52,7 +52,7 @@ final class FullTextSettings {
      */
     private final SoftHashMap<Connection,
             SoftHashMap<String, PreparedStatement>> cache =
-            new SoftHashMap<>();
+                    new SoftHashMap<>();
 
     /**
      * The whitespace characters.
@@ -164,7 +164,7 @@ final class FullTextSettings {
      * @return the settings
      */
     protected static FullTextSettings getInstance(Connection conn)
-            throws SQLException {
+    throws SQLException {
         String path = getIndexPath(conn);
         FullTextSettings setting;
         synchronized (SETTINGS) {
@@ -186,7 +186,7 @@ final class FullTextSettings {
     private static String getIndexPath(Connection conn) throws SQLException {
         Statement stat = conn.createStatement();
         ResultSet rs = stat.executeQuery(
-                "CALL IFNULL(DATABASE_PATH(), 'MEM:' || DATABASE())");
+                               "CALL IFNULL(DATABASE_PATH(), 'MEM:' || DATABASE())");
         rs.next();
         String path = rs.getString(1);
         if ("MEM:UNNAMED".equals(path)) {
@@ -206,7 +206,7 @@ final class FullTextSettings {
      * @return the prepared statement
      */
     protected synchronized PreparedStatement prepare(Connection conn, String sql)
-            throws SQLException {
+    throws SQLException {
         SoftHashMap<String, PreparedStatement> c = cache.get(conn);
         if (c == null) {
             c = new SoftHashMap<>();

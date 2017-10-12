@@ -22,7 +22,7 @@ import org.h2.table.Table;
  * The base class for constraint checking.
  */
 public abstract class Constraint extends SchemaObjectBase implements
-        Comparable<Constraint> {
+    Comparable<Constraint> {
 
     /**
      * The constraint type name for check constraints.

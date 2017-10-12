@@ -45,17 +45,18 @@ public class RangeTable extends Table {
      * @param noColumns whether this table has no columns
      */
     public RangeTable(Schema schema, Expression min, Expression max,
-            boolean noColumns) {
+                      boolean noColumns) {
         super(schema, 0, NAME, true, true);
         Column[] cols = noColumns ? new Column[0] : new Column[] { new Column(
-                "X", Value.LONG) };
+                    "X", Value.LONG)
+        };
         this.min = min;
         this.max = max;
         setColumns(cols);
     }
 
     public RangeTable(Schema schema, Expression min, Expression max,
-            Expression step, boolean noColumns) {
+                      Expression step, boolean noColumns) {
         this(schema, min, max, noColumns);
         this.step = step;
     }
@@ -102,8 +103,8 @@ public class RangeTable extends Table {
 
     @Override
     public Index addIndex(Session session, String indexName,
-            int indexId, IndexColumn[] cols, IndexType indexType,
-            boolean create, String indexComment) {
+                          int indexId, IndexColumn[] cols, IndexType indexType,
+                          boolean create, String indexComment) {
         throw DbException.getUnsupportedException("SYSTEM_RANGE");
     }
 

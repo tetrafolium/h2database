@@ -40,7 +40,7 @@ public class ConditionInConstantSet extends Condition {
      * @param valueList the value list (at least two elements)
      */
     public ConditionInConstantSet(final Session session, Expression left,
-            ArrayList<Expression> valueList) {
+                                  ArrayList<Expression> valueList) {
         this.left = left;
         this.valueList = valueList;
         this.valueSet = new TreeSet<>(new Comparator<Value>() {

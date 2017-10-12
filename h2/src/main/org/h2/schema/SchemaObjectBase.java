@@ -11,7 +11,7 @@ import org.h2.engine.DbObjectBase;
  * The base class for classes implementing SchemaObject.
  */
 public abstract class SchemaObjectBase extends DbObjectBase implements
-        SchemaObject {
+    SchemaObject {
 
     private Schema schema;
 
@@ -24,7 +24,7 @@ public abstract class SchemaObjectBase extends DbObjectBase implements
      * @param traceModuleId the trace module id
      */
     protected void initSchemaObjectBase(Schema newSchema, int id, String name,
-            int traceModuleId) {
+                                        int traceModuleId) {
         initDbObjectBase(newSchema.getDatabase(), id, name, traceModuleId);
         this.schema = newSchema;
     }

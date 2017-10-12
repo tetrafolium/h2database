@@ -38,7 +38,7 @@ public class ValueJavaObject extends ValueBytes {
      * @return the value
      */
     public static ValueJavaObject getNoCopy(Object javaObject, byte[] b,
-            DataHandler dataHandler) {
+                                            DataHandler dataHandler) {
         if (b != null && b.length == 0) {
             return EMPTY;
         }
@@ -64,7 +64,7 @@ public class ValueJavaObject extends ValueBytes {
 
     @Override
     public void set(PreparedStatement prep, int parameterIndex)
-            throws SQLException {
+    throws SQLException {
         Object obj = JdbcUtils.deserialize(getBytesNoCopy(), getDataHandler());
         prep.setObject(parameterIndex, obj, Types.JAVA_OBJECT);
     }
@@ -88,7 +88,7 @@ public class ValueJavaObject extends ValueBytes {
 
         @Override
         public void set(PreparedStatement prep, int parameterIndex)
-                throws SQLException {
+        throws SQLException {
             prep.setObject(parameterIndex, getObject(), Types.JAVA_OBJECT);
         }
 

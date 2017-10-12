@@ -100,7 +100,7 @@ public class MVSpatialIndex extends BaseIndex implements SpatialIndex, MVIndex {
         VersionedValueType valueType = new VersionedValueType(vt);
         MVRTreeMap.Builder<VersionedValue> mapBuilder =
                 new MVRTreeMap.Builder<VersionedValue>().
-                valueType(valueType);
+        valueType(valueType);
         spatialMap = db.getMvStore().getStore().openMap(mapName, mapBuilder);
         Transaction t = mvTable.getTransactionBegin();
         dataMap = t.openMap(spatialMap);
@@ -182,7 +182,7 @@ public class MVSpatialIndex extends BaseIndex implements SpatialIndex, MVIndex {
             if (old == null) {
                 old = map.remove(key);
                 throw DbException.get(ErrorCode.ROW_NOT_FOUND_WHEN_DELETING_1,
-                        getSQL() + ": " + row.getKey());
+                                      getSQL() + ": " + row.getKey());
             }
         } catch (IllegalStateException e) {
             throw mvTable.convertException(e);
@@ -208,7 +208,7 @@ public class MVSpatialIndex extends BaseIndex implements SpatialIndex, MVIndex {
 
     @Override
     public Cursor findByGeometry(TableFilter filter, SearchRow first,
-            SearchRow last, SearchRow intersection) {
+                                 SearchRow last, SearchRow intersection) {
         Session session = filter.getSession();
         if (intersection == null) {
             return find(session, first, last);
@@ -228,8 +228,8 @@ public class MVSpatialIndex extends BaseIndex implements SpatialIndex, MVIndex {
         Geometry g = ((ValueGeometry) v.convertTo(Value.GEOMETRY)).getGeometryNoCopy();
         Envelope env = g.getEnvelopeInternal();
         return new SpatialKey(row.getKey(),
-                (float) env.getMinX(), (float) env.getMaxX(),
-                (float) env.getMinY(), (float) env.getMaxY());
+                              (float) env.getMinX(), (float) env.getMaxX(),
+                              (float) env.getMinY(), (float) env.getMaxY());
     }
 
     /**
@@ -251,8 +251,8 @@ public class MVSpatialIndex extends BaseIndex implements SpatialIndex, MVIndex {
 
     @Override
     public double getCost(Session session, int[] masks, TableFilter[] filters,
-            int filter, SortOrder sortOrder,
-            HashSet<Column> allColumnsSet) {
+                          int filter, SortOrder sortOrder,
+                          HashSet<Column> allColumnsSet) {
         return SpatialTreeIndex.getCostRangeIndex(masks, columns);
     }
 

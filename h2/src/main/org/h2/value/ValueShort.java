@@ -43,7 +43,7 @@ public class ValueShort extends Value {
     private static ValueShort checkRange(int x) {
         if (x < Short.MIN_VALUE || x > Short.MAX_VALUE) {
             throw DbException.get(ErrorCode.NUMERIC_VALUE_OUT_OF_RANGE_1,
-                    Integer.toString(x));
+                                  Integer.toString(x));
         }
         return ValueShort.get((short) x);
     }
@@ -131,7 +131,7 @@ public class ValueShort extends Value {
 
     @Override
     public void set(PreparedStatement prep, int parameterIndex)
-            throws SQLException {
+    throws SQLException {
         prep.setShort(parameterIndex, value);
     }
 

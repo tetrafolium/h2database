@@ -49,7 +49,7 @@ public class PropertiesToUTF8 {
      * @param target the target file name
      */
     static void propertiesToTextUTF8(String source, String target)
-            throws Exception {
+    throws Exception {
         if (!new File(source).exists()) {
             return;
         }
@@ -74,12 +74,12 @@ public class PropertiesToUTF8 {
      * @param target the target file name
      */
     static void textUTF8ToProperties(String source, String target)
-            throws Exception {
+    throws Exception {
         if (!new File(source).exists()) {
             return;
         }
         LineNumberReader reader = new LineNumberReader(new InputStreamReader(
-                new FileInputStream(source), "UTF-8"));
+                        new FileInputStream(source), "UTF-8"));
         try {
             SortedProperties prop = new SortedProperties();
             StringBuilder buff = new StringBuilder();

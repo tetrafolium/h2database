@@ -129,11 +129,11 @@ public class AnsCompression {
         ByteBuffer buff = ByteBuffer.allocate(data.length * 2);
         buff = encode(data, freq, cumulativeFreq, buff);
         return Arrays.copyOfRange(buff.array(),
-                buff.arrayOffset() + buff.position(), buff.arrayOffset() + buff.limit());
+                                  buff.arrayOffset() + buff.position(), buff.arrayOffset() + buff.limit());
     }
 
     private static ByteBuffer encode(byte[] data, int[] freq,
-            int[] cumulativeFreq, ByteBuffer buff) {
+                                     int[] cumulativeFreq, ByteBuffer buff) {
         long state = TOP;
         // encoding happens backwards
         int b = buff.limit();
@@ -171,7 +171,7 @@ public class AnsCompression {
     }
 
     private static void decode(byte[] data, int[] freq, int[] cumulativeFreq,
-            byte[] freqToCode, byte[] out) {
+                               byte[] freqToCode, byte[] out) {
         ByteBuffer buff = ByteBuffer.wrap(data);
         long state = buff.getLong();
         for (int i = 0, size = out.length; i < size; i++) {

@@ -84,7 +84,7 @@ public class ValueTime extends Value {
             return fromNanos(DateTimeUtils.parseTimeNanos(s, 0, s.length(), false));
         } catch (Exception e) {
             throw DbException.get(ErrorCode.INVALID_DATETIME_CONSTANT_2,
-                    e, "TIME", s);
+                                  e, "TIME", s);
         }
     }
 
@@ -152,7 +152,7 @@ public class ValueTime extends Value {
 
     @Override
     public void set(PreparedStatement prep, int parameterIndex)
-            throws SQLException {
+    throws SQLException {
         prep.setTime(parameterIndex, getTime());
     }
 
@@ -196,7 +196,7 @@ public class ValueTime extends Value {
      * @param alwaysAddMillis whether to always add at least ".0"
      */
     static void appendTime(StringBuilder buff, long nanos,
-            boolean alwaysAddMillis) {
+                           boolean alwaysAddMillis) {
         if (nanos < 0) {
             buff.append('-');
             nanos = -nanos;

@@ -17,7 +17,7 @@ public class Test extends Activity {
 
     public static void main(String... args) throws Exception {
         H2Database db = H2Utils.openOrCreateDatabase(
-                "helloWorld.db", MODE_PRIVATE, null);
+                                "helloWorld.db", MODE_PRIVATE, null);
         log("opened ps=" + db.getPageSize());
         try {
             // db.execSQL("DROP TABLE IF EXISTS test");
@@ -48,7 +48,7 @@ public class Test extends Activity {
             log("inserted");
             for (int i = 0; i < 10; i++) {
                 Cursor c = db.rawQuery(
-                        "select * from test where id=?", new String[] { "" + i });
+                                   "select * from test where id=?", new String[] { "" + i });
                 int count = c.getCount();
                 if (count > 0) {
                     c.move(1);

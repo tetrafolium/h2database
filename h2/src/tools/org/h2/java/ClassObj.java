@@ -433,7 +433,7 @@ class Type {
         if (other instanceof Type) {
             Type t = (Type) other;
             return t.classObj.equals(classObj) && t.arrayLevel == arrayLevel
-                    && t.isVarArgs == isVarArgs;
+                   && t.isVarArgs == isVarArgs;
         }
         return false;
     }

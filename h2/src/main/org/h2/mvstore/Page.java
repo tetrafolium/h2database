@@ -98,9 +98,9 @@ public class Page {
      */
     static Page createEmpty(MVMap<?, ?> map, long version) {
         return create(map, version,
-                EMPTY_OBJECT_ARRAY, EMPTY_OBJECT_ARRAY,
-                null,
-                0, DataUtils.PAGE_MEMORY);
+                      EMPTY_OBJECT_ARRAY, EMPTY_OBJECT_ARRAY,
+                      null,
+                      0, DataUtils.PAGE_MEMORY);
     }
 
     /**
@@ -116,8 +116,8 @@ public class Page {
      * @return the page
      */
     public static Page create(MVMap<?, ?> map, long version,
-            Object[] keys, Object[] values, PageReference[] children,
-            long totalCount, int memory) {
+                              Object[] keys, Object[] values, PageReference[] children,
+                              long totalCount, int memory) {
         Page p = new Page(map, version);
         // the position is 0
         p.keys = keys;
@@ -148,7 +148,7 @@ public class Page {
      */
     public static Page create(MVMap<?, ?> map, long version, Page source) {
         return create(map, version, source.keys, source.values, source.children,
-                source.totalCount, source.memory);
+                      source.totalCount, source.memory);
     }
 
     /**
@@ -162,7 +162,7 @@ public class Page {
      * @return the page
      */
     static Page read(FileStore fileStore, long pos, MVMap<?, ?> map,
-            long filePos, long maxPos) {
+                     long filePos, long maxPos) {
         ByteBuffer buff;
         int maxLength = DataUtils.getPageMaxLength(pos);
         if (maxLength == DataUtils.PAGE_LARGE) {
@@ -291,9 +291,9 @@ public class Page {
      */
     public Page copy(long version) {
         Page newPage = create(map, version,
-                keys, values,
-                children, totalCount,
-                memory);
+                              keys, values,
+                              children, totalCount,
+                              memory);
         // mark the old as deleted
         removePage();
         newPage.cachedCompare = cachedCompare;
@@ -381,9 +381,9 @@ public class Page {
         values = aValues;
         totalCount = a;
         Page newPage = create(map, version,
-                bKeys, bValues,
-                null,
-                b, 0);
+                              bKeys, bValues,
+                              null,
+                              b, 0);
         return newPage;
     }
 
@@ -412,9 +412,9 @@ public class Page {
             t += x.count;
         }
         Page newPage = create(map, version,
-                bKeys, null,
-                bChildren,
-                t, 0);
+                              bKeys, null,
+                              bChildren,
+                              t, 0);
         return newPage;
     }
 
@@ -468,7 +468,7 @@ public class Page {
             children[index] = ref;
             totalCount -= oldCount;
         } else if (c != children[index].page ||
-                c.getPos() != children[index].pos) {
+                   c.getPos() != children[index].pos) {
             long oldCount = children[index].count;
             // this is slightly slower:
             // children = Arrays.copyOf(children, children.length);
@@ -516,7 +516,7 @@ public class Page {
         DataType valueType = map.getValueType();
         if(isPersistent()) {
             addMemory(valueType.getMemory(value) -
-                    valueType.getMemory(old));
+                      valueType.getMemory(old));
         }
         values[index] = value;
         return old;
@@ -566,7 +566,7 @@ public class Page {
         totalCount++;
         if(isPersistent()) {
             addMemory(map.getKeyType().getMemory(key) +
-                    map.getValueType().getMemory(value));
+                      map.getValueType().getMemory(value));
         }
     }
 
@@ -594,7 +594,7 @@ public class Page {
         totalCount += childPage.totalCount;
         if(isPersistent()) {
             addMemory(map.getKeyType().getMemory(key) +
-                    DataUtils.PAGE_MEMORY_CHILD);
+                      DataUtils.PAGE_MEMORY_CHILD);
         }
     }
 
@@ -666,8 +666,8 @@ public class Page {
                     chunkId, map.getId(), mapId);
         }
         int checkTest = DataUtils.getCheckValue(chunkId)
-                ^ DataUtils.getCheckValue(offset)
-                ^ DataUtils.getCheckValue(pageLength);
+                        ^ DataUtils.getCheckValue(offset)
+                        ^ DataUtils.getCheckValue(pageLength);
         if (check != (short) checkTest) {
             throw DataUtils.newIllegalStateException(
                     DataUtils.ERROR_FILE_CORRUPT,
@@ -708,7 +708,7 @@ public class Page {
             int l = compLen + lenAdd;
             buff = ByteBuffer.allocate(l);
             compressor.expand(comp, 0, compLen, buff.array(),
-                    buff.arrayOffset(), l);
+                              buff.arrayOffset(), l);
         }
         map.getKeyType().read(buff, keys, len, true);
         if (!node) {
@@ -730,11 +730,11 @@ public class Page {
         int start = buff.position();
         int len = keys.length;
         int type = children != null ? DataUtils.PAGE_TYPE_NODE
-                : DataUtils.PAGE_TYPE_LEAF;
+                   : DataUtils.PAGE_TYPE_LEAF;
         buff.putInt(0).
-            putShort((byte) 0).
-            putVarInt(map.getId()).
-            putVarInt(len);
+        putShort((byte) 0).
+        putVarInt(map.getId()).
+        putVarInt(len);
         int typePos = buff.position();
         buff.put((byte) type);
         if (type == DataUtils.PAGE_TYPE_NODE) {
@@ -769,20 +769,20 @@ public class Page {
                 int plus = DataUtils.getVarIntLen(compLen - expLen);
                 if (compLen + plus < expLen) {
                     buff.position(typePos).
-                        put((byte) (type + compressType));
+                    put((byte) (type + compressType));
                     buff.position(compressStart).
-                        putVarInt(expLen - compLen).
-                        put(comp, 0, compLen);
+                    putVarInt(expLen - compLen).
+                    put(comp, 0, compLen);
                 }
             }
         }
         int pageLength = buff.position() - start;
         int chunkId = chunk.id;
         int check = DataUtils.getCheckValue(chunkId)
-                ^ DataUtils.getCheckValue(start)
-                ^ DataUtils.getCheckValue(pageLength);
+                    ^ DataUtils.getCheckValue(start)
+                    ^ DataUtils.getCheckValue(pageLength);
         buff.putInt(start, pageLength).
-            putShort(start + 4, (short) check);
+        putShort(start + 4, (short) check);
         if (pos != 0) {
             throw DataUtils.newIllegalStateException(
                     DataUtils.ERROR_INTERNAL, "Page already stored");
@@ -1038,7 +1038,7 @@ public class Page {
          * @return the page children object
          */
         static PageChildren read(FileStore fileStore, long pos, int mapId,
-                long filePos, long maxPos) {
+                                 long filePos, long maxPos) {
             ByteBuffer buff;
             int maxLength = DataUtils.getPageMaxLength(pos);
             if (maxLength == DataUtils.PAGE_LARGE) {
@@ -1075,8 +1075,8 @@ public class Page {
                         chunkId, mapId, m);
             }
             int checkTest = DataUtils.getCheckValue(chunkId)
-                    ^ DataUtils.getCheckValue(offset)
-                    ^ DataUtils.getCheckValue(pageLength);
+                            ^ DataUtils.getCheckValue(offset)
+                            ^ DataUtils.getCheckValue(pageLength);
             if (check != (short) checkTest) {
                 throw DataUtils.newIllegalStateException(
                         DataUtils.ERROR_FILE_CORRUPT,

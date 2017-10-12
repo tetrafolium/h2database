@@ -27,13 +27,13 @@ public class Indexer {
     private static final int MIN_WORD_SIZE = 3;
     private static final int MAX_RELATIONS = 30;
     private static final String VERY_COMMON =
-        ";the;be;to;of;and;a;in;that;have;i;it;for;not;on;with;he;as;you;do;at;" +
-        "this;but;his;by;from;they;we;say;her;she;or;an;will;my;one;all;would;" +
-        "there;their;what;so;up;out;if;about;who;get;which;go;me;when;make;" +
-        "can;like;no;just;him;know;take;into;your;good;some;" +
-        "could;them;see;other;than;then;now;look;only;come;its;over;think;" +
-        "also;back;after;use;two;how;our;work;first;well;way;even;new;want;" +
-        "because;any;these;give;most;us;";
+            ";the;be;to;of;and;a;in;that;have;i;it;for;not;on;with;he;as;you;do;at;" +
+            "this;but;his;by;from;they;we;say;her;she;or;an;will;my;one;all;would;" +
+            "there;their;what;so;up;out;if;about;who;get;which;go;me;when;make;" +
+            "can;like;no;just;him;know;take;into;your;good;some;" +
+            "could;them;see;other;than;then;now;look;only;come;its;over;think;" +
+            "also;back;after;use;two;how;our;work;first;well;way;even;new;want;" +
+            "because;any;these;give;most;us;";
 
     private final ArrayList<Page> pages = new ArrayList<>();
 
@@ -71,13 +71,13 @@ public class Indexer {
         }
         File file = new File(dir);
         setNoIndex("index.html", "html/header.html", "html/search.html",
-                "html/frame.html", "html/fragments.html",
-                "html/sourceError.html", "html/source.html",
-                "html/mainWeb.html", "javadoc/index.html",
-                "javadoc/classes.html", "javadoc/allclasses-frame.html",
-                "javadoc/allclasses-noframe.html",
-                "javadoc/constant-values.html", "javadoc/overview-frame.html",
-                "javadoc/overview-summary.html", "javadoc/serialized-form.html");
+                   "html/frame.html", "html/fragments.html",
+                   "html/sourceError.html", "html/source.html",
+                   "html/mainWeb.html", "javadoc/index.html",
+                   "javadoc/classes.html", "javadoc/allclasses-frame.html",
+                   "javadoc/allclasses-noframe.html",
+                   "javadoc/constant-values.html", "javadoc/overview-frame.html",
+                   "javadoc/overview-summary.html", "javadoc/serialized-form.html");
         output = new PrintWriter(new FileWriter(destDir + "/index.js"));
         readPages("", file, 0);
         output.println("var pages=new Array();");
@@ -178,7 +178,7 @@ public class Indexer {
     private void listPages() {
         for (Page p : pages) {
             output.println("pages[" + p.id + "]=new Page('"
-                    + convertUTF(p.title) + "', '" + p.fileName                    + "');");
+                           + convertUTF(p.title) + "', '" + p.fileName                    + "');");
         }
     }
 
@@ -281,7 +281,7 @@ public class Indexer {
                     } else if (token.equalsIgnoreCase("title")) {
                         title = true;
                     } else if (token.length() == 2 && Character.toLowerCase(token.charAt(0)) == 'h'
-                            && Character.isDigit(token.charAt(1))) {
+                               && Character.isDigit(token.charAt(1))) {
                         heading = true;
                     }
                     // TODO maybe skip script tags?
@@ -337,7 +337,7 @@ public class Indexer {
         // this list of constants needs to be the same in search.js
         // (char) 160: nbsp
         StringTokenizer t = new StringTokenizer(text,
-                " \t\r\n\"'.,:;!&/\\?%@`[]{}()+-=<>|*^~#$" + (char) 160, false);
+                                                " \t\r\n\"'.,:;!&/\\?%@`[]{}()+-=<>|*^~#$" + (char) 160, false);
         while (t.hasMoreTokens()) {
             String token = t.nextToken();
             if (token.length() < MIN_WORD_SIZE) {

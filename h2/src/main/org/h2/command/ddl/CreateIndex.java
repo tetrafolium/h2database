@@ -84,10 +84,10 @@ public class CreateIndex extends SchemaCommand {
         if (indexName == null) {
             if (primaryKey) {
                 indexName = table.getSchema().getUniqueIndexName(session,
-                        table, Constants.PREFIX_PRIMARY_KEY);
+                            table, Constants.PREFIX_PRIMARY_KEY);
             } else {
                 indexName = table.getSchema().getUniqueIndexName(session,
-                        table, Constants.PREFIX_INDEX);
+                            table, Constants.PREFIX_INDEX);
             }
         }
         IndexType indexType;
@@ -105,7 +105,7 @@ public class CreateIndex extends SchemaCommand {
         }
         IndexColumn.mapColumns(indexColumns, table);
         table.addIndex(session, indexName, id, indexColumns, indexType, create,
-                comment);
+                       comment);
         return 0;
     }
 

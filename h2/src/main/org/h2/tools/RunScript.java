@@ -155,7 +155,7 @@ public class RunScript extends Tool {
      * @return the last result set
      */
     public static ResultSet execute(Connection conn, Reader reader)
-            throws SQLException {
+    throws SQLException {
         // can not close the statement because we return a result set from it
         Statement stat = conn.createStatement();
         ResultSet rs = null;
@@ -181,8 +181,8 @@ public class RunScript extends Tool {
     }
 
     private void process(Connection conn, String fileName,
-            boolean continueOnError, Charset charset) throws SQLException,
-            IOException {
+                         boolean continueOnError, Charset charset) throws SQLException,
+        IOException {
         InputStream in = FileUtils.newInputStream(fileName);
         String path = FileUtils.getParent(fileName);
         try {
@@ -195,7 +195,7 @@ public class RunScript extends Tool {
     }
 
     private void process(Connection conn, boolean continueOnError, String path,
-            Reader reader, Charset charset) throws SQLException, IOException {
+                         Reader reader, Charset charset) throws SQLException, IOException {
         Statement stat = conn.createStatement();
         ScriptReader r = new ScriptReader(reader);
         while (true) {
@@ -272,7 +272,7 @@ public class RunScript extends Tool {
     }
 
     private static void processRunscript(String url, String user, String password,
-            String fileName, String options) throws SQLException {
+                                         String fileName, String options) throws SQLException {
         Connection conn = null;
         Statement stat = null;
         try {
@@ -299,10 +299,10 @@ public class RunScript extends Tool {
      *            occurs
      */
     public static void execute(String url, String user, String password,
-            String fileName, Charset charset, boolean continueOnError)
-            throws SQLException {
+                               String fileName, Charset charset, boolean continueOnError)
+    throws SQLException {
         new RunScript().process(url, user, password, fileName, charset,
-                continueOnError);
+                                continueOnError);
     }
 
     /**
@@ -317,8 +317,8 @@ public class RunScript extends Tool {
      *            occurs
      */
     void process(String url, String user, String password,
-            String fileName, Charset charset,
-            boolean continueOnError) throws SQLException {
+                 String fileName, Charset charset,
+                 boolean continueOnError) throws SQLException {
         try {
             org.h2.Driver.load();
             Connection conn = DriverManager.getConnection(url, user, password);

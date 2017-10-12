@@ -38,7 +38,7 @@ import org.h2.util.Utils;
  * Large objects are either stored in the database, or in temporary files.
  */
 public class ValueLobDb extends Value implements Value.ValueClob,
-        Value.ValueBlob {
+    Value.ValueBlob {
 
     private final int type;
     private final long lobId;
@@ -63,7 +63,7 @@ public class ValueLobDb extends Value implements Value.ValueClob,
     private boolean isRecoveryReference;
 
     private ValueLobDb(int type, DataHandler handler, int tableId, long lobId,
-            byte[] hmac, long precision) {
+                       byte[] hmac, long precision) {
         this.type = type;
         this.handler = handler;
         this.tableId = tableId;
@@ -90,7 +90,7 @@ public class ValueLobDb extends Value implements Value.ValueClob,
      * Create a CLOB in a temporary file.
      */
     private ValueLobDb(DataHandler handler, Reader in, long remaining)
-            throws IOException {
+    throws IOException {
         this.type = Value.CLOB;
         this.handler = handler;
         this.small = null;
@@ -121,7 +121,7 @@ public class ValueLobDb extends Value implements Value.ValueClob,
      * Create a BLOB in a temporary file.
      */
     private ValueLobDb(DataHandler handler, byte[] buff, int len, InputStream in,
-            long remaining) throws IOException {
+                       long remaining) throws IOException {
         this.type = Value.BLOB;
         this.handler = handler;
         this.small = null;
@@ -154,7 +154,7 @@ public class ValueLobDb extends Value implements Value.ValueClob,
     }
 
     private static String createTempLobFileName(DataHandler handler)
-            throws IOException {
+    throws IOException {
         String path = handler.getDatabasePath();
         if (path.length() == 0) {
             path = SysProperties.PREFIX_TEMP_FILE;
@@ -174,7 +174,7 @@ public class ValueLobDb extends Value implements Value.ValueClob,
      * @return the value
      */
     public static ValueLobDb create(int type, DataHandler handler,
-            int tableId, long id, byte[] hmac, long precision) {
+                                    int tableId, long id, byte[] hmac, long precision) {
         return new ValueLobDb(type, handler, tableId, id, hmac, precision);
     }
 
@@ -192,7 +192,7 @@ public class ValueLobDb extends Value implements Value.ValueClob,
         } else if (t == Value.CLOB) {
             if (handler != null) {
                 Value copy = handler.getLobStorage().
-                        createClob(getReader(), -1);
+                             createClob(getReader(), -1);
                 return copy;
             } else if (small != null) {
                 return ValueLobDb.createSmallLob(t, small);
@@ -200,7 +200,7 @@ public class ValueLobDb extends Value implements Value.ValueClob,
         } else if (t == Value.BLOB) {
             if (handler != null) {
                 Value copy = handler.getLobStorage().
-                        createBlob(getInputStream(), -1);
+                             createBlob(getInputStream(), -1);
                 return copy;
             } else if (small != null) {
                 return ValueLobDb.createSmallLob(t, small);
@@ -212,7 +212,7 @@ public class ValueLobDb extends Value implements Value.ValueClob,
     @Override
     public boolean isLinkedToTable() {
         return small == null &&
-                tableId >= 0;
+               tableId >= 0;
     }
 
     public boolean isStored() {
@@ -279,7 +279,7 @@ public class ValueLobDb extends Value implements Value.ValueClob,
     @Override
     public String getString() {
         int len = precision > Integer.MAX_VALUE || precision == 0 ?
-                Integer.MAX_VALUE : (int) precision;
+                  Integer.MAX_VALUE : (int) precision;
         try {
             if (type == Value.CLOB) {
                 if (small != null) {
@@ -381,7 +381,7 @@ public class ValueLobDb extends Value implements Value.ValueClob,
             FileStore store = handler.openFile(fileName, "r", true);
             boolean alwaysClose = SysProperties.lobCloseBetweenReads;
             return new BufferedInputStream(new FileStoreInputStream(store,
-                    handler, false, alwaysClose), Constants.IO_BUFFER_SIZE);
+                                           handler, false, alwaysClose), Constants.IO_BUFFER_SIZE);
         }
         long byteCount = (type == Value.BLOB) ? precision : -1;
         try {
@@ -393,7 +393,7 @@ public class ValueLobDb extends Value implements Value.ValueClob,
 
     @Override
     public void set(PreparedStatement prep, int parameterIndex)
-            throws SQLException {
+    throws SQLException {
         long p = getPrecision();
         if (p > Integer.MAX_VALUE || p <= 0) {
             p = -1;
@@ -429,7 +429,7 @@ public class ValueLobDb extends Value implements Value.ValueClob,
             buff.append("CAST(REPEAT('00', ").append(getPrecision()).append(") AS BINARY");
         }
         buff.append(" /* table: ").append(tableId).append(" id: ")
-                .append(lobId).append(" */)");
+        .append(lobId).append(" */)");
         return buff.toString();
     }
 
@@ -488,7 +488,7 @@ public class ValueLobDb extends Value implements Value.ValueClob,
             return this;
         }
         return s.copyLob(this, LobStorageFrontend.TABLE_RESULT,
-                getPrecision());
+                         getPrecision());
     }
 
     public long getLobId() {
@@ -509,7 +509,7 @@ public class ValueLobDb extends Value implements Value.ValueClob,
      * @return the lob value
      */
     public static ValueLobDb createTempClob(Reader in, long length,
-            DataHandler handler) {
+                                            DataHandler handler) {
         BufferedReader reader;
         if (in instanceof BufferedReader) {
             reader = (BufferedReader) in;
@@ -554,7 +554,7 @@ public class ValueLobDb extends Value implements Value.ValueClob,
      * @return the lob value
      */
     public static ValueLobDb createTempBlob(InputStream in, long length,
-            DataHandler handler) {
+                                            DataHandler handler) {
         try {
             long remaining = Long.MAX_VALUE;
             boolean compress = handler.getLobCompressionAlgorithm(Value.BLOB) != null;
@@ -583,13 +583,13 @@ public class ValueLobDb extends Value implements Value.ValueClob,
     }
 
     private static int getBufferSize(DataHandler handler, boolean compress,
-            long remaining) {
+                                     long remaining) {
         if (remaining < 0 || remaining > Integer.MAX_VALUE) {
             remaining = Integer.MAX_VALUE;
         }
         int inplace = handler.getMaxLengthInplaceLob();
         long m = compress ? Constants.IO_BUFFER_SIZE_COMPRESS
-                : Constants.IO_BUFFER_SIZE;
+                 : Constants.IO_BUFFER_SIZE;
         if (m < remaining && m <= inplace) {
             // using "1L" to force long arithmetic because
             // inplace could be Integer.MAX_VALUE
@@ -667,7 +667,7 @@ public class ValueLobDb extends Value implements Value.ValueClob,
      * @return the LOB
      */
     public static ValueLobDb createSmallLob(int type, byte[] small,
-            long precision) {
+                                            long precision) {
         return new ValueLobDb(type, small, precision);
     }
 

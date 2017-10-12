@@ -47,7 +47,7 @@ public class ValueEnumBase extends Value {
     @Override
     public boolean equals(final Object other) {
         return other instanceof ValueEnumBase &&
-            getInt() == ((ValueEnumBase) other).getInt();
+               getInt() == ((ValueEnumBase) other).getInt();
     }
 
     /**
@@ -129,8 +129,8 @@ public class ValueEnumBase extends Value {
 
     @Override
     public void set(final PreparedStatement prep, final int parameterIndex)
-            throws SQLException {
-            prep.setInt(parameterIndex, ordinal);
+    throws SQLException {
+        prep.setInt(parameterIndex, ordinal);
     }
 
     @Override

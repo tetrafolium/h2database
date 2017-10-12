@@ -41,7 +41,7 @@ public class CommandRemote implements CommandInterface {
     private final int created;
 
     public CommandRemote(SessionRemote session,
-            ArrayList<Transfer> transferList, String sql, int fetchSize) {
+                         ArrayList<Transfer> transferList, String sql, int fetchSize) {
         this.transferList = transferList;
         trace = session.getTrace();
         this.sql = sql;
@@ -70,15 +70,15 @@ public class CommandRemote implements CommandInterface {
 
                 if (createParams) {
                     s.traceOperation(v16 ? "SESSION_PREPARE_READ_PARAMS2"
-                            : "SESSION_PREPARE_READ_PARAMS", id);
+                                     : "SESSION_PREPARE_READ_PARAMS", id);
                     transfer.writeInt(
                             v16 ? SessionRemote.SESSION_PREPARE_READ_PARAMS2
-                                    : SessionRemote.SESSION_PREPARE_READ_PARAMS)
-                            .writeInt(id).writeString(sql);
+                            : SessionRemote.SESSION_PREPARE_READ_PARAMS)
+                    .writeInt(id).writeString(sql);
                 } else {
                     s.traceOperation("SESSION_PREPARE", id);
                     transfer.writeInt(SessionRemote.SESSION_PREPARE).
-                        writeInt(id).writeString(sql);
+                    writeInt(id).writeString(sql);
                 }
                 s.done(transfer);
                 isQuery = transfer.readBoolean();
@@ -137,11 +137,11 @@ public class CommandRemote implements CommandInterface {
                 try {
                     session.traceOperation("COMMAND_GET_META_DATA", id);
                     transfer.writeInt(SessionRemote.COMMAND_GET_META_DATA).
-                            writeInt(id).writeInt(objectId);
+                    writeInt(id).writeInt(objectId);
                     session.done(transfer);
                     int columnCount = transfer.readInt();
                     result = new ResultRemote(session, transfer, objectId,
-                            columnCount, Integer.MAX_VALUE);
+                                              columnCount, Integer.MAX_VALUE);
                     break;
                 } catch (IOException e) {
                     session.removeServer(e, i--, ++count);
@@ -164,7 +164,7 @@ public class CommandRemote implements CommandInterface {
                 try {
                     session.traceOperation("COMMAND_EXECUTE_QUERY", id);
                     transfer.writeInt(SessionRemote.COMMAND_EXECUTE_QUERY).
-                        writeInt(id).writeInt(objectId).writeInt(maxRows);
+                    writeInt(id).writeInt(objectId).writeInt(maxRows);
                     int fetch;
                     if (session.isClustered() || scrollable) {
                         fetch = Integer.MAX_VALUE;

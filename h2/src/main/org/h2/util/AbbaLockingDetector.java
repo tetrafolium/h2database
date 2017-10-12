@@ -97,10 +97,10 @@ public class AbbaLockingDetector implements Runnable {
         }
 
         ThreadInfo[] list = threadMXBean.dumpAllThreads(
-                // lockedMonitors
-                true,
-                // lockedSynchronizers
-                false);
+                                    // lockedMonitors
+                                    true,
+                                    // lockedSynchronizers
+                                    false);
         processThreadList(list);
     }
 
@@ -120,7 +120,7 @@ public class AbbaLockingDetector implements Runnable {
      * return the locks in the correct order.
      */
     private static void generateOrdering(final List<String> lockOrder,
-            ThreadInfo info) {
+                                         ThreadInfo info) {
         final MonitorInfo[] lockedMonitors = info.getLockedMonitors();
         Arrays.sort(lockedMonitors, new Comparator<MonitorInfo>() {
             @Override
@@ -143,7 +143,7 @@ public class AbbaLockingDetector implements Runnable {
     }
 
     private synchronized void markHigher(List<String> lockOrder,
-            ThreadInfo threadInfo) {
+                                         ThreadInfo threadInfo) {
         String topLock = lockOrder.get(lockOrder.size() - 1);
         Map<String, String> map = lockOrdering.get(topLock);
         if (map == null) {
@@ -162,9 +162,9 @@ public class AbbaLockingDetector implements Runnable {
                     String deadlockType = topLock + " " + olderLock;
                     if (!knownDeadlocks.contains(deadlockType)) {
                         System.out.println(topLock + " synchronized after \n " + olderLock
-                                + ", but in the past before\n" + "AFTER\n" +
-                                    getStackTraceForThread(threadInfo)
-                                + "BEFORE\n" + e);
+                                           + ", but in the past before\n" + "AFTER\n" +
+                                           getStackTraceForThread(threadInfo)
+                                           + "BEFORE\n" + e);
                         knownDeadlocks.add(deadlockType);
                     }
                 }
@@ -185,14 +185,14 @@ public class AbbaLockingDetector implements Runnable {
      */
     private static String getStackTraceForThread(ThreadInfo info) {
         StringBuilder sb = new StringBuilder("\"" +
-                info.getThreadName() + "\"" + " Id=" +
-                info.getThreadId() + " " + info.getThreadState());
+                                             info.getThreadName() + "\"" + " Id=" +
+                                             info.getThreadId() + " " + info.getThreadState());
         if (info.getLockName() != null) {
             sb.append(" on " + info.getLockName());
         }
         if (info.getLockOwnerName() != null) {
             sb.append(" owned by \"" + info.getLockOwnerName() +
-                    "\" Id=" + info.getLockOwnerId());
+                      "\" Id=" + info.getLockOwnerId());
         }
         if (info.isSuspended()) {
             sb.append(" (suspended)");
@@ -253,7 +253,7 @@ public class AbbaLockingDetector implements Runnable {
 
     private static String getObjectName(MonitorInfo info) {
         return info.getClassName() + "@" +
-                Integer.toHexString(info.getIdentityHashCode());
+               Integer.toHexString(info.getIdentityHashCode());
     }
 
 }

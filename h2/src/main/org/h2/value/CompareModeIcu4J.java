@@ -36,9 +36,9 @@ public class CompareModeIcu4J extends CompareMode {
 
     @Override
     public boolean equalsChars(String a, int ai, String b, int bi,
-            boolean ignoreCase) {
+                               boolean ignoreCase) {
         return compareString(a.substring(ai, ai + 1), b.substring(bi, bi + 1),
-                ignoreCase) == 0;
+                             ignoreCase) == 0;
     }
 
     @SuppressWarnings("unchecked")
@@ -46,9 +46,9 @@ public class CompareModeIcu4J extends CompareMode {
         try {
             Comparator<String> result = null;
             Class<?> collatorClass = JdbcUtils.loadUserClass(
-                    "com.ibm.icu.text.Collator");
+                                             "com.ibm.icu.text.Collator");
             Method getInstanceMethod = collatorClass.getMethod(
-                    "getInstance", Locale.class);
+                                               "getInstance", Locale.class);
             if (name.length() == 2) {
                 Locale locale = new Locale(StringUtils.toLowerEnglish(name), "");
                 if (compareLocaleNames(locale, name)) {
@@ -68,7 +68,7 @@ public class CompareModeIcu4J extends CompareMode {
             }
             if (result == null) {
                 for (Locale locale : (Locale[]) collatorClass.getMethod(
-                        "getAvailableLocales").invoke(null)) {
+                                "getAvailableLocales").invoke(null)) {
                     if (compareLocaleNames(locale, name)) {
                         result = (Comparator<String>) getInstanceMethod.invoke(null, locale);
                         break;

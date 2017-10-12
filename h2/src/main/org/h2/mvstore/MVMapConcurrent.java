@@ -27,7 +27,7 @@ public class MVMapConcurrent<K, V> extends MVMap<K, V> {
      * @param <V> the value type
      */
     public static class Builder<K, V> implements
-            MapBuilder<MVMapConcurrent<K, V>, K, V> {
+        MapBuilder<MVMapConcurrent<K, V>, K, V> {
 
         protected DataType keyType;
         protected DataType valueType;

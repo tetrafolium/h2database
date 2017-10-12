@@ -24,7 +24,7 @@ public class DocumentedMBean extends StandardMBean {
     private Properties resources;
 
     public <T> DocumentedMBean(T impl, Class<T> mbeanInterface)
-            throws NotCompliantMBeanException {
+    throws NotCompliantMBeanException {
         super(impl, mbeanInterface);
         this.interfaceName = impl.getClass().getName() + "MBean";
     }
@@ -61,7 +61,7 @@ public class DocumentedMBean extends StandardMBean {
     protected String getDescription(MBeanAttributeInfo info) {
         String prefix = info.isIs() ? "is" : "get";
         String s = getResources().getProperty(
-                interfaceName + "." + prefix + info.getName());
+                           interfaceName + "." + prefix + info.getName());
         return s == null ? super.getDescription(info) : s;
     }
 

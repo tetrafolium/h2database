@@ -79,11 +79,11 @@ public class SwitchSource {
     private void showUsage() {
         System.out.println("Switched source code to a specific Java version.");
         System.out.println("java "+getClass().getName() + "\n" +
-            " -dir <dir>  The target directory\n" +
-            " [-version]   Use the specified Java version (1.4 or newer)\n" +
-            " [-auto]      Auto-detect Java version (1.4 or newer)\n" +
-            " [+MODE]     Enable code labeled MODE\n" +
-            " [-MODE]     Disable code labeled MODE");
+                           " -dir <dir>  The target directory\n" +
+                           " [-version]   Use the specified Java version (1.4 or newer)\n" +
+                           " [-auto]      Auto-detect Java version (1.4 or newer)\n" +
+                           " [+MODE]     Enable code labeled MODE\n" +
+                           " [-MODE]     Disable code labeled MODE");
     }
 
     private void process(File f) throws IOException {
@@ -143,7 +143,7 @@ public class SwitchSource {
             File fileCopy = new File(name);
             if (!fileNew.renameTo(fileCopy)) {
                 throw new IOException("Could not rename "
-                        + fileNew.getAbsolutePath() + " to " + name);
+                                      + fileNew.getAbsolutePath() + " to " + name);
             }
             if (!fileBack.delete()) {
                 throw new IOException("Could not delete " + fileBack.getAbsolutePath());

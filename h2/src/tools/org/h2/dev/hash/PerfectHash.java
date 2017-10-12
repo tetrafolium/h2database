@@ -141,7 +141,7 @@ public class PerfectHash {
     }
 
     private static void generate(Collection<Integer> set, int level,
-            boolean minimal, ByteArrayOutputStream out) {
+                                 boolean minimal, ByteArrayOutputStream out) {
         int size = set.size();
         if (size <= 1) {
             out.write(size);

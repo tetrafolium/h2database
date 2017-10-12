@@ -59,7 +59,7 @@ public class LocalResult implements ResultInterface, ResultTarget {
      * @param visibleColumnCount the number of visible columns
      */
     public LocalResult(Session session, Expression[] expressions,
-            int visibleColumnCount) {
+                       int visibleColumnCount) {
         this.session = session;
         if (session == null) {
             this.maxMemoryRows = Integer.MAX_VALUE;
@@ -521,7 +521,7 @@ public class LocalResult implements ResultInterface, ResultTarget {
     @Override
     public String toString() {
         return super.toString() + " columns: " + visibleColumnCount +
-                " rows: " + rowCount + " pos: " + rowId;
+               " rows: " + rowCount + " pos: " + rowId;
     }
 
     /**

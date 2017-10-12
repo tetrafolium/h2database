@@ -52,7 +52,7 @@ public abstract class Tool {
      * @return this method never returns normally
      */
     protected SQLException showUsageAndThrowUnsupportedOption(String option)
-            throws SQLException {
+    throws SQLException {
         showUsage();
         throw throwUnsupportedOption(option);
     }
@@ -64,7 +64,7 @@ public abstract class Tool {
      * @return this method never returns normally
      */
     protected SQLException throwUnsupportedOption(String option)
-            throws SQLException {
+    throws SQLException {
         throw DbException.get(
                 ErrorCode.FEATURE_NOT_SUPPORTED_1, option).getSQLException();
     }
@@ -113,7 +113,7 @@ public abstract class Tool {
         out.println("Usage: java "+getClass().getName() + " <options>");
         out.println(resources.get(className + ".main"));
         out.println("See also http://h2database.com/javadoc/" +
-                className.replace('.', '/') + ".html");
+                    className.replace('.', '/') + ".html");
     }
 
     /**

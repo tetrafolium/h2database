@@ -144,7 +144,7 @@ public class ValueDouble extends Value {
 
     @Override
     public void set(PreparedStatement prep, int parameterIndex)
-            throws SQLException {
+    throws SQLException {
         prep.setDouble(parameterIndex, value);
     }
 

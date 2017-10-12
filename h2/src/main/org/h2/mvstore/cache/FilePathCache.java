@@ -167,7 +167,7 @@ public class FilePathCache extends FilePathWrapper {
 
         @Override
         public FileLock tryLock(long position, long size, boolean shared)
-                throws IOException {
+        throws IOException {
             return base.tryLock(position, size, shared);
         }
 

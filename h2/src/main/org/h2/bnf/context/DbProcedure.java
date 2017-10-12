@@ -28,7 +28,7 @@ public class DbProcedure {
         this.schema = schema;
         name = rs.getString("PROCEDURE_NAME");
         returnsResult = rs.getShort("PROCEDURE_TYPE") ==
-                DatabaseMetaData.procedureReturnsResult;
+                        DatabaseMetaData.procedureReturnsResult;
         quotedName = schema.getContents().quoteIdentifier(name);
     }
 

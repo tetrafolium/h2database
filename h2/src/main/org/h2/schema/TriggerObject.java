@@ -79,12 +79,12 @@ public class TriggerObject extends SchemaObjectBase {
             }
             triggerCallback = (Trigger) obj;
             triggerCallback.init(c2, getSchema().getName(), getName(),
-                    table.getName(), before, typeMask);
+                                 table.getName(), before, typeMask);
         } catch (Throwable e) {
             // try again later
             triggerCallback = null;
             throw DbException.get(ErrorCode.ERROR_CREATING_TRIGGER_OBJECT_3, e, getName(),
-                triggerClassName != null ? triggerClassName : "..source..", e.toString());
+                                  triggerClassName != null ? triggerClassName : "..source..", e.toString());
         }
     }
 
@@ -165,7 +165,7 @@ public class TriggerObject extends SchemaObjectBase {
             triggerCallback.fire(c2, null, null);
         } catch (Throwable e) {
             throw DbException.get(ErrorCode.ERROR_EXECUTING_TRIGGER_3, e, getName(),
-                    triggerClassName != null ? triggerClassName : "..source..", e.toString());
+                                  triggerClassName != null ? triggerClassName : "..source..", e.toString());
         } finally {
             if (session.getLastTriggerIdentity() != null) {
                 session.setLastScopeIdentity(session.getLastTriggerIdentity());
@@ -206,7 +206,7 @@ public class TriggerObject extends SchemaObjectBase {
      * @return true if no further action is required (for 'instead of' triggers)
      */
     public boolean fireRow(Session session, Row oldRow, Row newRow,
-            boolean beforeAction, boolean rollback) {
+                           boolean beforeAction, boolean rollback) {
         if (!rowBased || before != beforeAction) {
             return false;
         }

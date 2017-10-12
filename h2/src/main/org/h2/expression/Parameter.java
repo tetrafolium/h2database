@@ -149,10 +149,10 @@ public class Parameter extends Expression implements ParameterInterface {
     public boolean isEverything(ExpressionVisitor visitor) {
         switch (visitor.getType()) {
         case ExpressionVisitor.EVALUATABLE:
-            // the parameter _will_be_ evaluatable at execute time
+        // the parameter _will_be_ evaluatable at execute time
         case ExpressionVisitor.SET_MAX_DATA_MODIFICATION_ID:
-            // it is checked independently if the value is the same as the last
-            // time
+        // it is checked independently if the value is the same as the last
+        // time
         case ExpressionVisitor.NOT_FROM_RESOLVER:
         case ExpressionVisitor.QUERY_COMPARABLE:
         case ExpressionVisitor.GET_DEPENDENCIES:
@@ -176,7 +176,7 @@ public class Parameter extends Expression implements ParameterInterface {
     @Override
     public Expression getNotIfPossible(Session session) {
         return new Comparison(session, Comparison.EQUAL, this,
-                ValueExpression.get(ValueBoolean.get(false)));
+                              ValueExpression.get(ValueBoolean.get(false)));
     }
 
     public void setColumn(Column column) {

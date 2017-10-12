@@ -71,11 +71,11 @@ public class CreateLinkedTable extends SchemaCommand {
                 return 0;
             }
             throw DbException.get(ErrorCode.TABLE_OR_VIEW_ALREADY_EXISTS_1,
-                    tableName);
+                                  tableName);
         }
         int id = getObjectId();
         TableLink table = getSchema().createTableLink(id, tableName, driver, url,
-                user, password, originalSchema, originalTable, emitUpdates, force);
+                          user, password, originalSchema, originalTable, emitUpdates, force);
         table.setTemporary(temporary);
         table.setGlobalTemporary(globalTemporary);
         table.setComment(comment);

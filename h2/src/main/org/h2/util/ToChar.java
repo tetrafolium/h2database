@@ -122,7 +122,7 @@ public class ToChar {
      * @return the formatted number
      */
     public static String toChar(BigDecimal number, String format,
-            @SuppressWarnings("unused") String nlsParam) {
+                                @SuppressWarnings("unused") String nlsParam) {
 
         // short-circuit logic for formats that don't follow common logic below
         String formatUp = format != null ? StringUtils.toUpperEnglish(format) : null;
@@ -133,7 +133,7 @@ public class ToChar {
             int pow = number.precision() - number.scale() - 1;
             number = number.movePointLeft(pow);
             return number.toPlainString() + "E" +
-                    (pow < 0 ? '-' : '+') + (Math.abs(pow) < 10 ? "0" : "") + Math.abs(pow);
+                   (pow < 0 ? '-' : '+') + (Math.abs(pow) < 10 ? "0" : "") + Math.abs(pow);
         } else if (formatUp.equals("RN")) {
             boolean lowercase = format.startsWith("r");
             String rn = StringUtils.pad(toRomanNumeral(number.intValue()), 15, " ", false);
@@ -220,8 +220,8 @@ public class ToChar {
 
         StringBuilder output = new StringBuilder();
         String unscaled = (number.abs().compareTo(BigDecimal.ONE) < 0 ?
-                zeroesAfterDecimalSeparator(number) : "") +
-                number.unscaledValue().abs().toString();
+                           zeroesAfterDecimalSeparator(number) : "") +
+                          number.unscaledValue().abs().toString();
 
         // start at the decimal point and fill in the numbers to the left,
         // working our way from right to left
@@ -350,8 +350,8 @@ public class ToChar {
     }
 
     private static void addSign(StringBuilder output, int signum,
-            boolean leadingSign, boolean trailingSign, boolean trailingMinus,
-            boolean angleBrackets, boolean fillMode) {
+                                boolean leadingSign, boolean trailingSign, boolean trailingMinus,
+                                boolean angleBrackets, boolean fillMode) {
         if (angleBrackets) {
             if (signum < 0) {
                 output.insert(0, '<');
@@ -410,9 +410,11 @@ public class ToChar {
 
     private static String toRomanNumeral(int number) {
         int[] values = new int[] { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9,
-                5, 4, 1 };
+                                   5, 4, 1
+                                 };
         String[] numerals = new String[] { "M", "CM", "D", "CD", "C", "XC",
-                "L", "XL", "X", "IX", "V", "IV", "I" };
+                                           "L", "XL", "X", "IX", "V", "IV", "I"
+                                         };
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < values.length; i++) {
             int value = values[i];
@@ -609,7 +611,7 @@ public class ToChar {
 
             Capitalization cap;
 
-                // AD / BC
+            // AD / BC
 
             if ((cap = containsAt(format, i, "A.D.", "B.C.")) != null) {
                 String era = cal.get(Calendar.ERA) == GregorianCalendar.AD ? "A.D." : "B.C.";
@@ -650,7 +652,7 @@ public class ToChar {
                 i += 3;
             } else if ((cap = containsAt(format, i, "DD")) != null) {
                 output.append(String.format("%02d",
-                        cal.get(Calendar.DAY_OF_MONTH)));
+                                            cal.get(Calendar.DAY_OF_MONTH)));
                 i += 2;
             } else if ((cap = containsAt(format, i, "DY")) != null) {
                 String day = StringUtils.toUpperEnglish(new SimpleDateFormat("EEE").format(ts));
@@ -705,7 +707,7 @@ public class ToChar {
                 // Fractional seconds
 
             } else if ((cap = containsAt(format, i, "FF1", "FF2",
-                    "FF3", "FF4", "FF5", "FF6", "FF7", "FF8", "FF9")) != null) {
+                                         "FF3", "FF4", "FF5", "FF6", "FF7", "FF8", "FF9")) != null) {
                 int x = Integer.parseInt(format.substring(i + 2, i + 3));
                 int ff = (int) (cal.get(Calendar.MILLISECOND) * Math.pow(10, x - 3));
                 output.append(ff);
@@ -813,12 +815,12 @@ public class ToChar {
                     }
                 }
             } else if (format.charAt(i) == '-'
-                    || format.charAt(i) == '/'
-                    || format.charAt(i) == ','
-                    || format.charAt(i) == '.'
-                    || format.charAt(i) == ';'
-                    || format.charAt(i) == ':'
-                    || format.charAt(i) == ' ') {
+                       || format.charAt(i) == '/'
+                       || format.charAt(i) == ','
+                       || format.charAt(i) == '.'
+                       || format.charAt(i) == ';'
+                       || format.charAt(i) == ':'
+                       || format.charAt(i) == ' ') {
                 output.append(format.charAt(i));
                 i += 1;
 
@@ -940,7 +942,7 @@ public class ToChar {
                 return StringUtils.toLowerEnglish(s);
             case CAPITALIZE:
                 return Character.toUpperCase(s.charAt(0)) +
-                        (s.length() > 1 ? StringUtils.toLowerEnglish(s).substring(1) : "");
+                       (s.length() > 1 ? StringUtils.toLowerEnglish(s).substring(1) : "");
             default:
                 throw new IllegalArgumentException(
                         "Unknown capitalization strategy: " + this);

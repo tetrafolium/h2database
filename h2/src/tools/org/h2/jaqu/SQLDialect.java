@@ -78,7 +78,7 @@ public interface SQLDialect {
 
         @Override
         public String getCreateIndex(String schema, String table,
-                IndexDefinition index) {
+                                     IndexDefinition index) {
             StatementBuilder buff = new StatementBuilder();
             buff.append("CREATE ");
             switch (index.type) {

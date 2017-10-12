@@ -47,12 +47,12 @@ public class CreateFunctionAlias extends SchemaCommand {
             FunctionAlias functionAlias;
             if (javaClassMethod != null) {
                 functionAlias = FunctionAlias.newInstance(getSchema(), id,
-                        aliasName, javaClassMethod, force,
-                        bufferResultSetToLocalTemp);
+                                aliasName, javaClassMethod, force,
+                                bufferResultSetToLocalTemp);
             } else {
                 functionAlias = FunctionAlias.newInstanceFromSource(
-                        getSchema(), id, aliasName, source, force,
-                        bufferResultSetToLocalTemp);
+                                        getSchema(), id, aliasName, source, force,
+                                        bufferResultSetToLocalTemp);
             }
             functionAlias.setDeterministic(deterministic);
             db.addSchemaObject(session, functionAlias);

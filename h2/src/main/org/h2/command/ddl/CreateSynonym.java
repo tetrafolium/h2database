@@ -44,7 +44,9 @@ public class CreateSynonym extends SchemaCommand {
         this.ifNotExists = ifNotExists;
     }
 
-    public void setOrReplace(boolean orReplace) { this.orReplace = orReplace; }
+    public void setOrReplace(boolean orReplace) {
+        this.orReplace = orReplace;
+    }
 
     @Override
     public int update() {
@@ -65,7 +67,7 @@ public class CreateSynonym extends SchemaCommand {
         }
 
         throw DbException.get(ErrorCode.TABLE_OR_VIEW_NOT_FOUND_1,
-                data.synonymForSchema.getName() + "." + data.synonymFor);
+                              data.synonymForSchema.getName() + "." + data.synonymFor);
 
     }
 

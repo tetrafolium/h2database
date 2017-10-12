@@ -115,7 +115,7 @@ public class ConstraintReferential extends Constraint {
      * @return the SQL statement
      */
     public String getCreateSQLForCopy(Table forTable, Table forRefTable,
-            String quotedName, boolean internalIndex) {
+                                      String quotedName, boolean internalIndex) {
         StatementBuilder buff = new StatementBuilder("ALTER TABLE ");
         String mainTable = forTable.getSQL();
         buff.append(mainTable).append(" ADD CONSTRAINT ");
@@ -369,12 +369,12 @@ public class ConstraintReferential extends Constraint {
         }
         if (!existsRow(session, refIndex, check, null)) {
             throw DbException.get(ErrorCode.REFERENTIAL_INTEGRITY_VIOLATED_PARENT_MISSING_1,
-                    getShortDescription(refIndex, check));
+                                  getShortDescription(refIndex, check));
         }
     }
 
     private boolean existsRow(Session session, Index searchIndex,
-            SearchRow check, Row excluding) {
+                              SearchRow check, Row excluding) {
         Table searchTable = searchIndex.getTable();
         searchTable.lock(session, false, false);
         Cursor cursor = searchIndex.find(session, check, check);
@@ -423,7 +423,7 @@ public class ConstraintReferential extends Constraint {
         Row excluding = (refTable == table) ? oldRow : null;
         if (existsRow(session, index, check, excluding)) {
             throw DbException.get(ErrorCode.REFERENTIAL_INTEGRITY_VIOLATED_CHILD_EXISTS_1,
-                    getShortDescription(index, check));
+                                  getShortDescription(index, check));
         }
     }
 
@@ -659,20 +659,20 @@ public class ConstraintReferential extends Constraint {
             buff.append(c.getSQL());
         }
         buff.append(") C WHERE NOT EXISTS(SELECT 1 FROM ").
-            append(refTable.getSQL()).append(" P WHERE ");
+        append(refTable.getSQL()).append(" P WHERE ");
         buff.resetCount();
         int i = 0;
         for (IndexColumn c : columns) {
             buff.appendExceptFirst(" AND ");
             buff.append("C.").append(c.getSQL()).append('=').
-                append("P.").append(refColumns[i++].getSQL());
+            append("P.").append(refColumns[i++].getSQL());
         }
         buff.append(')');
         String sql = buff.toString();
         ResultInterface r = session.prepare(sql).query(1);
         if (r.next()) {
             throw DbException.get(ErrorCode.REFERENTIAL_INTEGRITY_VIOLATED_PARENT_MISSING_1,
-                    getShortDescription(null, null));
+                                  getShortDescription(null, null));
         }
     }
 

@@ -166,7 +166,7 @@ public class PgServerThread implements Runnable {
             } else {
                 server.trace("StartupMessage");
                 server.trace(" version " + version +
-                        " (" + (version >> 16) + "." + (version & 0xff) + ")");
+                             " (" + (version >> 16) + "." + (version & 0xff) + ")");
                 while (true) {
                     String param = readString();
                     if (param.length() == 0) {
@@ -463,7 +463,7 @@ public class PgServerThread implements Runnable {
     }
 
     private void sendCommandComplete(JdbcStatement stat, int updateCount)
-            throws IOException {
+    throws IOException {
         startMessage('C');
         switch (stat.getLastExecutedCommandType()) {
         case CommandInterface.INSERT:
@@ -516,7 +516,7 @@ public class PgServerThread implements Runnable {
     }
 
     private void writeDataColumn(ResultSet rs, int column, int pgType, boolean text)
-            throws Exception {
+    throws Exception {
         if (text) {
             // plain text
             switch (pgType) {
@@ -580,7 +580,7 @@ public class PgServerThread implements Runnable {
     }
 
     private void setParameter(PreparedStatement prep,
-            int pgType, int i, int[] formatCodes) throws SQLException, IOException {
+                              int pgType, int i, int[] formatCodes) throws SQLException, IOException {
         boolean text = (i >= formatCodes.length) || (formatCodes[i] == 0);
         int col = i + 1;
         int paramLen = readInt();
@@ -664,7 +664,7 @@ public class PgServerThread implements Runnable {
     }
 
     private void sendParameterDescription(ParameterMetaData meta,
-            int[] paramTypes) throws Exception {
+                                          int[] paramTypes) throws Exception {
         int count = meta.getParameterCount();
         startMessage('t');
         writeShort(count);
@@ -827,7 +827,7 @@ public class PgServerThread implements Runnable {
 
     private static void installPgCatalog(Statement stat) throws SQLException {
         try (Reader r = new InputStreamReader(new ByteArrayInputStream(Utils
-                    .getResource("/org/h2/server/pg/pg_catalog.sql")))) {
+                                                  .getResource("/org/h2/server/pg/pg_catalog.sql")))) {
             ScriptReader reader = new ScriptReader(r);
             while (true) {
                 String sql = reader.readStatement();
@@ -954,7 +954,7 @@ public class PgServerThread implements Runnable {
     }
 
     private void sendParameterStatus(String param, String value)
-            throws IOException {
+    throws IOException {
         startMessage('S');
         writeString(param);
         writeString(value);

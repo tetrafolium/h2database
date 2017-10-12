@@ -84,7 +84,7 @@ public class CompressTool {
     }
 
     private static int compress(byte[] in, int len, Compressor compress,
-            byte[] out) {
+                                byte[] out) {
         int newLen = 0;
         out[0] = (byte) compress.getAlgorithm();
         int start = 1 + writeVariableInt(out, 1, len);
@@ -149,19 +149,19 @@ public class CompressTool {
         }
         if (x < 0xe0) {
             return ((x & 0x1f) << 16) +
-                    ((buff[pos++] & 0xff) << 8) +
-                    (buff[pos] & 0xff);
+                   ((buff[pos++] & 0xff) << 8) +
+                   (buff[pos] & 0xff);
         }
         if (x < 0xf0) {
             return ((x & 0xf) << 24) +
-                    ((buff[pos++] & 0xff) << 16) +
-                    ((buff[pos++] & 0xff) << 8) +
-                    (buff[pos] & 0xff);
+                   ((buff[pos++] & 0xff) << 16) +
+                   ((buff[pos++] & 0xff) << 8) +
+                   (buff[pos] & 0xff);
         }
         return ((buff[pos++] & 0xff) << 24) +
-                ((buff[pos++] & 0xff) << 16) +
-                ((buff[pos++] & 0xff) << 8) +
-                (buff[pos] & 0xff);
+               ((buff[pos++] & 0xff) << 16) +
+               ((buff[pos++] & 0xff) << 8) +
+               (buff[pos] & 0xff);
     }
 
     /**

@@ -54,9 +54,9 @@ public class Utils {
 
     private static int readInt(byte[] buff, int pos) {
         return (buff[pos++] << 24) +
-                ((buff[pos++] & 0xff) << 16) +
-                ((buff[pos++] & 0xff) << 8) +
-                (buff[pos] & 0xff);
+               ((buff[pos++] & 0xff) << 16) +
+               ((buff[pos++] & 0xff) << 8) +
+               (buff[pos] & 0xff);
     }
 
     /**
@@ -89,7 +89,7 @@ public class Utils {
      */
     public static long readLong(byte[] buff, int pos) {
         return (((long) readInt(buff, pos)) << 32) +
-                (readInt(buff, pos + 4) & 0xffffffffL);
+               (readInt(buff, pos + 4) & 0xffffffffL);
     }
 
     /**
@@ -380,10 +380,10 @@ public class Utils {
      * @param comp the comparator.
      */
     public static <X> void sortTopN(X[] array, int offset, int limit,
-            Comparator<? super X> comp) {
+                                    Comparator<? super X> comp) {
         partitionTopN(array, offset, limit, comp);
         Arrays.sort(array, offset,
-                (int) Math.min((long) offset + limit, array.length), comp);
+                    (int) Math.min((long) offset + limit, array.length), comp);
     }
 
     /**
@@ -396,9 +396,9 @@ public class Utils {
      * @param comp the comparator
      */
     private static <X> void partitionTopN(X[] array, int offset, int limit,
-            Comparator<? super X> comp) {
+                                          Comparator<? super X> comp) {
         partialQuickSort(array, 0, array.length - 1, comp, offset, offset +
-                limit - 1);
+                         limit - 1);
     }
 
     private static <X> void partialQuickSort(X[] array, int low, int high,
@@ -529,7 +529,7 @@ public class Utils {
      * @return the return value from this call
      */
     public static Object callStaticMethod(String classAndMethod,
-            Object... params) throws Exception {
+                                          Object... params) throws Exception {
         int lastDot = classAndMethod.lastIndexOf('.');
         String className = classAndMethod.substring(0, lastDot);
         String methodName = classAndMethod.substring(lastDot + 1);
@@ -586,7 +586,7 @@ public class Utils {
      * @return the newly created object
      */
     public static Object newInstance(String className, Object... params)
-            throws Exception {
+    throws Exception {
         Constructor<?> best = null;
         int bestMatch = 0;
         for (Constructor<?> c : Class.forName(className).getConstructors()) {
@@ -644,7 +644,7 @@ public class Utils {
      * @return the field value
      */
     public static Object getField(Object instance, String fieldName)
-            throws Exception {
+    throws Exception {
         return instance.getClass().getField(fieldName).get(instance);
     }
 
@@ -781,14 +781,14 @@ public class Utils {
         }
         try {
             OperatingSystemMXBean mxBean = ManagementFactory
-                    .getOperatingSystemMXBean();
+                                           .getOperatingSystemMXBean();
             // this method is only available on the class
             // com.sun.management.OperatingSystemMXBean, which mxBean
             // is an instance of under the Oracle JDK, but it is not present on
             // Android and other JDK's
             Method method = Class.forName(
-                    "com.sun.management.OperatingSystemMXBean").
-                    getMethod("getTotalPhysicalMemorySize");
+                                    "com.sun.management.OperatingSystemMXBean").
+                            getMethod("getTotalPhysicalMemorySize");
             long physicalMemorySize = ((Number) method.invoke(mxBean)).longValue();
             return (int) (value * physicalMemorySize / (1024 * 1024 * 1024));
         } catch (Exception e) {
@@ -822,6 +822,6 @@ public class Utils {
          *             factory
          */
         Class<?> loadClass(String name)
-                throws ClassNotFoundException;
+        throws ClassNotFoundException;
     }
 }

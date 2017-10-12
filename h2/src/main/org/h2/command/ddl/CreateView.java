@@ -106,7 +106,7 @@ public class CreateView extends SchemaCommand {
             try {
                 if (view == null) {
                     Schema schema = session.getDatabase().getSchema(
-                            session.getCurrentSchemaName());
+                                            session.getCurrentSchemaName());
                     sysSession.setCurrentSchema(schema);
                     Column[] columnTemplates = null;
                     if (columnNames != null) {
@@ -116,7 +116,7 @@ public class CreateView extends SchemaCommand {
                         }
                     }
                     view = new TableView(getSchema(), id, viewName, querySQL, null,
-                            columnTemplates, sysSession, false, false);
+                                         columnTemplates, sysSession, false, false);
                 } else {
                     view.replace(querySQL, sysSession, false, force, false);
                     view.setModified();

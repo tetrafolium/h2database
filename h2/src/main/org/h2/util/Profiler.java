@@ -49,7 +49,7 @@ public class Profiler implements Runnable {
             "com.google.common.," +
             "com.mongodb.," +
             "org.bson.,"
-            ).split(",");
+                                         ).split(",");
     private final String[] ignorePackages = (
             "java," +
             "sun," +
@@ -57,7 +57,7 @@ public class Profiler implements Runnable {
             "com.google.common.," +
             "com.mongodb.," +
             "org.bson"
-            ).split(",");
+                                            ).split(",");
     private final String[] ignoreThreads = (
             "java.lang.Object.wait," +
             "java.lang.Thread.dumpThreads," +
@@ -77,7 +77,7 @@ public class Profiler implements Runnable {
             "sun.nio.ch.ServerSocketChannelImpl.accept," +
             "dalvik.system.VMStack.getThreadStackTrace," +
             "dalvik.system.NativeStart.run"
-            ).split(",");
+                                           ).split(",");
 
     private volatile boolean stop;
     private final HashMap<String, Integer> counts =
@@ -130,7 +130,7 @@ public class Profiler implements Runnable {
         if (args.length == 0) {
             System.out.println("Show profiling data");
             System.out.println("Usage: java " + getClass().getName() +
-                    " <pid> | <stackTraceFileNames>");
+                               " <pid> | <stackTraceFileNames>");
             System.out.println("Processes:");
             String processes = exec("jps", "-l");
             System.out.println(processes);
@@ -221,7 +221,7 @@ public class Profiler implements Runnable {
     }
 
     private static List<Object[]> readStackTrace(LineNumberReader r)
-            throws IOException {
+    throws IOException {
         ArrayList<Object[]> list = new ArrayList<>();
         while (true) {
             String line = r.readLine();
@@ -284,7 +284,7 @@ public class Profiler implements Runnable {
     }
 
     private static void copyInThread(final InputStream in,
-            final OutputStream out) {
+                                     final OutputStream out) {
         new Thread("Profiler stream copy") {
             @Override
             public void run() {
@@ -301,7 +301,7 @@ public class Profiler implements Runnable {
                     throw new RuntimeException(e);
                 }
             }
-        }.start();
+        } .start();
     }
 
     /**
@@ -426,7 +426,7 @@ public class Profiler implements Runnable {
     }
 
     private static int increment(HashMap<String, Integer> map, String trace,
-            int minCount) {
+                                 int minCount) {
         Integer oldCount = map.get(trace);
         if (oldCount == null) {
             map.put(trace, 1);
@@ -435,7 +435,7 @@ public class Profiler implements Runnable {
         }
         while (map.size() > MAX_ELEMENTS) {
             for (Iterator<Map.Entry<String, Integer>> ei =
-                    map.entrySet().iterator(); ei.hasNext();) {
+                            map.entrySet().iterator(); ei.hasNext();) {
                 Map.Entry<String, Integer> e = ei.next();
                 if (e.getValue() <= minCount) {
                     ei.remove();
@@ -482,7 +482,7 @@ public class Profiler implements Runnable {
     }
 
     private static void appendTop(StringBuilder buff,
-            HashMap<String, Integer> map, int count, int total, boolean table) {
+                                  HashMap<String, Integer> map, int count, int total, boolean table) {
         for (int x = 0, min = 0;;) {
             int highest = 0;
             Map.Entry<String, Integer> best = null;
@@ -507,15 +507,15 @@ public class Profiler implements Runnable {
             if (table) {
                 if (percent > 1) {
                     buff.append(percent).
-                        append("%: ").append(best.getKey()).
-                        append(LINE_SEPARATOR);
+                    append("%: ").append(best.getKey()).
+                    append(LINE_SEPARATOR);
                 }
             } else {
                 buff.append(c).append('/').append(total).append(" (").
-                    append(percent).
-                    append("%):").append(LINE_SEPARATOR).
-                    append(best.getKey()).
-                    append(LINE_SEPARATOR);
+                append(percent).
+                append("%):").append(LINE_SEPARATOR).
+                append(best.getKey()).
+                append(LINE_SEPARATOR);
             }
         }
     }

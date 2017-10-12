@@ -91,7 +91,7 @@ public class SQLStatement {
     }
 
     private static void setValue(PreparedStatement prep, int parameterIndex,
-            Object x) {
+                                 Object x) {
         try {
             prep.setObject(parameterIndex, x);
         } catch (SQLException e) {

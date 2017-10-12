@@ -85,7 +85,7 @@ public class SortedProperties extends Properties {
      * @return the properties object
      */
     public static synchronized SortedProperties loadProperties(String fileName)
-            throws IOException {
+    throws IOException {
         SortedProperties prop = new SortedProperties();
         if (FileUtils.exists(fileName)) {
             try (InputStream in = FileUtils.newInputStream(fileName)) {

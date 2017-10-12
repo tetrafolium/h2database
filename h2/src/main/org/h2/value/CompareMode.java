@@ -151,7 +151,7 @@ public class CompareMode {
      * @return true if the characters are equals
      */
     public boolean equalsChars(String a, int ai, String b, int bi,
-            boolean ignoreCase) {
+                               boolean ignoreCase) {
         char ca = a.charAt(ai);
         char cb = b.charAt(bi);
         if (ignoreCase) {
@@ -186,7 +186,7 @@ public class CompareMode {
     public static String getName(Locale l) {
         Locale english = Locale.ENGLISH;
         String name = l.getDisplayLanguage(english) + ' ' +
-                l.getDisplayCountry(english) + ' ' + l.getVariant();
+                      l.getDisplayCountry(english) + ' ' + l.getVariant();
         name = StringUtils.toUpperEnglish(name.trim().replace(' ', '_'));
         return name;
     }
@@ -201,7 +201,7 @@ public class CompareMode {
      */
     static boolean compareLocaleNames(Locale locale, String name) {
         return name.equalsIgnoreCase(locale.toString()) ||
-                name.equalsIgnoreCase(getName(locale));
+               name.equalsIgnoreCase(getName(locale));
     }
 
     /**

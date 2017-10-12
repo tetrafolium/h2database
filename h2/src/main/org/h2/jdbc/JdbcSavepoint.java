@@ -28,7 +28,7 @@ public class JdbcSavepoint extends TraceObject implements Savepoint {
     private JdbcConnection conn;
 
     JdbcSavepoint(JdbcConnection conn, int savepointId, String name,
-            Trace trace, int id) {
+                  Trace trace, int id) {
         setTrace(trace, TraceObject.SAVEPOINT, id);
         this.conn = conn;
         this.savepointId = savepointId;
@@ -71,7 +71,7 @@ public class JdbcSavepoint extends TraceObject implements Savepoint {
     private void checkValid() {
         if (conn == null) {
             throw DbException.get(ErrorCode.SAVEPOINT_IS_INVALID_1,
-                    getName(name, savepointId));
+                                  getName(name, savepointId));
         }
     }
 

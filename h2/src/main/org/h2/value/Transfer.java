@@ -580,14 +580,14 @@ public class Transfer {
         case Value.TIMESTAMP: {
             if (version >= Constants.TCP_PROTOCOL_VERSION_9) {
                 return ValueTimestamp.fromDateValueAndNanos(
-                        readLong(), readLong());
+                               readLong(), readLong());
             } else if (version >= Constants.TCP_PROTOCOL_VERSION_7) {
                 return ValueTimestamp.fromMillisNanos(
-                        DateTimeUtils.getTimeUTCWithoutDst(readLong()),
-                        readInt() % 1000000);
+                               DateTimeUtils.getTimeUTCWithoutDst(readLong()),
+                               readInt() % 1000000);
             }
             return ValueTimestamp.fromMillisNanos(readLong(),
-                    readInt() % 1000000);
+                                                  readInt() % 1000000);
         }
         case Value.TIMESTAMP_TZ: {
             return ValueTimestampTimeZone.fromDateValueAndNanos(readLong(),
@@ -630,7 +630,7 @@ public class Transfer {
                     }
                     long precision = readLong();
                     return ValueLobDb.create(
-                            Value.BLOB, session.getDataHandler(), tableId, id, hmac, precision);
+                                   Value.BLOB, session.getDataHandler(), tableId, id, hmac, precision);
                 }
             }
             Value v = session.getDataHandler().getLobStorage().createBlob(in, length);
@@ -655,7 +655,7 @@ public class Transfer {
                     }
                     long precision = readLong();
                     return ValueLobDb.create(
-                            Value.CLOB, session.getDataHandler(), tableId, id, hmac, precision);
+                                   Value.CLOB, session.getDataHandler(), tableId, id, hmac, precision);
                 }
                 if (length < 0 || length > Integer.MAX_VALUE) {
                     throw DbException.get(
@@ -674,7 +674,7 @@ public class Transfer {
                 return ValueLobDb.createSmallLob(Value.CLOB, small, length);
             }
             Value v = session.getDataHandler().getLobStorage().
-                    createClob(new DataReader(in), length);
+                      createClob(new DataReader(in), length);
             int magic = readInt();
             if (magic != LOB_MAGIC) {
                 throw DbException.get(
@@ -722,7 +722,7 @@ public class Transfer {
         default:
             if (JdbcUtils.customDataTypesHandler != null) {
                 return JdbcUtils.customDataTypesHandler.convert(
-                        ValueBytes.getNoCopy(readBytes()), type);
+                               ValueBytes.getNoCopy(readBytes()), type);
             }
             throw DbException.get(ErrorCode.CONNECTION_BROKEN_1, "type=" + type);
         }
@@ -789,7 +789,7 @@ public class Transfer {
         byte[] result = calculateLobMac(lobId);
         if (!Utils.compareSecure(hmac,  result)) {
             throw DbException.get(ErrorCode.CONNECTION_BROKEN_1,
-                    "Invalid lob hmac; possibly the connection was re-opened internally");
+                                  "Invalid lob hmac; possibly the connection was re-opened internally");
         }
     }
 

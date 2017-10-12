@@ -164,7 +164,7 @@ public class IndexCursor implements Cursor {
         if (!alwaysFalse) {
             if (intersects != null && index instanceof SpatialIndex) {
                 cursor = ((SpatialIndex) index).findByGeometry(tableFilter,
-                        start, end, intersects);
+                         start, end, intersects);
             } else {
                 cursor = index.find(tableFilter, start, end);
             }
@@ -196,9 +196,9 @@ public class IndexCursor implements Cursor {
             // then it needs to overlap with the the union of a and b
             // (not the intersection)
             ValueGeometry vg = (ValueGeometry) row.getValue(columnId).
-                    convertTo(Value.GEOMETRY);
+                               convertTo(Value.GEOMETRY);
             v = ((ValueGeometry) v.convertTo(Value.GEOMETRY)).
-                    getEnvelopeUnion(vg);
+                getEnvelopeUnion(vg);
         }
         if (columnId < 0) {
             row.setKey(v.getLong());
@@ -209,7 +209,7 @@ public class IndexCursor implements Cursor {
     }
 
     private SearchRow getSearchRow(SearchRow row, int columnId, Value v,
-            boolean max) {
+                                   boolean max) {
         if (row == null) {
             row = table.getTemplateRow();
         } else {

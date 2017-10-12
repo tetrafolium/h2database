@@ -178,11 +178,11 @@ public final class CompressLZF implements Compressor {
             //       && (((in[ref] & 255) << 8) | (in[ref + 1] & 255)) ==
             //           ((future >> 8) & 0xffff)) {
             if (ref < inPos
-                        && ref > 0
-                        && (off = inPos - ref - 1) < MAX_OFF
-                        && in[ref + 2] == p2
-                        && in[ref + 1] == (byte) (future >> 8)
-                        && in[ref] == (byte) (future >> 16)) {
+                    && ref > 0
+                    && (off = inPos - ref - 1) < MAX_OFF
+                    && in[ref + 2] == p2
+                    && in[ref + 1] == (byte) (future >> 8)
+                    && in[ref] == (byte) (future >> 16)) {
                 // match
                 int maxLen = inLen - inPos - 2;
                 if (maxLen > MAX_REF) {
@@ -287,11 +287,11 @@ public final class CompressLZF implements Compressor {
             //       && (((in[ref] & 255) << 8) | (in[ref + 1] & 255)) ==
             //           ((future >> 8) & 0xffff)) {
             if (ref < inPos
-                        && ref > 0
-                        && (off = inPos - ref - 1) < MAX_OFF
-                        && in.get(ref + 2) == p2
-                        && in.get(ref + 1) == (byte) (future >> 8)
-                        && in.get(ref) == (byte) (future >> 16)) {
+                    && ref > 0
+                    && (off = inPos - ref - 1) < MAX_OFF
+                    && in.get(ref + 2) == p2
+                    && in.get(ref + 1) == (byte) (future >> 8)
+                    && in.get(ref) == (byte) (future >> 16)) {
                 // match
                 int maxLen = inLen - inPos - 2;
                 if (maxLen > MAX_REF) {
@@ -366,7 +366,7 @@ public final class CompressLZF implements Compressor {
 
     @Override
     public void expand(byte[] in, int inPos, int inLen, byte[] out, int outPos,
-            int outLen) {
+                       int outLen) {
         // if ((inPos | outPos | outLen) < 0) {
         if (inPos < 0 || outPos < 0 || outLen < 0) {
             throw new IllegalArgumentException();

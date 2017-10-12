@@ -64,7 +64,7 @@ public class ViewIndex extends BaseIndex implements SpatialIndex {
      * @param recursive if the view is recursive
      */
     public ViewIndex(TableView view, String querySQL,
-            ArrayList<Parameter> originalParameters, boolean recursive) {
+                     ArrayList<Parameter> originalParameters, boolean recursive) {
         initBaseIndex(view, 0, null, null, IndexType.createNonUnique(false));
         this.view = view;
         this.querySQL = querySQL;
@@ -91,7 +91,7 @@ public class ViewIndex extends BaseIndex implements SpatialIndex {
      * @param sortOrder sort order
      */
     public ViewIndex(TableView view, ViewIndex index, Session session,
-            int[] masks, TableFilter[] filters, int filter, SortOrder sortOrder) {
+                     int[] masks, TableFilter[] filters, int filter, SortOrder sortOrder) {
         initBaseIndex(view, 0, null, null, IndexType.createNonUnique(false));
         this.view = view;
         this.querySQL = index.querySQL;
@@ -126,7 +126,7 @@ public class ViewIndex extends BaseIndex implements SpatialIndex {
     public boolean isExpired() {
         assert evaluatedAt != Long.MIN_VALUE : "must not be called for main index of TableView";
         return !recursive && view.getTopQuery() == null &&
-                System.nanoTime() - evaluatedAt > MAX_AGE_NANOS;
+               System.nanoTime() - evaluatedAt > MAX_AGE_NANOS;
     }
 
     @Override
@@ -151,8 +151,8 @@ public class ViewIndex extends BaseIndex implements SpatialIndex {
 
     @Override
     public double getCost(Session session, int[] masks,
-            TableFilter[] filters, int filter, SortOrder sortOrder,
-            HashSet<Column> allColumnsSet) {
+                          TableFilter[] filters, int filter, SortOrder sortOrder,
+                          HashSet<Column> allColumnsSet) {
         return recursive ? 1000 : query.getCost();
     }
 
@@ -163,12 +163,12 @@ public class ViewIndex extends BaseIndex implements SpatialIndex {
 
     @Override
     public Cursor findByGeometry(TableFilter filter, SearchRow first,
-            SearchRow last, SearchRow intersection) {
+                                 SearchRow last, SearchRow intersection) {
         return find(filter.getSession(), first, last, intersection);
     }
 
     private static Query prepareSubQuery(String sql, Session session, int[] masks,
-            TableFilter[] filters, int filter, SortOrder sortOrder) {
+                                         TableFilter[] filters, int filter, SortOrder sortOrder) {
         assert filters != null;
         Prepared p;
         session.pushSubQueryInfo(masks, filters, filter, sortOrder);
@@ -196,7 +196,7 @@ public class ViewIndex extends BaseIndex implements SpatialIndex {
         }
         if (!query.isUnion()) {
             throw DbException.get(ErrorCode.SYNTAX_ERROR_2,
-                    "recursive queries without UNION");
+                                  "recursive queries without UNION");
         }
         SelectUnion union = (SelectUnion) query;
         Query left = union.getLeft();
@@ -240,7 +240,7 @@ public class ViewIndex extends BaseIndex implements SpatialIndex {
      * @param intersection the intersection
      */
     public void setupQueryParameters(Session session, SearchRow first, SearchRow last,
-            SearchRow intersection) {
+                                     SearchRow intersection) {
         ArrayList<Parameter> paramList = query.getParameters();
         if (originalParameters != null) {
             for (int i = 0, size = originalParameters.size(); i < size; i++) {
@@ -279,7 +279,7 @@ public class ViewIndex extends BaseIndex implements SpatialIndex {
     }
 
     private Cursor find(Session session, SearchRow first, SearchRow last,
-            SearchRow intersection) {
+                        SearchRow intersection) {
         if (recursive) {
             return findRecursive(first, last);
         }
@@ -289,7 +289,7 @@ public class ViewIndex extends BaseIndex implements SpatialIndex {
     }
 
     private static void setParameter(ArrayList<Parameter> paramList, int x,
-            Value v) {
+                                     Value v) {
         if (x >= paramList.size()) {
             // the parameter may be optimized away as in
             // select * from (select null as x) where x=1;
@@ -304,7 +304,7 @@ public class ViewIndex extends BaseIndex implements SpatialIndex {
     }
 
     private Query getQuery(Session session, int[] masks,
-            TableFilter[] filters, int filter, SortOrder sortOrder) {
+                           TableFilter[] filters, int filter, SortOrder sortOrder) {
         Query q = prepareSubQuery(querySQL, session, masks, filters, filter, sortOrder);
         if (masks == null) {
             return q;

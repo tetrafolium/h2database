@@ -36,7 +36,7 @@ public class JavaAggregate extends Expression {
     private int lastGroupRowId;
 
     public JavaAggregate(UserAggregate userAggregate, Expression[] args,
-            Select select) {
+                         Select select) {
         this.userAggregate = userAggregate;
         this.args = args;
         this.select = select;
@@ -86,8 +86,8 @@ public class JavaAggregate extends Expression {
     public boolean isEverything(ExpressionVisitor visitor) {
         switch (visitor.getType()) {
         case ExpressionVisitor.DETERMINISTIC:
-            // TODO optimization: some functions are deterministic, but we don't
-            // know (no setting for that)
+        // TODO optimization: some functions are deterministic, but we don't
+        // know (no setting for that)
         case ExpressionVisitor.OPTIMIZABLE_MIN_MAX_COUNT_ALL:
             // user defined aggregate functions can not be optimized
             return false;

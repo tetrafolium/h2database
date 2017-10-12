@@ -50,7 +50,7 @@ public class TableInspector {
     private Map<String, ColumnInspector> columns;
 
     TableInspector(String schema, String table, boolean forceUpperCase,
-            Class<? extends java.util.Date> dateTimeClass) {
+                   Class<? extends java.util.Date> dateTimeClass) {
         this.schema = schema;
         this.table = table;
         this.forceUpperCase = forceUpperCase;
@@ -75,7 +75,7 @@ public class TableInspector {
         } else {
             // exact table matching
             return this.schema.equalsIgnoreCase(schema)
-                    && this.table.equalsIgnoreCase(table);
+                   && this.table.equalsIgnoreCase(table);
         }
     }
 
@@ -123,7 +123,7 @@ public class TableInspector {
                 col.name = rs.getString("COLUMN_NAME");
                 col.type = rs.getString("TYPE_NAME");
                 col.clazz = ModelUtils.getClassForSqlType(col.type,
-                        dateTimeClass);
+                            dateTimeClass);
                 col.size = rs.getInt("COLUMN_SIZE");
                 col.allowNull = rs.getInt("NULLABLE") == DatabaseMetaData.columnNullable;
                 col.isAutoIncrement = rs.getBoolean("IS_AUTOINCREMENT");
@@ -156,7 +156,7 @@ public class TableInspector {
      * @return a complete model (class definition) for this table as a string
      */
     String generateModel(String packageName, boolean annotateSchema,
-            boolean trimStrings) {
+                         boolean trimStrings) {
 
         // import statements
         Set<String> imports = New.hashSet();
@@ -236,7 +236,7 @@ public class TableInspector {
         // class declaration
         String clazzName = ModelUtils.convertTableToClassName(table);
         model.append(MessageFormat.format("public class {0} '{'", clazzName))
-                .append(EOL);
+        .append(EOL);
         model.append(EOL);
 
         // field declarations
@@ -244,7 +244,7 @@ public class TableInspector {
 
         // default constructor
         model.append("\t" + "public ").append(clazzName).append("() {")
-                .append(EOL);
+        .append(EOL);
         model.append("\t}").append(EOL);
 
         // end of class body
@@ -257,7 +257,7 @@ public class TableInspector {
      * Generates the specified index annotation.
      */
     void generateIndexAnnotations(AnnotationBuilder ap, String parameter,
-            IndexType type) {
+                                  IndexType type) {
         List<IndexInspector> list = getIndexes(type);
         if (list.size() == 0) {
             // no matching indexes
@@ -286,11 +286,11 @@ public class TableInspector {
     }
 
     private StatementBuilder generateColumn(Set<String> imports,
-            ColumnInspector col, boolean trimStrings) {
+                                            ColumnInspector col, boolean trimStrings) {
         StatementBuilder sb = new StatementBuilder();
         Class<?> clazz = col.clazz;
         String column = ModelUtils.convertColumnToFieldName(col.name
-                .toLowerCase());
+                        .toLowerCase());
         sb.append('\t');
         if (clazz == null) {
             // unsupported type
@@ -375,34 +375,34 @@ public class TableInspector {
      * @return a list if validation remarks
      */
     <T> List<ValidationRemark> validate(TableDefinition<T> def,
-            boolean throwError) {
+                                        boolean throwError) {
         List<ValidationRemark> remarks = New.arrayList();
 
         // model class definition validation
         if (!Modifier.isPublic(def.getModelClass().getModifiers())) {
             remarks.add(error(
-                    table,
-                    "SCHEMA",
-                    MessageFormat.format("Class {0} MUST BE PUBLIC!", def
-                            .getModelClass().getCanonicalName())).throwError(
-                    throwError));
+                                table,
+                                "SCHEMA",
+                                MessageFormat.format("Class {0} MUST BE PUBLIC!", def
+                                        .getModelClass().getCanonicalName())).throwError(
+                                throwError));
         }
 
         // Schema Validation
         if (!StringUtils.isNullOrEmpty(schema)) {
             if (StringUtils.isNullOrEmpty(def.schemaName)) {
                 remarks.add(consider(
-                        table,
-                        "SCHEMA",
-                        MessageFormat.format("@{0}(name={1})",
-                                JQSchema.class.getSimpleName(), schema)));
+                                    table,
+                                    "SCHEMA",
+                                    MessageFormat.format("@{0}(name={1})",
+                                            JQSchema.class.getSimpleName(), schema)));
             } else if (!schema.equalsIgnoreCase(def.schemaName)) {
                 remarks.add(error(
-                        table,
-                        "SCHEMA",
-                        MessageFormat.format("@{0}(name={1}) != {2}",
-                                JQSchema.class.getSimpleName(), def.schemaName,
-                                schema)).throwError(throwError));
+                                    table,
+                                    "SCHEMA",
+                                    MessageFormat.format("@{0}(name={1}) != {2}",
+                                            JQSchema.class.getSimpleName(), def.schemaName,
+                                            schema)).throwError(throwError));
             }
         }
 
@@ -424,15 +424,15 @@ public class TableInspector {
      */
     @SuppressWarnings("unused")
     private <T> void validate(List<ValidationRemark> remarks,
-            TableDefinition<T> def, IndexInspector index, boolean throwError) {
+                              TableDefinition<T> def, IndexInspector index, boolean throwError) {
         List<IndexDefinition> defIndexes = def.getIndexes(IndexType.STANDARD);
         List<IndexInspector> dbIndexes = getIndexes(IndexType.STANDARD);
         if (defIndexes.size() > dbIndexes.size()) {
             remarks.add(warn(table, IndexType.STANDARD.name(),
-                    "More model indexes  than database indexes"));
+                             "More model indexes  than database indexes"));
         } else if (defIndexes.size() < dbIndexes.size()) {
             remarks.add(warn(table, IndexType.STANDARD.name(),
-                    "Model class is missing indexes"));
+                             "Model class is missing indexes"));
         }
         // TODO complete index validation.
         // need to actually compare index types and columns within each index.
@@ -444,49 +444,49 @@ public class TableInspector {
      * primary key, autoincrement.
      */
     private void validate(List<ValidationRemark> remarks,
-            FieldDefinition fieldDef, boolean throwError) {
+                          FieldDefinition fieldDef, boolean throwError) {
         // unknown field
         String field = forceUpperCase ? fieldDef.columnName.toUpperCase()
-                : fieldDef.columnName;
+                       : fieldDef.columnName;
         if (!columns.containsKey(field)) {
             // unknown column mapping
             remarks.add(error(table, fieldDef, "Does not exist in database!")
-                    .throwError(throwError));
+                        .throwError(throwError));
             return;
         }
         ColumnInspector col = columns.get(field);
         Class<?> fieldClass = fieldDef.field.getType();
         Class<?> jdbcClass = ModelUtils.getClassForSqlType(col.type,
-                dateTimeClass);
+                             dateTimeClass);
 
         // supported type check
         // JaQu maps to VARCHAR for unsupported types.
         if (fieldDef.dataType.equals("VARCHAR") && (fieldClass != String.class)) {
             remarks.add(error(
-                    table,
-                    fieldDef,
-                    "JaQu does not currently implement support for "
-                            + fieldClass.getName()).throwError(throwError));
+                                table,
+                                fieldDef,
+                                "JaQu does not currently implement support for "
+                                + fieldClass.getName()).throwError(throwError));
         }
         // number types
         if (!fieldClass.equals(jdbcClass)) {
             if (Number.class.isAssignableFrom(fieldClass)) {
                 remarks.add(warn(
-                        table,
-                        col,
-                        MessageFormat
-                                .format("Precision mismatch: ModelObject={0}, ColumnObject={1}",
-                                        fieldClass.getSimpleName(),
-                                        jdbcClass.getSimpleName())));
+                                    table,
+                                    col,
+                                    MessageFormat
+                                    .format("Precision mismatch: ModelObject={0}, ColumnObject={1}",
+                                            fieldClass.getSimpleName(),
+                                            jdbcClass.getSimpleName())));
             } else {
                 if (!Date.class.isAssignableFrom(jdbcClass)) {
                     remarks.add(warn(
-                            table,
-                            col,
-                            MessageFormat
-                                    .format("Object Mismatch: ModelObject={0}, ColumnObject={1}",
-                                            fieldClass.getSimpleName(),
-                                            jdbcClass.getSimpleName())));
+                                        table,
+                                        col,
+                                        MessageFormat
+                                        .format("Object Mismatch: ModelObject={0}, ColumnObject={1}",
+                                                fieldClass.getSimpleName(),
+                                                jdbcClass.getSimpleName())));
                 }
             }
         }
@@ -496,26 +496,26 @@ public class TableInspector {
             if ((fieldDef.maxLength != col.size)
                     && (col.size < Integer.MAX_VALUE)) {
                 remarks.add(warn(table, col, MessageFormat.format(
-                        "{0}.maxLength={1}, ColumnMaxLength={2}",
-                        JQColumn.class.getSimpleName(), fieldDef.maxLength,
-                        col.size)));
+                                         "{0}.maxLength={1}, ColumnMaxLength={2}",
+                                         JQColumn.class.getSimpleName(), fieldDef.maxLength,
+                                         col.size)));
             }
             if (fieldDef.maxLength > 0 && !fieldDef.trimString) {
                 remarks.add(consider(table, col, MessageFormat.format(
-                        "{0}.truncateToMaxLength=true"
-                                + " will prevent RuntimeExceptions on"
-                                + " INSERT or UPDATE, but will clip data!",
-                        JQColumn.class.getSimpleName())));
+                                             "{0}.truncateToMaxLength=true"
+                                             + " will prevent RuntimeExceptions on"
+                                             + " INSERT or UPDATE, but will clip data!",
+                                             JQColumn.class.getSimpleName())));
             }
         }
 
         // numeric autoIncrement
         if (fieldDef.isAutoIncrement != col.isAutoIncrement) {
             remarks.add(warn(table, col, MessageFormat.format(
-                    "{0}.isAutoIncrement={1}"
-                            + " while Column autoIncrement={2}",
-                    JQColumn.class.getSimpleName(), fieldDef.isAutoIncrement,
-                    col.isAutoIncrement)));
+                                     "{0}.isAutoIncrement={1}"
+                                     + " while Column autoIncrement={2}",
+                                     JQColumn.class.getSimpleName(), fieldDef.isAutoIncrement,
+                                     col.isAutoIncrement)));
         }
         // default value
         if (!col.isAutoIncrement && !col.isPrimaryKey) {
@@ -523,12 +523,12 @@ public class TableInspector {
             if (!ModelUtils
                     .isProperlyFormattedDefaultValue(fieldDef.defaultValue)) {
                 remarks.add(error(
-                        table,
-                        col,
-                        MessageFormat.format("{0}.defaultValue=\"{1}\""
-                                + " is improperly formatted!",
-                                JQColumn.class.getSimpleName(),
-                                fieldDef.defaultValue)).throwError(throwError));
+                                    table,
+                                    col,
+                                    MessageFormat.format("{0}.defaultValue=\"{1}\""
+                                            + " is improperly formatted!",
+                                            JQColumn.class.getSimpleName(),
+                                            fieldDef.defaultValue)).throwError(throwError));
                 // next field
                 return;
             }
@@ -537,34 +537,34 @@ public class TableInspector {
                     && !StringUtils.isNullOrEmpty(col.defaultValue)) {
                 // Model.defaultValue is NULL, Column.defaultValue is NOT NULL
                 remarks.add(warn(table, col, MessageFormat.format(
-                        "{0}.defaultValue=\"\""
-                                + " while column default=\"{1}\"",
-                        JQColumn.class.getSimpleName(), col.defaultValue)));
+                                         "{0}.defaultValue=\"\""
+                                         + " while column default=\"{1}\"",
+                                         JQColumn.class.getSimpleName(), col.defaultValue)));
             } else if (!StringUtils.isNullOrEmpty(fieldDef.defaultValue)
-                    && StringUtils.isNullOrEmpty(col.defaultValue)) {
+                       && StringUtils.isNullOrEmpty(col.defaultValue)) {
                 // Column.defaultValue is NULL, Model.defaultValue is NOT NULL
                 remarks.add(warn(table, col, MessageFormat.format(
-                        "{0}.defaultValue=\"{1}\""
-                                + " while column default=\"\"",
-                        JQColumn.class.getSimpleName(), fieldDef.defaultValue)));
+                                         "{0}.defaultValue=\"{1}\""
+                                         + " while column default=\"\"",
+                                         JQColumn.class.getSimpleName(), fieldDef.defaultValue)));
             } else if (!StringUtils.isNullOrEmpty(fieldDef.defaultValue)
-                    && !StringUtils.isNullOrEmpty(col.defaultValue)) {
+                       && !StringUtils.isNullOrEmpty(col.defaultValue)) {
                 if (!fieldDef.defaultValue.equals(col.defaultValue)) {
                     // Model.defaultValue != Column.defaultValue
                     remarks.add(warn(table, col, MessageFormat.format(
-                            "{0}.defaultValue=\"{1}\""
-                                    + " while column default=\"{2}\"",
-                            JQColumn.class.getSimpleName(),
-                            fieldDef.defaultValue, col.defaultValue)));
+                                             "{0}.defaultValue=\"{1}\""
+                                             + " while column default=\"{2}\"",
+                                             JQColumn.class.getSimpleName(),
+                                             fieldDef.defaultValue, col.defaultValue)));
                 }
             }
 
             // sanity check Model.defaultValue literal value
             if (!ModelUtils.isValidDefaultValue(fieldDef.field.getType(),
-                    fieldDef.defaultValue)) {
+                                                fieldDef.defaultValue)) {
                 remarks.add(error(table, col, MessageFormat.format(
-                        "{0}.defaultValue=\"{1}\" is invalid!",
-                        JQColumn.class.getSimpleName(), fieldDef.defaultValue)));
+                                          "{0}.defaultValue=\"{1}\" is invalid!",
+                                          JQColumn.class.getSimpleName(), fieldDef.defaultValue)));
             }
         }
     }

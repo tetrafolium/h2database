@@ -118,8 +118,8 @@ public abstract class Prepared {
         // parser: currently, compiling every create/drop/... twice
         // because needRecompile return true even for the first execution
         return prepareAlways ||
-                modificationMetaId < db.getModificationMetaId() ||
-                db.getSettings().recompileAlways;
+               modificationMetaId < db.getModificationMetaId() ||
+               db.getSettings().recompileAlways;
     }
 
     /**
@@ -318,14 +318,14 @@ public abstract class Prepared {
             long deltaTimeNanos = System.nanoTime() - startTimeNanos;
             String params = Trace.formatParams(parameters);
             session.getTrace().infoSQL(sqlStatement, params, rowCount,
-                    deltaTimeNanos / 1000 / 1000);
+                                       deltaTimeNanos / 1000 / 1000);
         }
         // startTime_nanos can be zero for the command that actually turns on
         // statistics
         if (session.getDatabase().getQueryStatistics() && startTimeNanos != 0) {
             long deltaTimeNanos = System.nanoTime() - startTimeNanos;
             session.getDatabase().getQueryStatisticsData().
-                    update(toString(), deltaTimeNanos, rowCount);
+            update(toString(), deltaTimeNanos, rowCount);
         }
     }
 

@@ -128,7 +128,7 @@ public class JdbcUtils {
         if (customTypeHandlerClass != null) {
             try {
                 customDataTypesHandler = (CustomDataTypesHandler)
-                        loadUserClass(customTypeHandlerClass).newInstance();
+                                         loadUserClass(customTypeHandlerClass).newInstance();
             } catch (Exception e) {
                 throw DbException.convert(e);
             }
@@ -197,8 +197,8 @@ public class JdbcUtils {
         } catch (ClassNotFoundException e) {
             try {
                 return (Class<Z>) Class.forName(
-                        className, true,
-                        Thread.currentThread().getContextClassLoader());
+                               className, true,
+                               Thread.currentThread().getContextClassLoader());
             } catch (Exception e2) {
                 throw DbException.get(
                         ErrorCode.CLASS_NOT_FOUND_1, e, className);
@@ -268,7 +268,7 @@ public class JdbcUtils {
      * @return the database connection
      */
     public static Connection getConnection(String driver, String url,
-            String user, String password) throws SQLException {
+                                           String user, String password) throws SQLException {
         Properties prop = new Properties();
         if (user != null) {
             prop.setProperty("user", user);
@@ -288,7 +288,7 @@ public class JdbcUtils {
      * @return the database connection
      */
     public static Connection getConnection(String driver, String url,
-            Properties prop) throws SQLException {
+                                           Properties prop) throws SQLException {
         if (StringUtils.isNullOrEmpty(driver)) {
             JdbcUtils.load(url);
         } else {
@@ -406,7 +406,7 @@ public class JdbcUtils {
                 is = new ObjectInputStream(in) {
                     @Override
                     protected Class<?> resolveClass(ObjectStreamClass desc)
-                            throws IOException, ClassNotFoundException {
+                    throws IOException, ClassNotFoundException {
                         try {
                             return Class.forName(desc.getName(), true, loader);
                         } catch (ClassNotFoundException e) {

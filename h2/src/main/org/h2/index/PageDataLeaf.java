@@ -87,7 +87,7 @@ public class PageDataLeaf extends PageData {
      */
     static PageDataLeaf create(PageDataIndex index, int pageId, int parentPageId) {
         PageDataLeaf p = new PageDataLeaf(index, pageId, index.getPageStore()
-                .createData());
+                                          .createData());
         index.getPageStore().logUndo(p, null);
         p.rows = Row.EMPTY_ARRAY;
         p.parentPageId = parentPageId;
@@ -119,8 +119,8 @@ public class PageDataLeaf extends PageData {
         int tableId = data.readVarInt();
         if (tableId != index.getId()) {
             throw DbException.get(ErrorCode.FILE_CORRUPTED_1,
-                    "page:" + getPos() + " expected table:" + index.getId() +
-                    " got:" + tableId + " type:" + type);
+                                  "page:" + getPos() + " expected table:" + index.getId() +
+                                  " got:" + tableId + " type:" + type);
         }
         columnCount = data.readVarInt();
         entryCount = data.readShortInt();
@@ -210,7 +210,7 @@ public class PageDataLeaf extends PageData {
                 int dataStart = offsets[entryCount - 1] + rowLength;
                 int dataEnd = offsets[x];
                 System.arraycopy(d, dataStart, d, dataStart - rowLength,
-                        dataEnd - dataStart + rowLength);
+                                 dataEnd - dataStart + rowLength);
                 data.setPos(dataEnd);
                 for (int j = 0; j < columnCount; j++) {
                     data.writeValue(row.getValue(j));
@@ -254,7 +254,7 @@ public class PageDataLeaf extends PageData {
                     next = index.getPageStore().allocatePage();
                 }
                 PageDataOverflow overflow = PageDataOverflow.create(index.getPageStore(),
-                        page, type, previous, next, all, dataOffset, size);
+                                            page, type, previous, next, all, dataOffset, size);
                 index.getPageStore().update(overflow);
                 dataOffset += size;
                 remaining -= size;
@@ -300,7 +300,7 @@ public class PageDataLeaf extends PageData {
                 byte[] d = data.getBytes();
                 int dataStart = offsets[entryCount];
                 System.arraycopy(d, dataStart, d, dataStart + rowLength,
-                        offsets[i] - dataStart);
+                                 offsets[i] - dataStart);
                 Arrays.fill(d, dataStart, dataStart + rowLength, (byte) 0);
             }
         } else {
@@ -417,7 +417,7 @@ public class PageDataLeaf extends PageData {
         int i = find(key);
         if (keys == null || keys[i] != key) {
             throw DbException.get(ErrorCode.ROW_NOT_FOUND_WHEN_DELETING_1,
-                    index.getSQL() + ": " + key + " " + (keys == null ? -1 : keys[i]));
+                                  index.getSQL() + ": " + key + " " + (keys == null ? -1 : keys[i]));
         }
         index.getPageStore().logUndo(this, data);
         if (entryCount == 1) {
@@ -534,10 +534,10 @@ public class PageDataLeaf extends PageData {
     @Override
     public String toString() {
         return "page[" + getPos() + "] data leaf table:" +
-            index.getId() + " " + index.getTable().getName() +
-            " entries:" + entryCount + " parent:" + parentPageId +
-            (firstOverflowPageId == 0 ? "" : " overflow:" + firstOverflowPageId) +
-            " keys:" + Arrays.toString(keys) + " offsets:" + Arrays.toString(offsets);
+               index.getId() + " " + index.getTable().getName() +
+               " entries:" + entryCount + " parent:" + parentPageId +
+               (firstOverflowPageId == 0 ? "" : " overflow:" + firstOverflowPageId) +
+               " keys:" + Arrays.toString(keys) + " offsets:" + Arrays.toString(offsets);
     }
 
     @Override
@@ -599,7 +599,7 @@ public class PageDataLeaf extends PageData {
         int diff = r == null ? 0 : 4 + 8 + Constants.MEMORY_POINTER + r.getMemory();
         memoryData += add ? diff : -diff;
         index.memoryChange((Constants.MEMORY_PAGE_DATA +
-                memoryData + index.getPageStore().getPageSize()) >> 2);
+                            memoryData + index.getPageStore().getPageSize()) >> 2);
     }
 
     @Override

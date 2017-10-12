@@ -214,11 +214,11 @@ public class StringUtils {
                 int ch = c & 0xffff;
                 if (ch >= ' ' && (ch < 0x80)) {
                     buff.append(c);
-                // not supported in properties files
-                // } else if (ch < 0xff) {
-                // buff.append("\\");
-                // // make sure it's three characters (0x200 is octal 1000)
-                // buff.append(Integer.toOctalString(0x200 | ch).substring(1));
+                    // not supported in properties files
+                    // } else if (ch < 0xff) {
+                    // buff.append("\\");
+                    // // make sure it's three characters (0x200 is octal 1000)
+                    // buff.append(Integer.toOctalString(0x200 | ch).substring(1));
                 } else {
                     buff.append("\\u");
                     String hex = Integer.toHexString(ch);
@@ -561,7 +561,7 @@ public class StringUtils {
      * @return the node
      */
     public static String xmlNode(String name, String attributes,
-            String content, boolean indent) {
+                                 String content, boolean indent) {
         String start = attributes == null ? name : name + attributes;
         if (content == null) {
             return "<" + start + "/>\n";
@@ -698,8 +698,8 @@ public class StringUtils {
             case '\n':
                 if (escapeNewline) {
                     buff.append("&#x").
-                        append(Integer.toHexString(ch)).
-                        append(';');
+                    append(Integer.toHexString(ch)).
+                    append(';');
                 } else {
                     buff.append(ch);
                 }
@@ -710,8 +710,8 @@ public class StringUtils {
             default:
                 if (ch < ' ' || ch > 127) {
                     buff.append("&#x").
-                        append(Integer.toHexString(ch)).
-                        append(';');
+                    append(Integer.toHexString(ch)).
+                    append(';');
                 } else {
                     buff.append(ch);
                 }
@@ -859,7 +859,7 @@ public class StringUtils {
      * @return the trimmed string
      */
     public static String trim(String s, boolean leading, boolean trailing,
-            String sp) {
+                              String sp) {
         char space = (sp == null || sp.length() < 1) ? ' ' : sp.charAt(0);
         if (leading) {
             int len = s.length(), i = 0;
@@ -1002,7 +1002,7 @@ public class StringUtils {
      * @param positiveValue the number to append
      */
     public static void appendZeroPadded(StringBuilder buff, int length,
-            long positiveValue) {
+                                        long positiveValue) {
         if (length == 2) {
             if (positiveValue < 10) {
                 buff.append('0');

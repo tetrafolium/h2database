@@ -43,7 +43,7 @@ public class PageStreamTrunk extends Page {
     private Data data;
 
     private PageStreamTrunk(PageStore store, int parent, int pageId, int next,
-            int logKey, int[] pageIds) {
+                            int logKey, int[] pageIds) {
         setPos(pageId);
         this.parent = parent;
         this.store = store;
@@ -85,7 +85,7 @@ public class PageStreamTrunk extends Page {
      * @return the page
      */
     static PageStreamTrunk create(PageStore store, int parent, int pageId,
-            int next, int logKey, int[] pageIds) {
+                                  int next, int logKey, int[] pageIds) {
         return new PageStreamTrunk(store, parent, pageId, next, logKey, pageIds);
     }
 
@@ -292,7 +292,7 @@ public class PageStreamTrunk extends Page {
     @Override
     public String toString() {
         return "page[" + getPos() + "] stream trunk key:" + logKey +
-                " next:" + nextTrunk;
+               " next:" + nextTrunk;
     }
 
     @Override

@@ -93,7 +93,7 @@ public class ClassUtils {
                 }
             }
             throw new RuntimeException("Exception trying to create "
-                    + clazz.getName() + ": " + e, e);
+                                       + clazz.getName() + ": " + e, e);
         }
     }
 
@@ -145,7 +145,7 @@ public class ClassUtils {
             }
         }
         throw new RuntimeException("Can not convert the value " + o + " from "
-                + currentType + " to " + targetType);
+                                   + currentType + " to " + targetType);
     }
 
     @SuppressWarnings("unchecked")

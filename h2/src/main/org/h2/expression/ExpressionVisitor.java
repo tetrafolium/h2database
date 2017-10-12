@@ -116,10 +116,10 @@ public class ExpressionVisitor {
     private final ColumnResolver resolver;
 
     private ExpressionVisitor(int type,
-            int queryLevel,
-            HashSet<DbObject> dependencies,
-            HashSet<Column> columns, Table table, ColumnResolver resolver,
-            long[] maxDataModificationId) {
+                              int queryLevel,
+                              HashSet<DbObject> dependencies,
+                              HashSet<Column> columns, Table table, ColumnResolver resolver,
+                              long[] maxDataModificationId) {
         this.type = type;
         this.queryLevel = queryLevel;
         this.dependencies = dependencies;
@@ -148,7 +148,7 @@ public class ExpressionVisitor {
     public static ExpressionVisitor getDependenciesVisitor(
             HashSet<DbObject> dependencies) {
         return new ExpressionVisitor(GET_DEPENDENCIES, 0, dependencies, null,
-                null, null, null);
+                                     null, null, null);
     }
 
     /**
@@ -159,7 +159,7 @@ public class ExpressionVisitor {
      */
     public static ExpressionVisitor getOptimizableVisitor(Table table) {
         return new ExpressionVisitor(OPTIMIZABLE_MIN_MAX_COUNT_ALL, 0, null,
-                null, table, null, null);
+                                     null, table, null, null);
     }
 
     /**
@@ -171,7 +171,7 @@ public class ExpressionVisitor {
      */
     static ExpressionVisitor getNotFromResolverVisitor(ColumnResolver resolver) {
         return new ExpressionVisitor(NOT_FROM_RESOLVER, 0, null, null, null,
-                resolver, null);
+                                     resolver, null);
     }
 
     /**
@@ -186,7 +186,7 @@ public class ExpressionVisitor {
 
     public static ExpressionVisitor getMaxModificationIdVisitor() {
         return new ExpressionVisitor(SET_MAX_DATA_MODIFICATION_ID, 0, null,
-                null, null, null, new long[1]);
+                                     null, null, null, new long[1]);
     }
 
     /**
@@ -227,7 +227,7 @@ public class ExpressionVisitor {
      */
     public ExpressionVisitor incrementQueryLevel(int offset) {
         return new ExpressionVisitor(type, queryLevel + offset, dependencies,
-                columns, table, resolver, maxDataModificationId);
+                                     columns, table, resolver, maxDataModificationId);
     }
 
     /**

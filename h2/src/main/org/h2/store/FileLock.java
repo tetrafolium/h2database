@@ -114,7 +114,7 @@ public class FileLock implements Runnable {
      */
     public FileLock(TraceSystem traceSystem, String fileName, int sleep) {
         this.trace = traceSystem == null ?
-                null : traceSystem.getTrace(Trace.FILE_LOCK);
+                     null : traceSystem.getTrace(Trace.FILE_LOCK);
         this.fileName = fileName;
         this.sleep = sleep;
     }
@@ -233,7 +233,7 @@ public class FileLock implements Runnable {
         String id = prop.getProperty("id");
         try {
             Socket socket = NetUtils.createSocket(server,
-                    Constants.DEFAULT_TCP_PORT, false);
+                                                  Constants.DEFAULT_TCP_PORT, false);
             Transfer transfer = new Transfer(null);
             transfer.setSocket(socket);
             transfer.init();
@@ -255,7 +255,7 @@ public class FileLock implements Runnable {
         }
         if (running) {
             DbException e = DbException.get(
-                    ErrorCode.DATABASE_ALREADY_OPEN_1, "Server is running");
+                                    ErrorCode.DATABASE_ALREADY_OPEN_1, "Server is running");
             throw e.addSQL(server + "/" + id);
         }
     }
@@ -438,7 +438,7 @@ public class FileLock implements Runnable {
         save();
         locked = true;
         watchdog = new Thread(this,
-                "H2 File Lock Watchdog (Socket) " + fileName);
+                              "H2 File Lock Watchdog (Socket) " + fileName);
         watchdog.setDaemon(true);
         watchdog.start();
     }
@@ -453,12 +453,12 @@ public class FileLock implements Runnable {
 
     private static DbException getExceptionFatal(String reason, Throwable t) {
         return DbException.get(
-                ErrorCode.ERROR_OPENING_DATABASE_1, t, reason);
+                       ErrorCode.ERROR_OPENING_DATABASE_1, t, reason);
     }
 
     private DbException getExceptionAlreadyInUse(String reason) {
         DbException e = DbException.get(
-                ErrorCode.DATABASE_ALREADY_OPEN_1, reason);
+                                ErrorCode.DATABASE_ALREADY_OPEN_1, reason);
         if (fileName != null) {
             try {
                 Properties prop = load();

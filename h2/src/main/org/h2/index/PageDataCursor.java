@@ -25,7 +25,7 @@ class PageDataCursor implements Cursor {
     private Iterator<Row> delta;
 
     PageDataCursor(Session session, PageDataLeaf current, int idx, long maxKey,
-            boolean multiVersion) {
+                   boolean multiVersion) {
         this.current = current;
         this.idx = idx;
         this.maxKey = maxKey;

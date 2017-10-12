@@ -56,8 +56,8 @@ public class SpatialTreeIndex extends BaseIndex implements SpatialIndex {
      * @param session the session.
      */
     public SpatialTreeIndex(Table table, int id, String indexName,
-            IndexColumn[] columns, IndexType indexType, boolean persistent,
-            boolean create, Session session) {
+                            IndexColumn[] columns, IndexType indexType, boolean persistent,
+                            boolean create, Session session) {
         if (indexType.isUnique()) {
             throw DbException.getUnsupportedException("not unique");
         }
@@ -95,7 +95,7 @@ public class SpatialTreeIndex extends BaseIndex implements SpatialIndex {
             // Index in memory
             store = MVStore.open(null);
             treeMap =  store.openMap("spatialIndex",
-                    new MVRTreeMap.Builder<Long>());
+                                     new MVRTreeMap.Builder<Long>());
         } else {
             if (id < 0) {
                 throw DbException.getUnsupportedException(
@@ -106,7 +106,7 @@ public class SpatialTreeIndex extends BaseIndex implements SpatialIndex {
             // Called after CREATE SPATIAL INDEX or
             // by PageStore.addMeta
             treeMap =  store.openMap(MAP_PREFIX + getId(),
-                    new MVRTreeMap.Builder<Long>());
+                                     new MVRTreeMap.Builder<Long>());
             if (treeMap.isEmpty()) {
                 needRebuild = true;
             }
@@ -138,8 +138,8 @@ public class SpatialTreeIndex extends BaseIndex implements SpatialIndex {
         Geometry g = ((ValueGeometry) v.convertTo(Value.GEOMETRY)).getGeometryNoCopy();
         Envelope env = g.getEnvelopeInternal();
         return new SpatialKey(row.getKey(),
-                (float) env.getMinX(), (float) env.getMaxX(),
-                (float) env.getMinY(), (float) env.getMaxY());
+                              (float) env.getMinX(), (float) env.getMaxX(),
+                              (float) env.getMinY(), (float) env.getMaxY());
     }
 
     @Override
@@ -168,13 +168,13 @@ public class SpatialTreeIndex extends BaseIndex implements SpatialIndex {
 
     @Override
     public Cursor findByGeometry(TableFilter filter, SearchRow first,
-            SearchRow last, SearchRow intersection) {
+                                 SearchRow last, SearchRow intersection) {
         if (intersection == null) {
             return find(filter.getSession(), first, last);
         }
         return new SpatialCursor(
-                treeMap.findIntersectingKeys(getKey(intersection)), table,
-                filter.getSession());
+                       treeMap.findIntersectingKeys(getKey(intersection)), table,
+                       filter.getSession());
     }
 
     /**
@@ -200,8 +200,8 @@ public class SpatialTreeIndex extends BaseIndex implements SpatialIndex {
 
     @Override
     public double getCost(Session session, int[] masks,
-            TableFilter[] filters, int filter, SortOrder sortOrder,
-            HashSet<Column> allColumnsSet) {
+                          TableFilter[] filters, int filter, SortOrder sortOrder,
+                          HashSet<Column> allColumnsSet) {
         return getCostRangeIndex(masks, columns);
     }
 

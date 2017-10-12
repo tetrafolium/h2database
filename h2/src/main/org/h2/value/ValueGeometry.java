@@ -165,7 +165,7 @@ public class ValueGeometry extends Value {
     public boolean intersectsBoundingBox(ValueGeometry r) {
         // the Geometry object caches the envelope
         return getGeometryNoCopy().getEnvelopeInternal().intersects(
-                r.getGeometryNoCopy().getEnvelopeInternal());
+                       r.getGeometryNoCopy().getEnvelopeInternal());
     }
 
     /**
@@ -232,7 +232,7 @@ public class ValueGeometry extends Value {
 
     @Override
     public void set(PreparedStatement prep, int parameterIndex)
-            throws SQLException {
+    throws SQLException {
         prep.setObject(parameterIndex, getGeometryNoCopy());
     }
 
@@ -251,7 +251,7 @@ public class ValueGeometry extends Value {
         // The JTS library only does half-way support for 3D coordinates, so
         // their equals method only checks the first two coordinates.
         return other instanceof ValueGeometry &&
-                Arrays.equals(getWKB(), ((ValueGeometry) other).getWKB());
+               Arrays.equals(getWKB(), ((ValueGeometry) other).getWKB());
     }
 
     /**

@@ -51,7 +51,7 @@ public class ArrayUtils {
      * @param comp the comparison class
      */
     public static <T> void insertionSort(T[] d, int left, int right,
-            Comparator<T> comp) {
+                                         Comparator<T> comp) {
         for (int i = left + 1, j; i <= right; i++) {
             T t = d[i];
             for (j = i - 1; j >= left && comp.compare(d[j], t) > 0; j--) {

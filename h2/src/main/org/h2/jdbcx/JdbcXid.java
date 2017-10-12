@@ -46,11 +46,11 @@ public class JdbcXid extends TraceObject implements Xid {
     public static String toString(Xid xid) {
         StringBuilder buff = new StringBuilder(PREFIX);
         buff.append('_').
-            append(xid.getFormatId()).
-            append('_').
-            append(StringUtils.convertBytesToHex(xid.getBranchQualifier())).
-            append('_').
-            append(StringUtils.convertBytesToHex(xid.getGlobalTransactionId()));
+        append(xid.getFormatId()).
+        append('_').
+        append(StringUtils.convertBytesToHex(xid.getBranchQualifier())).
+        append('_').
+        append(StringUtils.convertBytesToHex(xid.getGlobalTransactionId()));
         return buff.toString();
     }
 

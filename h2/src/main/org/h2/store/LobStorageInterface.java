@@ -53,7 +53,7 @@ public interface LobStorageInterface {
      * @return the stream
      */
     InputStream getInputStream(ValueLobDb lob, byte[] hmac, long byteCount)
-            throws IOException;
+    throws IOException;
 
     /**
      * Set the table reference of this lob.

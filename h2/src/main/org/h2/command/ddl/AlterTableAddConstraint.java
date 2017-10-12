@@ -53,7 +53,7 @@ public class AlterTableAddConstraint extends SchemaCommand {
     private ArrayList<Index> createdIndexes = New.arrayList();
 
     public AlterTableAddConstraint(Session session, Schema schema,
-            boolean ifNotExists) {
+                                   boolean ifNotExists) {
         super(session, schema);
         this.ifNotExists = ifNotExists;
     }
@@ -65,7 +65,7 @@ public class AlterTableAddConstraint extends SchemaCommand {
     private String generateConstraintName(Table table) {
         if (constraintName == null) {
             constraintName = getSchema().getUniqueConstraintName(
-                    session, table);
+                                     session, table);
         }
         return constraintName;
     }
@@ -106,7 +106,7 @@ public class AlterTableAddConstraint extends SchemaCommand {
                 return 0;
             }
             throw DbException.get(ErrorCode.CONSTRAINT_ALREADY_EXISTS_1,
-                    constraintName);
+                                  constraintName);
         }
         session.getUser().checkRight(table, Right.ALL);
         db.lockMeta(session);
@@ -138,13 +138,13 @@ public class AlterTableAddConstraint extends SchemaCommand {
             }
             if (index == null) {
                 IndexType indexType = IndexType.createPrimaryKey(
-                        table.isPersistIndexes(), primaryKeyHash);
+                                              table.isPersistIndexes(), primaryKeyHash);
                 String indexName = table.getSchema().getUniqueIndexName(
-                        session, table, Constants.PREFIX_PRIMARY_KEY);
+                                           session, table, Constants.PREFIX_PRIMARY_KEY);
                 int id = getObjectId();
                 try {
                     index = table.addIndex(session, indexName, id,
-                            indexColumns, indexType, true, null);
+                                           indexColumns, indexType, true, null);
                 } finally {
                     getSchema().freeUniqueName(indexName);
                 }
@@ -287,10 +287,10 @@ public class AlterTableAddConstraint extends SchemaCommand {
         indexType.setBelongsToConstraint(true);
         String prefix = constraintName == null ? "CONSTRAINT" : constraintName;
         String indexName = t.getSchema().getUniqueIndexName(session, t,
-                prefix + "_INDEX_");
+                           prefix + "_INDEX_");
         try {
             Index index = t.addIndex(session, indexName, indexId, cols,
-                    indexType, true, null);
+                                     indexType, true, null);
             createdIndexes.add(index);
             return index;
         } finally {
@@ -354,7 +354,7 @@ public class AlterTableAddConstraint extends SchemaCommand {
     }
 
     private static boolean canUseIndex(Index existingIndex, Table table,
-            IndexColumn[] cols, boolean moreColumnsOk) {
+                                       IndexColumn[] cols, boolean moreColumnsOk) {
         if (existingIndex.getTable() != table || existingIndex.getCreateSQL() == null) {
             // can't use the scan index or index of another table
             return false;

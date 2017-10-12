@@ -348,7 +348,7 @@ public class SysProperties {
      */
     public static final boolean OLD_STYLE_OUTER_JOIN =
             Utils.getProperty("h2.oldStyleOuterJoin",
-                    Constants.VERSION_MINOR >= 4 ? false : true);
+                              Constants.VERSION_MINOR >= 4 ? false : true);
 
     /**
      * System property <code>h2.pgClientEncoding</code> (default: UTF-8).<br />
@@ -405,7 +405,7 @@ public class SysProperties {
      */
     public static final boolean SORT_BINARY_UNSIGNED =
             Utils.getProperty("h2.sortBinaryUnsigned",
-                    Constants.VERSION_MINOR >= 4 ? true : false);
+                              Constants.VERSION_MINOR >= 4 ? true : false);
 
     /**
      * System property <code>h2.sortNullsHigh</code> (default: false).<br />
@@ -459,7 +459,7 @@ public class SysProperties {
      */
     public static final boolean IMPLICIT_RELATIVE_PATH =
             Utils.getProperty("h2.implicitRelativePath",
-                    Constants.VERSION_MINOR >= 4 ? false : true);
+                              Constants.VERSION_MINOR >= 4 ? false : true);
 
     /**
      * System property <code>h2.urlMap</code> (default: null).<br />
@@ -477,7 +477,7 @@ public class SysProperties {
      * current thread-context class loader will be used.
      */
     public static final boolean USE_THREAD_CONTEXT_CLASS_LOADER =
-        Utils.getProperty("h2.useThreadContextClassLoader", false);
+            Utils.getProperty("h2.useThreadContextClassLoader", false);
 
     /**
      * System property <code>h2.serializeJavaObject</code>
