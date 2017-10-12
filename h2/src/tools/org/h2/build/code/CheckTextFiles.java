@@ -144,8 +144,7 @@ public class CheckTextFiles {
         ByteArrayOutputStream out = fix ? new ByteArrayOutputStream() : null;
         in.readFully(data);
         in.close();
-        if (checkLicense) {
-            if (data.length > COPYRIGHT.length() + LICENSE.length()) {
+        if ((checkLicense) && (data.length > COPYRIGHT.length() + LICENSE.length())) {
                 // don't check tiny files
                 String text = new String(data);
                 if (text.indexOf(COPYRIGHT) < 0) {
@@ -164,7 +163,6 @@ public class CheckTextFiles {
                     fail(file, "unexpected space between ## and */", 0);
                 }
             }
-        }
         int line = 1;
         int startLinePos = 0;
         boolean lastWasWhitespace = false;

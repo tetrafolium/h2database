@@ -266,11 +266,9 @@ public class Csv implements SimpleRowSource {
 
     private void writeRow(String[] values) throws IOException {
         for (int i = 0; i < values.length; i++) {
-            if (i > 0) {
-                if (fieldSeparatorWrite != null) {
+            if ((i > 0) && (fieldSeparatorWrite != null)) {
                     output.write(fieldSeparatorWrite);
                 }
-            }
             String s = values[i];
             if (s != null) {
                 if (escapeCharacter != 0) {
@@ -292,11 +290,9 @@ public class Csv implements SimpleRowSource {
     }
 
     private String escape(String data) {
-        if (data.indexOf(fieldDelimiter) < 0) {
-            if (escapeCharacter == fieldDelimiter || data.indexOf(escapeCharacter) < 0) {
+        if ((data.indexOf(fieldDelimiter) < 0) && (escapeCharacter == fieldDelimiter || data.indexOf(escapeCharacter) < 0)) {
                 return data;
             }
-        }
         int length = data.length();
         StringBuilder buff = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
@@ -568,8 +564,7 @@ public class Csv implements SimpleRowSource {
             int i = 0;
             while (true) {
                 String v = readValue();
-                if (v == null) {
-                    if (endOfLine) {
+                if ((v == null) && (endOfLine)) {
                         if (i == 0) {
                             if (endOfFile) {
                                 return null;
@@ -579,7 +574,6 @@ public class Csv implements SimpleRowSource {
                         }
                         break;
                     }
-                }
                 if (i < row.length) {
                     row[i++] = v;
                 }

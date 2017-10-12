@@ -68,18 +68,14 @@ public abstract class RightOwner extends DbObjectBase {
         if (grantedRights != null) {
             if (table != null) {
                 right = grantedRights.get(table.getSchema());
-                if (right != null) {
-                    if ((right.getRightMask() & rightMask) == rightMask) {
+                if ((right != null) && ((right.getRightMask() & rightMask) == rightMask)) {
                         return true;
                     }
-                }
             }
             right = grantedRights.get(table);
-            if (right != null) {
-                if ((right.getRightMask() & rightMask) == rightMask) {
+            if ((right != null) && ((right.getRightMask() & rightMask) == rightMask)) {
                     return true;
                 }
-            }
         }
         if (grantedRoles != null) {
             for (RightOwner role : grantedRoles.keySet()) {

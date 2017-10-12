@@ -434,8 +434,7 @@ public class CompareLike extends Condition {
             }
         }
         // optimizes the common case of LIKE '%foo'
-        if (compareMode.getName().equals(CompareMode.OFF) && patternLength > 1) {
-            if (patternTypes[0] == ANY) {
+        if ((compareMode.getName().equals(CompareMode.OFF) && patternLength > 1) && (patternTypes[0] == ANY)) {
                 int maxMatch = 1;
                 while (maxMatch < patternLength && patternTypes[maxMatch] == MATCH) {
                     maxMatch++;
@@ -445,10 +444,8 @@ public class CompareLike extends Condition {
                     return;
                 }
             }
-        }
         // optimizes the common case of LIKE '%foo%'
-        if (compareMode.getName().equals(CompareMode.OFF) && patternLength > 2) {
-            if (patternTypes[0] == ANY) {
+        if ((compareMode.getName().equals(CompareMode.OFF) && patternLength > 2) && (patternTypes[0] == ANY)) {
                 int maxMatch = 1;
                 while (maxMatch < patternLength && patternTypes[maxMatch] == MATCH) {
                     maxMatch++;
@@ -457,7 +454,6 @@ public class CompareLike extends Condition {
                     shortcutToContains = true;
                 }
             }
-        }
     }
 
     private boolean isFullMatch() {

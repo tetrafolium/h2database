@@ -177,21 +177,17 @@ public class PageBtreeNode extends PageBtree {
             }
         }
         int offset = last - rowLength;
-        if (entryCount > 0) {
-            if (x < entryCount) {
+        if ((entryCount > 0) && (x < entryCount)) {
                 offset = (x == 0 ? pageSize : offsets[x - 1]) - rowLength;
             }
-        }
         rows = insert(rows, entryCount, x, row);
         offsets = insert(offsets, entryCount, x, offset);
         add(offsets, x + 1, entryCount + 1, -rowLength);
         childPageIds = insert(childPageIds, entryCount + 1, x + 1, childPageId);
         start += CHILD_OFFSET_PAIR_LENGTH;
-        if (pageStoreInternalCount) {
-            if (rowCount != UNKNOWN_ROWCOUNT) {
+        if ((pageStoreInternalCount) && (rowCount != UNKNOWN_ROWCOUNT)) {
                 rowCount += offset;
             }
-        }
         entryCount++;
         written = false;
         changeCount = index.getPageStore().getChangeCount();

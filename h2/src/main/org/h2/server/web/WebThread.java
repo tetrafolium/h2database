@@ -288,8 +288,7 @@ class WebThread extends WebApp implements Runnable {
                     StringTokenizer tokenizer = new StringTokenizer(languages, ",;");
                     while (tokenizer.hasMoreTokens()) {
                         String token = tokenizer.nextToken();
-                        if (!token.startsWith("q=")) {
-                            if (server.supportsLanguage(token)) {
+                        if ((!token.startsWith("q=")) && (server.supportsLanguage(token))) {
                                 int dash = token.indexOf('-');
                                 if (dash >= 0) {
                                     String language = token.substring(0, dash);
@@ -306,7 +305,6 @@ class WebThread extends WebApp implements Runnable {
                                 }
                                 break;
                             }
-                        }
                     }
                 }
             } else if (line.trim().length() == 0) {

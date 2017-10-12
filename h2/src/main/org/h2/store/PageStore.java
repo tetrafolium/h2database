@@ -316,20 +316,17 @@ public class PageStore implements CacheWriter {
     }
 
     private void lockFile() {
-        if (lockFile) {
-            if (!file.tryLock()) {
+        if ((lockFile) && (!file.tryLock())) {
                 throw DbException.get(
                           ErrorCode.DATABASE_ALREADY_OPEN_1, fileName);
             }
-        }
     }
 
     private void openExisting() {
         try {
             file = database.openFile(fileName, accessMode, true);
         } catch (DbException e) {
-            if (e.getErrorCode() == ErrorCode.IO_EXCEPTION_2) {
-                if (e.getMessage().contains("locked")) {
+            if ((e.getErrorCode() == ErrorCode.IO_EXCEPTION_2) && (e.getMessage().contains("locked"))) {
                     // in Windows, you can't open a locked file
                     // (in other operating systems, you can)
                     // the exact error message is:
@@ -338,7 +335,6 @@ public class PageStore implements CacheWriter {
                     throw DbException.get(
                               ErrorCode.DATABASE_ALREADY_OPEN_1, e, fileName);
                 }
-            }
             throw e;
         }
         lockFile();
@@ -865,11 +861,9 @@ public class PageStore implements CacheWriter {
         int firstUncommittedSection = log.getLogSectionId();
         for (Session session : sessions) {
             int firstUncommitted = session.getFirstUncommittedLog();
-            if (firstUncommitted != Session.LOG_WRITTEN) {
-                if (firstUncommitted < firstUncommittedSection) {
+            if ((firstUncommitted != Session.LOG_WRITTEN) && (firstUncommitted < firstUncommittedSection)) {
                     firstUncommittedSection = firstUncommitted;
                 }
-            }
         }
         return firstUncommittedSection;
     }
@@ -1078,21 +1072,16 @@ public class PageStore implements CacheWriter {
      * @param page the page
      */
     public synchronized void update(Page page) {
-        if (trace.isDebugEnabled()) {
-            if (!page.isChanged()) {
+        if ((trace.isDebugEnabled()) && (!page.isChanged())) {
                 trace.debug("updateRecord " + page.toString());
             }
-        }
         checkOpen();
         database.checkWritingAllowed();
         page.setChanged(true);
         int pos = page.getPos();
-        if (SysProperties.CHECK && !recoveryRunning) {
-            // ensure the undo entry is already written
-            if (logMode != LOG_MODE_OFF) {
+        if ((SysProperties.CHECK && !recoveryRunning) && (logMode != LOG_MODE_OFF)) {
                 log.addUndo(pos, null);
             }
-        }
         allocatePage(pos);
         cache.update(pos, page);
     }
@@ -1178,11 +1167,9 @@ public class PageStore implements CacheWriter {
     public synchronized int allocatePage() {
         openForWriting();
         int pos = allocatePage(null, 0);
-        if (!recoveryRunning) {
-            if (logMode != LOG_MODE_OFF) {
+        if ((!recoveryRunning) && (logMode != LOG_MODE_OFF)) {
                 log.addUndo(pos, emptyPage);
             }
-        }
         return pos;
     }
 
@@ -1249,12 +1236,9 @@ public class PageStore implements CacheWriter {
             // trace.debug("free " + pageId + " " + undo);
         }
         cache.remove(pageId);
-        if (SysProperties.CHECK && !recoveryRunning && undo) {
-            // ensure the undo entry is already written
-            if (logMode != LOG_MODE_OFF) {
+        if ((SysProperties.CHECK && !recoveryRunning && undo) && (logMode != LOG_MODE_OFF)) {
                 log.addUndo(pageId, null);
             }
-        }
         freePage(pageId);
         if (recoveryRunning) {
             writePage(pageId, createData());
@@ -1311,13 +1295,11 @@ public class PageStore implements CacheWriter {
      * @param page the page
      */
     void readPage(int pos, Data page) {
-        if (recordPageReads) {
-            if (pos >= MIN_PAGE_COUNT &&
-                    recordedPagesIndex.get(pos) == IntIntHashMap.NOT_FOUND) {
+        if ((recordPageReads) && (pos >= MIN_PAGE_COUNT &&
+                    recordedPagesIndex.get(pos) == IntIntHashMap.NOT_FOUND)) {
                 recordedPagesIndex.put(pos, recordedPagesList.size());
                 recordedPagesList.add(pos);
             }
-        }
         if (pos < 0 || pos >= pageCount) {
             throw DbException.get(ErrorCode.FILE_CORRUPTED_1, pos +
                           " of " + pageCount);
@@ -1459,11 +1441,9 @@ public class PageStore implements CacheWriter {
      */
     public synchronized void logAddOrRemoveRow(Session session, int tableId,
             Row row, boolean add) {
-        if (logMode != LOG_MODE_OFF) {
-            if (!recoveryRunning) {
+        if ((logMode != LOG_MODE_OFF) && (!recoveryRunning)) {
                 log.logAddOrRemoveRow(session, tableId, row, add);
             }
-        }
     }
 
     /**
@@ -1677,11 +1657,9 @@ public class PageStore implements CacheWriter {
         metaRootPageId.put(id, rootPageId);
         if (type == META_TYPE_DATA_INDEX) {
             CreateTableData data = new CreateTableData();
-            if (SysProperties.CHECK) {
-                if (columns == null) {
+            if ((SysProperties.CHECK) && (columns == null)) {
                     throw DbException.throwInternalError(row.toString());
                 }
-            }
             for (int i = 0, len = columns.length; i < len; i++) {
                 Column col = new Column("C" + i, Value.INT);
                 data.columns.add(col);
@@ -1764,8 +1742,7 @@ public class PageStore implements CacheWriter {
      */
     public void addMeta(PageIndex index, Session session) {
         Table table = index.getTable();
-        if (SysProperties.CHECK) {
-            if (!table.isTemporary()) {
+        if ((SysProperties.CHECK) && (!table.isTemporary())) {
                 // to prevent ABBA locking problems, we need to always take
                 // the Database lock before we take the PageStore lock
                 synchronized (database) {
@@ -1774,7 +1751,6 @@ public class PageStore implements CacheWriter {
                     }
                 }
             }
-        }
         synchronized (this) {
             int type = index instanceof PageDataIndex ?
                     META_TYPE_DATA_INDEX : META_TYPE_BTREE_INDEX;
@@ -1820,8 +1796,7 @@ public class PageStore implements CacheWriter {
      * @param session the session
      */
     public void removeMeta(Index index, Session session) {
-        if (SysProperties.CHECK) {
-            if (!index.getTable().isTemporary()) {
+        if ((SysProperties.CHECK) && (!index.getTable().isTemporary())) {
                 // to prevent ABBA locking problems, we need to always take
                 // the Database lock before we take the PageStore lock
                 synchronized (database) {
@@ -1830,7 +1805,6 @@ public class PageStore implements CacheWriter {
                     }
                 }
             }
-        }
         synchronized (this) {
             if (!recoveryRunning) {
                 removeMetaIndex(index, session);

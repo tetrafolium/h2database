@@ -752,12 +752,10 @@ public class Function extends Expression implements FunctionCall {
                             database.getMode().treatEmptyStringsAsNull);
                 }
             }
-            if (info.type == CONCAT_WS) {
-                if (separator != null && result == ValueNull.INSTANCE) {
+            if ((info.type == CONCAT_WS) && (separator != null && result == ValueNull.INSTANCE)) {
                     result = ValueString.get("",
                             database.getMode().treatEmptyStringsAsNull);
                 }
-            }
             break;
         }
         case HEXTORAW:
@@ -1393,8 +1391,7 @@ public class Function extends Expression implements FunctionCall {
                     null : v1 == ValueNull.INSTANCE ? null : v1.getString();
             String content = v2 == null ?
                     null : v2 == ValueNull.INSTANCE ? null : v2.getString();
-            boolean indent = v3 == null ?
-                    true : v3.getBoolean();
+            boolean indent = v3 == null || v3.getBoolean();
             result = ValueString.get(StringUtils.xmlNode(
                         v0.getString(), attr, content, indent),
                     database.getMode().treatEmptyStringsAsNull);
@@ -2513,11 +2510,9 @@ public class Function extends Expression implements FunctionCall {
         displaySize = d;
         if (allConst) {
             Value v = getValue(session);
-            if (v == ValueNull.INSTANCE) {
-                if (info.type == CAST || info.type == CONVERT) {
+            if ((v == ValueNull.INSTANCE) && (info.type == CAST || info.type == CONVERT)) {
                     return this;
                 }
-            }
             return ValueExpression.get(v);
         }
         return this;

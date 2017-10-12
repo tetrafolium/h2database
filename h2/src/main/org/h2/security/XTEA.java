@@ -47,11 +47,9 @@ public class XTEA implements BlockCipher {
 
     @Override
     public void encrypt(byte[] bytes, int off, int len) {
-        if (SysProperties.CHECK) {
-            if (len % ALIGN != 0) {
+        if ((SysProperties.CHECK) && (len % ALIGN != 0)) {
                 DbException.throwInternalError("unaligned len " + len);
             }
-        }
         for (int i = off; i < off + len; i += 8) {
             encryptBlock(bytes, bytes, i);
         }
@@ -59,11 +57,9 @@ public class XTEA implements BlockCipher {
 
     @Override
     public void decrypt(byte[] bytes, int off, int len) {
-        if (SysProperties.CHECK) {
-            if (len % ALIGN != 0) {
+        if ((SysProperties.CHECK) && (len % ALIGN != 0)) {
                 DbException.throwInternalError("unaligned len " + len);
             }
-        }
         for (int i = off; i < off + len; i += 8) {
             decryptBlock(bytes, bytes, i);
         }

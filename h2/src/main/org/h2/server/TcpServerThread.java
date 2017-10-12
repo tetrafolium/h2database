@@ -140,11 +140,9 @@ public class TcpServerThread implements Runnable {
                 transfer.writeInt(SessionRemote.STATUS_OK);
                 transfer.writeInt(clientVersion);
                 transfer.flush();
-                if (clientVersion >= Constants.TCP_PROTOCOL_VERSION_13) {
-                    if (ci.getFilePasswordHash() != null) {
+                if ((clientVersion >= Constants.TCP_PROTOCOL_VERSION_13) && (ci.getFilePasswordHash() != null)) {
                         ci.setFileEncryptionKey(transfer.readBytes());
                     }
-                }
                 session = Engine.getInstance().createSession(ci);
                 transfer.setSession(session);
                 server.addConnection(threadId, originalURL, ci.getUserName());
@@ -509,15 +507,13 @@ public class TcpServerThread implements Runnable {
     }
 
     private void writeValue(Value v) throws IOException {
-        if (v.getType() == Value.CLOB || v.getType() == Value.BLOB) {
-            if (v instanceof ValueLobDb) {
+        if ((v.getType() == Value.CLOB || v.getType() == Value.BLOB) && (v instanceof ValueLobDb)) {
                 ValueLobDb lob = (ValueLobDb) v;
                 if (lob.isStored()) {
                     long id = lob.getLobId();
                     lobs.put(id, new CachedInputStream(null));
                 }
             }
-        }
         transfer.writeValue(v);
     }
 

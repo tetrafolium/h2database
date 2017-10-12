@@ -298,11 +298,9 @@ public class AlterTableAlterColumn extends SchemaCommand {
                     if (so.getSchema().findConstraint(session, name) != null) {
                         name = so.getSchema().getUniqueConstraintName(session, newTable);
                     }
-                } else if (so instanceof Index) {
-                    if (so.getSchema().findIndex(session, name) != null) {
+                } else if ((so instanceof Index) && (so.getSchema().findIndex(session, name) != null)) {
                         name = so.getSchema().getUniqueIndexName(session, newTable, name);
                     }
-                }
                 db.renameSchemaObject(session, so, name);
             }
         }

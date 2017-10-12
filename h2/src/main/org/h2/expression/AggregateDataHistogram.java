@@ -28,12 +28,10 @@ class AggregateDataHistogram extends AggregateData {
             distinctValues = ValueHashMap.newInstance();
         }
         AggregateDataHistogram a = distinctValues.get(v);
-        if (a == null) {
-            if (distinctValues.size() < Constants.SELECTIVITY_DISTINCT_COUNT) {
+        if ((a == null) && (distinctValues.size() < Constants.SELECTIVITY_DISTINCT_COUNT)) {
                 a = new AggregateDataHistogram();
                 distinctValues.put(v, a);
             }
-        }
         if (a != null) {
             a.count++;
         }

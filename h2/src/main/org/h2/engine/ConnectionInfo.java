@@ -386,12 +386,10 @@ public class ConnectionInfo implements Cloneable {
             return name;
         }
         if (nameNormalized == null) {
-            if (!SysProperties.IMPLICIT_RELATIVE_PATH) {
-                if (!FileUtils.isAbsolute(name)) {
-                    if (name.indexOf("./") < 0 &&
+            if (((!SysProperties.IMPLICIT_RELATIVE_PATH) && (!FileUtils.isAbsolute(name))) && (name.indexOf("./") < 0 &&
                             name.indexOf(".\\") < 0 &&
                             name.indexOf(":/") < 0 &&
-                            name.indexOf(":\\") < 0) {
+                            name.indexOf(":\\") < 0)) {
                         // the name could start with "./", or
                         // it could start with a prefix such as "nio:./"
                         // for Windows, the path "\test" is not considered
@@ -401,8 +399,6 @@ public class ConnectionInfo implements Cloneable {
                                   ErrorCode.URL_RELATIVE_TO_CWD,
                                   originalURL);
                     }
-                }
-            }
             String suffix = Constants.SUFFIX_PAGE_FILE;
             String n;
             if (FileUtils.exists(name + suffix)) {

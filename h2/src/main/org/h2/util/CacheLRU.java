@@ -121,12 +121,10 @@ public class CacheLRU implements Cache {
         if (old == null) {
             put(rec);
         } else {
-            if (SysProperties.CHECK) {
-                if (old != rec) {
+            if ((SysProperties.CHECK) && (old != rec)) {
                     DbException.throwInternalError("old!=record pos:" + pos +
                             " old:" + old + " new:" + rec);
                 }
-            }
             if (!fifo) {
                 removeFromLinkedList(rec);
                 addToFront(rec);
@@ -220,11 +218,9 @@ public class CacheLRU implements Cache {
             for (i = 0; i < size; i++) {
                 CacheObject rec = changed.get(i);
                 remove(rec.getPos());
-                if (SysProperties.CHECK) {
-                    if (rec.cacheNext != null) {
+                if ((SysProperties.CHECK) && (rec.cacheNext != null)) {
                         throw DbException.throwInternalError();
                     }
-                }
             }
         }
     }
@@ -296,12 +292,10 @@ public class CacheLRU implements Cache {
     @Override
     public CacheObject get(int pos) {
         CacheObject rec = find(pos);
-        if (rec != null) {
-            if (!fifo) {
+        if ((rec != null) && (!fifo)) {
                 removeFromLinkedList(rec);
                 addToFront(rec);
             }
-        }
         return rec;
     }
 

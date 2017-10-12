@@ -88,11 +88,9 @@ public class Engine implements SessionFactory {
         if (user == null) {
             if (database.validateFilePasswordHash(cipher, ci.getFilePasswordHash())) {
                 user = database.findUser(ci.getUserName());
-                if (user != null) {
-                    if (!user.validateUserPasswordHash(ci.getUserPasswordHash())) {
+                if ((user != null) && (!user.validateUserPasswordHash(ci.getUserPasswordHash()))) {
                         user = null;
                     }
-                }
             }
             if (opened && (user == null || !user.isAdmin())) {
                 // reset - because the user is not an admin, and has no
@@ -243,9 +241,7 @@ public class Engine implements SessionFactory {
             return;
         }
         String clusterDb = database.getCluster();
-        if (!Constants.CLUSTERING_DISABLED.equals(clusterDb)) {
-            if (!Constants.CLUSTERING_ENABLED.equals(clusterSession)) {
-                if (!StringUtils.equals(clusterSession, clusterDb)) {
+        if (((!Constants.CLUSTERING_DISABLED.equals(clusterDb)) && (!Constants.CLUSTERING_ENABLED.equals(clusterSession))) && (!StringUtils.equals(clusterSession, clusterDb))) {
                     if (clusterDb.equals(Constants.CLUSTERING_DISABLED)) {
                         throw DbException.get(
                                   ErrorCode.CLUSTER_ERROR_DATABASE_RUNS_ALONE);
@@ -254,8 +250,6 @@ public class Engine implements SessionFactory {
                               ErrorCode.CLUSTER_ERROR_DATABASE_RUNS_CLUSTERED_1,
                               clusterDb);
                 }
-            }
-        }
     }
 
     /**

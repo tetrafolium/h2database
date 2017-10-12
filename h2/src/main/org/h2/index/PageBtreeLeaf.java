@@ -183,15 +183,13 @@ public class PageBtreeLeaf extends PageBtree {
         int rowLength = startNext - offsets[at];
         start -= OFFSET_LENGTH;
 
-        if (optimizeUpdate) {
-            if (writtenData) {
+        if ((optimizeUpdate) && (writtenData)) {
                 byte[] d = data.getBytes();
                 int dataStart = offsets[entryCount];
                 System.arraycopy(d, dataStart, d,
                         dataStart + rowLength, offsets[at] - dataStart);
                 Arrays.fill(d, dataStart, dataStart + rowLength, (byte) 0);
             }
-        }
 
         offsets = remove(offsets, entryCount + 1, at);
         add(offsets, at, entryCount, rowLength);

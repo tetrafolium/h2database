@@ -88,11 +88,9 @@ public class NonUniqueHashIndex extends BaseIndex {
         if (first == null || last == null) {
             throw DbException.throwInternalError(first + " " + last);
         }
-        if (first != last) {
-            if (compareKeys(first, last) != 0) {
+        if ((first != last) && (compareKeys(first, last) != 0)) {
                 throw DbException.throwInternalError();
             }
-        }
         Value v = first.getValue(indexColumn);
         /*
          * Sometimes the incoming search is a similar, but not the same type

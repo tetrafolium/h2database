@@ -1537,8 +1537,7 @@ public class Recover extends Tool implements DataHandler {
         for (Map.Entry<Integer, String> entry : tableMap.entrySet()) {
             Integer objectId = entry.getKey();
             String name = entry.getValue();
-            if (objectIdSet.contains(objectId)) {
-                if (name.startsWith("INFORMATION_SCHEMA.LOB")) {
+            if ((objectIdSet.contains(objectId)) && (name.startsWith("INFORMATION_SCHEMA.LOB"))) {
                     setStorage(objectId);
                     writer.println("DELETE FROM " + name + ";");
                     writer.println("INSERT INTO " + name + " SELECT * FROM " + storageName + ";");
@@ -1548,7 +1547,6 @@ public class Recover extends Tool implements DataHandler {
                         deleteLobs = true;
                     }
                 }
-            }
         }
         for (Map.Entry<Integer, String> entry : tableMap.entrySet()) {
             Integer objectId = entry.getKey();

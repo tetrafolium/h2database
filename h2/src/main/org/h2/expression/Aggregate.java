@@ -257,8 +257,7 @@ public class Aggregate extends Expression {
             group.put(this, data);
         }
         Value v = on == null ? null : on.getValue(session);
-        if (type == GROUP_CONCAT) {
-            if (v != ValueNull.INSTANCE) {
+        if ((type == GROUP_CONCAT) && (v != ValueNull.INSTANCE)) {
                 v = v.convertTo(Value.STRING);
                 if (groupConcatOrderList != null) {
                     int size = groupConcatOrderList.size();
@@ -271,7 +270,6 @@ public class Aggregate extends Expression {
                     v = ValueArray.get(array);
                 }
             }
-        }
         data.add(session.getDatabase(), dataType, distinct, v);
     }
 

@@ -127,11 +127,9 @@ public class TableInspector {
                 col.size = rs.getInt("COLUMN_SIZE");
                 col.allowNull = rs.getInt("NULLABLE") == DatabaseMetaData.columnNullable;
                 col.isAutoIncrement = rs.getBoolean("IS_AUTOINCREMENT");
-                if (primaryKeys.size() == 1) {
-                    if (col.name.equalsIgnoreCase(primaryKeys.get(0))) {
+                if ((primaryKeys.size() == 1) && (col.name.equalsIgnoreCase(primaryKeys.get(0)))) {
                         col.isPrimaryKey = true;
                     }
-                }
                 if (!col.isAutoIncrement) {
                     col.defaultValue = rs.getString("COLUMN_DEF");
                 }
@@ -547,9 +545,8 @@ public class TableInspector {
                             "{0}.defaultValue=\"{1}\""
                             + " while column default=\"\"",
                             JQColumn.class.getSimpleName(), fieldDef.defaultValue)));
-            } else if (!StringUtils.isNullOrEmpty(fieldDef.defaultValue)
-                    && !StringUtils.isNullOrEmpty(col.defaultValue)) {
-                if (!fieldDef.defaultValue.equals(col.defaultValue)) {
+            } else if ((!StringUtils.isNullOrEmpty(fieldDef.defaultValue)
+                    && !StringUtils.isNullOrEmpty(col.defaultValue)) && (!fieldDef.defaultValue.equals(col.defaultValue))) {
                     // Model.defaultValue != Column.defaultValue
                     remarks.add(warn(table, col, MessageFormat.format(
                                 "{0}.defaultValue=\"{1}\""
@@ -557,7 +554,6 @@ public class TableInspector {
                                 JQColumn.class.getSimpleName(),
                                 fieldDef.defaultValue, col.defaultValue)));
                 }
-            }
 
             // sanity check Model.defaultValue literal value
             if (!ModelUtils.isValidDefaultValue(fieldDef.field.getType(),

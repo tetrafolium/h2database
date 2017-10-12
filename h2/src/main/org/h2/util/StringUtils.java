@@ -102,11 +102,9 @@ public class StringUtils {
         }
         int index = s.hashCode() & (TO_UPPER_CACHE_LENGTH - 1);
         String[] e = TO_UPPER_CACHE[index];
-        if (e != null) {
-            if (e[0].equals(s)) {
+        if ((e != null) && (e[0].equals(s))) {
                 return e[1];
             }
-        }
         String s2 = s.toUpperCase(Locale.ENGLISH);
         e = new String[] { s, s2 };
         TO_UPPER_CACHE[index] = e;
@@ -445,12 +443,10 @@ public class StringUtils {
                 buff[j++] = (byte) Integer.parseInt(encoded.substring(i + 1, i + 3), 16);
                 i += 2;
             } else {
-                if (SysProperties.CHECK) {
-                    if (ch > 127 || ch < ' ') {
+                if ((SysProperties.CHECK) && (ch > 127 || ch < ' ')) {
                         throw new IllegalArgumentException(
                                   "Unexpected char " + (int) ch + " decoding " + encoded);
                     }
-                }
                 buff[j++] = (byte) ch;
             }
         }
@@ -901,11 +897,9 @@ public class StringUtils {
         if (cache != null) {
             int index = hash & (SysProperties.OBJECT_CACHE_SIZE - 1);
             String cached = cache[index];
-            if (cached != null) {
-                if (s.equals(cached)) {
+            if ((cached != null) && (s.equals(cached))) {
                     return cached;
                 }
-            }
             cache[index] = s;
         }
         return s;

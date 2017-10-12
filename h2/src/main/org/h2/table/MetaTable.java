@@ -722,12 +722,10 @@ public class MetaTable extends Table {
                             "CACHED" : "MEMORY";
                 }
                 String sql = table.getCreateSQL();
-                if (!admin) {
-                    if (sql != null && sql.contains(JdbcSQLException.HIDE_SQL)) {
+                if ((!admin) && (sql != null && sql.contains(JdbcSQLException.HIDE_SQL))) {
                         // hide the password of linked tables
                         sql = "-";
                     }
-                }
                 add(rows,
                         // TABLE_CATALOG
                         catalog,

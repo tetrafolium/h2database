@@ -478,7 +478,7 @@ public class SimpleResultSet implements ResultSet, ResultSetMetaData,
         if (o != null && !(o instanceof Boolean)) {
             o = Boolean.valueOf(o.toString());
         }
-        return o == null ? false : ((Boolean) o).booleanValue();
+        return !(o == null) && ((Boolean) o).booleanValue();
     }
 
     /**

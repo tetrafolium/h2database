@@ -300,13 +300,11 @@ public class Operation extends Expression {
                         convertRight = false;
                         return this;
                     }
-                } else if (opType == DIVIDE) {
-                    if (l == Value.TIME) {
+                } else if ((opType == DIVIDE) && (l == Value.TIME)) {
                         dataType = Value.TIME;
                         convertRight = false;
                         return this;
                     }
-                }
                 throw DbException.getUnsupportedException(
                           DataType.getDataType(l).name + " " +
                           getOperationToken() + " " +

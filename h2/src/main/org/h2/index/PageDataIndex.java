@@ -240,12 +240,10 @@ public class PageDataIndex extends PageIndex {
             throw DbException.get(ErrorCode.FILE_CORRUPTED_1, "" + pd);
         }
         PageData p = (PageData) pd;
-        if (parent != -1) {
-            if (p.getParentPageId() != parent) {
+        if ((parent != -1) && (p.getParentPageId() != parent)) {
                 throw DbException.throwInternalError(p +
                               " parent " + p.getParentPageId() + " expected " + parent);
             }
-        }
         return p;
     }
 

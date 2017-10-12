@@ -276,11 +276,9 @@ public class Bnf {
             String s = tokenizer.nextToken();
             // avoid duplicate strings
             s = StringUtils.cache(s);
-            if (s.length() == 1) {
-                if (" \r\n".indexOf(s.charAt(0)) >= 0) {
+            if ((s.length() == 1) && (" \r\n".indexOf(s.charAt(0)) >= 0)) {
                     continue;
                 }
-            }
             list.add(s);
         }
         return list.toArray(new String[list.size()]);

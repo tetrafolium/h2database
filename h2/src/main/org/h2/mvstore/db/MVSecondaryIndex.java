@@ -232,11 +232,9 @@ public final class MVSecondaryIndex extends BaseIndex implements MVIndex {
             if (compareRows(row, r2) != 0) {
                 break;
             }
-            if (map.get(k) != null) {
-                if (!containsNullAndAllowMultipleNull(r2)) {
+            if ((map.get(k) != null) && (!containsNullAndAllowMultipleNull(r2))) {
                     throw getDuplicateKeyException(k.toString());
                 }
-            }
         }
     }
 
@@ -500,11 +498,9 @@ public final class MVSecondaryIndex extends BaseIndex implements MVIndex {
 
         @Override
         public SearchRow getSearchRow() {
-            if (searchRow == null) {
-                if (current != null) {
+            if ((searchRow == null) && (current != null)) {
                     searchRow = convertToSearchRow((ValueArray) current);
                 }
-            }
             return searchRow;
         }
 
@@ -512,12 +508,10 @@ public final class MVSecondaryIndex extends BaseIndex implements MVIndex {
         public boolean next() {
             current = it.hasNext() ? it.next() : null;
             searchRow = null;
-            if (current != null) {
-                if (last != null && compareRows(getSearchRow(), last) > 0) {
+            if ((current != null) && (last != null && compareRows(getSearchRow(), last) > 0)) {
                     searchRow = null;
                     current = null;
                 }
-            }
             row = null;
             return current != null;
         }

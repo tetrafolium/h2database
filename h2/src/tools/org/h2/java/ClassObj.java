@@ -394,17 +394,13 @@ class Type {
             }
             buff.append("array< ");
         }
-        if (refCount) {
-            if (!classObj.isPrimitive) {
+        if ((refCount) && (!classObj.isPrimitive)) {
                 buff.append("ptr< ");
             }
-        }
         buff.append(classObj.toString());
-        if (refCount) {
-            if (!classObj.isPrimitive) {
+        if ((refCount) && (!classObj.isPrimitive)) {
                 buff.append(" >");
             }
-        }
         for (int i = 0; i < arrayLevel; i++) {
             if (refCount) {
                 buff.append(" >");
@@ -415,11 +411,9 @@ class Type {
             }
             buff.append(" >");
         }
-        if (!refCount) {
-            if (isObject()) {
+        if ((!refCount) && (isObject())) {
                 buff.append("*");
             }
-        }
         return buff.toString();
     }
 

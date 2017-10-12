@@ -167,16 +167,12 @@ public class SelectUnion extends Query {
             }
             limitExpr = ValueExpression.get(ValueInt.get(l));
         }
-        if (session.getDatabase().getSettings().optimizeInsertFromSelect) {
-            if (unionType == UNION_ALL && target != null) {
-                if (sort == null && !distinct && maxRows == 0 &&
-                        offsetExpr == null && limitExpr == null) {
+        if (((session.getDatabase().getSettings().optimizeInsertFromSelect) && (unionType == UNION_ALL && target != null)) && (sort == null && !distinct && maxRows == 0 &&
+                        offsetExpr == null && limitExpr == null)) {
                     left.query(0, target);
                     right.query(0, target);
                     return null;
                 }
-            }
-        }
         int columnCount = left.getColumnCount();
         if (session.isLazyQueryExecution() && unionType == UNION_ALL && !distinct &&
                 sort == null && !randomAccessResult && !isForUpdate &&

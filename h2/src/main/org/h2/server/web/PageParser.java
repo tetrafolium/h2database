@@ -238,11 +238,9 @@ public class PageParser {
         if (s == null) {
             return null;
         }
-        if (convertBreakAndSpace) {
-            if (s.length() == 0) {
+        if ((convertBreakAndSpace) && (s.length() == 0)) {
                 return "&nbsp;";
             }
-        }
         StringBuilder buff = new StringBuilder(s.length());
         boolean convertSpace = true;
         for (int i = 0; i < s.length(); i++) {

@@ -308,11 +308,9 @@ public class ConstraintReferential extends Constraint {
                 !refTable.getCheckForeignKeyConstraints()) {
             return;
         }
-        if (t == table) {
-            if (!skipOwnTable) {
+        if ((t == table) && (!skipOwnTable)) {
                 checkRowOwnTable(session, oldRow, newRow);
             }
-        }
         if (t == refTable) {
             checkRowRefTable(session, oldRow, newRow);
         }
@@ -330,11 +328,9 @@ public class ConstraintReferential extends Constraint {
                 // return early if one of the columns is NULL
                 return;
             }
-            if (constraintColumnsEqual) {
-                if (!database.areEqual(v, oldRow.getValue(idx))) {
+            if ((constraintColumnsEqual) && (!database.areEqual(v, oldRow.getValue(idx)))) {
                     constraintColumnsEqual = false;
                 }
-            }
         }
         if (constraintColumnsEqual) {
             // return early if the key columns didn't change

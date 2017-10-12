@@ -643,12 +643,10 @@ public class CacheLIRS<K, V> extends AbstractMap<K, V> {
                 return null;
             }
             if (e.isHot()) {
-                if (e != stack.stackNext) {
-                    if (stackMoveDistance == 0 ||
-                            stackMoveCounter - e.topMove > stackMoveDistance) {
+                if ((e != stack.stackNext) && (stackMoveDistance == 0 ||
+                            stackMoveCounter - e.topMove > stackMoveDistance)) {
                         access(key, hash);
                     }
-                }
             } else {
                 access(key, hash);
             }
@@ -667,9 +665,8 @@ public class CacheLIRS<K, V> extends AbstractMap<K, V> {
                 return;
             }
             if (e.isHot()) {
-                if (e != stack.stackNext) {
-                    if (stackMoveDistance == 0 ||
-                            stackMoveCounter - e.topMove > stackMoveDistance) {
+                if ((e != stack.stackNext) && (stackMoveDistance == 0 ||
+                            stackMoveCounter - e.topMove > stackMoveDistance)) {
                         // move a hot entry to the top of the stack
                         // unless it is already there
                         boolean wasEnd = e == stack.stackPrev;
@@ -681,7 +678,6 @@ public class CacheLIRS<K, V> extends AbstractMap<K, V> {
                         }
                         addToStack(e);
                     }
-                }
             } else {
                 removeFromQueue(e);
                 if (e.stackNext != null) {

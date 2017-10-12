@@ -232,11 +232,9 @@ public class NetUtils {
      */
     public static synchronized String getLocalAddress() {
         long now = System.nanoTime();
-        if (cachedLocalAddress != null) {
-            if (cachedLocalAddressTime + TimeUnit.MILLISECONDS.toNanos(CACHE_MILLIS) > now) {
+        if ((cachedLocalAddress != null) && (cachedLocalAddressTime + TimeUnit.MILLISECONDS.toNanos(CACHE_MILLIS) > now)) {
                 return cachedLocalAddress;
             }
-        }
         InetAddress bind = null;
         boolean useLocalhost = false;
         try {

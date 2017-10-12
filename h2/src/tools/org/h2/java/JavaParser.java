@@ -506,11 +506,9 @@ public class JavaParser {
     }
 
     private String readTypeOrIdentifier() {
-        if (current.type == TOKEN_RESERVED) {
-            if (BUILT_IN_CLASSES.containsKey(current.token)) {
+        if ((current.type == TOKEN_RESERVED) && (BUILT_IN_CLASSES.containsKey(current.token))) {
                 return read();
             }
-        }
         String s = readIdentifier();
         while (readIf(".")) {
             s += "." + readIdentifier();

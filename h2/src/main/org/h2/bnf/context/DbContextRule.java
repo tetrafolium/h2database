@@ -83,14 +83,12 @@ public class DbContextRule implements Rule {
                         best = name;
                         bestSchema = schema;
                     }
-                } else if (s.length() == 0 || name.startsWith(up)) {
-                    if (s.length() < name.length()) {
+                } else if ((s.length() == 0 || name.startsWith(up)) && (s.length() < name.length())) {
                         sentence.add(name, name.substring(s.length()), type);
                         sentence.add(schema.quotedName + ".",
                                 schema.quotedName.substring(s.length()) + ".",
                                 Sentence.CONTEXT);
                     }
-                }
             }
             if (best != null) {
                 sentence.setLastMatchedSchema(bestSchema);
@@ -118,13 +116,11 @@ public class DbContextRule implements Rule {
                         best = name;
                         bestTable = table;
                     }
-                } else if (s.length() == 0 || name.startsWith(compare)) {
-                    if (s.length() < name.length()) {
+                } else if ((s.length() == 0 || name.startsWith(compare)) && (s.length() < name.length())) {
                         sentence.add(table.getQuotedName(),
                                 table.getQuotedName().substring(s.length()),
                                 Sentence.CONTEXT);
                     }
-                }
             }
             if (best != null) {
                 sentence.setLastMatchedTable(bestTable);
@@ -178,13 +174,11 @@ public class DbContextRule implements Rule {
                         String b = s.substring(name.length());
                         if (best == null || b.length() < best.length()) {
                             best = b;
-                        } else if (s.length() == 0 || name.startsWith(compare)) {
-                            if (s.length() < name.length()) {
+                        } else if ((s.length() == 0 || name.startsWith(compare)) && (s.length() < name.length())) {
                                 sentence.add(column.getName(),
                                         column.getName().substring(s.length()),
                                         Sentence.CONTEXT);
                             }
-                        }
                     }
                 }
             }
@@ -206,13 +200,11 @@ public class DbContextRule implements Rule {
                                 if (best == null || b.length() < best.length()) {
                                     best = b;
                                 }
-                            } else if (s.length() == 0 || name.startsWith(up)) {
-                                if (s.length() < name.length()) {
+                            } else if ((s.length() == 0 || name.startsWith(up)) && (s.length() < name.length())) {
                                     sentence.add(column.getName(),
                                             column.getName().substring(s.length()),
                                             Sentence.CONTEXT);
                                 }
-                            }
                         }
                     }
                 }

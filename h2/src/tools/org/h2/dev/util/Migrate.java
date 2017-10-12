@@ -158,11 +158,9 @@ public class Migrate {
     }
 
     private static void mkdirs(File f) {
-        if (!f.exists()) {
-            if (!f.mkdirs()) {
+        if ((!f.exists()) && (!f.mkdirs())) {
                 throw new RuntimeException("Can not create directory " + f.getAbsolutePath());
             }
-        }
     }
 
     private void println(String s) {

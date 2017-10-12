@@ -343,15 +343,13 @@ public class Doclet {
         ParamTag[] paramTags = method.paramTags();
         ThrowsTag[] throwsTags = method.throwsTags();
         boolean hasThrowsTag = throwsTags != null && throwsTags.length > 0;
-        if (paramTags.length != params.length) {
-            if (hasComment && !method.commentText().startsWith("[")) {
+        if ((paramTags.length != params.length) && (hasComment && !method.commentText().startsWith("["))) {
                 // [Not supported] and such are not problematic
                 addError("Undocumented parameter(s) (" +
                         getLink(clazz, method.position().line()) + ") " +
                         name + " documented: " + paramTags.length +
                         " params: "+ params.length);
             }
-        }
         for (int j = 0; j < paramTags.length; j++) {
             String paramName = paramTags[j].parameterName();
             String comment = paramTags[j].parameterComment();
@@ -376,9 +374,8 @@ public class Doclet {
                         getLink(clazz, method.position().line()) + ") " + name);
             }
             writer.println("<div class=\"item\">" + returnComment + "</div>");
-        } else if (returnType != null && !returnType.toString().equals("void")) {
-            if (hasComment && !method.commentText().startsWith("[") &&
-                    !hasThrowsTag) {
+        } else if ((returnType != null && !returnType.toString().equals("void")) && (hasComment && !method.commentText().startsWith("[") &&
+                    !hasThrowsTag)) {
                 // [Not supported] and such are not problematic
                 // also not problematic are methods that always throw an
                 // exception
@@ -386,7 +383,6 @@ public class Doclet {
                         + getLink(clazz, method.position().line()) + ") "
                         + name + " " + getReturnType(method));
             }
-        }
         if (hasThrowsTag) {
             writer.println("<div class=\"itemTitle\">Throws:</div>");
             for (ThrowsTag tag : throwsTags) {
@@ -472,9 +468,8 @@ public class Doclet {
         if (firstSentence != null && firstSentence.startsWith("INTERNAL")) {
             return true;
         }
-        if ((firstSentence == null || firstSentence.trim().length() == 0)
-                && raw.indexOf("{@inheritDoc}") < 0) {
-            if (!doesOverride(method)) {
+        if (((firstSentence == null || firstSentence.trim().length() == 0)
+                && raw.indexOf("{@inheritDoc}") < 0) && (!doesOverride(method))) {
                 boolean setterOrGetter = name.startsWith("set")
                         && method.parameters().length == 1;
                 setterOrGetter |= name.startsWith("get")
@@ -492,7 +487,6 @@ public class Doclet {
                     return true;
                 }
             }
-        }
         return false;
     }
 

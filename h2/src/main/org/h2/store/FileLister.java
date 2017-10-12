@@ -111,12 +111,10 @@ public class FileLister {
                     ok = true;
                 }
             }
-            if (ok) {
-                if (db == null || f.startsWith(start)) {
+            if ((ok) && (db == null || f.startsWith(start))) {
                     String fileName = f;
                     files.add(fileName);
                 }
-            }
         }
         return files;
     }

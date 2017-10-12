@@ -551,7 +551,7 @@ public class JdbcResultSet extends TraceObject implements ResultSet, JdbcResultS
         try {
             debugCodeCall("getBoolean", columnIndex);
             Boolean v = get(columnIndex).getBoolean();
-            return v == null ? false : v.booleanValue();
+            return !(v == null) && v.booleanValue();
         } catch (Exception e) {
             throw logAndConvert(e);
         }
@@ -570,7 +570,7 @@ public class JdbcResultSet extends TraceObject implements ResultSet, JdbcResultS
         try {
             debugCodeCall("getBoolean", columnLabel);
             Boolean v = get(columnLabel).getBoolean();
-            return v == null ? false : v.booleanValue();
+            return !(v == null) && v.booleanValue();
         } catch (Exception e) {
             throw logAndConvert(e);
         }

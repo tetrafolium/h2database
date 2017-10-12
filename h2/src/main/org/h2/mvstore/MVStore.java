@@ -536,11 +536,9 @@ public final class MVStore {
     private Chunk getChunkForVersion(long version) {
         Chunk newest = null;
         for (Chunk c : chunks.values()) {
-            if (c.version <= version) {
-                if (newest == null || c.id > newest.id) {
+            if ((c.version <= version) && (newest == null || c.id > newest.id)) {
                     newest = c;
                 }
-            }
         }
         return newest;
     }
@@ -651,11 +649,9 @@ public final class MVStore {
         Chunk test = readChunkFooter(fileStore.size());
         if (test != null) {
             test = readChunkHeaderAndFooter(test.block);
-            if (test != null) {
-                if (newest == null || test.version > newest.version) {
+            if ((test != null) && (newest == null || test.version > newest.version)) {
                     newest = test;
                 }
-            }
         }
         if (newest == null) {
             // no chunk
@@ -702,13 +698,11 @@ public final class MVStore {
             }
             s = meta.get(s);
             Chunk c = Chunk.fromString(s);
-            if (chunks.putIfAbsent(c.id, c) == null) {
-                if (c.block == Long.MAX_VALUE) {
+            if ((chunks.putIfAbsent(c.id, c) == null) && (c.block == Long.MAX_VALUE)) {
                     throw DataUtils.newIllegalStateException(
                               DataUtils.ERROR_FILE_CORRUPT,
                               "Chunk {0} is invalid", c.id);
                 }
-            }
         }
     }
 
@@ -1873,11 +1867,9 @@ public final class MVStore {
         int chunkCount = 0;
         Chunk move = null;
         for (Chunk c : old) {
-            if (move != null) {
-                if (c.collectPriority > 0 && written > write) {
+            if ((move != null) && (c.collectPriority > 0 && written > write)) {
                     break;
                 }
-            }
             written += c.maxLenLive;
             chunkCount++;
             move = c;
@@ -1969,25 +1961,21 @@ public final class MVStore {
         // but we don't optimize for rollback.
         // We could also keep the page in the cache, as somebody
         // could still read it (reading the old version).
-        if (cache != null) {
-            if (DataUtils.getPageType(pos) == DataUtils.PAGE_TYPE_LEAF) {
+        if ((cache != null) && (DataUtils.getPageType(pos) == DataUtils.PAGE_TYPE_LEAF)) {
                 // keep nodes in the cache, because they are still used for
                 // garbage collection
                 cache.remove(pos);
             }
-        }
 
         Chunk c = getChunk(pos);
         long version = currentVersion;
-        if (map == meta && currentStoreVersion >= 0) {
-            if (Thread.currentThread() == currentStoreThread) {
+        if ((map == meta && currentStoreVersion >= 0) && (Thread.currentThread() == currentStoreThread)) {
                 // if the meta map is modified while storing,
                 // then this freed page needs to be registered
                 // with the stored chunk, so that the old chunk
                 // can be re-used
                 version = currentStoreVersion;
             }
-        }
         registerFreePage(version, c.id,
                 DataUtils.getPageMaxLength(pos), 1);
     }
@@ -2677,7 +2665,7 @@ public final class MVStore {
      * @return true if it is
      */
     public boolean isReadOnly() {
-        return fileStore == null ? false : fileStore.isReadOnly();
+        return !(fileStore == null) && fileStore.isReadOnly();
     }
 
     /**

@@ -373,8 +373,7 @@ public class Column {
             }
         }
         value = value.convertScale(mode.convertOnlyToSmallerScale, scale);
-        if (precision > 0) {
-            if (!value.checkPrecision(precision)) {
+        if ((precision > 0) && (!value.checkPrecision(precision))) {
                 String s = value.getTraceSQL();
                 if (s.length() > 127) {
                     s = s.substring(0, 128) + "...";
@@ -382,7 +381,6 @@ public class Column {
                 throw DbException.get(ErrorCode.VALUE_TOO_LONG_2,
                               getCreateSQL(), s + " (" + value.getPrecision() + ")");
             }
-        }
         if (isEnumerated() && value != ValueNull.INSTANCE) {
             if (!ValueEnum.isValid(enumerators, value)) {
                 String s = value.getTraceSQL();
@@ -729,11 +727,9 @@ public class Column {
      *         no expressions
      */
     boolean isEverything(ExpressionVisitor visitor) {
-        if (visitor.getType() == ExpressionVisitor.GET_DEPENDENCIES) {
-            if (sequence != null) {
+        if ((visitor.getType() == ExpressionVisitor.GET_DEPENDENCIES) && (sequence != null)) {
                 visitor.getDependencies().add(sequence);
             }
-        }
         if (defaultExpression != null && !defaultExpression.isEverything(visitor)) {
             return false;
         }

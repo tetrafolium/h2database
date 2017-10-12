@@ -247,8 +247,7 @@ public class IndexCondition {
             return EQUALITY;
         case Comparison.IN_LIST:
         case Comparison.IN_QUERY:
-            if (indexConditions.size() > 1) {
-                if (TableType.TABLE != column.getTable().getTableType()) {
+            if ((indexConditions.size() > 1) && (TableType.TABLE != column.getTable().getTableType())) {
                     // if combined with other conditions,
                     // IN(..) can only be used for regular tables
                     // test case:
@@ -259,7 +258,6 @@ public class IndexCondition {
                     // where a=1 and b in(10, 20);
                     return 0;
                 }
-            }
             return EQUALITY;
         case Comparison.BIGGER_EQUAL:
         case Comparison.BIGGER:

@@ -1061,13 +1061,11 @@ public abstract class Table extends SchemaObjectBase {
      */
     public void setCheckForeignKeyConstraints(Session session, boolean enabled,
             boolean checkExisting) {
-        if (enabled && checkExisting) {
-            if (constraints != null) {
+        if ((enabled && checkExisting) && (constraints != null)) {
                 for (Constraint c : constraints) {
                     c.checkExistingData(session);
                 }
             }
-        }
         checkForeignKeyConstraints = enabled;
     }
 

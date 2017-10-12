@@ -162,8 +162,7 @@ public class RegularTable extends TableBase {
     }
 
     private void checkRowCount(Session session, Index index, int offset) {
-        if (SysProperties.CHECK && !database.isMultiVersion()) {
-            if (!(index instanceof PageDelegateIndex)) {
+        if ((SysProperties.CHECK && !database.isMultiVersion()) && (!(index instanceof PageDelegateIndex))) {
                 long rc = index.getRowCount(session);
                 if (rc != rowCount + offset) {
                     DbException.throwInternalError(
@@ -171,7 +170,6 @@ public class RegularTable extends TableBase {
                         " got " + rc + " " + getName() + "." + index.getName());
                 }
             }
-        }
     }
 
     @Override
@@ -484,11 +482,9 @@ public class RegularTable extends TableBase {
         boolean checkDeadlock = false;
         while (true) {
             // if I'm the next one in the queue
-            if (waitingSessions.getFirst() == session) {
-                if (doLock2(session, lockMode, exclusive)) {
+            if ((waitingSessions.getFirst() == session) && (doLock2(session, lockMode, exclusive))) {
                     return;
                 }
-            }
             if (checkDeadlock) {
                 ArrayList<Session> sessions = checkDeadlock(session, null, null);
                 if (sessions != null) {
@@ -549,8 +545,7 @@ public class RegularTable extends TableBase {
             }
         } else {
             if (lockExclusiveSession == null) {
-                if (lockMode == Constants.LOCK_MODE_READ_COMMITTED) {
-                    if (!database.isMultiThreaded() && !database.isMultiVersion()) {
+                if ((lockMode == Constants.LOCK_MODE_READ_COMMITTED) && (!database.isMultiThreaded() && !database.isMultiVersion())) {
                         // READ_COMMITTED: a read lock is acquired,
                         // but released immediately after the operation
                         // is complete.
@@ -559,7 +554,6 @@ public class RegularTable extends TableBase {
                         // Row level locks work like read committed.
                         return true;
                     }
-                }
                 if (!lockSharedSessions.contains(session)) {
                     traceLock(session, exclusive, "ok");
                     session.addLock(this);

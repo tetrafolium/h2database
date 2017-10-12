@@ -283,15 +283,13 @@ public class TransactionStore {
         Object[] log = new Object[] { mapId, key, oldValue };
         rwLock.writeLock().lock();
         try {
-            if (logId == 0) {
-                if (undoLog.containsKey(undoKey)) {
+            if ((logId == 0) && (undoLog.containsKey(undoKey))) {
                     throw DataUtils.newIllegalStateException(
                               DataUtils.ERROR_TOO_MANY_OPEN_TRANSACTIONS,
                               "An old transaction with the same id " +
                               "is still open: {0}",
                               t.getId());
                 }
-            }
             undoLog.put(undoKey, log);
         } finally {
             rwLock.writeLock().unlock();
@@ -364,10 +362,7 @@ public class TransactionStore {
                 if (map != null) { // might be null if map was removed later
                     Object key = op[1];
                     VersionedValue value = map.get(key);
-                    if (value != null) {
-                        // only commit (remove/update) value if we've reached
-                        // last undoLog entry for a given key
-                        if (value.operationId == undoKey) {
+                    if ((value != null) && (value.operationId == undoKey)) {
                             if (value.value == null) {
                                 map.remove(key);
                             } else {
@@ -376,7 +371,6 @@ public class TransactionStore {
                                 map.put(key, v2);
                             }
                         }
-                    }
                 }
                 undoLog.remove(undoKey);
             }
@@ -1261,12 +1255,9 @@ public class TransactionStore {
                     return data;
                 }
                 int tx = getTransactionId(id);
-                if (tx == transaction.transactionId) {
-                    // added by this transaction
-                    if (getLogId(id) < maxLog) {
+                if ((tx == transaction.transactionId) && (getLogId(id) < maxLog)) {
                         return data;
                     }
-                }
                 // get the value before the uncommitted transaction
                 Object[] d;
                 d = transaction.store.undoLog.get(id);

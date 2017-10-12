@@ -110,13 +110,11 @@ public class CompareMode {
      */
     public static CompareMode getInstance(String name, int strength, boolean binaryUnsigned) {
         CompareMode last = lastUsed;
-        if (last != null) {
-            if (StringUtils.equals(last.name, name) &&
+        if ((last != null) && (StringUtils.equals(last.name, name) &&
                     last.strength == strength &&
-                    last.binaryUnsigned == binaryUnsigned) {
+                    last.binaryUnsigned == binaryUnsigned)) {
                 return last;
             }
-        }
         if (name == null || name.equals(OFF)) {
             last = new CompareMode(name, strength, binaryUnsigned);
         } else {

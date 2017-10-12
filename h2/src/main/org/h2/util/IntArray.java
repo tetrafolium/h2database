@@ -61,11 +61,9 @@ public class IntArray {
      * @return the value
      */
     public int get(int index) {
-        if (SysProperties.CHECK) {
-            if (index >= size) {
+        if ((SysProperties.CHECK) && (index >= size)) {
                 throw new ArrayIndexOutOfBoundsException("i=" + index + " size=" + size);
             }
-        }
         return data[index];
     }
 
@@ -75,11 +73,9 @@ public class IntArray {
      * @param index the index
      */
     public void remove(int index) {
-        if (SysProperties.CHECK) {
-            if (index >= size) {
+        if ((SysProperties.CHECK) && (index >= size)) {
                 throw new ArrayIndexOutOfBoundsException("i=" + index + " size=" + size);
             }
-        }
         System.arraycopy(data, index + 1, data, index, size - index - 1);
         size--;
     }
@@ -164,12 +160,10 @@ public class IntArray {
      * @param toIndex upper bound (exclusive)
      */
     public void removeRange(int fromIndex, int toIndex) {
-        if (SysProperties.CHECK) {
-            if (fromIndex > toIndex || toIndex > size) {
+        if ((SysProperties.CHECK) && (fromIndex > toIndex || toIndex > size)) {
                 throw new ArrayIndexOutOfBoundsException("from=" + fromIndex +
                               " to=" + toIndex + " size=" + size);
             }
-        }
         System.arraycopy(data, toIndex, data, fromIndex, size - toIndex);
         size -= toIndex - fromIndex;
     }

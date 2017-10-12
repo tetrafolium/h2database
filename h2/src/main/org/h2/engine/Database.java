@@ -640,12 +640,11 @@ public class Database implements DataHandler {
             traceSystem.setLevelSystemOut(traceLevelSystemOut);
             trace = traceSystem.getTrace(Trace.DATABASE);
             trace.info("opening {0} (build {1})", databaseName, Constants.BUILD_ID);
-            if (autoServerMode) {
-                if (readOnly ||
+            if ((autoServerMode) && (readOnly ||
                         fileLockMethod == FileLock.LOCK_NO ||
                         fileLockMethod == FileLock.LOCK_SERIALIZED ||
                         fileLockMethod == FileLock.LOCK_FS ||
-                        !persistent) {
+                        !persistent)) {
                     throw DbException.getUnsupportedException(
                               "autoServerMode && (readOnly || " +
                               "fileLockMethod == NO || " +
@@ -653,23 +652,18 @@ public class Database implements DataHandler {
                               "fileLockMethod == FS || " +
                               "inMemory)");
                 }
-            }
             String lockFileName = databaseName + Constants.SUFFIX_LOCK_FILE;
-            if (readOnly) {
-                if (FileUtils.exists(lockFileName)) {
+            if ((readOnly) && (FileUtils.exists(lockFileName))) {
                     throw DbException.get(ErrorCode.DATABASE_ALREADY_OPEN_1,
                                   "Lock file exists: " + lockFileName);
                 }
-            }
-            if (!readOnly && fileLockMethod != FileLock.LOCK_NO) {
-                if (fileLockMethod != FileLock.LOCK_FS) {
+            if ((!readOnly && fileLockMethod != FileLock.LOCK_NO) && (fileLockMethod != FileLock.LOCK_FS)) {
                     lock = new FileLock(traceSystem, lockFileName, Constants.LOCK_SLEEP);
                     lock.lock(fileLockMethod);
                     if (autoServerMode) {
                         startServer(lock.getUniqueId());
                     }
                 }
-            }
             if (SysProperties.MODIFY_ON_WRITE) {
                 while (isReconnectNeeded()) {
                     // wait until others stopped writing
@@ -940,11 +934,9 @@ public class Database implements DataHandler {
             boolean wasLocked = lockMeta(session);
             Cursor cursor = metaIdIndex.find(session, r, r);
             if (cursor.next()) {
-                if (SysProperties.CHECK) {
-                    if (lockMode != Constants.LOCK_MODE_OFF && !wasLocked) {
+                if ((SysProperties.CHECK) && (lockMode != Constants.LOCK_MODE_OFF && !wasLocked)) {
                         throw DbException.throwInternalError();
                     }
-                }
                 Row found = cursor.get();
                 meta.removeRow(session, found);
                 if (isMultiVersion()) {
@@ -1361,8 +1353,7 @@ public class Database implements DataHandler {
      */
     private synchronized void closeOpenFilesAndUnlock(boolean flush) {
         stopWriter();
-        if (pageStore != null) {
-            if (flush) {
+        if ((pageStore != null) && (flush)) {
                 try {
                     pageStore.checkpoint();
                     if (!readOnly) {
@@ -1386,7 +1377,6 @@ public class Database implements DataHandler {
                     trace.error(t, "close");
                 }
             }
-        }
         reconnectModified(false);
         if (mvStore != null) {
             long maxCompactTime = dbSettings.maxCompactTime;
@@ -1420,10 +1410,7 @@ public class Database implements DataHandler {
             lobSession = null;
         }
         if (lock != null) {
-            if (fileLockMethod == FileLock.LOCK_SERIALIZED) {
-                // wait before deleting the .lock file,
-                // otherwise other connections can not detect that
-                if (lock.load().containsKey("changePending")) {
+            if ((fileLockMethod == FileLock.LOCK_SERIALIZED) && (lock.load().containsKey("changePending"))) {
                     try {
                         Thread.sleep(TimeUnit.NANOSECONDS
                                 .toMillis((long) (reconnectCheckDelayNs * 1.1)));
@@ -1431,7 +1418,6 @@ public class Database implements DataHandler {
                         trace.error(e, "close");
                     }
                 }
-            }
             lock.unlock();
             lock = null;
         }
@@ -1950,11 +1936,9 @@ public class Database implements DataHandler {
         if (readOnly) {
             throw DbException.get(ErrorCode.DATABASE_IS_READ_ONLY);
         }
-        if (fileLockMethod == FileLock.LOCK_SERIALIZED) {
-            if (!reconnectChangePending) {
+        if ((fileLockMethod == FileLock.LOCK_SERIALIZED) && (!reconnectChangePending)) {
                 throw DbException.get(ErrorCode.DATABASE_IS_READ_ONLY);
             }
-        }
     }
 
     public boolean isReadOnly() {
@@ -2567,16 +2551,14 @@ public class Database implements DataHandler {
                 if (prop.getProperty("changePending", null) == null) {
                     break;
                 }
-                if (System.nanoTime() >
-                        now + reconnectCheckDelayNs * 10) {
-                    if (first.equals(prop)) {
+                if ((System.nanoTime() >
+                        now + reconnectCheckDelayNs * 10) && (first.equals(prop))) {
                         // the writing process didn't update the file -
                         // it may have terminated
                         lock.setProperty("changePending", null);
                         lock.save();
                         break;
                     }
-                }
                 trace.debug("delay (change pending)");
                 Thread.sleep(TimeUnit.NANOSECONDS.toMillis(reconnectCheckDelayNs));
                 prop = lock.load();

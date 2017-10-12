@@ -281,16 +281,12 @@ public class TableFilter implements ColumnResolver {
         }
         setIndex(item.getIndex());
         masks = item.getMasks();
-        if (nestedJoin != null) {
-            if (item.getNestedJoinPlan() != null) {
+        if ((nestedJoin != null) && (item.getNestedJoinPlan() != null)) {
                 nestedJoin.setPlanItem(item.getNestedJoinPlan());
             }
-        }
-        if (join != null) {
-            if (item.getJoinPlan() != null) {
+        if ((join != null) && (item.getJoinPlan() != null)) {
                 join.setPlanItem(item.getJoinPlan());
             }
-        }
     }
 
     /**
@@ -304,12 +300,10 @@ public class TableFilter implements ColumnResolver {
             IndexCondition condition = indexConditions.get(i);
             if (!condition.isAlwaysFalse()) {
                 Column col = condition.getColumn();
-                if (col.getColumnId() >= 0) {
-                    if (index.getColumnIndex(col) < 0) {
+                if ((col.getColumnId() >= 0) && (index.getColumnIndex(col) < 0)) {
                         indexConditions.remove(i);
                         i--;
                     }
-                }
             }
         }
         if (nestedJoin != null) {
@@ -504,8 +498,7 @@ public class TableFilter implements ColumnResolver {
                     state = AFTER_LAST;
                 }
             }
-            if (nestedJoin != null && state == FOUND) {
-                if (!nestedJoin.next()) {
+            if ((nestedJoin != null && state == FOUND) && (!nestedJoin.next())) {
                     state = AFTER_LAST;
                     if (joinOuter && !foundOne) {
                         // possibly null row
@@ -513,7 +506,6 @@ public class TableFilter implements ColumnResolver {
                         continue;
                     }
                 }
-            }
             // if no more rows found, try the null row (for outer joins only)
             if (state == AFTER_LAST) {
                 if (joinOuter && !foundOne) {
@@ -1011,13 +1003,9 @@ public class TableFilter implements ColumnResolver {
         if (joinCondition != null) {
             joinCondition.setEvaluatable(filter, b);
         }
-        if (nestedJoin != null) {
-            // don't enable / disable the nested join filters
-            // if enabling a filter in a joined filter
-            if (this == filter) {
+        if ((nestedJoin != null) && (this == filter)) {
                 nestedJoin.setEvaluatable(nestedJoin, b);
             }
-        }
         if (join != null) {
             join.setEvaluatable(filter, b);
         }

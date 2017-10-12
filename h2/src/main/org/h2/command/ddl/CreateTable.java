@@ -201,8 +201,7 @@ public class CreateTable extends SchemaCommand {
                 if (obj == table) {
                     continue;
                 }
-                if (obj.getType() == DbObject.TABLE_OR_VIEW) {
-                    if (obj instanceof Table) {
+                if ((obj.getType() == DbObject.TABLE_OR_VIEW) && (obj instanceof Table)) {
                         Table t = (Table) obj;
                         if (t.getId() > table.getId()) {
                             throw DbException.get(
@@ -214,7 +213,6 @@ public class CreateTable extends SchemaCommand {
                                       "being re-opened");
                         }
                     }
-                }
             }
         } catch (DbException e) {
             db.checkPowerOff();

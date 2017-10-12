@@ -703,13 +703,11 @@ public class Data {
         default:
             DbException.throwInternalError("type=" + v.getType());
         }
-        if (SysProperties.CHECK2) {
-            if (pos - start != getValueLen(v, handler)) {
+        if ((SysProperties.CHECK2) && (pos - start != getValueLen(v, handler))) {
                 throw DbException.throwInternalError(
                           "value size error: got " + (pos - start) +
                           " expected " + getValueLen(v, handler));
             }
-        }
     }
 
     /**

@@ -397,13 +397,11 @@ public class MVPrimaryIndex extends BaseIndex {
 
         @Override
         public Row get() {
-            if (row == null) {
-                if (current != null) {
+            if ((row == null) && (current != null)) {
                     ValueArray array = (ValueArray) current.getValue();
                     row = session.createRow(array.getList(), 0);
                     row.setKey(current.getKey().getLong());
                 }
-            }
             return row;
         }
 

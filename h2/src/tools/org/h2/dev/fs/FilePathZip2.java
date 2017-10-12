@@ -142,14 +142,10 @@ public class FilePathZip2 extends FilePath {
                 if (n.equals(entryName)) {
                     result = entry.isDirectory();
                     break;
-                } else if (n.startsWith(entryName)) {
-                    if (n.length() == entryName.length() + 1) {
-                        if (n.equals(entryName + "/")) {
+                } else if (((n.startsWith(entryName)) && (n.length() == entryName.length() + 1)) && (n.equals(entryName + "/"))) {
                             result = true;
                             break;
                         }
-                    }
-                }
                 file.closeEntry();
             }
             file.close();

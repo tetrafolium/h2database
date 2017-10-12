@@ -81,16 +81,12 @@ public class ShardedMap<K, V> extends AbstractMap<K, V> {
     }
 
     private boolean isInRange(K key, Shard<K, V> shard) {
-        if (shard.minIncluding != null) {
-            if (keyType.compare(key, shard.minIncluding) < 0) {
+        if ((shard.minIncluding != null) && (keyType.compare(key, shard.minIncluding) < 0)) {
                 return false;
             }
-        }
-        if (shard.maxExcluding != null) {
-            if (keyType.compare(key, shard.maxExcluding) >= 0) {
+        if ((shard.maxExcluding != null) && (keyType.compare(key, shard.maxExcluding) >= 0)) {
                 return false;
             }
-        }
         return true;
     }
 

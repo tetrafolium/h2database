@@ -141,10 +141,8 @@ public class ConditionAndOr extends Condition {
         // INSERT INTO TEST VALUES(1, NULL);
         // SELECT * FROM TEST WHERE NOT (B=A AND B=0); // no rows
         // SELECT * FROM TEST WHERE NOT (B=A AND B=0 AND A=0); // 1, NULL
-        if (session.getDatabase().getSettings().optimizeTwoEquals &&
-                andOrType == AND) {
-            // try to add conditions (A=B AND B=1: add A=1)
-            if (left instanceof Comparison && right instanceof Comparison) {
+        if ((session.getDatabase().getSettings().optimizeTwoEquals &&
+                andOrType == AND) && (left instanceof Comparison && right instanceof Comparison)) {
                 Comparison compLeft = (Comparison) left;
                 Comparison compRight = (Comparison) right;
                 Expression added = compLeft.getAdditional(
@@ -155,7 +153,6 @@ public class ConditionAndOr extends Condition {
                     return a;
                 }
             }
-        }
         // TODO optimization: convert ((A=1 AND B=2) OR (A=1 AND B=3)) to
         // (A=1 AND (B=2 OR B=3))
         if (andOrType == OR &&

@@ -260,12 +260,10 @@ outerLoop:
             }
             ExpressionColumn exprCol = (ExpressionColumn) expr;
             for (int j = 0; j < indexColumns.length; ++j) {
-                if (tableFilter == exprCol.getTableFilter()) {
-                    if (indexColumns[j].equals(exprCol.getColumn())) {
+                if ((tableFilter == exprCol.getTableFilter()) && (indexColumns[j].equals(exprCol.getColumn()))) {
                         grouped[j] = true;
                         continue outerLoop;
                     }
-                }
             }
             // We didn't find a matching index column
             // for one group by expression
@@ -689,14 +687,12 @@ outerLoop:
             } else {
                 TableFilter filter = null;
                 for (TableFilter f : filters) {
-                    if (db.equalsIdentifiers(tableAlias, f.getTableAlias())) {
-                        if (schemaName == null ||
+                    if ((db.equalsIdentifiers(tableAlias, f.getTableAlias())) && (schemaName == null ||
                                 db.equalsIdentifiers(schemaName,
-                                f.getSchemaName())) {
+                                f.getSchemaName()))) {
                             filter = f;
                             break;
                         }
-                    }
                 }
                 if (filter == null) {
                     throw DbException.get(ErrorCode.TABLE_OR_VIEW_NOT_FOUND_1,
@@ -853,15 +849,13 @@ outerLoop:
                 }
             }
         }
-        if (isGroupQuery && groupIndex == null &&
-                havingIndex < 0 && filters.size() == 1) {
-            if (condition == null) {
+        if ((isGroupQuery && groupIndex == null &&
+                havingIndex < 0 && filters.size() == 1) && (condition == null)) {
                 Table t = filters.get(0).getTable();
                 ExpressionVisitor optimizable = ExpressionVisitor.
                         getOptimizableVisitor(t);
                 isQuickAggregateQuery = isEverything(optimizable);
             }
-        }
         cost = preparePlan(session.isParsingView());
         if (distinct && session.getDatabase().getSettings().optimizeDistinct &&
                 !isGroupQuery && filters.size() == 1 &&
@@ -1022,8 +1016,7 @@ outerLoop:
                 setEvaluatableRecursive(n);
             }
             Expression on = f.getJoinCondition();
-            if (on != null) {
-                if (!on.isEverything(ExpressionVisitor.EVALUATABLE_VISITOR)) {
+            if ((on != null) && (!on.isEverything(ExpressionVisitor.EVALUATABLE_VISITOR))) {
                     if (session.getDatabase().getSettings().nestedJoins) {
                         // need to check that all added are bound to a table
                         on = on.optimize(session);
@@ -1047,14 +1040,11 @@ outerLoop:
                         addCondition(on);
                     }
                 }
-            }
             on = f.getFilterCondition();
-            if (on != null) {
-                if (!on.isEverything(ExpressionVisitor.EVALUATABLE_VISITOR)) {
+            if ((on != null) && (!on.isEverything(ExpressionVisitor.EVALUATABLE_VISITOR))) {
                     f.removeFilterCondition();
                     addCondition(on);
                 }
-            }
             // this is only important for subqueries, so they know
             // the result columns are evaluatable
             for (Expression e : expressions) {
@@ -1184,11 +1174,9 @@ outerLoop:
         if (sortUsingIndex) {
             buff.append("\n/* index sorted */");
         }
-        if (isGroupQuery) {
-            if (isGroupSortedQuery) {
+        if ((isGroupQuery) && (isGroupSortedQuery)) {
                 buff.append("\n/* group sorted */");
             }
-        }
         // buff.append("\n/* cost: " + cost + " */");
         return buff.toString();
     }

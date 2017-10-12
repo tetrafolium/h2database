@@ -237,11 +237,9 @@ public class TraceSystem implements TraceWriter {
                 t.printStackTrace(sysOut);
             }
         }
-        if (fileName != null) {
-            if (level <= levelFile) {
+        if ((fileName != null) && (level <= levelFile)) {
                 writeFile(format(module, s), t);
             }
-        }
     }
 
     private synchronized void writeFile(String s, Throwable t) {

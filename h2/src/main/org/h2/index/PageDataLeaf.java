@@ -204,8 +204,7 @@ public class PageDataLeaf extends PageData {
         rows = insert(rows, entryCount, x, row);
         entryCount++;
         index.getPageStore().update(this);
-        if (optimizeUpdate) {
-            if (writtenData && offset >= start) {
+        if ((optimizeUpdate) && (writtenData && offset >= start)) {
                 byte[] d = data.getBytes();
                 int dataStart = offsets[entryCount - 1] + rowLength;
                 int dataEnd = offsets[x];
@@ -216,7 +215,6 @@ public class PageDataLeaf extends PageData {
                     data.writeValue(row.getValue(j));
                 }
             }
-        }
         if (offset < start) {
             writtenData = false;
             if (entryCount > 1) {
@@ -491,11 +489,9 @@ public class PageDataLeaf extends PageData {
         }
         data.writeByte((byte) type);
         data.writeShortInt(0);
-        if (SysProperties.CHECK2) {
-            if (data.length() != START_PARENT) {
+        if ((SysProperties.CHECK2) && (data.length() != START_PARENT)) {
                 DbException.throwInternalError();
             }
-        }
         data.writeInt(parentPageId);
         data.writeVarInt(index.getId());
         data.writeVarInt(columnCount);

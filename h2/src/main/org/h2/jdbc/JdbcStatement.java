@@ -1015,11 +1015,9 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
      */
     protected void closeOldResultSet() throws SQLException {
         try {
-            if (!closedByResultSet) {
-                if (resultSet != null) {
+            if ((!closedByResultSet) && (resultSet != null)) {
                     resultSet.closeInternal();
                 }
-            }
         } finally {
             cancelled = false;
             resultSet = null;

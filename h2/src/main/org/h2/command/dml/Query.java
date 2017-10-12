@@ -353,19 +353,15 @@ public abstract class Query extends Prepared {
         }
         Value[] params = getParameterValues();
         long now = session.getDatabase().getModificationDataId();
-        if (isEverything(ExpressionVisitor.DETERMINISTIC_VISITOR)) {
-            if (lastResult != null && !lastResult.isClosed() &&
-                    limit == lastLimit) {
-                if (sameResultAsLast(session, params, lastParameters,
-                        lastEvaluated)) {
+        if (((isEverything(ExpressionVisitor.DETERMINISTIC_VISITOR)) && (lastResult != null && !lastResult.isClosed() &&
+                    limit == lastLimit)) && (sameResultAsLast(session, params, lastParameters,
+                        lastEvaluated))) {
                     lastResult = lastResult.createShallowCopy(session);
                     if (lastResult != null) {
                         lastResult.reset();
                         return lastResult;
                     }
                 }
-            }
-        }
         lastParameters = params;
         closeLastResult();
         ResultInterface r = queryWithoutCacheLazyCheck(limit, target);

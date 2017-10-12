@@ -198,11 +198,9 @@ public class MVTable extends TableBase {
         boolean checkDeadlock = false;
         while (true) {
             // if I'm the next one in the queue
-            if (waitingSessions.getFirst() == session) {
-                if (doLock2(session, lockMode, exclusive)) {
+            if ((waitingSessions.getFirst() == session) && (doLock2(session, lockMode, exclusive))) {
                     return;
                 }
-            }
             if (checkDeadlock) {
                 ArrayList<Session> sessions = checkDeadlock(session, null, null);
                 if (sessions != null) {
@@ -276,9 +274,8 @@ public class MVTable extends TableBase {
             }
         } else {
             if (lockExclusiveSession == null) {
-                if (lockMode == Constants.LOCK_MODE_READ_COMMITTED) {
-                    if (!database.isMultiThreaded() &&
-                            !database.isMultiVersion()) {
+                if ((lockMode == Constants.LOCK_MODE_READ_COMMITTED) && (!database.isMultiThreaded() &&
+                            !database.isMultiVersion())) {
                         // READ_COMMITTED: a read lock is acquired,
                         // but released immediately after the operation
                         // is complete.
@@ -287,7 +284,6 @@ public class MVTable extends TableBase {
                         // Row level locks work like read committed.
                         return true;
                     }
-                }
                 if (!lockSharedSessions.containsKey(session)) {
                     traceLock(session, exclusive, "ok");
                     session.addLock(this);
@@ -411,20 +407,16 @@ public class MVTable extends TableBase {
             traceLock(s, lockExclusiveSession == s, "unlock");
             if (lockExclusiveSession == s) {
                 lockExclusiveSession = null;
-                if (SysProperties.THREAD_DEADLOCK_DETECTOR) {
-                    if (EXCLUSIVE_LOCKS.get() != null) {
+                if ((SysProperties.THREAD_DEADLOCK_DETECTOR) && (EXCLUSIVE_LOCKS.get() != null)) {
                         EXCLUSIVE_LOCKS.get().remove(getName());
                     }
-                }
             }
             synchronized (getLockSyncObject()) {
                 if (lockSharedSessions.size() > 0) {
                     lockSharedSessions.remove(s);
-                    if (SysProperties.THREAD_DEADLOCK_DETECTOR) {
-                        if (SHARED_LOCKS.get() != null) {
+                    if ((SysProperties.THREAD_DEADLOCK_DETECTOR) && (SHARED_LOCKS.get() != null)) {
                             SHARED_LOCKS.get().remove(getName());
                         }
-                    }
                 }
                 if (!waitingSessions.isEmpty()) {
                     getLockSyncObject().notifyAll();

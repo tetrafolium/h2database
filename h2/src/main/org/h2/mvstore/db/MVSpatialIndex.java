@@ -363,11 +363,9 @@ public class MVSpatialIndex extends BaseIndex implements SpatialIndex, MVIndex {
 
         @Override
         public SearchRow getSearchRow() {
-            if (searchRow == null) {
-                if (current != null) {
+            if ((searchRow == null) && (current != null)) {
                     searchRow = getRow(current);
                 }
-            }
             return searchRow;
         }
 

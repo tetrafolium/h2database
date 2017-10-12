@@ -67,11 +67,9 @@ public class RuleElement implements Rule {
                 }
                 sentence.setQuery(query);
                 return true;
-            } else if (q.length() == 0 || name.startsWith(up)) {
-                if (q.length() < name.length()) {
+            } else if ((q.length() == 0 || name.startsWith(up)) && (q.length() < name.length())) {
                     sentence.add(name, name.substring(q.length()), type);
                 }
-            }
             return false;
         }
         return link.autoComplete(sentence);

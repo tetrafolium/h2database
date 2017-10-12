@@ -217,21 +217,15 @@ public class TriggerObject extends SchemaObjectBase {
         Object[] oldList;
         Object[] newList;
         boolean fire = false;
-        if ((typeMask & Trigger.INSERT) != 0) {
-            if (oldRow == null && newRow != null) {
+        if (((typeMask & Trigger.INSERT) != 0) && (oldRow == null && newRow != null)) {
                 fire = true;
             }
-        }
-        if ((typeMask & Trigger.UPDATE) != 0) {
-            if (oldRow != null && newRow != null) {
+        if (((typeMask & Trigger.UPDATE) != 0) && (oldRow != null && newRow != null)) {
                 fire = true;
             }
-        }
-        if ((typeMask & Trigger.DELETE) != 0) {
-            if (oldRow != null && newRow == null) {
+        if (((typeMask & Trigger.DELETE) != 0) && (oldRow != null && newRow == null)) {
                 fire = true;
             }
-        }
         if (!fire) {
             return false;
         }

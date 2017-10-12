@@ -584,11 +584,9 @@ public class Session extends SessionWithState {
             subQueryIndexCache = null;
         }
         command.prepareJoinBatch();
-        if (queryCache != null) {
-            if (command.isCacheable()) {
+        if ((queryCache != null) && (command.isCacheable())) {
                 queryCache.put(sql, command);
             }
-        }
         return command;
     }
 
@@ -678,12 +676,10 @@ public class Session extends SessionWithState {
     }
 
     private void removeTemporaryLobs(boolean onTimeout) {
-        if (SysProperties.CHECK2) {
-            if (this == getDatabase().getLobSession()
-                    && !Thread.holdsLock(this) && !Thread.holdsLock(getDatabase())) {
+        if ((SysProperties.CHECK2) && (this == getDatabase().getLobSession()
+                    && !Thread.holdsLock(this) && !Thread.holdsLock(getDatabase()))) {
                 throw DbException.throwInternalError();
             }
-        }
         if (temporaryLobs != null) {
             for (Value v : temporaryLobs) {
                 if (!v.isLinkedToTable()) {
@@ -865,11 +861,9 @@ public class Session extends SessionWithState {
      * @param table the table that is locked
      */
     public void addLock(Table table) {
-        if (SysProperties.CHECK) {
-            if (locks.contains(table)) {
+        if ((SysProperties.CHECK) && (locks.contains(table))) {
                 DbException.throwInternalError(table.toString());
             }
-        }
         locks.add(table);
     }
 
@@ -946,11 +940,9 @@ public class Session extends SessionWithState {
     }
 
     private void unlockAll() {
-        if (SysProperties.CHECK) {
-            if (undoLog.size() > 0) {
+        if ((SysProperties.CHECK) && (undoLog.size() > 0)) {
                 DbException.throwInternalError();
             }
-        }
         if (locks.size() > 0) {
             // don't use the enhanced for loop to save memory
             for (int i = 0, size = locks.size(); i < size; i++) {

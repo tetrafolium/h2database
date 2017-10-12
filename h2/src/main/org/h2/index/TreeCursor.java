@@ -48,11 +48,9 @@ public class TreeCursor implements Cursor {
         } else {
             node = next(node);
         }
-        if (node != null && last != null) {
-            if (tree.compareRows(node.row, last) > 0) {
+        if ((node != null && last != null) && (tree.compareRows(node.row, last) > 0)) {
                 node = null;
             }
-        }
         return node != null;
     }
 

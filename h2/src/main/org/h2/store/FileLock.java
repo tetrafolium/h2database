@@ -163,11 +163,9 @@ public class FileLock implements Runnable {
             trace.debug(e, "unlock");
         }
         try {
-            if (fileName != null) {
-                if (load().equals(properties)) {
+            if ((fileName != null) && (load().equals(properties))) {
                     FileUtils.delete(fileName);
                 }
-            }
             if (serverSocket != null) {
                 serverSocket.close();
             }

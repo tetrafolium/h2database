@@ -400,11 +400,9 @@ public class PageLog {
                     int count = in.readVarInt();
                     for (int i = 0; i < count; i++) {
                         int pageId = in.readVarInt();
-                        if (stage == RECOVERY_STAGE_REDO) {
-                            if (!usedLogPages.get(pageId)) {
+                        if ((stage == RECOVERY_STAGE_REDO) && (!usedLogPages.get(pageId))) {
                                 store.free(pageId, false);
                             }
-                        }
                     }
                 } else {
                     if (trace.isDebugEnabled()) {
@@ -497,11 +495,9 @@ public class PageLog {
         if (trace.isDebugEnabled()) {
             trace.debug("log undo " + pageId);
         }
-        if (SysProperties.CHECK) {
-            if (page == null) {
+        if ((SysProperties.CHECK) && (page == null)) {
                 DbException.throwInternalError("Undo entry not written");
             }
-        }
         undo.set(pageId);
         undoAll.set(pageId);
         Data buffer = getBuffer();

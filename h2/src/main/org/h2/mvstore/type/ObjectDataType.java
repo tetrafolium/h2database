@@ -1502,16 +1502,12 @@ public class ObjectDataType implements DataType {
             }
             // TODO ensure comparable type (both may be comparable but not
             // with each other)
-            if (aObj instanceof Comparable) {
-                if (aObj.getClass().isAssignableFrom(bObj.getClass())) {
+            if ((aObj instanceof Comparable) && (aObj.getClass().isAssignableFrom(bObj.getClass()))) {
                     return ((Comparable<Object>)aObj).compareTo(bObj);
                 }
-            }
-            if (bObj instanceof Comparable) {
-                if (bObj.getClass().isAssignableFrom(aObj.getClass())) {
+            if ((bObj instanceof Comparable) && (bObj.getClass().isAssignableFrom(aObj.getClass()))) {
                     return -((Comparable<Object>)bObj).compareTo(aObj);
                 }
-            }
             byte[] a = serialize(aObj);
             byte[] b = serialize(bObj);
             return compareNotNull(a, b);

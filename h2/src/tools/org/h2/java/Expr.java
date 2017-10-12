@@ -292,8 +292,7 @@ class OpExpr extends ExprBase {
         if (op.equals(">>>")) {
             // ujint / ujlong
             return "(((u" + left.getType() + ") " + left + ") >> " + right + ")";
-        } else if (op.equals("+")) {
-            if (left.getType().isObject() || right.getType().isObject()) {
+        } else if ((op.equals("+")) && (left.getType().isObject() || right.getType().isObject())) {
                 // TODO convert primitive to to String, call toString
                 StringBuilder buff = new StringBuilder();
                 if (type.refCount) {
@@ -307,7 +306,6 @@ class OpExpr extends ExprBase {
                 buff.append(")->toString()");
                 return buff.toString();
             }
-        }
         return "(" + left.asString() + " " + op + " " + right.asString() + ")";
     }
 
@@ -343,13 +341,11 @@ class OpExpr extends ExprBase {
             t.classObj = JavaParser.getBuiltInClass("boolean");
             return t;
         }
-        if (op.equals("+")) {
-            if (left.getType().isObject() || right.getType().isObject()) {
+        if ((op.equals("+")) && (left.getType().isObject() || right.getType().isObject())) {
                 Type t = new Type();
                 t.classObj = context.getClassObj("java.lang.String");
                 return t;
             }
-        }
         Type lt = left.getType();
         Type rt = right.getType();
         if (lt.classObj.primitiveType < rt.classObj.primitiveType) {

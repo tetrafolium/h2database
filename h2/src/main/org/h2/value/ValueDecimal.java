@@ -98,11 +98,9 @@ public class ValueDecimal extends Value {
                 BigDecimal.ROUND_HALF_DOWN);
         if (bd.signum() == 0) {
             bd = BigDecimal.ZERO;
-        } else if (bd.scale() > 0) {
-            if (!bd.unscaledValue().testBit(0)) {
+        } else if ((bd.scale() > 0) && (!bd.unscaledValue().testBit(0))) {
                 bd = bd.stripTrailingZeros();
             }
-        }
         return ValueDecimal.get(bd);
     }
 
@@ -197,11 +195,9 @@ public class ValueDecimal extends Value {
         if (value.scale() == targetScale) {
             return this;
         }
-        if (onlyToSmallerScale || targetScale >= DEFAULT_SCALE) {
-            if (value.scale() < targetScale) {
+        if ((onlyToSmallerScale || targetScale >= DEFAULT_SCALE) && (value.scale() < targetScale)) {
                 return this;
             }
-        }
         BigDecimal bd = ValueDecimal.setScale(value, targetScale);
         return ValueDecimal.get(bd);
     }

@@ -99,13 +99,9 @@ public class FilePathZip extends FilePath {
                     String n = entry.getName();
                     if (n.equals(entryName)) {
                         return entry.isDirectory();
-                    } else if (n.startsWith(entryName)) {
-                        if (n.length() == entryName.length() + 1) {
-                            if (n.equals(entryName + "/")) {
+                    } else if (((n.startsWith(entryName)) && (n.length() == entryName.length() + 1)) && (n.equals(entryName + "/"))) {
                                 return true;
                             }
-                        }
-                    }
                 }
             }
             return false;

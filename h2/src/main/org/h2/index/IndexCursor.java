@@ -91,20 +91,16 @@ public class IndexCursor implements Cursor {
             }
             Column column = condition.getColumn();
             if (condition.getCompareType() == Comparison.IN_LIST) {
-                if (start == null && end == null) {
-                    if (canUseIndexForIn(column)) {
+                if ((start == null && end == null) && (canUseIndexForIn(column))) {
                         this.inColumn = column;
                         inList = condition.getCurrentValueList(s);
                         inListIndex = 0;
                     }
-                }
             } else if (condition.getCompareType() == Comparison.IN_QUERY) {
-                if (start == null && end == null) {
-                    if (canUseIndexForIn(column)) {
+                if ((start == null && end == null) && (canUseIndexForIn(column))) {
                         this.inColumn = column;
                         inResult = condition.getCurrentResult();
                     }
-                }
             } else {
                 Value v = condition.getCurrentValue(s);
                 boolean isStart = condition.isStart();
@@ -138,14 +134,10 @@ public class IndexCursor implements Cursor {
                     inList = null;
                     inResult = null;
                 }
-                if (!session.getDatabase().getSettings().optimizeIsNull) {
-                    if (isStart && isEnd) {
-                        if (v == ValueNull.INSTANCE) {
+                if (((!session.getDatabase().getSettings().optimizeIsNull) && (isStart && isEnd)) && (v == ValueNull.INSTANCE)) {
                             // join on a column=NULL is always false
                             alwaysFalse = true;
                         }
-                    }
-                }
             }
         }
     }
@@ -241,12 +233,10 @@ public class IndexCursor implements Cursor {
         if (comp == 0) {
             return a;
         }
-        if (a == ValueNull.INSTANCE || b == ValueNull.INSTANCE) {
-            if (session.getDatabase().getSettings().optimizeIsNull) {
+        if ((a == ValueNull.INSTANCE || b == ValueNull.INSTANCE) && (session.getDatabase().getSettings().optimizeIsNull)) {
                 // column IS NULL AND column <op> <not null> is always false
                 return null;
             }
-        }
         if (!bigger) {
             comp = -comp;
         }

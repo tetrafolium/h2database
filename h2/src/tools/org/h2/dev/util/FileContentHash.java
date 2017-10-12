@@ -104,11 +104,9 @@ public class FileContentHash {
             }
             String oldFile = propOld.toString();
             String newFile = propNew.toString();
-            if (!oldFile.equals(newFile)) {
-                if (WRITE_HASH_INDEX) {
+            if ((!oldFile.equals(newFile)) && (WRITE_HASH_INDEX)) {
                     propNew.store(path + "/" + HASH_INDEX);
                 }
-            }
             Info info = new Info();
             info.hash = mdDir.digest();
             info.size = totalSize;

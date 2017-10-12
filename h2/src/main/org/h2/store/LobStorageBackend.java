@@ -248,11 +248,9 @@ public class LobStorageBackend implements LobStorageInterface {
      * @return the prepared statement
      */
     PreparedStatement prepare(String sql) throws SQLException {
-        if (SysProperties.CHECK2) {
-            if (!Thread.holdsLock(database)) {
+        if ((SysProperties.CHECK2) && (!Thread.holdsLock(database))) {
                 throw DbException.throwInternalError();
             }
-        }
         PreparedStatement prep = prepared.remove(sql);
         if (prep == null) {
             prep = conn.prepareStatement(sql);
@@ -267,11 +265,9 @@ public class LobStorageBackend implements LobStorageInterface {
      * @param prep the prepared statement
      */
     void reuse(String sql, PreparedStatement prep) {
-        if (SysProperties.CHECK2) {
-            if (!Thread.holdsLock(database)) {
+        if ((SysProperties.CHECK2) && (!Thread.holdsLock(database))) {
                 throw DbException.throwInternalError();
             }
-        }
         prepared.put(sql, prep);
     }
 

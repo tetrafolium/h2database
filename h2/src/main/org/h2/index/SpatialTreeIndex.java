@@ -84,13 +84,11 @@ public class SpatialTreeIndex extends BaseIndex implements SpatialIndex {
         initBaseIndex(table, id, indexName, columns, indexType);
         this.needRebuild = create;
         this.table = table;
-        if (!database.isStarting()) {
-            if (columns[0].column.getType() != Value.GEOMETRY) {
+        if ((!database.isStarting()) && (columns[0].column.getType() != Value.GEOMETRY)) {
                 throw DbException.getUnsupportedException(
                           "spatial index on non-geometry column, " +
                           columns[0].column.getCreateSQL());
             }
-        }
         if (!persistent) {
             // Index in memory
             store = MVStore.open(null);

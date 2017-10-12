@@ -455,12 +455,10 @@ class TableDefinition<T> {
             // default values
             if (!field.isAutoIncrement && !field.isPrimaryKey) {
                 String dv = field.defaultValue;
-                if (!StringUtils.isNullOrEmpty(dv)) {
-                    if (ModelUtils.isProperlyFormattedDefaultValue(dv)
-                            && ModelUtils.isValidDefaultValue(field.field.getType(), dv)) {
+                if ((!StringUtils.isNullOrEmpty(dv)) && (ModelUtils.isProperlyFormattedDefaultValue(dv)
+                            && ModelUtils.isValidDefaultValue(field.field.getType(), dv))) {
                         buff.append(" DEFAULT " + dv);
                     }
-                }
             }
         }
 

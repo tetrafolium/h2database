@@ -85,12 +85,10 @@ public class UndoLogRecord {
             if (state == IN_MEMORY_INVALID) {
                 state = IN_MEMORY;
             }
-            if (db.getLockMode() == Constants.LOCK_MODE_OFF) {
-                if (row.isDeleted()) {
+            if ((db.getLockMode() == Constants.LOCK_MODE_OFF) && (row.isDeleted())) {
                     // it might have been deleted by another thread
                     return;
                 }
-            }
             try {
                 row.setDeleted(false);
                 table.removeRow(session, row);
@@ -203,11 +201,9 @@ public class UndoLogRecord {
         }
         int oldOp = operation;
         load(buff, log);
-        if (SysProperties.CHECK) {
-            if (operation != oldOp) {
+        if ((SysProperties.CHECK) && (operation != oldOp)) {
                 DbException.throwInternalError("operation=" + operation + " op=" + oldOp);
             }
-        }
     }
 
     private void load(Data buff, UndoLog log) {

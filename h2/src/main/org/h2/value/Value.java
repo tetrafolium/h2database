@@ -391,12 +391,10 @@ public abstract class Value {
             }
             int index = hash & (SysProperties.OBJECT_CACHE_SIZE - 1);
             Value cached = cache[index];
-            if (cached != null) {
-                if (cached.getType() == v.getType() && v.equals(cached)) {
+            if ((cached != null) && (cached.getType() == v.getType() && v.equals(cached))) {
                     // cacheHit++;
                     return cached;
                 }
-            }
             // cacheMiss++;
             // cache[cacheCleaner] = null;
             // cacheCleaner = (cacheCleaner + 1) &

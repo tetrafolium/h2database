@@ -129,12 +129,10 @@ public class Plan {
             cost += cost * item.cost;
             setEvaluatable(tableFilter, true);
             Expression on = tableFilter.getJoinCondition();
-            if (on != null) {
-                if (!on.isEverything(ExpressionVisitor.EVALUATABLE_VISITOR)) {
+            if ((on != null) && (!on.isEverything(ExpressionVisitor.EVALUATABLE_VISITOR))) {
                     invalidPlan = true;
                     break;
                 }
-            }
         }
         if (invalidPlan) {
             cost = Double.POSITIVE_INFINITY;

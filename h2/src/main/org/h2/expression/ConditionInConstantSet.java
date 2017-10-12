@@ -157,13 +157,11 @@ public class ConditionInConstantSet extends Condition {
      */
     Expression getAdditional(Session session, Comparison other) {
         Expression add = other.getIfEquals(left);
-        if (add != null) {
-            if (add.isConstant()) {
+        if ((add != null) && (add.isConstant())) {
                 valueList.add(add);
                 valueSet.add(add.getValue(session).convertTo(left.getType()));
                 return this;
             }
-        }
         return null;
     }
 }

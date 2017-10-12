@@ -134,11 +134,9 @@ public class SessionRemote extends SessionWithState implements DataHandler {
             done(trans);
             clientVersion = trans.readInt();
             trans.setVersion(clientVersion);
-            if (clientVersion >= Constants.TCP_PROTOCOL_VERSION_14) {
-                if (ci.getFileEncryptionKey() != null) {
+            if ((clientVersion >= Constants.TCP_PROTOCOL_VERSION_14) && (ci.getFileEncryptionKey() != null)) {
                     trans.writeBytes(ci.getFileEncryptionKey());
                 }
-            }
             trans.writeInt(SessionRemote.SESSION_SET_ID);
             trans.writeString(sessionId);
             done(trans);
@@ -354,8 +352,7 @@ public class SessionRemote extends SessionWithState implements DataHandler {
             return sessionFactory.createSession(ci);
         } catch (Exception re) {
             DbException e = DbException.convert(re);
-            if (e.getErrorCode() == ErrorCode.DATABASE_ALREADY_OPEN_1) {
-                if (autoServerMode) {
+            if ((e.getErrorCode() == ErrorCode.DATABASE_ALREADY_OPEN_1) && (autoServerMode)) {
                     String serverKey = ((JdbcSQLException) e.getSQLException()).
                             getSQL();
                     if (serverKey != null) {
@@ -368,7 +365,6 @@ public class SessionRemote extends SessionWithState implements DataHandler {
                         return this;
                     }
                 }
-            }
             throw e;
         }
     }

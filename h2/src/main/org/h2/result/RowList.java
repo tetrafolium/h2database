@@ -63,10 +63,7 @@ public class RowList {
                 buff.writeByte((byte) 0);
             } else {
                 buff.writeByte((byte) 1);
-                if (v.getType() == Value.CLOB || v.getType() == Value.BLOB) {
-                    // need to keep a reference to temporary lobs,
-                    // otherwise the temp file is deleted
-                    if (v.getSmall() == null && v.getTableId() == 0) {
+                if ((v.getType() == Value.CLOB || v.getType() == Value.BLOB) && (v.getSmall() == null && v.getTableId() == 0)) {
                         if (lobs == null) {
                             lobs = New.arrayList();
                         }
@@ -76,7 +73,6 @@ public class RowList {
                         v = v.copyToTemp();
                         lobs.add(v);
                     }
-                }
                 buff.checkCapacity(buff.getValueLen(v));
                 buff.writeValue(v);
             }
@@ -181,13 +177,9 @@ public class RowList {
                 v = null;
             } else {
                 v = buff.readValue();
-                if (v.isLinkedToTable()) {
-                    // the table id is 0 if it was linked when writing
-                    // a temporary entry
-                    if (v.getTableId() == 0) {
+                if ((v.isLinkedToTable()) && (v.getTableId() == 0)) {
                         session.removeAtCommit(v);
                     }
-                }
             }
             values[i] = v;
         }

@@ -418,8 +418,7 @@ public class Transfer {
             writeString(v.getString());
             break;
         case Value.BLOB: {
-            if (version >= Constants.TCP_PROTOCOL_VERSION_11) {
-                if (v instanceof ValueLobDb) {
+            if ((version >= Constants.TCP_PROTOCOL_VERSION_11) && (v instanceof ValueLobDb)) {
                     ValueLobDb lob = (ValueLobDb) v;
                     if (lob.isStored()) {
                         writeLong(-1);
@@ -432,7 +431,6 @@ public class Transfer {
                         break;
                     }
                 }
-            }
             long length = v.getPrecision();
             if (length < 0) {
                 throw DbException.get(
@@ -448,8 +446,7 @@ public class Transfer {
             break;
         }
         case Value.CLOB: {
-            if (version >= Constants.TCP_PROTOCOL_VERSION_11) {
-                if (v instanceof ValueLobDb) {
+            if ((version >= Constants.TCP_PROTOCOL_VERSION_11) && (v instanceof ValueLobDb)) {
                     ValueLobDb lob = (ValueLobDb) v;
                     if (lob.isStored()) {
                         writeLong(-1);
@@ -462,7 +459,6 @@ public class Transfer {
                         break;
                     }
                 }
-            }
             long length = v.getPrecision();
             if (length < 0) {
                 throw DbException.get(
@@ -618,8 +614,7 @@ public class Transfer {
             return ValueStringFixed.get(readString(), ValueStringFixed.PRECISION_DO_NOT_TRIM, null);
         case Value.BLOB: {
             long length = readLong();
-            if (version >= Constants.TCP_PROTOCOL_VERSION_11) {
-                if (length == -1) {
+            if ((version >= Constants.TCP_PROTOCOL_VERSION_11) && (length == -1)) {
                     int tableId = readInt();
                     long id = readLong();
                     byte[] hmac;
@@ -632,7 +627,6 @@ public class Transfer {
                     return ValueLobDb.create(
                         Value.BLOB, session.getDataHandler(), tableId, id, hmac, precision);
                 }
-            }
             Value v = session.getDataHandler().getLobStorage().createBlob(in, length);
             int magic = readInt();
             if (magic != LOB_MAGIC) {

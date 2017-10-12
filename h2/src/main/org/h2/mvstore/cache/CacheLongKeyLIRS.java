@@ -722,12 +722,10 @@ public class CacheLongKeyLIRS<V> {
                 return null;
             }
             if (e.isHot()) {
-                if (e != stack.stackNext) {
-                    if (stackMoveDistance == 0 ||
-                            stackMoveCounter - e.topMove > stackMoveDistance) {
+                if ((e != stack.stackNext) && (stackMoveDistance == 0 ||
+                            stackMoveCounter - e.topMove > stackMoveDistance)) {
                         access(key, hash);
                     }
-                }
             } else {
                 access(key, hash);
             }
@@ -747,9 +745,8 @@ public class CacheLongKeyLIRS<V> {
                 return;
             }
             if (e.isHot()) {
-                if (e != stack.stackNext) {
-                    if (stackMoveDistance == 0 ||
-                            stackMoveCounter - e.topMove > stackMoveDistance) {
+                if ((e != stack.stackNext) && (stackMoveDistance == 0 ||
+                            stackMoveCounter - e.topMove > stackMoveDistance)) {
                         // move a hot entry to the top of the stack
                         // unless it is already there
                         boolean wasEnd = e == stack.stackPrev;
@@ -761,7 +758,6 @@ public class CacheLongKeyLIRS<V> {
                         }
                         addToStack(e);
                     }
-                }
             } else {
                 removeFromQueue(e);
                 if (e.stackNext != null) {

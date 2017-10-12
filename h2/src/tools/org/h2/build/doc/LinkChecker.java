@@ -116,12 +116,10 @@ public class LinkChecker {
     private void listBadLinks() throws Exception {
         ArrayList<String> errors = new ArrayList<>();
         for (String link : links.keySet()) {
-            if (!link.startsWith("http") && !link.endsWith("h2.pdf")
-                        && link.indexOf("_ja.") < 0) {
-                if (targets.get(link) == null) {
+            if ((!link.startsWith("http") && !link.endsWith("h2.pdf")
+                        && link.indexOf("_ja.") < 0) && (targets.get(link) == null)) {
                     errors.add(links.get(link) + ": Link missing " + link);
                 }
-            }
         }
         for (String link : links.keySet()) {
             if (!link.startsWith("http")) {

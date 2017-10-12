@@ -179,22 +179,18 @@ public class Comparison extends Condition {
         left = left.optimize(session);
         if (right != null) {
             right = right.optimize(session);
-            if (right instanceof ExpressionColumn) {
-                if (left.isConstant() || left instanceof Parameter) {
+            if ((right instanceof ExpressionColumn) && (left.isConstant() || left instanceof Parameter)) {
                     Expression temp = left;
                     left = right;
                     right = temp;
                     compareType = getReversedCompareType(compareType);
                 }
-            }
             if (left instanceof ExpressionColumn) {
                 if (right.isConstant()) {
                     Value r = right.getValue(session);
-                    if (r == ValueNull.INSTANCE) {
-                        if ((compareType & NULL_SAFE) == 0) {
+                    if ((r == ValueNull.INSTANCE) && ((compareType & NULL_SAFE) == 0)) {
                             return ValueExpression.getNull();
                         }
-                    }
                     int colType = left.getType();
                     int constType = r.getType();
                     int resType = Value.getHigherOrder(colType, constType);
@@ -220,14 +216,10 @@ public class Comparison extends Condition {
             if (SysProperties.CHECK && (left == null || right == null)) {
                 DbException.throwInternalError(left + " " + right);
             }
-            if (left == ValueExpression.getNull() ||
-                    right == ValueExpression.getNull()) {
-                // TODO NULL handling: maybe issue a warning when comparing with
-                // a NULL constants
-                if ((compareType & NULL_SAFE) == 0) {
+            if ((left == ValueExpression.getNull() ||
+                    right == ValueExpression.getNull()) && ((compareType & NULL_SAFE) == 0)) {
                     return ValueExpression.getNull();
                 }
-            }
             if (left.isConstant() && right.isConstant()) {
                 return ValueExpression.get(getValue(session));
             }
@@ -252,17 +244,13 @@ public class Comparison extends Condition {
             }
             return ValueBoolean.get(result);
         }
-        if (l == ValueNull.INSTANCE) {
-            if ((compareType & NULL_SAFE) == 0) {
+        if ((l == ValueNull.INSTANCE) && ((compareType & NULL_SAFE) == 0)) {
                 return ValueNull.INSTANCE;
             }
-        }
         Value r = right.getValue(session);
-        if (r == ValueNull.INSTANCE) {
-            if ((compareType & NULL_SAFE) == 0) {
+        if ((r == ValueNull.INSTANCE) && ((compareType & NULL_SAFE) == 0)) {
                 return ValueNull.INSTANCE;
             }
-        }
         int dataType = Value.getHigherOrder(left.getType(), right.getType());
         l = l.convertTo(dataType);
         r = r.convertTo(dataType);

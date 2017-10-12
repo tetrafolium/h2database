@@ -729,11 +729,9 @@ public class Parser {
                               tableAlias);
             }
         }
-        if (database.getSettings().rowId) {
-            if (Column.ROWID.equals(columnName)) {
+        if ((database.getSettings().rowId) && (Column.ROWID.equals(columnName))) {
                 return filter.getRowIdColumn();
             }
-        }
         return filter.getTable().getColumn(columnName);
     }
 
@@ -802,12 +800,10 @@ public class Parser {
         String alias = null;
         if (readIf("AS")) {
             alias = readAliasIdentifier();
-        } else if (currentTokenType == IDENTIFIER) {
-            if (!equalsToken("SET", currentToken)) {
+        } else if ((currentTokenType == IDENTIFIER) && (!equalsToken("SET", currentToken))) {
                 // SET is not a keyword (PostgreSQL supports it as a table name)
                 alias = readAliasIdentifier();
             }
-        }
         return new TableFilter(session, table, alias, rightsChecked,
                        currentSelect, orderInFrom, null);
     }
@@ -1127,8 +1123,7 @@ public class Parser {
         } else {
             command.setQuery(parseSelect());
         }
-        if (database.getMode().onDuplicateKeyUpdate) {
-            if (readIf("ON")) {
+        if ((database.getMode().onDuplicateKeyUpdate) && (readIf("ON"))) {
                 read("DUPLICATE");
                 read("KEY");
                 read("UPDATE");
@@ -1144,7 +1139,6 @@ public class Parser {
                     command.addAssignmentForDuplicate(column, expression);
                 } while (readIf(","));
             }
-        }
         if (database.getMode().isolationLevelInSelectOrInsertStatement) {
             parseIsolationClause();
         }
@@ -1284,13 +1278,10 @@ public class Parser {
             }
         } else {
             alias = readFromAlias(alias);
-            if (alias != null) {
-                // if alias present, a second chance to parse index hints
-                if (readIf("USE")) {
+            if ((alias != null) && (readIf("USE"))) {
                     read("INDEX");
                     indexHints = parseIndexHints(table);
                 }
-            }
         }
         // inherit alias for temporary views (usually CTE's) from table name
         if(table.isView() && table.isTemporary() && alias==null) {
@@ -1320,13 +1311,9 @@ public class Parser {
     private String readFromAlias(String alias) {
         if (readIf("AS")) {
             alias = readAliasIdentifier();
-        } else if (currentTokenType == IDENTIFIER) {
-            // left and right are not keywords (because they are functions as
-            // well)
-            if (!isToken("LEFT") && !isToken("RIGHT") && !isToken("FULL")) {
+        } else if ((currentTokenType == IDENTIFIER) && (!isToken("LEFT") && !isToken("RIGHT") && !isToken("FULL"))) {
                 alias = readAliasIdentifier();
             }
-        }
         return alias;
     }
 
@@ -2680,12 +2667,10 @@ public class Parser {
                     space = readExpression();
                     read("FROM");
                 }
-            } else if (readIf("BOTH")) {
-                if (!readIf("FROM")) {
+            } else if ((readIf("BOTH")) && (!readIf("FROM"))) {
                     space = readExpression();
                     read("FROM");
                 }
-            }
             Expression p0 = readExpression();
             if (readIf(",")) {
                 space = readExpression();
@@ -3257,8 +3242,7 @@ public class Parser {
             s = currentToken;
             read();
         }
-        if (equalsToken(".", currentToken)) {
-            if (equalsToken(schemaName, database.getShortName())) {
+        if ((equalsToken(".", currentToken)) && (equalsToken(schemaName, database.getShortName()))) {
                 read(".");
                 schemaName = s;
                 if (currentTokenType != IDENTIFIER) {
@@ -3268,7 +3252,6 @@ public class Parser {
                 s = currentToken;
                 read();
             }
-        }
         return s;
     }
 
@@ -4529,8 +4512,7 @@ public class Parser {
                       .get(ErrorCode.ROLES_AND_RIGHT_CANNOT_BE_MIXED);
             }
         }
-        if (tableClauseExpected) {
-            if (readIf("ON")) {
+        if ((tableClauseExpected) && (readIf("ON"))) {
                 if (readIf("SCHEMA")) {
                     Schema schema = database.getSchema(readAliasIdentifier());
                     command.setSchema(schema);
@@ -4541,7 +4523,6 @@ public class Parser {
                     } while (readIf(","));
                 }
             }
-        }
         if (operationType == CommandInterface.GRANT) {
             read("TO");
         } else {
@@ -5847,7 +5828,7 @@ public class Parser {
             String columnName = readColumnIdentifier();
             String newColumnName = readColumnIdentifier();
             Column column = columnIfTableExists(schema, tableName, columnName, ifTableExists);
-            boolean nullable = column == null ? true : column.isNullable();
+            boolean nullable = column == null || column.isNullable();
             // new column type ignored. RENAME and MODIFY are
             // a single command in MySQL but two different commands in H2.
             parseColumnForTable(newColumnName, nullable);
@@ -5999,7 +5980,7 @@ public class Parser {
             String tableName, String columnName, boolean ifTableExists) {
         Column oldColumn = columnIfTableExists(schema, tableName, columnName, ifTableExists);
         Column newColumn = parseColumnForTable(columnName,
-                oldColumn == null ? true : oldColumn.isNullable());
+                oldColumn == null || oldColumn.isNullable());
         AlterTableAlterColumn command = new AlterTableAlterColumn(session,
                 schema);
         command.setTableName(tableName);
@@ -6279,8 +6260,7 @@ public class Parser {
         command.setIfNotExists(ifNotExists);
         command.setTableName(tableName);
         command.setComment(readCommentIf());
-        if (readIf("(")) {
-            if (!readIf(")")) {
+        if ((readIf("(")) && (!readIf(")"))) {
                 do {
                     DefineCommand c = parseAlterTableAddConstraintIf(tableName,
                             schema, false);
@@ -6369,14 +6349,11 @@ public class Parser {
                     }
                 } while (readIfMore());
             }
-        }
         // Allows "COMMENT='comment'" in DDL statements (MySQL syntax)
-        if (readIf("COMMENT")) {
-            if (readIf("=")) {
+        if ((readIf("COMMENT")) && (readIf("="))) {
                 // read the complete string comment, but nothing with it for now
                 readString();
             }
-        }
         if (readIf("ENGINE")) {
             if (readIf("=")) {
                 // map MySQL engine types onto H2 behavior
@@ -6443,11 +6420,9 @@ public class Parser {
             command.setQuery(parseSelect());
         }
         // for MySQL compatibility
-        if (readIf("ROW_FORMAT")) {
-            if (readIf("=")) {
+        if ((readIf("ROW_FORMAT")) && (readIf("="))) {
                 readColumnIdentifier();
             }
-        }
         return command;
     }
 
