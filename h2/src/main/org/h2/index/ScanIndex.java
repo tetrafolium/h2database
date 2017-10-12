@@ -41,7 +41,7 @@ public class ScanIndex extends BaseIndex {
     private long rowCount;
 
     public ScanIndex(RegularTable table, int id, IndexColumn[] columns,
-                     IndexType indexType) {
+            IndexType indexType) {
         initBaseIndex(table, id, table.getName() + "_DATA", columns, indexType);
         if (database.isMultiVersion()) {
             sessionRowCount = New.hashMap();
@@ -121,7 +121,7 @@ public class ScanIndex extends BaseIndex {
                 delta.remove(row);
             }
             incrementRowCount(row.getSessionId(),
-                              operation == UndoLogRecord.DELETE ? 1 : -1);
+                    operation == UndoLogRecord.DELETE ? 1 : -1);
         }
     }
 
@@ -147,7 +147,7 @@ public class ScanIndex extends BaseIndex {
             long key = row.getKey();
             if (rows.size() <= key) {
                 throw DbException.get(ErrorCode.ROW_NOT_FOUND_WHEN_DELETING_1,
-                                      rows.size() + ": " + key);
+                              rows.size() + ": " + key);
             }
             rows.set((int) key, free);
             firstFree = key;
@@ -174,8 +174,8 @@ public class ScanIndex extends BaseIndex {
 
     @Override
     public double getCost(Session session, int[] masks,
-                          TableFilter[] filters, int filter, SortOrder sortOrder,
-                          HashSet<Column> allColumnsSet) {
+            TableFilter[] filters, int filter, SortOrder sortOrder,
+            HashSet<Column> allColumnsSet) {
         return tableData.getRowCountApproximation() + Constants.COST_ROW_OFFSET;
     }
 

@@ -127,7 +127,7 @@ public abstract class ImmutableArray3<K> implements Iterable<K> {
      */
     @SuppressWarnings("unchecked")
     public static <K> ImmutableArray3<K> empty() {
-        return (ImmutableArray3<K>) EMPTY;
+        return (ImmutableArray3<K>)EMPTY;
     }
 
     /**
@@ -139,23 +139,23 @@ public abstract class ImmutableArray3<K> implements Iterable<K> {
     public Iterator<K> iterator() {
         return new Iterator<K>() {
 
-            ImmutableArray3<K> a = ImmutableArray3.this;
-            int index;
+                   ImmutableArray3<K> a = ImmutableArray3.this;
+                   int index;
 
-            @Override
-            public boolean hasNext() {
-                return index < a.length();
-            }
+                   @Override
+                   public boolean hasNext() {
+                       return index < a.length();
+                   }
 
-            @Override
-            public K next() {
-                return a.get(index++);
-            }
+                   @Override
+                   public K next() {
+                       return a.get(index++);
+                   }
 
-            @Override
-            public void remove() {
-                throw DataUtils.newUnsupportedOperationException("remove");
-            }
+                   @Override
+                   public void remove() {
+                       throw DataUtils.newUnsupportedOperationException("remove");
+                   }
 
         };
     }

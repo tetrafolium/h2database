@@ -71,7 +71,7 @@ public class GenerateModels {
                     annotateSchema = Boolean.parseBoolean(args[++i]);
                 } catch (Throwable t) {
                     throw new SQLException(
-                            "Can not parse -annotateSchema value");
+                              "Can not parse -annotateSchema value");
                 }
             } else if (arg.equals("-trimStrings")) {
                 try {
@@ -105,8 +105,8 @@ public class GenerateModels {
      * @param trimStrings automatically trim strings that exceed maxLength
      */
     public static void execute(String url, String user, String password,
-                               String schema, String table, String packageName, String folder,
-                               boolean annotateSchema, boolean trimStrings) throws SQLException {
+            String schema, String table, String packageName, String folder,
+            boolean annotateSchema, boolean trimStrings) throws SQLException {
         Connection conn = null;
         try {
             org.h2.Driver.load();
@@ -114,7 +114,7 @@ public class GenerateModels {
             Db db = Db.open(url, user, password.toCharArray());
             DbInspector inspector = new DbInspector(db);
             List<String> models = inspector.generateModel(schema, table,
-                                  packageName, annotateSchema, trimStrings);
+                    packageName, annotateSchema, trimStrings);
             File parentFile;
             if (StringUtils.isNullOrEmpty(folder)) {
                 parentFile = new File(System.getProperty("user.dir"));
@@ -127,20 +127,20 @@ public class GenerateModels {
                 Matcher m = p.matcher(model);
                 if (m.find()) {
                     String className = m.group().substring("class".length())
-                                       .trim();
+                            .trim();
                     File classFile = new File(parentFile, className + ".java");
                     Writer o = new FileWriter(classFile, false);
                     PrintWriter writer = new PrintWriter(new BufferedWriter(o));
                     writer.write(model);
                     writer.close();
                     System.out.println("Generated "
-                                       + classFile.getAbsolutePath());
+                            + classFile.getAbsolutePath());
                 }
             }
         } catch (IOException io) {
             throw DbException
-            .convertIOException(io, "could not generate model")
-            .getSQLException();
+                  .convertIOException(io, "could not generate model")
+                  .getSQLException();
         } finally {
             JdbcUtils.closeSilently(conn);
         }

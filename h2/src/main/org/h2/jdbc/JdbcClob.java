@@ -186,7 +186,7 @@ public class JdbcClob extends TraceObject implements NClob {
                 throw DbException.getInvalidValueException("length", length);
             }
             StringWriter writer = new StringWriter(
-                    Math.min(Constants.IO_BUFFER_SIZE, length));
+                Math.min(Constants.IO_BUFFER_SIZE, length));
             try (Reader reader = value.getReader()) {
                 IOUtils.skipFully(reader, pos - 1);
                 IOUtils.copyAndCloseInput(reader, writer, length);
@@ -280,7 +280,7 @@ public class JdbcClob extends TraceObject implements NClob {
     @Override
     public String toString() {
         return getTraceObjectName() + ": " + (value == null ?
-                                              "null" : value.getTraceSQL());
+               "null" : value.getTraceSQL());
     }
 
 }

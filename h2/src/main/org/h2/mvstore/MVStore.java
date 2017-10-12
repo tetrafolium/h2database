@@ -30,93 +30,93 @@ import org.h2.util.Utils;
 
 /*
 
-TODO:
+   TODO:
 
-Documentation
-- rolling docs review: at "Metadata Map"
-- better document that writes are in background thread
-- better document how to do non-unique indexes
-- document pluggable store and OffHeapStore
+   Documentation
+   - rolling docs review: at "Metadata Map"
+   - better document that writes are in background thread
+   - better document how to do non-unique indexes
+   - document pluggable store and OffHeapStore
 
-TransactionStore:
-- ability to disable the transaction log,
+   TransactionStore:
+   - ability to disable the transaction log,
     if there is only one connection
 
-MVStore:
-- better and clearer memory usage accounting rules
+   MVStore:
+   - better and clearer memory usage accounting rules
     (heap memory versus disk memory), so that even there is
     never an out of memory
     even for a small heap, and so that chunks
     are still relatively big on average
-- make sure serialization / deserialization errors don't corrupt the file
-- test and possibly improve compact operation (for large dbs)
-- automated 'kill process' and 'power failure' test
-- defragment (re-creating maps, specially those with small pages)
-- store number of write operations per page (maybe defragment
+   - make sure serialization / deserialization errors don't corrupt the file
+   - test and possibly improve compact operation (for large dbs)
+   - automated 'kill process' and 'power failure' test
+   - defragment (re-creating maps, specially those with small pages)
+   - store number of write operations per page (maybe defragment
     if much different than count)
-- r-tree: nearest neighbor search
-- use a small object value cache (StringCache), test on Android
+   - r-tree: nearest neighbor search
+   - use a small object value cache (StringCache), test on Android
     for default serialization
-- MVStoreTool.dump should dump the data if possible;
+   - MVStoreTool.dump should dump the data if possible;
     possibly using a callback for serialization
-- implement a sharded map (in one store, multiple stores)
+   - implement a sharded map (in one store, multiple stores)
     to support concurrent updates and writes, and very large maps
-- to save space when persisting very small transactions,
+   - to save space when persisting very small transactions,
     use a transaction log where only the deltas are stored
-- serialization for lists, sets, sets, sorted sets, maps, sorted maps
-- maybe rename 'rollback' to 'revert' to distinguish from transactions
-- support other compression algorithms (deflate, LZ4,...)
-- remove features that are not really needed; simplify the code
+   - serialization for lists, sets, sets, sorted sets, maps, sorted maps
+   - maybe rename 'rollback' to 'revert' to distinguish from transactions
+   - support other compression algorithms (deflate, LZ4,...)
+   - remove features that are not really needed; simplify the code
     possibly using a separate layer or tools
     (retainVersion?)
-- optional pluggable checksum mechanism (per page), which
+   - optional pluggable checksum mechanism (per page), which
     requires that everything is a page (including headers)
-- rename "store" to "save", as "store" is used in "storeVersion"
-- rename setStoreVersion to setDataVersion, setSchemaVersion or similar
-- temporary file storage
-- simple rollback method (rollback to last committed version)
-- MVMap to implement SortedMap, then NavigableMap
-- storage that splits database into multiple files,
+   - rename "store" to "save", as "store" is used in "storeVersion"
+   - rename setStoreVersion to setDataVersion, setSchemaVersion or similar
+   - temporary file storage
+   - simple rollback method (rollback to last committed version)
+   - MVMap to implement SortedMap, then NavigableMap
+   - storage that splits database into multiple files,
     to speed up compact and allow using trim
     (by truncating / deleting empty files)
-- add new feature to the file system API to avoid copying data
+   - add new feature to the file system API to avoid copying data
     (reads that returns a ByteBuffer instead of writing into one)
     for memory mapped files and off-heap storage
-- support log structured merge style operations (blind writes)
+   - support log structured merge style operations (blind writes)
     using one map per level plus bloom filter
-- have a strict call order MVStore -> MVMap -> Page -> FileStore
-- autocommit commits, stores, and compacts from time to time;
+   - have a strict call order MVStore -> MVMap -> Page -> FileStore
+   - autocommit commits, stores, and compacts from time to time;
     the background thread should wait at least 90% of the
     configured write delay to store changes
-- compact* should also store uncommitted changes (if there are any)
-- write a LSM-tree (log structured merge tree) utility on top of the MVStore
+   - compact* should also store uncommitted changes (if there are any)
+   - write a LSM-tree (log structured merge tree) utility on top of the MVStore
     with blind writes and/or a bloom filter that
     internally uses regular maps and merge sort
-- chunk metadata: maybe split into static and variable,
+   - chunk metadata: maybe split into static and variable,
     or use a small page size for metadata
-- data type "string": maybe use prefix compression for keys
-- test chunk id rollover
-- feature to auto-compact from time to time and on close
-- compact very small chunks
-- Page: to save memory, combine keys & values into one array
+   - data type "string": maybe use prefix compression for keys
+   - test chunk id rollover
+   - feature to auto-compact from time to time and on close
+   - compact very small chunks
+   - Page: to save memory, combine keys & values into one array
     (also children & counts). Maybe remove some other
     fields (childrenCount for example)
-- Support SortedMap for MVMap
-- compact: copy whole pages (without having to open all maps)
-- maybe change the length code to have lower gaps
-- test with very low limits (such as: short chunks, small pages)
-- maybe allow to read beyond the retention time:
+   - Support SortedMap for MVMap
+   - compact: copy whole pages (without having to open all maps)
+   - maybe change the length code to have lower gaps
+   - test with very low limits (such as: short chunks, small pages)
+   - maybe allow to read beyond the retention time:
     when compacting, move live pages in old chunks
     to a map (possibly the metadata map) -
     this requires a change in the compaction code, plus
     a map lookup when reading old data; also, this
     old data map needs to be cleaned up somehow;
     maybe using an additional timeout
-- rollback of removeMap should restore the data -
+   - rollback of removeMap should restore the data -
     which has big consequences, as the metadata map
     would probably need references to the root nodes of all maps
 
-*/
+ */
 
 /**
  * A persistent storage for maps.
@@ -192,8 +192,8 @@ public final class MVStore {
      * we even sync on the ConcurrentHashMap<Integer, Chunk> object.
      */
     private final ConcurrentHashMap<Long,
-            ConcurrentHashMap<Integer, Chunk>> freedPageSpace =
-                    new ConcurrentHashMap<>();
+    ConcurrentHashMap<Integer, Chunk>> freedPageSpace =
+            new ConcurrentHashMap<>();
 
     /**
      * The metadata map. Write access to this map needs to be synchronized on
@@ -333,7 +333,7 @@ public final class MVStore {
         backgroundExceptionHandler =
                 (UncaughtExceptionHandler)config.get("backgroundExceptionHandler");
         meta = new MVMap<>(StringDataType.INSTANCE,
-                           StringDataType.INSTANCE);
+                StringDataType.INSTANCE);
         HashMap<String, Object> c = New.hashMap();
         c.put("id", 0);
         c.put("createVersion", currentVersion);
@@ -443,7 +443,7 @@ public final class MVStore {
      * @return the map
      */
     public synchronized <M extends MVMap<K, V>, K, V> M openMap(
-            String name, MVMap.MapBuilder<M, K, V> builder) {
+        String name, MVMap.MapBuilder<M, K, V> builder) {
         checkOpen();
         String x = meta.get("name." + name);
         int id;
@@ -490,7 +490,7 @@ public final class MVStore {
     public synchronized Set<String> getMapNames() {
         HashSet<String> set = New.hashSet();
         checkOpen();
-        for (Iterator<String> it = meta.keyIterator("name."); it.hasNext();) {
+        for (Iterator<String> it = meta.keyIterator("name."); it.hasNext(); ) {
             String x = it.next();
             if (!x.startsWith("name.")) {
                 break;
@@ -573,22 +573,22 @@ public final class MVStore {
             // the following can fail for various reasons
             try {
                 String s = new String(buff, 0, BLOCK_SIZE,
-                                      DataUtils.LATIN).trim();
+                        DataUtils.LATIN).trim();
                 HashMap<String, String> m = DataUtils.parseMap(s);
                 int blockSize = DataUtils.readHexInt(
-                                        m, "blockSize", BLOCK_SIZE);
+                    m, "blockSize", BLOCK_SIZE);
                 if (blockSize != BLOCK_SIZE) {
                     throw DataUtils.newIllegalStateException(
-                            DataUtils.ERROR_UNSUPPORTED_FORMAT,
-                            "Block size {0} is currently not supported",
-                            blockSize);
+                              DataUtils.ERROR_UNSUPPORTED_FORMAT,
+                              "Block size {0} is currently not supported",
+                              blockSize);
                 }
                 int check = DataUtils.readHexInt(m, "fletcher", 0);
                 m.remove("fletcher");
                 s = s.substring(0, s.lastIndexOf("fletcher") - 1);
                 byte[] bytes = s.getBytes(DataUtils.LATIN);
                 int checksum = DataUtils.getFletcher32(bytes,
-                                                       bytes.length);
+                        bytes.length);
                 if (check != checksum) {
                     continue;
                 }
@@ -610,25 +610,25 @@ public final class MVStore {
         }
         if (!validStoreHeader) {
             throw DataUtils.newIllegalStateException(
-                    DataUtils.ERROR_FILE_CORRUPT,
-                    "Store header is corrupt: {0}", fileStore);
+                      DataUtils.ERROR_FILE_CORRUPT,
+                      "Store header is corrupt: {0}", fileStore);
         }
         long format = DataUtils.readHexLong(storeHeader, "format", 1);
         if (format > FORMAT_WRITE && !fileStore.isReadOnly()) {
             throw DataUtils.newIllegalStateException(
-                    DataUtils.ERROR_UNSUPPORTED_FORMAT,
-                    "The write format {0} is larger " +
-                    "than the supported format {1}, " +
-                    "and the file was not opened in read-only mode",
-                    format, FORMAT_WRITE);
+                      DataUtils.ERROR_UNSUPPORTED_FORMAT,
+                      "The write format {0} is larger " +
+                      "than the supported format {1}, " +
+                      "and the file was not opened in read-only mode",
+                      format, FORMAT_WRITE);
         }
         format = DataUtils.readHexLong(storeHeader, "formatRead", format);
         if (format > FORMAT_READ) {
             throw DataUtils.newIllegalStateException(
-                    DataUtils.ERROR_UNSUPPORTED_FORMAT,
-                    "The read format {0} is larger " +
-                    "than the supported format {1}",
-                    format, FORMAT_READ);
+                      DataUtils.ERROR_UNSUPPORTED_FORMAT,
+                      "The read format {0} is larger " +
+                      "than the supported format {1}",
+                      format, FORMAT_READ);
         }
         lastStoredVersion = -1;
         chunks.clear();
@@ -695,7 +695,7 @@ public final class MVStore {
     private void loadChunkMeta() {
         // load the chunk metadata: we can load in any order,
         // because loading chunk metadata might recursively load another chunk
-        for (Iterator<String> it = meta.keyIterator("chunk."); it.hasNext();) {
+        for (Iterator<String> it = meta.keyIterator("chunk."); it.hasNext(); ) {
             String s = it.next();
             if (!s.startsWith("chunk.")) {
                 break;
@@ -705,8 +705,8 @@ public final class MVStore {
             if (chunks.putIfAbsent(c.id, c) == null) {
                 if (c.block == Long.MAX_VALUE) {
                     throw DataUtils.newIllegalStateException(
-                            DataUtils.ERROR_FILE_CORRUPT,
-                            "Chunk {0} is invalid", c.id);
+                              DataUtils.ERROR_FILE_CORRUPT,
+                              "Chunk {0} is invalid", c.id);
                 }
             }
         }
@@ -798,7 +798,7 @@ public final class MVStore {
         try {
             // read the chunk footer of the last block of the file
             ByteBuffer lastBlock = fileStore.readFully(
-                                           end - Chunk.FOOTER_LENGTH, Chunk.FOOTER_LENGTH);
+                end - Chunk.FOOTER_LENGTH, Chunk.FOOTER_LENGTH);
             byte[] buff = new byte[Chunk.FOOTER_LENGTH];
             lastBlock.get(buff);
             String s = new String(buff, DataUtils.LATIN).trim();
@@ -925,8 +925,8 @@ public final class MVStore {
         if (c == null) {
             int chunkId = DataUtils.getPageChunkId(pos);
             throw DataUtils.newIllegalStateException(
-                    DataUtils.ERROR_FILE_CORRUPT,
-                    "Chunk {0} not found", chunkId);
+                      DataUtils.ERROR_FILE_CORRUPT,
+                      "Chunk {0} not found", chunkId);
         }
         return c;
     }
@@ -940,9 +940,9 @@ public final class MVStore {
                 // it could also be unsynchronized metadata
                 // access (if synchronization on this was forgotten)
                 throw DataUtils.newIllegalStateException(
-                        DataUtils.ERROR_CHUNK_NOT_FOUND,
-                        "Chunk {0} no longer exists",
-                        chunkId);
+                          DataUtils.ERROR_CHUNK_NOT_FOUND,
+                          "Chunk {0} no longer exists",
+                          chunkId);
             }
             String s = meta.get(Chunk.getMetaKey(chunkId));
             if (s == null) {
@@ -951,8 +951,8 @@ public final class MVStore {
             c = Chunk.fromString(s);
             if (c.block == Long.MAX_VALUE) {
                 throw DataUtils.newIllegalStateException(
-                        DataUtils.ERROR_FILE_CORRUPT,
-                        "Chunk {0} is invalid", chunkId);
+                          DataUtils.ERROR_FILE_CORRUPT,
+                          "Chunk {0} is invalid", chunkId);
             }
             chunks.put(c.id, c);
         }
@@ -1008,8 +1008,8 @@ public final class MVStore {
         }
         if (fileStore == null) {
             throw DataUtils.newIllegalStateException(
-                    DataUtils.ERROR_WRITING_FAILED,
-                    "This is an in-memory store");
+                      DataUtils.ERROR_WRITING_FAILED,
+                      "This is an in-memory store");
         }
         if (currentStoreVersion >= 0) {
             // store is possibly called within store, if the meta map changed
@@ -1020,7 +1020,7 @@ public final class MVStore {
         }
         if (fileStore.isReadOnly()) {
             throw DataUtils.newIllegalStateException(
-                    DataUtils.ERROR_WRITING_FAILED, "This store is read-only");
+                      DataUtils.ERROR_WRITING_FAILED, "This store is read-only");
         }
         try {
             currentStoreVersion = currentVersion;
@@ -1080,8 +1080,8 @@ public final class MVStore {
             }
             if (old.block == Long.MAX_VALUE) {
                 IllegalStateException e = DataUtils.newIllegalStateException(
-                                                  DataUtils.ERROR_INTERNAL,
-                                                  "Last block not stored, possibly due to out-of-memory");
+                    DataUtils.ERROR_INTERNAL,
+                    "Last block not stored, possibly due to out-of-memory");
                 panic(e);
             }
         }
@@ -1150,7 +1150,7 @@ public final class MVStore {
 
         // add the store header and round to the next block
         int length = MathUtils.roundUpInt(chunkLength +
-                                          Chunk.FOOTER_LENGTH, BLOCK_SIZE);
+                Chunk.FOOTER_LENGTH, BLOCK_SIZE);
         buff.limit(length);
 
         // the length of the file that is still in use
@@ -1179,7 +1179,7 @@ public final class MVStore {
         if (reuseSpace) {
             int predictBlocks = c.len;
             long predictedNextStart = fileStore.allocate(
-                                              predictBlocks * BLOCK_SIZE);
+                predictBlocks * BLOCK_SIZE);
             fileStore.free(predictedNextStart, predictBlocks * BLOCK_SIZE);
             c.next = predictedNextStart / BLOCK_SIZE;
         } else {
@@ -1207,7 +1207,7 @@ public final class MVStore {
                 writeStoreHeader = true;
             } else {
                 long headerVersion = DataUtils.readHexLong(
-                                             storeHeader, "version", 0);
+                    storeHeader, "version", 0);
                 if (lastChunk.version - headerVersion > 20) {
                     // we write after at least 20 entries
                     writeStoreHeader = true;
@@ -1249,7 +1249,7 @@ public final class MVStore {
         // some pages might have been changed in the meantime (in the newest
         // version)
         unsavedMemory = Math.max(0, unsavedMemory
-                                 - currentUnsavedPageCount);
+                - currentUnsavedPageCount);
 
         metaChanged = false;
         lastStoredVersion = storeVersion;
@@ -1264,7 +1264,7 @@ public final class MVStore {
         Set<Integer> referenced = collectReferencedChunks();
         long time = getTimeSinceCreation();
 
-        for (Iterator<Chunk> it = chunks.values().iterator(); it.hasNext();) {
+        for (Iterator<Chunk> it = chunks.values().iterator(); it.hasNext(); ) {
             Chunk c = it.next();
             if (!referenced.contains(c.id)) {
                 if (canOverwriteChunk(c, time)) {
@@ -1290,7 +1290,7 @@ public final class MVStore {
         DataUtils.checkArgument(testVersion > 0, "Collect references on version 0");
         long readCount = getFileStore().readCount.get();
         Set<Integer> referenced = New.hashSet();
-        for (Cursor<String, String> c = meta.cursor("root."); c.hasNext();) {
+        for (Cursor<String, String> c = meta.cursor("root."); c.hasNext(); ) {
             String key = c.next();
             if (!key.startsWith("root.")) {
                 break;
@@ -1309,7 +1309,7 @@ public final class MVStore {
     }
 
     private void collectReferencedChunks(Set<Integer> targetChunkSet,
-                                         int mapId, long pos, int level) {
+            int mapId, long pos, int level) {
         int c = DataUtils.getPageChunkId(pos);
         targetChunkSet.add(c);
         if (DataUtils.getPageType(pos) == DataUtils.PAGE_TYPE_LEAF) {
@@ -1328,7 +1328,7 @@ public final class MVStore {
             int i = 0;
             for (Integer p : target) {
                 children[i++] = DataUtils.getPagePos(p, 0, 0,
-                                                     DataUtils.PAGE_TYPE_LEAF);
+                            DataUtils.PAGE_TYPE_LEAF);
             }
             refs.children = children;
             refs.chunkList = true;
@@ -1366,8 +1366,8 @@ public final class MVStore {
                 filePos += DataUtils.getPageOffset(pos);
                 if (filePos < 0) {
                     throw DataUtils.newIllegalStateException(
-                            DataUtils.ERROR_FILE_CORRUPT,
-                            "Negative position {0}; p={1}, c={2}", filePos, pos, c.toString());
+                              DataUtils.ERROR_FILE_CORRUPT,
+                              "Negative position {0}; p={1}, c={2}", filePos, pos, c.toString());
                 }
                 long maxPos = (c.block + c.len) * BLOCK_SIZE;
                 r = PageChildren.read(fileStore, pos, mapId, filePos, maxPos);
@@ -1587,7 +1587,7 @@ public final class MVStore {
         }
         for (MVMap<?, ?> m : maps.values()) {
             @SuppressWarnings("unchecked")
-            MVMap<Object, Object> map = (MVMap<Object, Object>) m;
+            MVMap<Object, Object> map = (MVMap<Object, Object>)m;
             Cursor<Object, Object> cursor = map.cursor(null);
             Page lastPage = null;
             while (cursor.hasNext()) {
@@ -1860,10 +1860,10 @@ public final class MVStore {
             @Override
             public int compare(Chunk o1, Chunk o2) {
                 int comp = Integer.compare(o1.collectPriority,
-                                           o2.collectPriority);
+                o2.collectPriority);
                 if (comp == 0) {
                     comp = Long.compare(o1.maxLenLive,
-                                        o2.maxLenLive);
+                    o2.maxLenLive);
                 }
                 return comp;
             }
@@ -1887,7 +1887,7 @@ public final class MVStore {
         }
         // remove the chunks we want to keep from this list
         boolean remove = false;
-        for (Iterator<Chunk> it = old.iterator(); it.hasNext();) {
+        for (Iterator<Chunk> it = old.iterator(); it.hasNext(); ) {
             Chunk c = it.next();
             if (move == c) {
                 remove = true;
@@ -1905,7 +1905,7 @@ public final class MVStore {
         }
         for (MVMap<?, ?> m : maps.values()) {
             @SuppressWarnings("unchecked")
-            MVMap<Object, Object> map = (MVMap<Object, Object>) m;
+            MVMap<Object, Object> map = (MVMap<Object, Object>)m;
             if (!map.rewrite(set)) {
                 return;
             }
@@ -1927,7 +1927,7 @@ public final class MVStore {
     Page readPage(MVMap<?, ?> map, long pos) {
         if (pos == 0) {
             throw DataUtils.newIllegalStateException(
-                    DataUtils.ERROR_FILE_CORRUPT, "Position 0");
+                      DataUtils.ERROR_FILE_CORRUPT, "Position 0");
         }
         Page p = cache == null ? null : cache.get(pos);
         if (p == null) {
@@ -1936,8 +1936,8 @@ public final class MVStore {
             filePos += DataUtils.getPageOffset(pos);
             if (filePos < 0) {
                 throw DataUtils.newIllegalStateException(
-                        DataUtils.ERROR_FILE_CORRUPT,
-                        "Negative position {0}", filePos);
+                          DataUtils.ERROR_FILE_CORRUPT,
+                          "Negative position {0}", filePos);
             }
             long maxPos = (c.block + c.len) * BLOCK_SIZE;
             p = Page.read(fileStore, pos, map, filePos, maxPos);
@@ -1989,16 +1989,16 @@ public final class MVStore {
             }
         }
         registerFreePage(version, c.id,
-                         DataUtils.getPageMaxLength(pos), 1);
+                DataUtils.getPageMaxLength(pos), 1);
     }
 
     private void registerFreePage(long version, int chunkId,
-                                  long maxLengthLive, int pageCount) {
+            long maxLengthLive, int pageCount) {
         ConcurrentHashMap<Integer, Chunk> freed = freedPageSpace.get(version);
         if (freed == null) {
             freed = new ConcurrentHashMap<>();
             ConcurrentHashMap<Integer, Chunk> f2 = freedPageSpace.putIfAbsent(version,
-                                                   freed);
+                    freed);
             if (f2 != null) {
                 freed = f2;
             }
@@ -2156,7 +2156,7 @@ public final class MVStore {
         }
         try {
             for (Iterator<String> it = oldMeta.keyIterator("chunk.");
-                    it.hasNext();) {
+                    it.hasNext(); ) {
                 String chunkKey = it.next();
                 if (!chunkKey.startsWith("chunk.")) {
                     break;
@@ -2274,8 +2274,8 @@ public final class MVStore {
             return;
         }
         DataUtils.checkArgument(
-                isKnownVersion(version),
-                "Unknown version {0}", version);
+            isKnownVersion(version),
+            "Unknown version {0}", version);
         for (MVMap<?, ?> m : maps.values()) {
             m.rollbackTo(version);
         }
@@ -2356,7 +2356,7 @@ public final class MVStore {
 
     private void revertTemp(long storeVersion) {
         for (Iterator<Entry<Long, ConcurrentHashMap<Integer, Chunk>>> it =
-                        freedPageSpace.entrySet().iterator(); it.hasNext();) {
+                freedPageSpace.entrySet().iterator(); it.hasNext(); ) {
             Entry<Long, ConcurrentHashMap<Integer, Chunk>> entry = it.next();
             Long v = entry.getKey();
             if (v <= storeVersion) {
@@ -2401,7 +2401,7 @@ public final class MVStore {
     private void checkOpen() {
         if (closed) {
             throw DataUtils.newIllegalStateException(DataUtils.ERROR_CLOSED,
-                    "This store is closed", panicException);
+                          "This store is closed", panicException);
         }
     }
 
@@ -2414,15 +2414,15 @@ public final class MVStore {
     public synchronized void renameMap(MVMap<?, ?> map, String newName) {
         checkOpen();
         DataUtils.checkArgument(map != meta,
-                                "Renaming the meta map is not allowed");
+                "Renaming the meta map is not allowed");
         int id = map.getId();
         String oldName = getMapName(id);
         if (oldName.equals(newName)) {
             return;
         }
         DataUtils.checkArgument(
-                !meta.containsKey("name." + newName),
-                "A map named {0} already exists", newName);
+            !meta.containsKey("name." + newName),
+            "A map named {0} already exists", newName);
         markMetaChanged();
         String x = Integer.toHexString(id);
         meta.remove("name." + oldName);
@@ -2439,7 +2439,7 @@ public final class MVStore {
     public synchronized void removeMap(MVMap<?, ?> map) {
         checkOpen();
         DataUtils.checkArgument(map != meta,
-                                "Removing the meta map is not allowed");
+                "Removing the meta map is not allowed");
         map.clear();
         int id = map.getId();
         String name = getMapName(id);
@@ -2584,7 +2584,7 @@ public final class MVStore {
             int sleep = Math.max(1, millis / 10);
             BackgroundWriterThread t =
                     new BackgroundWriterThread(this, sleep,
-                                               fileStore.toString());
+                    fileStore.toString());
             t.start();
             backgroundWriterThread = t;
         }
@@ -2894,7 +2894,7 @@ public final class MVStore {
          * @return this
          */
         public Builder backgroundExceptionHandler(
-                Thread.UncaughtExceptionHandler exceptionHandler) {
+            Thread.UncaughtExceptionHandler exceptionHandler) {
             return set("backgroundExceptionHandler", exceptionHandler);
         }
 

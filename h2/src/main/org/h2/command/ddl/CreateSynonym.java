@@ -67,7 +67,7 @@ public class CreateSynonym extends SchemaCommand {
         }
 
         throw DbException.get(ErrorCode.TABLE_OR_VIEW_NOT_FOUND_1,
-                              data.synonymForSchema.getName() + "." + data.synonymFor);
+                      data.synonymForSchema.getName() + "." + data.synonymFor);
 
     }
 

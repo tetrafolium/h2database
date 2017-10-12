@@ -89,7 +89,7 @@ public interface Index extends SchemaObject {
      * @return the estimated cost
      */
     double getCost(Session session, int[] masks, TableFilter[] filters, int filter,
-                   SortOrder sortOrder, HashSet<Column> allColumnsSet);
+            SortOrder sortOrder, HashSet<Column> allColumnsSet);
 
     /**
      * Remove the index.

@@ -92,8 +92,7 @@ public class ObjectDataType implements DataType {
                                                double.class, Object.class, Boolean.class, Byte.class, Short.class,
                                                Character.class, Integer.class, Long.class, BigInteger.class,
                                                Float.class, Double.class, BigDecimal.class, String.class,
-                                               UUID.class, Date.class
-                                             };
+                                               UUID.class, Date.class};
 
     private static final HashMap<Class<?>, Integer> COMMON_CLASSES_MAP = New
             .hashMap();
@@ -131,7 +130,7 @@ public class ObjectDataType implements DataType {
 
     private AutoDetectDataType newType(int typeId) {
         switch (typeId) {
-        case TYPE_NULL:
+        case TYPE_NULL :
             return new NullType(this);
         case TYPE_BOOLEAN:
             return new BooleanType(this);
@@ -165,7 +164,7 @@ public class ObjectDataType implements DataType {
             return new SerializedObjectType(this);
         }
         throw DataUtils.newIllegalStateException(DataUtils.ERROR_INTERNAL,
-                "Unsupported type {0}", typeId);
+                      "Unsupported type {0}", typeId);
     }
 
     @Override
@@ -212,17 +211,17 @@ public class ObjectDataType implements DataType {
                 if (tag >= TAG_INTEGER_0_15 && tag <= TAG_INTEGER_0_15 + 15) {
                     typeId = TYPE_INT;
                 } else if (tag >= TAG_STRING_0_15
-                           && tag <= TAG_STRING_0_15 + 15) {
+                        && tag <= TAG_STRING_0_15 + 15) {
                     typeId = TYPE_STRING;
                 } else if (tag >= TAG_LONG_0_7 && tag <= TAG_LONG_0_7 + 7) {
                     typeId = TYPE_LONG;
                 } else if (tag >= TAG_BYTE_ARRAY_0_15
-                           && tag <= TAG_BYTE_ARRAY_0_15 + 15) {
+                        && tag <= TAG_BYTE_ARRAY_0_15 + 15) {
                     typeId = TYPE_ARRAY;
                 } else {
                     throw DataUtils.newIllegalStateException(
-                            DataUtils.ERROR_FILE_CORRUPT, "Unknown tag {0}",
-                            tag);
+                              DataUtils.ERROR_FILE_CORRUPT, "Unknown tag {0}",
+                              tag);
                 }
             }
         }
@@ -359,7 +358,7 @@ public class ObjectDataType implements DataType {
             return out.toByteArray();
         } catch (Throwable e) {
             throw DataUtils.newIllegalArgumentException(
-                    "Could not serialize {0}", obj, e);
+                      "Could not serialize {0}", obj, e);
         }
     }
 
@@ -376,7 +375,7 @@ public class ObjectDataType implements DataType {
             return is.readObject();
         } catch (Throwable e) {
             throw DataUtils.newIllegalArgumentException(
-                    "Could not deserialize {0}", Arrays.toString(data), e);
+                      "Could not deserialize {0}", Arrays.toString(data), e);
         }
     }
 
@@ -438,7 +437,7 @@ public class ObjectDataType implements DataType {
 
         @Override
         public void write(WriteBuffer buff, Object[] obj,
-                          int len, boolean key) {
+                int len, boolean key) {
             for (int i = 0; i < len; i++) {
                 write(buff, obj[i]);
             }
@@ -451,7 +450,7 @@ public class ObjectDataType implements DataType {
 
         @Override
         public void read(ByteBuffer buff, Object[] obj,
-                         int len, boolean key) {
+                int len, boolean key) {
             for (int i = 0; i < len; i++) {
                 obj[i] = read(buff);
             }
@@ -460,7 +459,7 @@ public class ObjectDataType implements DataType {
         @Override
         public final Object read(ByteBuffer buff) {
             throw DataUtils.newIllegalStateException(DataUtils.ERROR_INTERNAL,
-                    "Internal error");
+                          "Internal error");
         }
 
         /**
@@ -740,7 +739,7 @@ public class ObjectDataType implements DataType {
         @Override
         public Object read(ByteBuffer buff, int tag) {
             switch (tag) {
-            case TYPE_INT:
+            case TYPE_INT :
                 return DataUtils.readVarInt(buff);
             case TAG_INTEGER_NEGATIVE:
                 return -DataUtils.readVarInt(buff);
@@ -875,7 +874,7 @@ public class ObjectDataType implements DataType {
                 return buff.getFloat();
             }
             return Float.intBitsToFloat(Integer.reverse(DataUtils
-                                        .readVarInt(buff)));
+                           .readVarInt(buff)));
         }
 
     }
@@ -939,7 +938,7 @@ public class ObjectDataType implements DataType {
                 return buff.getDouble();
             }
             return Double.longBitsToDouble(Long.reverse(DataUtils
-                                           .readVarLong(buff)));
+                           .readVarLong(buff)));
         }
 
     }
@@ -983,7 +982,7 @@ public class ObjectDataType implements DataType {
                 int bits = x.bitLength();
                 if (bits <= 63) {
                     buff.put((byte) TAG_BIG_INTEGER_SMALL).putVarLong(
-                            x.longValue());
+                        x.longValue());
                 } else {
                     byte[] bytes = x.toByteArray();
                     buff.put((byte) TYPE_BIG_INTEGER).putVarInt(bytes.length)
@@ -1314,23 +1313,23 @@ public class ObjectDataType implements DataType {
                     int x;
                     if (type == boolean.class) {
                         x = Integer.signum((((boolean[]) aObj)[i] ? 1 : 0)
-                                           - (((boolean[]) bObj)[i] ? 1 : 0));
+                                - (((boolean[]) bObj)[i] ? 1 : 0));
                     } else if (type == char.class) {
                         x = Integer.signum((((char[]) aObj)[i])
-                                           - (((char[]) bObj)[i]));
+                                - (((char[]) bObj)[i]));
                     } else if (type == short.class) {
                         x = Integer.signum((((short[]) aObj)[i])
-                                           - (((short[]) bObj)[i]));
+                                - (((short[]) bObj)[i]));
                     } else if (type == int.class) {
                         int a = ((int[]) aObj)[i];
                         int b = ((int[]) bObj)[i];
                         x = a == b ? 0 : a < b ? -1 : 1;
                     } else if (type == float.class) {
                         x = Float.compare(((float[]) aObj)[i],
-                                          ((float[]) bObj)[i]);
+                                ((float[]) bObj)[i]);
                     } else if (type == double.class) {
                         x = Double.compare(((double[]) aObj)[i],
-                                           ((double[]) bObj)[i]);
+                                ((double[]) bObj)[i]);
                     } else {
                         long a = ((long[]) aObj)[i];
                         long b = ((long[]) bObj)[i];
@@ -1430,8 +1429,8 @@ public class ObjectDataType implements DataType {
                     clazz = Class.forName(componentType);
                 } catch (Exception e) {
                     throw DataUtils.newIllegalStateException(
-                            DataUtils.ERROR_SERIALIZATION,
-                            "Could not get class {0}", componentType, e);
+                              DataUtils.ERROR_SERIALIZATION,
+                              "Could not get class {0}", componentType, e);
                 }
             } else {
                 clazz = COMMON_CLASSES[ct];
@@ -1441,9 +1440,9 @@ public class ObjectDataType implements DataType {
                 obj = Array.newInstance(clazz, len);
             } catch (Exception e) {
                 throw DataUtils.newIllegalStateException(
-                        DataUtils.ERROR_SERIALIZATION,
-                        "Could not create array of type {0} length {1}", clazz,
-                        len, e);
+                          DataUtils.ERROR_SERIALIZATION,
+                          "Could not create array of type {0} length {1}", clazz,
+                          len, e);
             }
             if (clazz.isPrimitive()) {
                 for (int i = 0; i < len; i++) {
@@ -1505,12 +1504,12 @@ public class ObjectDataType implements DataType {
             // with each other)
             if (aObj instanceof Comparable) {
                 if (aObj.getClass().isAssignableFrom(bObj.getClass())) {
-                    return ((Comparable<Object>) aObj).compareTo(bObj);
+                    return ((Comparable<Object>)aObj).compareTo(bObj);
                 }
             }
             if (bObj instanceof Comparable) {
                 if (bObj.getClass().isAssignableFrom(aObj.getClass())) {
-                    return -((Comparable<Object>) bObj).compareTo(aObj);
+                    return -((Comparable<Object>)bObj).compareTo(aObj);
                 }
             }
             byte[] a = serialize(aObj);

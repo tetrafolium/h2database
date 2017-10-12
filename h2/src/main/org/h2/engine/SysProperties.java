@@ -118,8 +118,8 @@ public class SysProperties {
     public static final boolean CHECK =
             Utils.getProperty("h2.check", true);
     /*/
-    public static final boolean CHECK = false;
-    //*/
+       public static final boolean CHECK = false;
+       //*/
 
     /**
      * System property <code>h2.check2</code> (default: false).<br />
@@ -129,8 +129,8 @@ public class SysProperties {
     public static final boolean CHECK2 =
             Utils.getProperty("h2.check2", false);
     /*/
-    public static final boolean CHECK2 = false;
-    //*/
+       public static final boolean CHECK2 = false;
+       //*/
 
     /**
      * System property <code>h2.clientTraceDirectory</code> (default:
@@ -348,7 +348,7 @@ public class SysProperties {
      */
     public static final boolean OLD_STYLE_OUTER_JOIN =
             Utils.getProperty("h2.oldStyleOuterJoin",
-                              Constants.VERSION_MINOR >= 4 ? false : true);
+            Constants.VERSION_MINOR >= 4 ? false : true);
 
     /**
      * System property <code>h2.pgClientEncoding</code> (default: UTF-8).<br />
@@ -405,7 +405,7 @@ public class SysProperties {
      */
     public static final boolean SORT_BINARY_UNSIGNED =
             Utils.getProperty("h2.sortBinaryUnsigned",
-                              Constants.VERSION_MINOR >= 4 ? true : false);
+            Constants.VERSION_MINOR >= 4 ? true : false);
 
     /**
      * System property <code>h2.sortNullsHigh</code> (default: false).<br />
@@ -459,7 +459,7 @@ public class SysProperties {
      */
     public static final boolean IMPLICIT_RELATIVE_PATH =
             Utils.getProperty("h2.implicitRelativePath",
-                              Constants.VERSION_MINOR >= 4 ? false : true);
+            Constants.VERSION_MINOR >= 4 ? false : true);
 
     /**
      * System property <code>h2.urlMap</code> (default: null).<br />

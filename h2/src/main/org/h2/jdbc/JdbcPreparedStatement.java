@@ -65,8 +65,8 @@ public class JdbcPreparedStatement extends JdbcStatement implements
     private HashMap<String, Integer> cachedColumnLabelMap;
 
     JdbcPreparedStatement(JdbcConnection conn, String sql, int id,
-                          int resultSetType, int resultSetConcurrency,
-                          boolean closeWithResultSet) {
+            int resultSetType, int resultSetConcurrency,
+            boolean closeWithResultSet) {
         super(conn, id, resultSetType, resultSetConcurrency, closeWithResultSet);
         setTrace(session.getTrace(), TraceObject.PREPARED_STATEMENT, id);
         this.sqlStatement = sql;
@@ -116,7 +116,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
                     }
                 }
                 resultSet = new JdbcResultSet(conn, this, command, result, id,
-                                              closedByResultSet, scrollable, updatable, cachedColumnLabelMap);
+                        closedByResultSet, scrollable, updatable, cachedColumnLabelMap);
             }
             return resultSet;
         } catch (Exception e) {
@@ -200,8 +200,8 @@ public class JdbcPreparedStatement extends JdbcStatement implements
                             ResultInterface result = command.executeQuery(maxRows, scrollable);
                             lazy = result.isLazy();
                             resultSet = new JdbcResultSet(conn, this, command, result,
-                                                          id, closedByResultSet, scrollable,
-                                                          updatable, cachedColumnLabelMap);
+                                    id, closedByResultSet, scrollable,
+                                    updatable, cachedColumnLabelMap);
                         } else {
                             returnsResultSet = false;
                             updateCount = command.executeUpdate();
@@ -469,7 +469,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
                 setParameter(parameterIndex, ValueNull.INSTANCE);
             } else {
                 setParameter(parameterIndex,
-                             DataType.convertToValue(session, x, Value.UNKNOWN));
+                        DataType.convertToValue(session, x, Value.UNKNOWN));
             }
         } catch (Exception e) {
             throw logAndConvert(e);
@@ -518,7 +518,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public void setObject(int parameterIndex, Object x, int targetSqlType,
-                          int scale) throws SQLException {
+            int scale) throws SQLException {
         try {
             if (isDebugEnabled()) {
                 debugCode("setObject("+parameterIndex+", x, "+targetSqlType+", "+scale+");");
@@ -714,11 +714,11 @@ public class JdbcPreparedStatement extends JdbcStatement implements
      */
     @Override
     public void setTimestamp(int parameterIndex, java.sql.Timestamp x,
-                             Calendar calendar) throws SQLException {
+            Calendar calendar) throws SQLException {
         try {
             if (isDebugEnabled()) {
                 debugCode("setTimestamp(" + parameterIndex + ", " +
-                          quoteTimestamp(x) + ", calendar);");
+                        quoteTimestamp(x) + ", calendar);");
             }
             if (x == null) {
                 setParameter(parameterIndex, ValueNull.INSTANCE);
@@ -1135,11 +1135,11 @@ public class JdbcPreparedStatement extends JdbcStatement implements
             int id = getNextId(TraceObject.RESULT_SET_META_DATA);
             if (isDebugEnabled()) {
                 debugCodeAssign("ResultSetMetaData",
-                                TraceObject.RESULT_SET_META_DATA, id, "getMetaData()");
+                        TraceObject.RESULT_SET_META_DATA, id, "getMetaData()");
             }
             String catalog = conn.getCatalog();
             JdbcResultSetMetaData meta = new JdbcResultSetMetaData(
-                    null, this, result, catalog, session.getTrace(), id);
+                null, this, result, catalog, session.getTrace(), id);
             return meta;
         } catch (Exception e) {
             throw logAndConvert(e);
@@ -1248,7 +1248,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
         if (batchIdentities != null && !batchIdentities.isEmpty()) {
             SimpleResultSet rs = new SimpleResultSet();
             rs.addColumn("identity", java.sql.Types.INTEGER,
-                         10, 0);
+                    10, 0);
             for (Object o : batchIdentities) {
                 rs.addRow(o);
             }
@@ -1321,7 +1321,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
         try {
             if (isDebugEnabled()) {
                 debugCode("executeUpdate(" + quote(sql) + ", " +
-                          quoteIntArray(columnIndexes) + ");");
+                        quoteIntArray(columnIndexes) + ");");
             }
             throw DbException.get(ErrorCode.METHOD_NOT_ALLOWED_FOR_PREPARED_STATEMENT);
         } catch (Exception e) {
@@ -1342,10 +1342,10 @@ public class JdbcPreparedStatement extends JdbcStatement implements
         try {
             if (isDebugEnabled()) {
                 debugCode("executeUpdate(" + quote(sql) + ", " +
-                          quoteArray(columnNames) + ");");
+                        quoteArray(columnNames) + ");");
             }
             throw DbException.get(
-                    ErrorCode.METHOD_NOT_ALLOWED_FOR_PREPARED_STATEMENT);
+                      ErrorCode.METHOD_NOT_ALLOWED_FOR_PREPARED_STATEMENT);
         } catch (Exception e) {
             throw logAndConvert(e);
         }
@@ -1366,7 +1366,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
                 debugCode("execute(" + quote(sql) + ", " + autoGeneratedKeys + ");");
             }
             throw DbException.get(
-                    ErrorCode.METHOD_NOT_ALLOWED_FOR_PREPARED_STATEMENT);
+                      ErrorCode.METHOD_NOT_ALLOWED_FOR_PREPARED_STATEMENT);
         } catch (Exception e) {
             throw logAndConvert(e);
         }
@@ -1406,7 +1406,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
                 debugCode("execute(" + quote(sql) + ", " + quoteArray(columnNames) + ");");
             }
             throw DbException.get(
-                    ErrorCode.METHOD_NOT_ALLOWED_FOR_PREPARED_STATEMENT);
+                      ErrorCode.METHOD_NOT_ALLOWED_FOR_PREPARED_STATEMENT);
         } catch (Exception e) {
             throw logAndConvert(e);
         }
@@ -1423,11 +1423,11 @@ public class JdbcPreparedStatement extends JdbcStatement implements
             int id = getNextId(TraceObject.PARAMETER_META_DATA);
             if (isDebugEnabled()) {
                 debugCodeAssign("ParameterMetaData",
-                                TraceObject.PARAMETER_META_DATA, id, "getParameterMetaData()");
+                        TraceObject.PARAMETER_META_DATA, id, "getParameterMetaData()");
             }
             checkClosed();
             JdbcParameterMetaData meta = new JdbcParameterMetaData(
-                    session.getTrace(), this, command, id);
+                session.getTrace(), this, command, id);
             return meta;
         } catch (Exception e) {
             throw logAndConvert(e);
@@ -1442,7 +1442,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
         ArrayList<? extends ParameterInterface> parameters = command.getParameters();
         if (parameterIndex < 0 || parameterIndex >= parameters.size()) {
             throw DbException.getInvalidValueException("parameterIndex",
-                    parameterIndex + 1);
+                          parameterIndex + 1);
         }
         ParameterInterface param = parameters.get(parameterIndex);
         // can only delete old temp files if they are not in the batch
@@ -1493,7 +1493,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements
         try {
             if (isDebugEnabled()) {
                 debugCode("setNCharacterStream("+
-                          parameterIndex+", x, "+length+"L);");
+                        parameterIndex+", x, "+length+"L);");
             }
             checkClosedForWrite();
             try {

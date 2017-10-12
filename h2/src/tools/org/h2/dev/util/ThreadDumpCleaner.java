@@ -112,8 +112,8 @@ public class ThreadDumpCleaner {
             r = new InputStreamReader(System.in);
         }
         new ThreadDumpCleaner().run(
-                new LineNumberReader(new BufferedReader(r)),
-                writer);
+            new LineNumberReader(new BufferedReader(r)),
+            writer);
         writer.close();
         r.close();
     }

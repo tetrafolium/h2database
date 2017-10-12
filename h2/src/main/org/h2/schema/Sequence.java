@@ -45,9 +45,9 @@ public class Sequence extends SchemaObjectBase {
      * @param increment the increment count
      */
     public Sequence(Schema schema, int id, String name, long startValue,
-                    long increment) {
+            long increment) {
         this(schema, id, name, startValue, increment, null, null, null, false,
-             true);
+        true);
     }
 
     /**
@@ -66,27 +66,27 @@ public class Sequence extends SchemaObjectBase {
      *            auto-increment columns)
      */
     public Sequence(Schema schema, int id, String name, Long startValue,
-                    Long increment, Long cacheSize, Long minValue, Long maxValue,
-                    boolean cycle, boolean belongsToTable) {
+            Long increment, Long cacheSize, Long minValue, Long maxValue,
+            boolean cycle, boolean belongsToTable) {
         initSchemaObjectBase(schema, id, name, Trace.SEQUENCE);
         this.increment = increment != null ?
-                         increment : 1;
+                increment : 1;
         this.minValue = minValue != null ?
-                        minValue : getDefaultMinValue(startValue, this.increment);
+                minValue : getDefaultMinValue(startValue, this.increment);
         this.maxValue = maxValue != null ?
-                        maxValue : getDefaultMaxValue(startValue, this.increment);
+                maxValue : getDefaultMaxValue(startValue, this.increment);
         this.value = startValue != null ?
-                     startValue : getDefaultStartValue(this.increment);
+                startValue : getDefaultStartValue(this.increment);
         this.valueWithMargin = value;
         this.cacheSize = cacheSize != null ?
-                         Math.max(1, cacheSize) : DEFAULT_CACHE_SIZE;
+                Math.max(1, cacheSize) : DEFAULT_CACHE_SIZE;
         this.cycle = cycle;
         this.belongsToTable = belongsToTable;
         if (!isValid(this.value, this.minValue, this.maxValue, this.increment)) {
             throw DbException.get(ErrorCode.SEQUENCE_ATTRIBUTES_INVALID, name,
-                                  String.valueOf(this.value), String.valueOf(this.minValue),
-                                  String.valueOf(this.maxValue),
-                                  String.valueOf(this.increment));
+                          String.valueOf(this.value), String.valueOf(this.minValue),
+                          String.valueOf(this.maxValue),
+                          String.valueOf(this.increment));
         }
     }
 
@@ -103,7 +103,7 @@ public class Sequence extends SchemaObjectBase {
      * @param increment the new increment (<code>null</code> if no change)
      */
     public synchronized void modify(Long startValue, Long minValue,
-                                    Long maxValue, Long increment) {
+            Long maxValue, Long increment) {
         if (startValue == null) {
             startValue = this.value;
         }
@@ -118,10 +118,10 @@ public class Sequence extends SchemaObjectBase {
         }
         if (!isValid(startValue, minValue, maxValue, increment)) {
             throw DbException.get(ErrorCode.SEQUENCE_ATTRIBUTES_INVALID,
-                                  getName(), String.valueOf(startValue),
-                                  String.valueOf(minValue),
-                                  String.valueOf(maxValue),
-                                  String.valueOf(increment));
+                          getName(), String.valueOf(startValue),
+                          String.valueOf(minValue),
+                          String.valueOf(maxValue),
+                          String.valueOf(increment));
         }
         this.value = startValue;
         this.valueWithMargin = startValue;
@@ -141,7 +141,7 @@ public class Sequence extends SchemaObjectBase {
      * @param increment the prospective increment
      */
     private static boolean isValid(long value, long minValue, long maxValue,
-                                   long increment) {
+            long increment) {
         return minValue <= value &&
                maxValue >= value &&
                maxValue > minValue &&
@@ -150,7 +150,7 @@ public class Sequence extends SchemaObjectBase {
                // use BigInteger to avoid overflows when maxValue and minValue
                // are really big
                BigInteger.valueOf(increment).abs().compareTo(
-                       BigInteger.valueOf(maxValue).subtract(BigInteger.valueOf(minValue))) < 0;
+            BigInteger.valueOf(maxValue).subtract(BigInteger.valueOf(minValue))) < 0;
     }
 
     private static long getDefaultMinValue(Long startValue, long increment) {

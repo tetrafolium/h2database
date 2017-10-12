@@ -26,8 +26,8 @@ public class SpatialDataType implements DataType {
         // min-max-flag in the read/write method
         // the number of dimensions must be < 32.
         DataUtils.checkArgument(
-                dimensions >= 1 && dimensions < 32,
-                "Dimensions must be between 1 and 31, is {0}", dimensions);
+            dimensions >= 1 && dimensions < 32,
+            "Dimensions must be between 1 and 31, is {0}", dimensions);
         this.dimensions = dimensions;
     }
 

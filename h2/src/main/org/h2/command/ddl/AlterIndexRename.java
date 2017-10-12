@@ -54,14 +54,14 @@ public class AlterIndexRename extends DefineCommand {
         if (oldIndex == null) {
             if (!ifExists) {
                 throw DbException.get(ErrorCode.INDEX_NOT_FOUND_1,
-                                      newIndexName);
+                              newIndexName);
             }
             return 0;
         }
         if (oldSchema.findIndex(session, newIndexName) != null ||
                 newIndexName.equals(oldIndexName)) {
             throw DbException.get(ErrorCode.INDEX_ALREADY_EXISTS_1,
-                                  newIndexName);
+                          newIndexName);
         }
         session.getUser().checkRight(oldIndex.getTable(), Right.ALL);
         db.renameSchemaObject(session, oldIndex, newIndexName);

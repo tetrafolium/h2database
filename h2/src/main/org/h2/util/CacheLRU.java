@@ -65,7 +65,7 @@ public class CacheLRU implements Cache {
      * @return the cache object
      */
     public static Cache getCache(CacheWriter writer, String cacheType,
-                                 int cacheSize) {
+            int cacheSize) {
         Map<Integer, CacheObject> secondLevel = null;
         if (cacheType.startsWith("SOFT_")) {
             secondLevel = new SoftHashMap<>();
@@ -103,7 +103,7 @@ public class CacheLRU implements Cache {
             if (old != null) {
                 DbException
                 .throwInternalError("try to add a record twice at pos " +
-                                    pos);
+                        pos);
             }
         }
         int index = rec.getPos() & mask;
@@ -124,7 +124,7 @@ public class CacheLRU implements Cache {
             if (SysProperties.CHECK) {
                 if (old != rec) {
                     DbException.throwInternalError("old!=record pos:" + pos +
-                                                   " old:" + old + " new:" + rec);
+                            " old:" + old + " new:" + rec);
                 }
             }
             if (!fifo) {
@@ -176,7 +176,7 @@ public class CacheLRU implements Cache {
                     // can happen
                     writer.getTrace()
                     .info("cannot remove records, cache size too small? records:" +
-                          recordCount + " memory:" + memory);
+                            recordCount + " memory:" + memory);
                     break;
                 }
             }

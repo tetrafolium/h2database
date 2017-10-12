@@ -97,7 +97,7 @@ public class Backup extends Tool {
      * @param quiet don't print progress information
      */
     public static void execute(String zipFileName, String directory, String db,
-                               boolean quiet) throws SQLException {
+            boolean quiet) throws SQLException {
         try {
             new Backup().process(zipFileName, directory, db, quiet);
         } catch (Exception e) {
@@ -106,7 +106,7 @@ public class Backup extends Tool {
     }
 
     private void process(String zipFileName, String directory, String db,
-                         boolean quiet) throws SQLException {
+            boolean quiet) throws SQLException {
         List<String> list;
         boolean allFiles = db != null && db.length() == 0;
         if (allFiles) {
@@ -132,8 +132,8 @@ public class Backup extends Tool {
             String base = "";
             for (String fileName : list) {
                 if (allFiles ||
-                        fileName.endsWith(Constants.SUFFIX_PAGE_FILE) ||
-                        fileName.endsWith(Constants.SUFFIX_MV_FILE)) {
+                            fileName.endsWith(Constants.SUFFIX_PAGE_FILE) ||
+                            fileName.endsWith(Constants.SUFFIX_MV_FILE)) {
                     base = FileUtils.getParent(fileName);
                     break;
                 }

@@ -40,8 +40,8 @@ public class TableLinkConnection {
     private int useCounter;
 
     private TableLinkConnection(
-            HashMap<TableLinkConnection, TableLinkConnection> map,
-            String driver, String url, String user, String password) {
+        HashMap<TableLinkConnection, TableLinkConnection> map,
+        String driver, String url, String user, String password) {
         this.map = map;
         this.driver = driver;
         this.url = url;
@@ -62,9 +62,9 @@ public class TableLinkConnection {
      * @return a connection
      */
     public static TableLinkConnection open(
-            HashMap<TableLinkConnection, TableLinkConnection> map,
-            String driver, String url, String user, String password,
-            boolean shareLinkedConnections) {
+        HashMap<TableLinkConnection, TableLinkConnection> map,
+        String driver, String url, String user, String password,
+        boolean shareLinkedConnections) {
         TableLinkConnection t = new TableLinkConnection(map, driver, url,
                 user, password);
         if (!shareLinkedConnections) {

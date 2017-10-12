@@ -63,8 +63,8 @@ public class TableLink extends Table {
     private boolean readOnly;
 
     public TableLink(Schema schema, int id, String name, String driver,
-                     String url, String user, String password, String originalSchema,
-                     String originalTable, boolean emitUpdates, boolean force) {
+            String url, String user, String password, String originalSchema,
+            String originalTable, boolean emitUpdates, boolean force) {
         super(schema, id, name, false, true);
         this.driver = driver;
         this.url = url;
@@ -82,7 +82,7 @@ public class TableLink extends Table {
             Column[] cols = { };
             setColumns(cols);
             linkedIndex = new LinkedIndex(this, id, IndexColumn.wrap(cols),
-                                          IndexType.createNonUnique(false));
+                    IndexType.createNonUnique(false));
             indexes.add(linkedIndex);
         }
     }
@@ -170,11 +170,11 @@ public class TableLink extends Table {
 
         try (Statement stat = conn.getConnection().createStatement()) {
             rs = stat.executeQuery("SELECT * FROM " +
-                                   qualifiedTableName + " T WHERE 1=0");
+                    qualifiedTableName + " T WHERE 1=0");
             if (columnList.size() == 0) {
                 // alternative solution
                 ResultSetMetaData rsMeta = rs.getMetaData();
-                for (i = 0; i < rsMeta.getColumnCount();) {
+                for (i = 0; i < rsMeta.getColumnCount(); ) {
                     String n = rsMeta.getColumnName(i + 1);
                     n = convertColumnName(n);
                     int sqlType = rsMeta.getColumnType(i + 1);
@@ -193,14 +193,14 @@ public class TableLink extends Table {
             rs.close();
         } catch (Exception e) {
             throw DbException.get(ErrorCode.TABLE_OR_VIEW_NOT_FOUND_1, e,
-                                  originalTable + "(" + e.toString() + ")");
+                          originalTable + "(" + e.toString() + ")");
         }
         Column[] cols = new Column[columnList.size()];
         columnList.toArray(cols);
         setColumns(cols);
         int id = getId();
         linkedIndex = new LinkedIndex(this, id, IndexColumn.wrap(cols),
-                                      IndexType.createNonUnique(false));
+                IndexType.createNonUnique(false));
         indexes.add(linkedIndex);
         try {
             rs = meta.getPrimaryKeys(null, originalSchema, originalTable);
@@ -266,7 +266,7 @@ public class TableLink extends Table {
                 }
                 boolean unique = !rs.getBoolean("NON_UNIQUE");
                 indexType = unique ? IndexType.createUnique(false, false) :
-                            IndexType.createNonUnique(false);
+                        IndexType.createNonUnique(false);
                 String col = rs.getString("COLUMN_NAME");
                 col = convertColumnName(col);
                 Column column = columnMap.get(col);
@@ -340,8 +340,8 @@ public class TableLink extends Table {
             return;
         } else if (firstNull > 0) {
             trace.info("Unrecognized columns in linked index. " +
-                       "Registering the index against the leading {0} " +
-                       "recognized columns of {1} total columns.", firstNull, list.size());
+                    "Registering the index against the leading {0} " +
+                    "recognized columns of {1} total columns.", firstNull, list.size());
             list = list.subList(0, firstNull);
         }
         Column[] cols = new Column[list.size()];
@@ -393,8 +393,8 @@ public class TableLink extends Table {
 
     @Override
     public Index addIndex(Session session, String indexName, int indexId,
-                          IndexColumn[] cols, IndexType indexType, boolean create,
-                          String indexComment) {
+            IndexColumn[] cols, IndexType indexType, boolean create,
+            String indexComment) {
         throw DbException.getUnsupportedException("LINK");
     }
 
@@ -470,7 +470,7 @@ public class TableLink extends Table {
     public static DbException wrapException(String sql, Exception ex) {
         SQLException e = DbException.toSQLException(ex);
         return DbException.get(ErrorCode.ERROR_ACCESSING_LINKED_TABLE_2,
-                               e, sql, e.toString());
+                       e, sql, e.toString());
     }
 
     public String getQualifiedTable() {
@@ -487,7 +487,7 @@ public class TableLink extends Table {
      * @return the prepared statement, or null if it is re-used
      */
     public PreparedStatement execute(String sql, ArrayList<Value> params,
-                                     boolean reusePrepared) {
+            boolean reusePrepared) {
         if (conn == null) {
             throw connectException;
         }
@@ -612,7 +612,7 @@ public class TableLink extends Table {
         boolean deleteInsert;
         checkReadOnly();
         if (emitUpdates) {
-            for (rows.reset(); rows.hasNext();) {
+            for (rows.reset(); rows.hasNext(); ) {
                 prepared.checkCanceled();
                 Row oldRow = rows.next();
                 Row newRow = rows.next();

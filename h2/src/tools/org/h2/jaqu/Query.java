@@ -47,8 +47,8 @@ public class Query<T> {
     @SuppressWarnings("unchecked")
     static <T> Query<T> from(Db db, T alias) {
         Query<T> query = new Query<>(db);
-        TableDefinition<T> def = (TableDefinition<T>) db.define(alias
-                                 .getClass());
+        TableDefinition<T> def = (TableDefinition<T>)db.define(alias
+                .getClass());
         query.from = new SelectTable<>(db, query, alias, false);
         def.initSelectObject(query.from, alias, query.aliasMap);
         return query;
@@ -87,7 +87,7 @@ public class Query<T> {
 
     @SuppressWarnings("unchecked")
     public <X, Z> X selectFirst(Z x) {
-        List<X> list = (List<X>) select(x);
+        List<X> list = (List<X>)select(x);
         return list.isEmpty() ? null : list.get(0);
     }
 
@@ -174,7 +174,7 @@ public class Query<T> {
             return selectSimple((X) x, distinct);
         }
         clazz = clazz.getSuperclass();
-        return select((Class<X>) clazz, (X) x, distinct);
+        return select((Class<X>)clazz, (X) x, distinct);
     }
 
     private <X> List<X> select(Class<X> clazz, X x, boolean distinct) {
@@ -306,7 +306,7 @@ public class Query<T> {
     public Query<T> orderBy(Object... expressions) {
         for (Object expr : expressions) {
             OrderExpression<T> e = new OrderExpression<>(this, expr, false,
-                    false, false);
+                        false, false);
             addOrderBy(e);
         }
         return this;
@@ -414,8 +414,8 @@ public class Query<T> {
      */
     @SuppressWarnings("unchecked")
     public <U> QueryJoin innerJoin(U alias) {
-        TableDefinition<T> def = (TableDefinition<T>) db.define(alias
-                                 .getClass());
+        TableDefinition<T> def = (TableDefinition<T>)db.define(alias
+                .getClass());
         SelectTable<T> join = new SelectTable(db, this, alias, false);
         def.initSelectObject(join, alias, aliasMap);
         joins.add(join);

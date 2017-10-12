@@ -95,7 +95,7 @@ public class FreeSpaceBitSet {
      */
     public long allocate(int length) {
         int blocks = getBlockCount(length);
-        for (int i = 0;;) {
+        for (int i = 0;; ) {
             int start = set.nextClearBit(i);
             int end = set.nextSetBit(start + 1);
             if (end < 0 || end - start >= blocks) {
@@ -202,7 +202,7 @@ public class FreeSpaceBitSet {
             buff.append(" " + 100 * onCount / (onCount+offCount) + "% used ");
         }
         buff.append('[');
-        for (int i = 0;;) {
+        for (int i = 0;; ) {
             if (i > 0) {
                 buff.append(", ");
             }

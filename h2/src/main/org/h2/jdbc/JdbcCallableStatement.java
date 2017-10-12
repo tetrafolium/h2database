@@ -47,7 +47,7 @@ public class JdbcCallableStatement extends JdbcPreparedStatement implements
     private HashMap<String, Integer> namedParameters;
 
     JdbcCallableStatement(JdbcConnection conn, String sql, int id,
-                          int resultSetType, int resultSetConcurrency) {
+            int resultSetType, int resultSetConcurrency) {
         super(conn, sql, id, resultSetType, resultSetConcurrency, false);
         setTrace(session.getTrace(), TraceObject.CALLABLE_STATEMENT, id);
     }
@@ -103,7 +103,7 @@ public class JdbcCallableStatement extends JdbcPreparedStatement implements
      */
     @Override
     public void registerOutParameter(int parameterIndex, int sqlType,
-                                     String typeName) throws SQLException {
+            String typeName) throws SQLException {
         registerOutParameter(parameterIndex);
     }
 
@@ -129,7 +129,7 @@ public class JdbcCallableStatement extends JdbcPreparedStatement implements
      */
     @Override
     public void registerOutParameter(String parameterName, int sqlType,
-                                     String typeName) throws SQLException {
+            String typeName) throws SQLException {
         registerOutParameter(getIndexForName(parameterName), sqlType, typeName);
     }
 
@@ -142,7 +142,7 @@ public class JdbcCallableStatement extends JdbcPreparedStatement implements
      */
     @Override
     public void registerOutParameter(String parameterName, int sqlType,
-                                     int scale) throws SQLException {
+            int scale) throws SQLException {
         registerOutParameter(getIndexForName(parameterName), sqlType, scale);
     }
 
@@ -1076,7 +1076,7 @@ public class JdbcCallableStatement extends JdbcPreparedStatement implements
      */
     @Override
     public void setObject(String parameterName, Object x, int targetSqlType,
-                          int scale) throws SQLException {
+            int scale) throws SQLException {
         setObject(getIndexForName(parameterName), x, targetSqlType, scale);
     }
 
@@ -1108,7 +1108,7 @@ public class JdbcCallableStatement extends JdbcPreparedStatement implements
      */
     @Override
     public void setAsciiStream(String parameterName,
-                               InputStream x, long length) throws SQLException {
+            InputStream x, long length) throws SQLException {
         setAsciiStream(getIndexForName(parameterName), x, length);
     }
 
@@ -1312,7 +1312,7 @@ public class JdbcCallableStatement extends JdbcPreparedStatement implements
      */
     @Override
     public void setNCharacterStream(String parameterName,
-                                    Reader x, long length) throws SQLException {
+            Reader x, long length) throws SQLException {
         setNCharacterStream(getIndexForName(parameterName), x, length);
     }
 
@@ -1341,7 +1341,7 @@ public class JdbcCallableStatement extends JdbcPreparedStatement implements
      */
     @Override
     public void setClob(String parameterName, Reader x,
-                        long length) throws SQLException {
+            long length) throws SQLException {
         setClob(getIndexForName(parameterName), x, length);
     }
 
@@ -1357,7 +1357,7 @@ public class JdbcCallableStatement extends JdbcPreparedStatement implements
      */
     @Override
     public void setBlob(String parameterName, InputStream x,
-                        long length) throws SQLException {
+            long length) throws SQLException {
         setBlob(getIndexForName(parameterName), x, length);
     }
 
@@ -1373,7 +1373,7 @@ public class JdbcCallableStatement extends JdbcPreparedStatement implements
      */
     @Override
     public void setNClob(String parameterName, Reader x,
-                         long length) throws SQLException {
+            long length) throws SQLException {
         setNClob(getIndexForName(parameterName), x, length);
     }
 
@@ -1429,7 +1429,7 @@ public class JdbcCallableStatement extends JdbcPreparedStatement implements
      */
     @Override
     public void setAsciiStream(String parameterName,
-                               InputStream x, int length) throws SQLException {
+            InputStream x, int length) throws SQLException {
         setAsciiStream(getIndexForName(parameterName), x, length);
     }
 
@@ -1444,7 +1444,7 @@ public class JdbcCallableStatement extends JdbcPreparedStatement implements
      */
     @Override
     public void setBinaryStream(String parameterName,
-                                InputStream x) throws SQLException {
+            InputStream x) throws SQLException {
         setBinaryStream(getIndexForName(parameterName), x);
     }
 
@@ -1460,7 +1460,7 @@ public class JdbcCallableStatement extends JdbcPreparedStatement implements
      */
     @Override
     public void setBinaryStream(String parameterName,
-                                InputStream x, long length) throws SQLException {
+            InputStream x, long length) throws SQLException {
         setBinaryStream(getIndexForName(parameterName), x, length);
     }
 
@@ -1506,7 +1506,7 @@ public class JdbcCallableStatement extends JdbcPreparedStatement implements
      */
     @Override
     public void setCharacterStream(String parameterName,
-                                   Reader x, long length) throws SQLException {
+            Reader x, long length) throws SQLException {
         setCharacterStream(getIndexForName(parameterName), x, length);
     }
 
@@ -1589,7 +1589,7 @@ public class JdbcCallableStatement extends JdbcPreparedStatement implements
         ResultSetMetaData meta = getMetaData();
         if (meta == null) {
             throw DbException.getUnsupportedException(
-                    "Supported only for calling stored procedures");
+                      "Supported only for calling stored procedures");
         }
         return meta;
     }
@@ -1606,8 +1606,8 @@ public class JdbcCallableStatement extends JdbcPreparedStatement implements
             checkClosed();
             if (outParameters == null) {
                 maxOutParameters = Math.min(
-                                           getParameterMetaData().getParameterCount(),
-                                           getCheckedMetaData().getColumnCount());
+                    getParameterMetaData().getParameterCount(),
+                    getCheckedMetaData().getColumnCount());
                 outParameters = new BitField();
             }
             checkIndexBounds(parameterIndex);

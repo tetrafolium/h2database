@@ -76,8 +76,8 @@ public class FunctionsMySQL {
         for (int i = 0; i < init.length; i += 2) {
             String alias = init[i], method = init[i + 1];
             stat.execute(
-                    "CREATE ALIAS IF NOT EXISTS " + alias +
-                    " FOR \"" + FunctionsMySQL.class.getName() + "." + method + "\"");
+                "CREATE ALIAS IF NOT EXISTS " + alias +
+                " FOR \"" + FunctionsMySQL.class.getName() + "." + method + "\"");
         }
     }
 

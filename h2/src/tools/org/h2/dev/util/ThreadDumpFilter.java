@@ -25,10 +25,10 @@ public class ThreadDumpFilter {
     public static void main(String... a) throws Exception {
         String fileName = a[0];
         LineNumberReader in = new LineNumberReader(
-                new BufferedReader(new FileReader(fileName)));
+            new BufferedReader(new FileReader(fileName)));
         PrintWriter writer = new PrintWriter(new BufferedWriter(
-                new FileWriter(fileName + ".filtered.txt")));
-        for (String s; (s = in.readLine()) != null;) {
+                    new FileWriter(fileName + ".filtered.txt")));
+        for (String s; (s = in.readLine()) != null; ) {
             if (s.startsWith("Full thread")) {
                 do {
                     writer.println(s);

@@ -104,7 +104,7 @@ public class DbUpgrade {
     private static Connection connectWithOldVersion(String url, Properties info)
     throws SQLException {
         url = "jdbc:h2v1_1:" + url.substring("jdbc:h2:".length()) +
-              ";IGNORE_UNKNOWN_SETTINGS=TRUE";
+                ";IGNORE_UNKNOWN_SETTINGS=TRUE";
         return DriverManager.getConnection(url, info);
     }
 
@@ -122,12 +122,12 @@ public class DbUpgrade {
             if (scriptInTempDir) {
                 new File(Utils.getProperty("java.io.tmpdir", ".")).mkdirs();
                 script = File.createTempFile(
-                                 "h2dbmigration", "backup.sql").getAbsolutePath();
+                    "h2dbmigration", "backup.sql").getAbsolutePath();
             } else {
                 script = name + ".script.sql";
             }
             String oldUrl = "jdbc:h2v1_1:" + name +
-                            ";UNDO_LOG=0;LOG=0;LOCK_MODE=0";
+                    ";UNDO_LOG=0;LOG=0;LOCK_MODE=0";
             String cipher = ci.getProperty("CIPHER", null);
             if (cipher != null) {
                 oldUrl += ";CIPHER=" + cipher;
@@ -137,7 +137,7 @@ public class DbUpgrade {
             String uuid = UUID.randomUUID().toString();
             if (cipher != null) {
                 stat.execute("script to '" + script +
-                             "' cipher aes password '" + uuid + "' --hide--");
+                        "' cipher aes password '" + uuid + "' --hide--");
             } else {
                 stat.execute("script to '" + script + "'");
             }
@@ -152,7 +152,7 @@ public class DbUpgrade {
             stat = conn.createStatement();
             if (cipher != null) {
                 stat.execute("runscript from '" + script +
-                             "' cipher aes password '" + uuid + "' --hide--");
+                        "' cipher aes password '" + uuid + "' --hide--");
             } else {
                 stat.execute("runscript from '" + script + "'");
             }

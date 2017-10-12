@@ -144,7 +144,7 @@ public class WeakIdentityHashMap<K, V> implements Map<K, V> {
 
     @SuppressWarnings("unchecked")
     private void delete(int index) {
-        keys[index] = (WeakReference<K>) DELETED_KEY;
+        keys[index] = (WeakReference<K>)DELETED_KEY;
         values[index] = null;
         deletedCount++;
         size--;

@@ -59,7 +59,7 @@ public class ValueDecimal extends Value {
             throw new IllegalArgumentException("null");
         } else if (!value.getClass().equals(BigDecimal.class)) {
             throw DbException.get(ErrorCode.INVALID_CLASS_2,
-                                  BigDecimal.class.getName(), value.getClass().getName());
+                          BigDecimal.class.getName(), value.getClass().getName());
         }
         this.value = value;
     }
@@ -94,8 +94,8 @@ public class ValueDecimal extends Value {
             throw DbException.get(ErrorCode.DIVISION_BY_ZERO_1, getSQL());
         }
         BigDecimal bd = value.divide(dec.value,
-                                     value.scale() + DIVIDE_SCALE_ADD,
-                                     BigDecimal.ROUND_HALF_DOWN);
+                value.scale() + DIVIDE_SCALE_ADD,
+                BigDecimal.ROUND_HALF_DOWN);
         if (bd.signum() == 0) {
             bd = BigDecimal.ZERO;
         } else if (bd.scale() > 0) {
@@ -215,8 +215,8 @@ public class ValueDecimal extends Value {
             return get(BigDecimal.valueOf(value.doubleValue()));
         }
         throw DbException.get(
-                ErrorCode.NUMERIC_VALUE_OUT_OF_RANGE_1,
-                Long.toString(precision));
+                  ErrorCode.NUMERIC_VALUE_OUT_OF_RANGE_1,
+                  Long.toString(precision));
     }
 
     /**

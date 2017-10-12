@@ -55,8 +55,8 @@ public class CheckJavadoc {
             }
             if (foundJava && !foundPackageHtml) {
                 System.out.println(
-                        "No package.html file, but a Java file found at: "
-                        + file.getAbsolutePath());
+                    "No package.html file, but a Java file found at: "
+                    + file.getAbsolutePath());
                 errorCount++;
             }
         } else {
@@ -102,7 +102,7 @@ public class CheckJavadoc {
                         && !line.trim().startsWith("* http://")
                         && !line.trim().startsWith("* https://")) {
                     System.out.println("Long line: " + file.getAbsolutePath()
-                                       + " (" + file.getName() + ":" + lineNumber + ")");
+                            + " (" + file.getName() + ":" + lineNumber + ")");
                     errorCount++;
                 }
                 if (line.endsWith("*/")) {
@@ -114,12 +114,12 @@ public class CheckJavadoc {
                         && !line.trim().startsWith("// http://")
                         && !line.trim().startsWith("// https://")) {
                     System.out.println("Long line: " + file.getAbsolutePath()
-                                       + " (" + file.getName() + ":" + lineNumber + ")");
+                            + " (" + file.getName() + ":" + lineNumber + ")");
                     errorCount++;
                 }
             } else if (!inComment && rawLine.length() > MAX_SOURCE_LINE_SIZE) {
                 System.out.println("Long line: " + file.getAbsolutePath()
-                                   + " (" + file.getName() + ":" + lineNumber + ")");
+                        + " (" + file.getName() + ":" + lineNumber + ")");
                 errorCount++;
             }
             lineNumber++;

@@ -30,7 +30,7 @@ public class TreeIndex extends BaseIndex {
     private boolean closed;
 
     public TreeIndex(RegularTable table, int id, String indexName,
-                     IndexColumn[] columns, IndexType indexType) {
+            IndexColumn[] columns, IndexType indexType) {
         initBaseIndex(table, id, indexName, columns, indexType);
         tableData = table;
         if (!database.isStarting()) {
@@ -165,7 +165,7 @@ public class TreeIndex extends BaseIndex {
         } else {
             TreeNode d = x;
             x = x.left;
-            for (TreeNode temp = x; (temp = temp.right) != null;) {
+            for (TreeNode temp = x; (temp = temp.right) != null; ) {
                 x = temp;
             }
             // x will be replaced with n later
@@ -321,9 +321,9 @@ public class TreeIndex extends BaseIndex {
 
     @Override
     public double getCost(Session session, int[] masks, TableFilter[] filters, int filter,
-                          SortOrder sortOrder, HashSet<Column> allColumnsSet) {
+            SortOrder sortOrder, HashSet<Column> allColumnsSet) {
         return getCostRangeIndex(masks, tableData.getRowCountApproximation(),
-                                 filters, filter, sortOrder, false, allColumnsSet);
+                       filters, filter, sortOrder, false, allColumnsSet);
     }
 
     @Override

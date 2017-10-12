@@ -21,7 +21,7 @@ public class CompareModeDefault extends CompareMode {
     private final SmallLRUCache<String, CollationKey> collationKeys;
 
     protected CompareModeDefault(String name, int strength,
-                                 boolean binaryUnsigned) {
+            boolean binaryUnsigned) {
         super(name, strength, binaryUnsigned);
         collator = CompareMode.getCollator(name);
         if (collator == null) {
@@ -56,9 +56,9 @@ public class CompareModeDefault extends CompareMode {
 
     @Override
     public boolean equalsChars(String a, int ai, String b, int bi,
-                               boolean ignoreCase) {
+            boolean ignoreCase) {
         return compareString(a.substring(ai, ai + 1), b.substring(bi, bi + 1),
-                             ignoreCase) == 0;
+                       ignoreCase) == 0;
     }
 
     private CollationKey getKey(String a) {

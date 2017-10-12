@@ -141,7 +141,7 @@ public class PerfectHash {
     }
 
     private static void generate(Collection<Integer> set, int level,
-                                 boolean minimal, ByteArrayOutputStream out) {
+            boolean minimal, ByteArrayOutputStream out) {
         int size = set.size();
         if (size <= 1) {
             out.write(size);
@@ -155,7 +155,7 @@ public class PerfectHash {
                 // instead use a larger size and remember the position of the
                 // hole (specially for the minimal perfect case), but that's
                 // more complicated.
-                nextOffset:
+nextOffset:
                 for (int offset = 0; offset < OFFSETS; offset++) {
                     int bits = 0;
                     for (int x : set) {

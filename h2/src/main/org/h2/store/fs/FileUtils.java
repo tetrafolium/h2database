@@ -341,9 +341,9 @@ public class FileUtils {
      * @return the name of the created file
      */
     public static String createTempFile(String prefix, String suffix,
-                                        boolean deleteOnExit, boolean inTempDir) throws IOException {
+            boolean deleteOnExit, boolean inTempDir) throws IOException {
         return FilePath.get(prefix).createTempFile(
-                       suffix, deleteOnExit, inTempDir).toString();
+            suffix, deleteOnExit, inTempDir).toString();
     }
 
     /**

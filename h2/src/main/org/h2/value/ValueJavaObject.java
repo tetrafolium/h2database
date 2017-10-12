@@ -38,7 +38,7 @@ public class ValueJavaObject extends ValueBytes {
      * @return the value
      */
     public static ValueJavaObject getNoCopy(Object javaObject, byte[] b,
-                                            DataHandler dataHandler) {
+            DataHandler dataHandler) {
         if (b != null && b.length == 0) {
             return EMPTY;
         }
@@ -111,7 +111,7 @@ public class ValueJavaObject extends ValueBytes {
             if (o1Comparable && o2Comparable &&
                     Utils.haveCommonComparableSuperclass(o1.getClass(), o2.getClass())) {
                 @SuppressWarnings("unchecked")
-                Comparable<Object> c1 = (Comparable<Object>) o1;
+                Comparable<Object> c1 = (Comparable<Object>)o1;
                 return c1.compareTo(o2);
             }
 

@@ -96,7 +96,7 @@ class AggregateDataDefault extends AggregateData {
                 value = v;
             } else {
                 value = ValueBoolean.get(value.getBoolean().booleanValue() &&
-                                         v.getBoolean().booleanValue());
+                        v.getBoolean().booleanValue());
             }
             break;
         case Aggregate.BOOL_OR:
@@ -105,7 +105,7 @@ class AggregateDataDefault extends AggregateData {
                 value = v;
             } else {
                 value = ValueBoolean.get(value.getBoolean().booleanValue() ||
-                                         v.getBoolean().booleanValue());
+                        v.getBoolean().booleanValue());
             }
             break;
         case Aggregate.BIT_AND:

@@ -298,7 +298,7 @@ public final class DataUtils {
      * @param len the number of characters
      */
     public static void writeStringData(ByteBuffer buff,
-                                       String s, int len) {
+            String s, int len) {
         for (int i = 0; i < len; i++) {
             int c = s.charAt(i);
             if (c < 0x80) {
@@ -329,7 +329,7 @@ public final class DataUtils {
                 chars[i] = (char) x;
             } else if (x >= 0xe0) {
                 chars[i] = (char) (((x & 0xf) << 12)
-                                   + ((buff.get() & 0x3f) << 6) + (buff.get() & 0x3f));
+                        + ((buff.get() & 0x3f) << 6) + (buff.get() & 0x3f));
             } else {
                 chars[i] = (char) (((x & 0x1f) << 6) + (buff.get() & 0x3f));
             }
@@ -375,13 +375,13 @@ public final class DataUtils {
      * @param gapIndex the index of the gap
      */
     public static void copyWithGap(Object src, Object dst, int oldSize,
-                                   int gapIndex) {
+            int gapIndex) {
         if (gapIndex > 0) {
             System.arraycopy(src, 0, dst, 0, gapIndex);
         }
         if (gapIndex < oldSize) {
             System.arraycopy(src, gapIndex, dst, gapIndex + 1, oldSize
-                             - gapIndex);
+                    - gapIndex);
         }
     }
 
@@ -394,13 +394,13 @@ public final class DataUtils {
      * @param removeIndex the index of the entry to remove
      */
     public static void copyExcept(Object src, Object dst, int oldSize,
-                                  int removeIndex) {
+            int removeIndex) {
         if (removeIndex > 0 && oldSize > 0) {
             System.arraycopy(src, 0, dst, 0, removeIndex);
         }
         if (removeIndex < oldSize) {
             System.arraycopy(src, removeIndex + 1, dst, removeIndex, oldSize
-                             - removeIndex - 1);
+                    - removeIndex - 1);
         }
     }
 
@@ -431,10 +431,10 @@ public final class DataUtils {
                 size = -1;
             }
             throw newIllegalStateException(
-                    ERROR_READING_FAILED,
-                    "Reading from {0} failed; file length {1} " +
-                    "read length {2} at {3}",
-                    file, size, dst.remaining(), pos, e);
+                      ERROR_READING_FAILED,
+                      "Reading from {0} failed; file length {1} " +
+                      "read length {2} at {3}",
+                      file, size, dst.remaining(), pos, e);
         }
     }
 
@@ -454,9 +454,9 @@ public final class DataUtils {
             } while (src.remaining() > 0);
         } catch (IOException e) {
             throw newIllegalStateException(
-                    ERROR_WRITING_FAILED,
-                    "Writing to {0} failed; length {1} at {2}",
-                    file, src.remaining(), pos, e);
+                      ERROR_WRITING_FAILED,
+                      "Writing to {0} failed; length {1} at {2}",
+                      file, src.remaining(), pos, e);
         }
     }
 
@@ -550,7 +550,7 @@ public final class DataUtils {
      * @return the position
      */
     public static long getPagePos(int chunkId, int offset,
-                                  int length, int type) {
+            int length, int type) {
         long pos = (long) chunkId << 38;
         pos |= (long) offset << 6;
         pos |= encodeLength(length) << 1;
@@ -578,7 +578,7 @@ public final class DataUtils {
      * @return the string builder
      */
     public static StringBuilder appendMap(StringBuilder buff,
-                                          HashMap<String, ?> map) {
+            HashMap<String, ?> map) {
         ArrayList<String> list = New.arrayList(map.keySet());
         Collections.sort(list);
         for (String k : list) {
@@ -633,12 +633,12 @@ public final class DataUtils {
      */
     public static HashMap<String, String> parseMap(String s) {
         HashMap<String, String> map = New.hashMap();
-        for (int i = 0, size = s.length(); i < size;) {
+        for (int i = 0, size = s.length(); i < size; ) {
             int startKey = i;
             i = s.indexOf(':', i);
             if (i < 0) {
                 throw DataUtils.newIllegalStateException(
-                        DataUtils.ERROR_FILE_CORRUPT, "Not a map: {0}", s);
+                          DataUtils.ERROR_FILE_CORRUPT, "Not a map: {0}", s);
             }
             String key = s.substring(startKey, i++);
             StringBuilder buff = new StringBuilder();
@@ -652,8 +652,8 @@ public final class DataUtils {
                         if (c == '\\') {
                             if (i == size) {
                                 throw DataUtils.newIllegalStateException(
-                                        DataUtils.ERROR_FILE_CORRUPT,
-                                        "Not a map: {0}", s);
+                                          DataUtils.ERROR_FILE_CORRUPT,
+                                          "Not a map: {0}", s);
                             }
                             c = s.charAt(i++);
                         } else if (c == '\"') {
@@ -682,7 +682,7 @@ public final class DataUtils {
         int i = 0, evenLength = length / 2 * 2;
         while (i < evenLength) {
             // reduce after 360 words (each word is two bytes)
-            for (int end = Math.min(i + 720, evenLength); i < end;) {
+            for (int end = Math.min(i + 720, evenLength); i < end; ) {
                 int x = ((bytes[i++] & 0xff) << 8) | (bytes[i++] & 0xff);
                 s2 += s1 += x;
             }
@@ -708,7 +708,7 @@ public final class DataUtils {
      * @throws IllegalArgumentException if the argument is invalid
      */
     public static void checkArgument(boolean test, String message,
-                                     Object... arguments) {
+            Object... arguments) {
         if (!test) {
             throw newIllegalArgumentException(message, arguments);
         }
@@ -722,10 +722,10 @@ public final class DataUtils {
      * @return the exception
      */
     public static IllegalArgumentException newIllegalArgumentException(
-            String message, Object... arguments) {
+        String message, Object... arguments) {
         return initCause(new IllegalArgumentException(
-                                 formatMessage(0, message, arguments)),
-                         arguments);
+                           formatMessage(0, message, arguments)),
+                       arguments);
     }
 
     /**
@@ -748,10 +748,10 @@ public final class DataUtils {
      * @return the exception
      */
     public static IllegalStateException newIllegalStateException(
-            int errorCode, String message, Object... arguments) {
+        int errorCode, String message, Object... arguments) {
         return initCause(new IllegalStateException(
-                                 formatMessage(errorCode, message, arguments)),
-                         arguments);
+                           formatMessage(errorCode, message, arguments)),
+                       arguments);
     }
 
     private static <T extends Exception> T initCause(T e, Object... arguments) {
@@ -774,7 +774,7 @@ public final class DataUtils {
      * @return the formatted message
      */
     public static String formatMessage(int errorCode, String message,
-                                       Object... arguments) {
+            Object... arguments) {
         // convert arguments to strings, to avoid locale specific formatting
         arguments = arguments.clone();
         for (int i = 0; i < arguments.length; i++) {
@@ -850,7 +850,7 @@ public final class DataUtils {
      * @throws IllegalStateException if parsing fails
      */
     public static long readHexLong(Map<String, ? extends Object> map,
-                                   String key, long defaultValue) {
+            String key, long defaultValue) {
         Object v = map.get(key);
         if (v == null) {
             return defaultValue;
@@ -861,7 +861,7 @@ public final class DataUtils {
             return parseHexLong((String) v);
         } catch (NumberFormatException e) {
             throw newIllegalStateException(ERROR_FILE_CORRUPT,
-                                           "Error parsing the value {0}", v, e);
+                          "Error parsing the value {0}", v, e);
         }
     }
 
@@ -883,7 +883,7 @@ public final class DataUtils {
             return Long.parseLong(x, 16);
         } catch (NumberFormatException e) {
             throw newIllegalStateException(ERROR_FILE_CORRUPT,
-                                           "Error parsing the value {0}", x, e);
+                          "Error parsing the value {0}", x, e);
         }
     }
 
@@ -901,7 +901,7 @@ public final class DataUtils {
             return (int) Long.parseLong(x, 16);
         } catch (NumberFormatException e) {
             throw newIllegalStateException(ERROR_FILE_CORRUPT,
-                                           "Error parsing the value {0}", x, e);
+                          "Error parsing the value {0}", x, e);
         }
     }
 
@@ -915,7 +915,7 @@ public final class DataUtils {
      * @throws IllegalStateException if parsing fails
      */
     public static int readHexInt(HashMap<String, ? extends Object> map,
-                                 String key, int defaultValue) {
+            String key, int defaultValue) {
         Object v = map.get(key);
         if (v == null) {
             return defaultValue;
@@ -927,7 +927,7 @@ public final class DataUtils {
             return (int) Long.parseLong((String) v, 16);
         } catch (NumberFormatException e) {
             throw newIllegalStateException(ERROR_FILE_CORRUPT,
-                                           "Error parsing the value {0}", v, e);
+                          "Error parsing the value {0}", v, e);
         }
     }
 
@@ -960,7 +960,7 @@ public final class DataUtils {
         @Override
         public V setValue(V value) {
             throw DataUtils.newUnsupportedOperationException(
-                    "Updating the value is not supported");
+                      "Updating the value is not supported");
         }
 
     }

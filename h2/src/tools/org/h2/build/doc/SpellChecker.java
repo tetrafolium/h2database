@@ -28,18 +28,15 @@ public class SpellChecker {
 
     private static final String[] SUFFIX = { "html", "java", "sql", "txt",
                                              "xml", "jsp", "css", "bat", "csv", "xml", "js", "Driver", "Processor",
-                                             "properties", "task", "MF", "mf", "sh", ""
-                                           };
+                                             "properties", "task", "MF", "mf", "sh", ""};
     private static final String[] IGNORE = { "dev", "nsi", "gif", "png", "odg",
                                              "ico", "sxd", "zip", "bz2", "rc", "layout", "res", "dll", "jar",
-                                             "svg", "prefs", "prop", "iml"
-                                           };
+                                             "svg", "prefs", "prop", "iml"};
     private static final String DELIMITERS =
             " \n.();-\"=,*/{}_<>+\r:'@[]&\\!#|?$^%~`\t";
     private static final String PREFIX_IGNORE = "abc";
     private static final String[] IGNORE_FILES = { "mainWeb.html",
-                                                   "pg_catalog.sql"
-                                                 };
+                                                   "pg_catalog.sql"};
 
     // These are public so we can set them during development testing
 
@@ -157,7 +154,7 @@ public class SpellChecker {
             }
             if (!ok) {
                 throw new IOException("Unsupported suffix: " +
-                                      suffix + " for file: " + fileName);
+                              suffix + " for file: " + fileName);
             }
             String text = new String(BuildBase.readFile(file));
             if (fileName.endsWith("dictionary.txt")) {
@@ -244,7 +241,7 @@ public class SpellChecker {
                 token = token.substring(i);
                 i = 1;
             } else if (Character.isUpperCase(charLeft)
-                       && Character.isLowerCase(charRight)) {
+                    && Character.isLowerCase(charRight)) {
                 scanToken(notFound, token.substring(0, i - 1));
                 token = token.substring(i - 1);
                 i = 1;

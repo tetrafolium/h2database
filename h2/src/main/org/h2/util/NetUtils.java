@@ -67,7 +67,7 @@ public class NetUtils {
      * @return the socket
      */
     public static Socket createSocket(String server, int defaultPort,
-                                      boolean ssl) throws IOException {
+            boolean ssl) throws IOException {
         int port = defaultPort;
         // IPv6: RFC 2732 format is '[a:b:c:d:e:f:g:h]' or
         // '[a:b:c:d:e:f:g:h]:port'
@@ -101,7 +101,7 @@ public class NetUtils {
                 }
                 Socket socket = new Socket();
                 socket.connect(new InetSocketAddress(address, port),
-                               SysProperties.SOCKET_CONNECT_TIMEOUT);
+                        SysProperties.SOCKET_CONNECT_TIMEOUT);
                 return socket;
             } catch (IOException e) {
                 if (System.nanoTime() - start >=
@@ -178,7 +178,7 @@ public class NetUtils {
             return new ServerSocket(port, 0, bindAddress);
         } catch (BindException be) {
             throw DbException.get(ErrorCode.EXCEPTION_OPENING_PORT_2,
-                                  be, "" + port, be.toString());
+                          be, "" + port, be.toString());
         } catch (IOException e) {
             throw DbException.convertIOException(e, "port: " + port + " ssl: " + ssl);
         }

@@ -146,7 +146,7 @@ class TableDefinition<T> {
         // set isPrimaryKey flag for all field definitions
         for (FieldDefinition fieldDefinition : fieldMap.values()) {
             fieldDefinition.isPrimaryKey = this.primaryKeyColumnNames
-                                           .contains(fieldDefinition.columnName);
+                        .contains(fieldDefinition.columnName);
         }
     }
 
@@ -313,7 +313,7 @@ class TableDefinition<T> {
     void merge(Db db, Object obj) {
         if (primaryKeyColumnNames == null || primaryKeyColumnNames.size() == 0) {
             throw new IllegalStateException("No primary key columns defined "
-                                            + "for table " + obj.getClass() + " - no update possible");
+                          + "for table " + obj.getClass() + " - no update possible");
         }
         SQLStatement stat = new SQLStatement(db);
         StatementBuilder buff = new StatementBuilder("MERGE INTO ");
@@ -349,7 +349,7 @@ class TableDefinition<T> {
     void update(Db db, Object obj) {
         if (primaryKeyColumnNames == null || primaryKeyColumnNames.size() == 0) {
             throw new IllegalStateException("No primary key columns defined "
-                                            + "for table " + obj.getClass() + " - no update possible");
+                          + "for table " + obj.getClass() + " - no update possible");
         }
         SQLStatement stat = new SQLStatement(db);
         StatementBuilder buff = new StatementBuilder("UPDATE ");
@@ -378,8 +378,8 @@ class TableDefinition<T> {
                 }
                 firstCondition = false;
                 query.addConditionToken(
-                        new Condition<>(
-                                aliasValue, value, CompareType.EQUAL));
+                    new Condition<>(
+                        aliasValue, value, CompareType.EQUAL));
             }
         }
         stat.setSQL(buff.toString());
@@ -391,7 +391,7 @@ class TableDefinition<T> {
     void delete(Db db, Object obj) {
         if (primaryKeyColumnNames == null || primaryKeyColumnNames.size() == 0) {
             throw new IllegalStateException("No primary key columns defined "
-                                            + "for table " + obj.getClass() + " - no update possible");
+                          + "for table " + obj.getClass() + " - no update possible");
         }
         SQLStatement stat = new SQLStatement(db);
         StatementBuilder buff = new StatementBuilder("DELETE FROM ");
@@ -409,8 +409,8 @@ class TableDefinition<T> {
                 }
                 firstCondition = false;
                 query.addConditionToken(
-                        new Condition<>(
-                                aliasValue, value, CompareType.EQUAL));
+                    new Condition<>(
+                        aliasValue, value, CompareType.EQUAL));
             }
         }
         stat.setSQL(buff.toString());
@@ -590,7 +590,7 @@ class TableDefinition<T> {
     }
 
     void initSelectObject(SelectTable<T> table, Object obj,
-                          Map<Object, SelectColumn<T>> map) {
+            Map<Object, SelectColumn<T>> map) {
         for (FieldDefinition def : fields) {
             def.initWithNewObject(obj);
             SelectColumn<T> column = new SelectColumn<>(table, def);

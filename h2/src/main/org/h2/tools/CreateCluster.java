@@ -96,12 +96,12 @@ public class CreateCluster extends Tool {
      * @param serverList the server list
      */
     public void execute(String urlSource, String urlTarget,
-                        String user, String password, String serverList) throws SQLException {
+            String user, String password, String serverList) throws SQLException {
         process(urlSource, urlTarget, user, password, serverList);
     }
 
     private void process(String urlSource, String urlTarget,
-                         String user, String password, String serverList) throws SQLException {
+            String user, String password, String serverList) throws SQLException {
         Connection connSource = null, connTarget = null;
         Statement statSource = null, statTarget = null;
         PipedReader pipeReader = null;
@@ -114,8 +114,8 @@ public class CreateCluster extends Tool {
             boolean exists = true;
             try {
                 connTarget = DriverManager.getConnection(urlTarget +
-                             ";IFEXISTS=TRUE;CLUSTER=" + Constants.CLUSTERING_ENABLED,
-                             user, password);
+                        ";IFEXISTS=TRUE;CLUSTER=" + Constants.CLUSTERING_ENABLED,
+                        user, password);
                 Statement stat = connTarget.createStatement();
                 stat.execute("DROP ALL OBJECTS DELETE FILES");
                 stat.close();
@@ -131,14 +131,14 @@ public class CreateCluster extends Tool {
             }
             if (exists) {
                 throw new SQLException(
-                        "Target database must not yet exist. Please delete it first: " +
-                        urlTarget);
+                          "Target database must not yet exist. Please delete it first: " +
+                          urlTarget);
             }
 
             // use cluster='' so connecting is possible
             // even if the cluster is enabled
             connSource = DriverManager.getConnection(urlSource +
-                         ";CLUSTER=''", user, password);
+                    ";CLUSTER=''", user, password);
             statSource = connSource.createStatement();
 
             // enable the exclusive mode and close other connections,
@@ -161,14 +161,14 @@ public class CreateCluster extends Tool {
 
                 // Delete the target database first.
                 connTarget = DriverManager.getConnection(
-                                     urlTarget + ";CLUSTER=''", user, password);
+                    urlTarget + ";CLUSTER=''", user, password);
                 statTarget = connTarget.createStatement();
                 statTarget.execute("DROP ALL OBJECTS DELETE FILES");
                 connTarget.close();
 
 
                 new Thread(
-                new Runnable() {
+                    new Runnable() {
                     public void run() {
                         try {
                             while (rs.next()) {
@@ -183,7 +183,7 @@ public class CreateCluster extends Tool {
                         }
                     }
                 }
-                ).start();
+                    ).start();
 
                 // Read data from pipe reader, restore on target.
                 connTarget = DriverManager.getConnection(urlTarget, user, password);

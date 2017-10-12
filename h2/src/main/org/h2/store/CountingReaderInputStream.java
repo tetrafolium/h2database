@@ -26,8 +26,8 @@ public class CountingReaderInputStream extends InputStream {
             CharBuffer.allocate(Constants.IO_BUFFER_SIZE);
 
     private final CharsetEncoder encoder = Constants.UTF8.newEncoder().
-                                           onMalformedInput(CodingErrorAction.REPLACE).
-                                           onUnmappableCharacter(CodingErrorAction.REPLACE);
+            onMalformedInput(CodingErrorAction.REPLACE).
+            onUnmappableCharacter(CodingErrorAction.REPLACE);
 
     private ByteBuffer byteBuffer = ByteBuffer.allocate(0);
     private long length;
@@ -65,7 +65,7 @@ public class CountingReaderInputStream extends InputStream {
 
     private void fillBuffer() throws IOException {
         int len = (int) Math.min(charBuffer.capacity() - charBuffer.position(),
-                                 remaining);
+                remaining);
         if (len > 0) {
             len = reader.read(charBuffer.array(), charBuffer.position(), len);
         }

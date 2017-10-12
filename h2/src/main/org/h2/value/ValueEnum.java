@@ -39,10 +39,10 @@ public class ValueEnum extends ValueEnumBase {
             throw DbException.get(ErrorCode.ENUM_EMPTY);
         case DUPLICATE:
             throw DbException.get(ErrorCode.ENUM_DUPLICATE,
-                                  toString(enumerators));
+                          toString(enumerators));
         default:
             throw DbException.get(ErrorCode.INVALID_VALUE_2,
-                                  toString(enumerators));
+                          toString(enumerators));
         }
     }
 
@@ -51,7 +51,7 @@ public class ValueEnum extends ValueEnumBase {
 
         if (validate(enumerators, value) != Validation.VALID) {
             throw DbException.get(ErrorCode.ENUM_VALUE_NOT_PERMITTED,
-                                  toString(enumerators), value.toString());
+                          toString(enumerators), value.toString());
         }
     }
 

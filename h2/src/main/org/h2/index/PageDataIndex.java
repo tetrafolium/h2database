@@ -57,7 +57,7 @@ public class PageDataIndex extends PageIndex {
     private final boolean multiVersion;
 
     public PageDataIndex(RegularTable table, int id, IndexColumn[] columns,
-                         IndexType indexType, boolean create, Session session) {
+            IndexType indexType, boolean create, Session session) {
         initBaseIndex(table, id, table.getName() + "_DATA", columns, indexType);
         this.multiVersion = database.isMultiVersion();
 
@@ -218,7 +218,7 @@ public class PageDataIndex extends PageIndex {
             return (PageDataOverflow) p;
         }
         throw DbException.get(ErrorCode.FILE_CORRUPTED_1,
-                              p == null ? "null" : p.toString());
+                      p == null ? "null" : p.toString());
     }
 
     /**
@@ -243,7 +243,7 @@ public class PageDataIndex extends PageIndex {
         if (parent != -1) {
             if (p.getParentPageId() != parent) {
                 throw DbException.throwInternalError(p +
-                                                     " parent " + p.getParentPageId() + " expected " + parent);
+                              " parent " + p.getParentPageId() + " expected " + parent);
             }
         }
         return p;
@@ -310,10 +310,10 @@ public class PageDataIndex extends PageIndex {
 
     @Override
     public double getCost(Session session, int[] masks,
-                          TableFilter[] filters, int filter, SortOrder sortOrder,
-                          HashSet<Column> allColumnsSet) {
+            TableFilter[] filters, int filter, SortOrder sortOrder,
+            HashSet<Column> allColumnsSet) {
         long cost = 10 * (tableData.getRowCountApproximation() +
-                          Constants.COST_ROW_OFFSET);
+                Constants.COST_ROW_OFFSET);
         return cost;
     }
 
@@ -511,7 +511,7 @@ public class PageDataIndex extends PageIndex {
                 delta.remove(row);
             }
             incrementRowCount(row.getSessionId(),
-                              operation == UndoLogRecord.DELETE ? 1 : -1);
+                    operation == UndoLogRecord.DELETE ? 1 : -1);
         }
     }
 
@@ -580,7 +580,7 @@ public class PageDataIndex extends PageIndex {
             memoryPerPage += (x - memoryPerPage) / ++memoryCount;
         } else {
             memoryPerPage += (x > memoryPerPage ? 1 : -1) +
-                             ((x - memoryPerPage) / Constants.MEMORY_FACTOR);
+                    ((x - memoryPerPage) / Constants.MEMORY_FACTOR);
         }
     }
 

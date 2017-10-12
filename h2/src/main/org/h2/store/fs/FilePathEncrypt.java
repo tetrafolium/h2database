@@ -88,14 +88,14 @@ public class FilePathEncrypt extends FilePathWrapper {
     private String[] parse(String fileName) {
         if (!fileName.startsWith(getScheme())) {
             throw new IllegalArgumentException(fileName +
-                                               " doesn't start with " + getScheme());
+                          " doesn't start with " + getScheme());
         }
         fileName = fileName.substring(getScheme().length() + 1);
         int idx = fileName.indexOf(':');
         String password;
         if (idx < 0) {
             throw new IllegalArgumentException(fileName +
-                                               " doesn't contain encryption algorithm and password");
+                          " doesn't contain encryption algorithm and password");
         }
         password = fileName.substring(0, idx);
         fileName = fileName.substring(idx + 1);
@@ -205,7 +205,7 @@ public class FilePathEncrypt extends FilePathWrapper {
             }
             AES cipher = new AES();
             cipher.setKey(SHA256.getPBKDF2(
-                                  encryptionKey, salt, HASH_ITERATIONS, 16));
+                        encryptionKey, salt, HASH_ITERATIONS, 16));
             encryptionKey = null;
             xts = new XTS(cipher);
         }
@@ -345,7 +345,7 @@ public class FilePathEncrypt extends FilePathWrapper {
         }
 
         private static void writeFully(FileChannel file, long pos,
-                                       ByteBuffer src) throws IOException {
+                ByteBuffer src) throws IOException {
             int off = 0;
             do {
                 int len = file.write(src, pos + off);

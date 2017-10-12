@@ -111,7 +111,7 @@ public class Script extends Tool {
      * @param options2 the options after the file name (may be an empty string)
      */
     public static void process(String url, String user, String password,
-                               String fileName, String options1, String options2) throws SQLException {
+            String fileName, String options1, String options2) throws SQLException {
         Connection conn = null;
         try {
             org.h2.Driver.load();
@@ -132,7 +132,7 @@ public class Script extends Tool {
      * @param options2 the options after the file name
      */
     public static void process(Connection conn,
-                               String fileName, String options1, String options2) throws SQLException {
+            String fileName, String options1, String options2) throws SQLException {
 
         try (Statement stat = conn.createStatement()) {
             String sql = "SCRIPT " + options1 + " TO '" + fileName + "' " + options2;

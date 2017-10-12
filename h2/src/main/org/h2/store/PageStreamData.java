@@ -59,7 +59,7 @@ public class PageStreamData extends Page {
      * @return the page
      */
     static PageStreamData create(PageStore store, int pageId, int trunk,
-                                 int logKey) {
+            int logKey) {
         return new PageStreamData(store, pageId, trunk, logKey);
     }
 

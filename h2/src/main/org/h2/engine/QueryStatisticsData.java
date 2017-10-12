@@ -20,7 +20,7 @@ import java.util.Map.Entry;
 public class QueryStatisticsData {
 
     private static final Comparator<QueryEntry> QUERY_ENTRY_COMPARATOR =
-    new Comparator<QueryEntry>() {
+            new Comparator<QueryEntry>() {
         @Override
         public int compare(QueryEntry o1, QueryEntry o2) {
             return (int) Math.signum(o1.lastUpdateTime - o2.lastUpdateTime);
@@ -59,7 +59,7 @@ public class QueryStatisticsData {
      * @param rowCount the query or update row count
      */
     public synchronized void update(String sqlStatement, long executionTimeNanos,
-                                    int rowCount) {
+            int rowCount) {
         QueryEntry entry = map.get(sqlStatement);
         if (entry == null) {
             entry = new QueryEntry(sqlStatement);
@@ -80,7 +80,7 @@ public class QueryStatisticsData {
             // Loop over the map using the set and remove
             // the oldest 1/3 of the entries.
             for (Iterator<Entry<String, QueryEntry>> it =
-                            map.entrySet().iterator(); it.hasNext();) {
+                    map.entrySet().iterator(); it.hasNext(); ) {
                 Entry<String, QueryEntry> mapEntry = it.next();
                 if (oldestSet.contains(mapEntry.getValue())) {
                     it.remove();

@@ -31,7 +31,7 @@ class SelectTable<T> {
         this.alias = alias;
         this.query = query;
         this.outerJoin = outerJoin;
-        aliasDef = (TableDefinition<T>) db.getTableDefinition(alias.getClass());
+        aliasDef = (TableDefinition<T>)db.getTableDefinition(alias.getClass());
         clazz = ClassUtils.getClass(alias);
         as = "T" + asCounter++;
     }

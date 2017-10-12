@@ -29,8 +29,7 @@ public class IntPerfectHash {
      * hash functions are tried for the given size.
      */
     private static final int[] MAX_OFFSETS = { 0, 0, 8, 18, 47, 123, 319, 831, 2162,
-                                               5622, 14617, 38006, 98815
-                                             };
+                                               5622, 14617, 38006, 98815};
 
     /**
      * The output value to split the bucket into many (more than 2) smaller
@@ -156,7 +155,7 @@ public class IntPerfectHash {
      */
     private int getSizeSum(int start, int end) {
         int s = 0;
-        for (int pos = start; pos < end;) {
+        for (int pos = start; pos < end; ) {
             int n = readVarInt(data, pos);
             pos += getVarIntLength(data, pos);
             if (n < 2) {
@@ -171,7 +170,7 @@ public class IntPerfectHash {
     }
 
     private static void writeSizeOffset(ByteStream out, int size,
-                                        int offset) {
+            int offset) {
         writeVarInt(out, SIZE_OFFSETS[size] + offset);
     }
 
@@ -208,12 +207,12 @@ public class IntPerfectHash {
         }
         if (level > 32) {
             throw new IllegalStateException("Too many recursions; " +
-                                            " incorrect universal hash function?");
+                          " incorrect universal hash function?");
         }
         if (size <= MAX_SIZE) {
             int maxOffset = MAX_OFFSETS[size];
             int testSize = size;
-            nextOffset:
+nextOffset:
             for (int offset = 0; offset < maxOffset; offset++) {
                 int bits = 0;
                 for (int i = 0; i < size; i++) {

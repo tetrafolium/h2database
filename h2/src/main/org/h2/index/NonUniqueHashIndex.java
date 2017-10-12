@@ -36,7 +36,7 @@ public class NonUniqueHashIndex extends BaseIndex {
     private long rowCount;
 
     public NonUniqueHashIndex(RegularTable table, int id, String indexName,
-                              IndexColumn[] columns, IndexType indexType) {
+            IndexColumn[] columns, IndexType indexType) {
         initBaseIndex(table, id, indexName, columns, indexType);
         this.indexColumn = columns[0].column.getColumnId();
         this.tableData = table;
@@ -132,8 +132,8 @@ public class NonUniqueHashIndex extends BaseIndex {
 
     @Override
     public double getCost(Session session, int[] masks,
-                          TableFilter[] filters, int filter, SortOrder sortOrder,
-                          HashSet<Column> allColumnsSet) {
+            TableFilter[] filters, int filter, SortOrder sortOrder,
+            HashSet<Column> allColumnsSet) {
         for (Column column : columns) {
             int index = column.getColumnId();
             int mask = masks[index];

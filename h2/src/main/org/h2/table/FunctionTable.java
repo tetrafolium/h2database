@@ -40,7 +40,7 @@ public class FunctionTable extends Table {
     private Value cachedValue;
 
     public FunctionTable(Schema schema, Session session,
-                         Expression functionExpr, FunctionCall function) {
+            Expression functionExpr, FunctionCall function) {
         super(schema, 0, function.getName(), false, true);
         this.functionExpr = functionExpr;
         this.function = function;
@@ -53,7 +53,7 @@ public class FunctionTable extends Table {
         int type = function.getType();
         if (type != Value.RESULT_SET) {
             throw DbException.get(
-                    ErrorCode.FUNCTION_MUST_RETURN_RESULT_SET_1, function.getName());
+                      ErrorCode.FUNCTION_MUST_RETURN_RESULT_SET_1, function.getName());
         }
         Expression[] args = function.getArgs();
         int numParams = args.length;
@@ -63,10 +63,10 @@ public class FunctionTable extends Table {
             columnListArgs[i] = args[i];
         }
         ValueResultSet template = function.getValueForColumnList(
-                                          session, columnListArgs);
+            session, columnListArgs);
         if (template == null) {
             throw DbException.get(
-                    ErrorCode.FUNCTION_MUST_RETURN_RESULT_SET_1, function.getName());
+                      ErrorCode.FUNCTION_MUST_RETURN_RESULT_SET_1, function.getName());
         }
         ResultSet rs = template.getResultSet();
         try {
@@ -75,9 +75,9 @@ public class FunctionTable extends Table {
             Column[] cols = new Column[columnCount];
             for (int i = 0; i < columnCount; i++) {
                 cols[i] = new Column(meta.getColumnName(i + 1),
-                                     DataType.getValueTypeFromResultSet(meta, i + 1),
-                                     meta.getPrecision(i + 1),
-                                     meta.getScale(i + 1), meta.getColumnDisplaySize(i + 1));
+                        DataType.getValueTypeFromResultSet(meta, i + 1),
+                        meta.getPrecision(i + 1),
+                        meta.getScale(i + 1), meta.getColumnDisplaySize(i + 1));
             }
             setColumns(cols);
         } catch (SQLException e) {
@@ -108,8 +108,8 @@ public class FunctionTable extends Table {
 
     @Override
     public Index addIndex(Session session, String indexName, int indexId,
-                          IndexColumn[] cols, IndexType indexType, boolean create,
-                          String indexComment) {
+            IndexColumn[] cols, IndexType indexType, boolean create,
+            String indexComment) {
         throw DbException.getUnsupportedException("ALIAS");
     }
 

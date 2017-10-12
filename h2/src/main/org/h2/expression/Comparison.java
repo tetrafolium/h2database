@@ -116,7 +116,7 @@ public class Comparison extends Condition {
     private Expression right;
 
     public Comparison(Session session, int compareType, Expression left,
-                      Expression right) {
+            Expression right) {
         this.database = session.getDatabase();
         this.left = left;
         this.right = right;
@@ -138,7 +138,7 @@ public class Comparison extends Condition {
             break;
         default:
             sql = left.getSQL() + " " + getCompareOperator(compareType) +
-                  " " + right.getSQL();
+                    " " + right.getSQL();
         }
         return "(" + sql + ")";
     }
@@ -203,12 +203,12 @@ public class Comparison extends Condition {
                     // once.
                     if (constType != resType) {
                         right = ValueExpression.get(r.convertTo(resType,
-                                                                MathUtils.convertLongToInt(left.getPrecision()),
-                                                                session.getDatabase().getMode(), ((ExpressionColumn) left).getColumn()));
+                                MathUtils.convertLongToInt(left.getPrecision()),
+                                session.getDatabase().getMode(), ((ExpressionColumn) left).getColumn()));
                     }
                 } else if (right instanceof Parameter) {
                     ((Parameter) right).setColumn(
-                            ((ExpressionColumn) left).getColumn());
+                        ((ExpressionColumn) left).getColumn());
                 }
             }
         }
@@ -281,7 +281,7 @@ public class Comparison extends Condition {
      *         to true
      */
     static boolean compareNotNull(Database database, Value l, Value r,
-                                  int compareType) {
+            int compareType) {
         boolean result;
         switch (compareType) {
         case EQUAL:
@@ -391,9 +391,9 @@ public class Comparison extends Condition {
                 case IS_NULL:
                     if (session.getDatabase().getSettings().optimizeIsNull) {
                         filter.addIndexCondition(
-                                IndexCondition.get(
-                                        Comparison.EQUAL_NULL_SAFE, l,
-                                        ValueExpression.getNull()));
+                            IndexCondition.get(
+                                Comparison.EQUAL_NULL_SAFE, l,
+                                ValueExpression.getNull()));
                     }
                 }
             }
@@ -451,11 +451,11 @@ public class Comparison extends Condition {
         if (addIndex) {
             if (l != null) {
                 filter.addIndexCondition(
-                        IndexCondition.get(compareType, l, right));
+                    IndexCondition.get(compareType, l, right));
             } else if (r != null) {
                 int compareRev = getReversedCompareType(compareType);
                 filter.addIndexCondition(
-                        IndexCondition.get(compareRev, r, left));
+                    IndexCondition.get(compareRev, r, left));
             }
         }
     }
@@ -565,16 +565,16 @@ public class Comparison extends Condition {
                 Database db = session.getDatabase();
                 if (rc && r2c && l.equals(l2)) {
                     return new ConditionIn(db, left,
-                                           New.arrayList(Arrays.asList(right, other.right)));
+                                   New.arrayList(Arrays.asList(right, other.right)));
                 } else if (rc && l2c && l.equals(r2)) {
                     return new ConditionIn(db, left,
-                                           New.arrayList(Arrays.asList(right, other.left)));
+                                   New.arrayList(Arrays.asList(right, other.left)));
                 } else if (lc && r2c && r.equals(l2)) {
                     return new ConditionIn(db, right,
-                                           New.arrayList(Arrays.asList(left, other.right)));
+                                   New.arrayList(Arrays.asList(left, other.right)));
                 } else if (lc && l2c && r.equals(r2)) {
                     return new ConditionIn(db, right,
-                                           New.arrayList(Arrays.asList(left, other.left)));
+                                   New.arrayList(Arrays.asList(left, other.left)));
                 }
             }
         }

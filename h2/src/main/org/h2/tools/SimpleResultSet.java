@@ -96,7 +96,7 @@ public class SimpleResultSet implements ResultSet, ResultSetMetaData,
     public void addColumn(String name, int sqlType, int precision, int scale) {
         int valueType = DataType.convertSQLTypeToValueType(sqlType);
         addColumn(name, sqlType, DataType.getDataType(valueType).name,
-                  precision, scale);
+                precision, scale);
     }
 
     /**
@@ -110,10 +110,10 @@ public class SimpleResultSet implements ResultSet, ResultSetMetaData,
      * @param scale the scale
      */
     public void addColumn(String name, int sqlType, String sqlTypeName,
-                          int precision, int scale) {
+            int precision, int scale) {
         if (rows != null && rows.size() > 0) {
             throw new IllegalStateException(
-                    "Cannot add a column after adding rows");
+                      "Cannot add a column after adding rows");
         }
         if (name == null) {
             name = "C" + (columns.size() + 1);
@@ -136,7 +136,7 @@ public class SimpleResultSet implements ResultSet, ResultSetMetaData,
     public void addRow(Object... row) {
         if (rows == null) {
             throw new IllegalStateException(
-                    "Cannot add a row when using RowSource");
+                      "Cannot add a row when using RowSource");
         }
         rows.add(row);
     }
@@ -281,7 +281,7 @@ public class SimpleResultSet implements ResultSet, ResultSetMetaData,
             }
         }
         throw DbException.get(ErrorCode.COLUMN_NOT_FOUND_1, columnLabel)
-        .getSQLException();
+              .getSQLException();
     }
 
     /**
@@ -2210,19 +2210,19 @@ public class SimpleResultSet implements ResultSet, ResultSetMetaData,
     private void checkColumnIndex(int columnIndex) throws SQLException {
         if (columnIndex < 1 || columnIndex > columns.size()) {
             throw DbException.getInvalidValueException(
-                    "columnIndex", columnIndex).getSQLException();
+                      "columnIndex", columnIndex).getSQLException();
         }
     }
 
     private Object get(int columnIndex) throws SQLException {
         if (currentRow == null) {
             throw DbException.get(ErrorCode.NO_DATA_AVAILABLE).
-            getSQLException();
+                  getSQLException();
         }
         checkColumnIndex(columnIndex);
         columnIndex--;
         Object o = columnIndex < currentRow.length ?
-                   currentRow[columnIndex] : null;
+                currentRow[columnIndex] : null;
         wasNull = o == null;
         return o;
     }
@@ -2416,7 +2416,7 @@ public class SimpleResultSet implements ResultSet, ResultSetMetaData,
          */
         @Override
         public ResultSet getResultSet(long index, int count,
-                                      Map<String, Class<?>> map) throws SQLException {
+                Map<String, Class<?>> map) throws SQLException {
             throw getUnsupportedException();
         }
 

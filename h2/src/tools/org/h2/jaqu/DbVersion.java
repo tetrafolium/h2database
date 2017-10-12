@@ -12,7 +12,7 @@ import org.h2.jaqu.Table.JQTable;
  * A system table to track database and table versions.
  */
 @JQTable(name = "_jq_versions",
-         primaryKey = "schemaName tableName", memoryTable = true)
+primaryKey = "schemaName tableName", memoryTable = true)
 public class DbVersion {
 
     @JQColumn(name = "schemaName", allowNull = false)

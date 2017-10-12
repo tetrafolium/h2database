@@ -95,7 +95,7 @@ public class JavaFunction extends Expression implements FunctionCall {
         if (functionAlias.getDatabase().getSettings().functionsInSchema ||
                 !functionAlias.getSchema().getName().equals(Constants.SCHEMA_MAIN)) {
             buff.append(
-                    Parser.quoteIdentifier(functionAlias.getSchema().getName()))
+                Parser.quoteIdentifier(functionAlias.getSchema().getName()))
             .append('.');
         }
         buff.append(Parser.quoteIdentifier(functionAlias.getName())).append('(');

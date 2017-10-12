@@ -134,12 +134,12 @@ public class Chunk {
         } catch (Exception e) {
             // there could be various reasons
             throw DataUtils.newIllegalStateException(
-                    DataUtils.ERROR_FILE_CORRUPT,
-                    "File corrupt reading chunk at position {0}", start, e);
+                      DataUtils.ERROR_FILE_CORRUPT,
+                      "File corrupt reading chunk at position {0}", start, e);
         }
         throw DataUtils.newIllegalStateException(
-                DataUtils.ERROR_FILE_CORRUPT,
-                "File corrupt reading chunk at position {0}", start);
+                  DataUtils.ERROR_FILE_CORRUPT,
+                  "File corrupt reading chunk at position {0}", start);
     }
 
     /**
@@ -156,8 +156,8 @@ public class Chunk {
         }
         if (minLength != 0 && buff.position() > minLength) {
             throw DataUtils.newIllegalStateException(
-                    DataUtils.ERROR_INTERNAL,
-                    "Chunk metadata too long");
+                      DataUtils.ERROR_INTERNAL,
+                      "Chunk metadata too long");
         }
         buff.put((byte) '\n');
     }

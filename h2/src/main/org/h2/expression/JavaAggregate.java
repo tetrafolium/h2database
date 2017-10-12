@@ -36,7 +36,7 @@ public class JavaAggregate extends Expression {
     private int lastGroupRowId;
 
     public JavaAggregate(UserAggregate userAggregate, Expression[] args,
-                         Select select) {
+            Select select) {
         this.userAggregate = userAggregate;
         this.args = args;
         this.select = select;

@@ -21,18 +21,16 @@ public class CheckTextFiles {
 
     // must contain "+" otherwise this here counts as well
     private static final String COPYRIGHT = "Copyright 2004-2014 " +
-                                            "H2 Group.";
+            "H2 Group.";
     private static final String LICENSE = "Multiple-Licensed " +
-                                          "under the MPL 2.0";
+            "under the MPL 2.0";
 
     private static final String[] SUFFIX_CHECK = { "html", "jsp", "js", "css",
                                                    "bat", "nsi", "java", "txt", "properties", "sql", "xml", "csv",
-                                                   "Driver", "Processor", "prefs"
-                                                 };
+                                                   "Driver", "Processor", "prefs"};
     private static final String[] SUFFIX_IGNORE = { "gif", "png", "odg", "ico",
                                                     "sxd", "layout", "res", "win", "jar", "task", "svg", "MF", "mf",
-                                                    "sh", "DS_Store", "prop"
-                                                  };
+                                                    "sh", "DS_Store", "prop"};
     private static final String[] SUFFIX_CRLF = { "bat" };
 
     private static final boolean ALLOW_TAB = false;
@@ -96,7 +94,7 @@ public class CheckTextFiles {
 //            }
             if (name.endsWith(".utf8.txt") ||
                     (name.startsWith("_docs_") &&
-                     name.endsWith(".properties"))) {
+                    name.endsWith(".properties"))) {
                 check = false;
                 ignore = true;
             }
@@ -114,7 +112,7 @@ public class CheckTextFiles {
             }
             if (ignore == check) {
                 throw new RuntimeException("Unknown suffix: " + suffix
-                                           + " for file: " + file.getAbsolutePath());
+                              + " for file: " + file.getAbsolutePath());
             }
             useCRLF = false;
             for (String s : SUFFIX_CRLF) {
@@ -175,7 +173,7 @@ public class CheckTextFiles {
             boolean isWhitespace = Character.isWhitespace(ch);
             if (ch > 127) {
                 fail(file, "contains character " + (int) ch + " at "
-                     + new String(data, i - 10, 20), line);
+                        + new String(data, i - 10, 20), line);
                 return;
             } else if (ch < 32) {
                 if (ch == '\n') {
@@ -279,7 +277,7 @@ public class CheckTextFiles {
                         int mod = (j - i - 1) & 3;
                         if (mod != 0 && (mod != 1 || data[j] != '*')) {
                             fail(file, "contains wrong number " +
-                                 "of heading spaces: " + (j - i - 1), line);
+                                    "of heading spaces: " + (j - i - 1), line);
                         }
                         break;
                     }
@@ -303,7 +301,7 @@ public class CheckTextFiles {
             }
         }
         System.out.println("FAIL at " + name + " " + error + " "
-                           + file.getAbsolutePath());
+                + file.getAbsolutePath());
         hasError = true;
         if (failOnError) {
             throw new RuntimeException("FAIL");

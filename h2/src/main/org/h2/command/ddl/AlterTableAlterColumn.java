@@ -178,7 +178,7 @@ public class AlterTableAlterColumn extends SchemaCommand {
                 if (column.isAutoIncrement()) {
                     int objId = getObjectId();
                     column.convertAutoIncrementToSequence(session, getSchema(), objId,
-                                                          table.isTemporary());
+                            table.isTemporary());
                 }
             }
             copyData(table);
@@ -187,7 +187,7 @@ public class AlterTableAlterColumn extends SchemaCommand {
         case CommandInterface.ALTER_TABLE_DROP_COLUMN: {
             if (table.getColumns().length - columnsToRemove.size() < 1) {
                 throw DbException.get(ErrorCode.CANNOT_DROP_LAST_COLUMN,
-                                      columnsToRemove.get(0).getSQL());
+                              columnsToRemove.get(0).getSQL());
             }
             table.dropMultipleColumnsConstraintsAndIndexes(session, columnsToRemove);
             copyData(table);
@@ -217,11 +217,11 @@ public class AlterTableAlterColumn extends SchemaCommand {
         }
         HashSet<DbObject> dependencies = New.hashSet();
         ExpressionVisitor visitor = ExpressionVisitor
-                                    .getDependenciesVisitor(dependencies);
+                .getDependenciesVisitor(dependencies);
         defaultExpression.isEverything(visitor);
         if (dependencies.contains(table)) {
             throw DbException.get(ErrorCode.COLUMN_IS_REFERENCED_1,
-                                  defaultExpression.getSQL());
+                          defaultExpression.getSQL());
         }
     }
 
@@ -230,7 +230,7 @@ public class AlterTableAlterColumn extends SchemaCommand {
                 .equals(session.getDatabase().getCluster())
                 && c.isAutoIncrement()) {
             throw DbException.getUnsupportedException(
-                    "CLUSTERING && auto-increment columns");
+                      "CLUSTERING && auto-increment columns");
         }
     }
 
@@ -241,7 +241,7 @@ public class AlterTableAlterColumn extends SchemaCommand {
             } else {
                 int objId = getObjectId();
                 c.convertAutoIncrementToSequence(session, getSchema(), objId,
-                                                 table.isTemporary());
+                        table.isTemporary());
             }
         }
     }
@@ -315,14 +315,14 @@ public class AlterTableAlterColumn extends SchemaCommand {
     }
 
     private Table cloneTableStructure(Table table, Column[] columns, Database db,
-                                      String tempName, ArrayList<Column> newColumns) {
+            String tempName, ArrayList<Column> newColumns) {
         for (Column col : columns) {
             newColumns.add(col.getClone());
         }
         if (type == CommandInterface.ALTER_TABLE_DROP_COLUMN) {
             for (Column removeCol : columnsToRemove) {
                 Column foundCol = null;
-                for (Iterator<Column> it = newColumns.iterator(); it.hasNext();) {
+                for (Iterator<Column> it = newColumns.iterator(); it.hasNext(); ) {
                     Column newCol = it.next();
                     if (newCol.getName() == removeCol.getName()) {
                         foundCol = newCol;
@@ -512,22 +512,22 @@ public class AlterTableAlterColumn extends SchemaCommand {
             IndexType indexType = index.getIndexType();
             if (indexType.isPrimaryKey() || indexType.isHash()) {
                 throw DbException.get(
-                        ErrorCode.COLUMN_IS_PART_OF_INDEX_1, index.getSQL());
+                          ErrorCode.COLUMN_IS_PART_OF_INDEX_1, index.getSQL());
             }
         }
     }
 
     private void checkNoNullValues(Table table) {
         String sql = "SELECT COUNT(*) FROM " +
-                     table.getSQL() + " WHERE " +
-                     oldColumn.getSQL() + " IS NULL";
+                table.getSQL() + " WHERE " +
+                oldColumn.getSQL() + " IS NULL";
         Prepared command = session.prepare(sql);
         ResultInterface result = command.query(0);
         result.next();
         if (result.currentRow()[0].getInt() > 0) {
             throw DbException.get(
-                    ErrorCode.COLUMN_CONTAINS_NULL_VALUES_1,
-                    oldColumn.getSQL());
+                      ErrorCode.COLUMN_CONTAINS_NULL_VALUES_1,
+                      oldColumn.getSQL());
         }
     }
 

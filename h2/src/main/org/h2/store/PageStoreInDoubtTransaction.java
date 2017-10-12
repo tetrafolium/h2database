@@ -27,7 +27,7 @@ public class PageStoreInDoubtTransaction implements InDoubtTransaction {
      * @param transaction the transaction name
      */
     public PageStoreInDoubtTransaction(PageStore store, int sessionId, int pos,
-                                       String transaction) {
+            String transaction) {
         this.store = store;
         this.sessionId = sessionId;
         this.pos = pos;

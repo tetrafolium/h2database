@@ -118,24 +118,24 @@ public class ConcurrentLinkedListWithTail<K> {
     public Iterator<K> iterator() {
         return new Iterator<K>() {
 
-            Entry<K> current = head;
+                   Entry<K> current = head;
 
-            @Override
-            public boolean hasNext() {
-                return current != null;
-            }
+                   @Override
+                   public boolean hasNext() {
+                       return current != null;
+                   }
 
-            @Override
-            public K next() {
-                K x = current.obj;
-                current = current.next;
-                return x;
-            }
+                   @Override
+                   public K next() {
+                       K x = current.obj;
+                       current = current.next;
+                       return x;
+                   }
 
-            @Override
-            public void remove() {
-                throw DataUtils.newUnsupportedOperationException("remove");
-            }
+                   @Override
+                   public void remove() {
+                       throw DataUtils.newUnsupportedOperationException("remove");
+                   }
 
         };
     }

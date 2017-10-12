@@ -119,7 +119,7 @@ public class XMLParser {
 
     private void error(String expected) {
         throw new RuntimeException("Expected: " + expected + " got: "
-                                   + xml.substring(pos, Math.min(pos + 1000, xml.length())));
+                      + xml.substring(pos, Math.min(pos + 1000, xml.length())));
     }
 
     private void read(String chars) {
@@ -344,7 +344,7 @@ public class XMLParser {
                 addAttributeName("", xml.substring(localNameStart, end));
             } else {
                 addAttributeName(xml.substring(start, localNameStart - 1),
-                                 xml.substring(localNameStart, end));
+                        xml.substring(localNameStart, end));
             }
             if (noValue) {
                 noValue = false;

@@ -79,7 +79,7 @@ public class MVTableEngine implements TableEngine {
                 char[] password = new char[key.length / 2];
                 for (int i = 0; i < password.length; i++) {
                     password[i] = (char) (((key[i + i] & 255) << 16) |
-                                          ((key[i + i + 1]) & 255));
+                            ((key[i + i + 1]) & 255));
                 }
                 builder.encryptionKey(password);
             }
@@ -161,8 +161,8 @@ public class MVTableEngine implements TableEngine {
                     store.setReuseSpace(false);
                 }
                 this.transactionStore = new TransactionStore(
-                        store,
-                        new ValueDataType(db.getCompareMode(), db, null));
+                    store,
+                    new ValueDataType(db.getCompareMode(), db, null));
                 transactionStore.init();
             } catch (IllegalStateException e) {
                 throw convertIllegalStateException(e);
@@ -181,21 +181,21 @@ public class MVTableEngine implements TableEngine {
             if (errorCode == DataUtils.ERROR_FILE_CORRUPT) {
                 if (encrypted) {
                     throw DbException.get(
-                            ErrorCode.FILE_ENCRYPTION_ERROR_1,
-                            e, fileName);
+                              ErrorCode.FILE_ENCRYPTION_ERROR_1,
+                              e, fileName);
                 }
             } else if (errorCode == DataUtils.ERROR_FILE_LOCKED) {
                 throw DbException.get(
-                        ErrorCode.DATABASE_ALREADY_OPEN_1,
-                        e, fileName);
+                          ErrorCode.DATABASE_ALREADY_OPEN_1,
+                          e, fileName);
             } else if (errorCode == DataUtils.ERROR_READING_FAILED) {
                 throw DbException.get(
-                        ErrorCode.IO_EXCEPTION_1,
-                        e, fileName);
+                          ErrorCode.IO_EXCEPTION_1,
+                          e, fileName);
             }
             throw DbException.get(
-                    ErrorCode.FILE_CORRUPTED_1,
-                    e, fileName);
+                      ErrorCode.FILE_CORRUPTED_1,
+                      e, fileName);
 
         }
 

@@ -12,12 +12,12 @@ public class TestApp {
 
     /* c:
 
-    int main(int argc, char** argv) {
-    //    org_h2_java_TestApp_main(0);
+       int main(int argc, char** argv) {
+       //    org_h2_java_TestApp_main(0);
         org_h2_java_TestApp_main(ptr<array<ptr<java_lang_String> > >());
-    }
+       }
 
-    */
+     */
 
     /**
      * Run this application.

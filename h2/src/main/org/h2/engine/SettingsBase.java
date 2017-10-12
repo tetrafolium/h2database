@@ -35,7 +35,7 @@ public class SettingsBase {
             return Boolean.parseBoolean(s);
         } catch (NumberFormatException e) {
             throw DbException.get(ErrorCode.DATA_CONVERSION_ERROR_1,
-                                  e, "key:" + key + " value:" + s);
+                          e, "key:" + key + " value:" + s);
         }
     }
 
@@ -52,7 +52,7 @@ public class SettingsBase {
             return Integer.decode(s);
         } catch (NumberFormatException e) {
             throw DbException.get(ErrorCode.DATA_CONVERSION_ERROR_1,
-                                  e, "key:" + key + " value:" + s);
+                          e, "key:" + key + " value:" + s);
         }
     }
 

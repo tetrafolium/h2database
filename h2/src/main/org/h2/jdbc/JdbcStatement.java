@@ -41,7 +41,7 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
     private volatile boolean cancelled;
 
     JdbcStatement(JdbcConnection conn, int id, int resultSetType,
-                  int resultSetConcurrency, boolean closeWithResultSet) {
+            int resultSetConcurrency, boolean closeWithResultSet) {
         this.conn = conn;
         this.session = conn.getSession();
         setTrace(session.getTrace(), TraceObject.STATEMENT, id);
@@ -64,7 +64,7 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
             int id = getNextId(TraceObject.RESULT_SET);
             if (isDebugEnabled()) {
                 debugCodeAssign("ResultSet", TraceObject.RESULT_SET, id,
-                                "executeQuery(" + quote(sql) + ")");
+                        "executeQuery(" + quote(sql) + ")");
             }
             synchronized (session) {
                 checkClosed();
@@ -88,7 +88,7 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
                     command.close();
                 }
                 resultSet = new JdbcResultSet(conn, this, command, result, id,
-                                              closedByResultSet, scrollable, updatable);
+                        closedByResultSet, scrollable, updatable);
             }
             return resultSet;
         } catch (Exception e) {
@@ -186,7 +186,7 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
                         ResultInterface result = command.executeQuery(maxRows, scrollable);
                         lazy = result.isLazy();
                         resultSet = new JdbcResultSet(conn, this, command, result, id,
-                                                      closedByResultSet, scrollable, updatable);
+                                closedByResultSet, scrollable, updatable);
                     } else {
                         returnsResultSet = false;
                         updateCount = command.executeUpdate();

@@ -135,8 +135,7 @@ public class ScriptCommand extends ScriptBase {
 
     private LocalResult createResult() {
         Expression[] expressions = { new ExpressionColumn(
-                    session.getDatabase(), new Column("SCRIPT", Value.STRING))
-        };
+                                         session.getDatabase(), new Column("SCRIPT", Value.STRING))};
         return new LocalResult(session, expressions, 1);
     }
 
@@ -150,7 +149,7 @@ public class ScriptCommand extends ScriptBase {
                 Schema schema = db.findSchema(schemaName);
                 if (schema == null) {
                     throw DbException.get(ErrorCode.SCHEMA_NOT_FOUND_1,
-                                          schemaName);
+                                  schemaName);
                 }
             }
         }
@@ -164,7 +163,7 @@ public class ScriptCommand extends ScriptBase {
             if (settings) {
                 for (Setting setting : db.getAllSettings()) {
                     if (setting.getName().equals(SetTypes.getTypeName(
-                                                         SetTypes.CREATE_BUILD))) {
+                                    SetTypes.CREATE_BUILD))) {
                         // don't add CREATE_BUILD to the script
                         // (it is only set when creating the database)
                         continue;
@@ -194,7 +193,7 @@ public class ScriptCommand extends ScriptBase {
                 add(datatype.getCreateSQL(), false);
             }
             for (SchemaObject obj : db.getAllSchemaObjects(
-                            DbObject.CONSTANT)) {
+                        DbObject.CONSTANT)) {
                 if (excludeSchema(obj.getSchema())) {
                     continue;
                 }
@@ -234,7 +233,7 @@ public class ScriptCommand extends ScriptBase {
                 }
             }
             for (SchemaObject obj : db.getAllSchemaObjects(
-                            DbObject.FUNCTION_ALIAS)) {
+                        DbObject.FUNCTION_ALIAS)) {
                 if (excludeSchema(obj.getSchema())) {
                     continue;
                 }
@@ -250,7 +249,7 @@ public class ScriptCommand extends ScriptBase {
                 add(agg.getCreateSQL(), false);
             }
             for (SchemaObject obj : db.getAllSchemaObjects(
-                            DbObject.SEQUENCE)) {
+                        DbObject.SEQUENCE)) {
                 if (excludeSchema(obj.getSchema())) {
                     continue;
                 }
@@ -293,8 +292,8 @@ public class ScriptCommand extends ScriptBase {
                 if (TableType.TABLE == tableType) {
                     if (table.canGetRowCount()) {
                         String rowcount = "-- " +
-                                          table.getRowCountApproximation() +
-                                          " +/- SELECT COUNT(*) FROM " + table.getSQL();
+                                table.getRowCountApproximation() +
+                                " +/- SELECT COUNT(*) FROM " + table.getSQL();
                         add(rowcount, false);
                     }
                     if (data) {
@@ -318,7 +317,7 @@ public class ScriptCommand extends ScriptBase {
             }
             // Generate CREATE CONSTRAINT ...
             final ArrayList<SchemaObject> constraints = db.getAllSchemaObjects(
-                            DbObject.CONSTRAINT);
+                DbObject.CONSTRAINT);
             Collections.sort(constraints, new Comparator<SchemaObject>() {
                 @Override
                 public int compare(SchemaObject c1, SchemaObject c2) {
@@ -453,15 +452,15 @@ public class ScriptCommand extends ScriptBase {
     private int writeLobStream(Value v) throws IOException {
         if (!tempLobTableCreated) {
             add("CREATE TABLE IF NOT EXISTS SYSTEM_LOB_STREAM" +
-                "(ID INT NOT NULL, PART INT NOT NULL, " +
-                "CDATA VARCHAR, BDATA BINARY)",
-                true);
+                    "(ID INT NOT NULL, PART INT NOT NULL, " +
+                    "CDATA VARCHAR, BDATA BINARY)",
+                    true);
             add("CREATE PRIMARY KEY SYSTEM_LOB_STREAM_PRIMARY_KEY " +
-                "ON SYSTEM_LOB_STREAM(ID, PART)", true);
+                    "ON SYSTEM_LOB_STREAM(ID, PART)", true);
             add("CREATE ALIAS IF NOT EXISTS " + "SYSTEM_COMBINE_CLOB FOR \"" +
-                this.getClass().getName() + ".combineClob\"", true);
+                    this.getClass().getName() + ".combineClob\"", true);
             add("CREATE ALIAS IF NOT EXISTS " + "SYSTEM_COMBINE_BLOB FOR \"" +
-                this.getClass().getName() + ".combineBlob\"", true);
+                    this.getClass().getName() + ".combineBlob\"", true);
             tempLobTableCreated = true;
         }
         int id = nextLobId++;
@@ -472,7 +471,7 @@ public class ScriptCommand extends ScriptBase {
                 for (int i = 0;; i++) {
                     StringBuilder buff = new StringBuilder(lobBlockSize * 2);
                     buff.append("INSERT INTO SYSTEM_LOB_STREAM VALUES(" + id +
-                                ", " + i + ", NULL, '");
+                            ", " + i + ", NULL, '");
                     int len = IOUtils.readFully(input, bytes, lobBlockSize);
                     if (len <= 0) {
                         break;
@@ -525,45 +524,45 @@ public class ScriptCommand extends ScriptBase {
         }
         final ResultSet rs = getLobStream(conn, "BDATA", id);
         return new InputStream() {
-            private InputStream current;
-            private boolean closed;
-            @Override
-            public int read() throws IOException {
-                while (true) {
-                    try {
-                        if (current == null) {
-                            if (closed) {
-                                return -1;
-                            }
-                            if (!rs.next()) {
-                                close();
-                                return -1;
-                            }
-                            current = rs.getBinaryStream(1);
-                            current = new BufferedInputStream(current);
-                        }
-                        int x = current.read();
-                        if (x >= 0) {
-                            return x;
-                        }
-                        current = null;
-                    } catch (SQLException e) {
-                        throw DbException.convertToIOException(e);
-                    }
-                }
-            }
-            @Override
-            public void close() throws IOException {
-                if (closed) {
-                    return;
-                }
-                closed = true;
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw DbException.convertToIOException(e);
-                }
-            }
+                   private InputStream current;
+                   private boolean closed;
+                   @Override
+                   public int read() throws IOException {
+                       while (true) {
+                           try {
+                               if (current == null) {
+                                   if (closed) {
+                                       return -1;
+                                   }
+                                   if (!rs.next()) {
+                                       close();
+                                       return -1;
+                                   }
+                                   current = rs.getBinaryStream(1);
+                                   current = new BufferedInputStream(current);
+                               }
+                               int x = current.read();
+                               if (x >= 0) {
+                                   return x;
+                               }
+                               current = null;
+                           } catch (SQLException e) {
+                               throw DbException.convertToIOException(e);
+                           }
+                       }
+                   }
+                   @Override
+                   public void close() throws IOException {
+                       if (closed) {
+                           return;
+                       }
+                       closed = true;
+                       try {
+                           rs.close();
+                       } catch (SQLException e) {
+                           throw DbException.convertToIOException(e);
+                       }
+                   }
         };
     }
 
@@ -581,72 +580,72 @@ public class ScriptCommand extends ScriptBase {
         }
         final ResultSet rs = getLobStream(conn, "CDATA", id);
         return new Reader() {
-            private Reader current;
-            private boolean closed;
-            @Override
-            public int read() throws IOException {
-                while (true) {
-                    try {
-                        if (current == null) {
-                            if (closed) {
-                                return -1;
-                            }
-                            if (!rs.next()) {
-                                close();
-                                return -1;
-                            }
-                            current = rs.getCharacterStream(1);
-                            current = new BufferedReader(current);
-                        }
-                        int x = current.read();
-                        if (x >= 0) {
-                            return x;
-                        }
-                        current = null;
-                    } catch (SQLException e) {
-                        throw DbException.convertToIOException(e);
-                    }
-                }
-            }
-            @Override
-            public void close() throws IOException {
-                if (closed) {
-                    return;
-                }
-                closed = true;
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw DbException.convertToIOException(e);
-                }
-            }
-            @Override
-            public int read(char[] buffer, int off, int len) throws IOException {
-                if (len == 0) {
-                    return 0;
-                }
-                int c = read();
-                if (c == -1) {
-                    return -1;
-                }
-                buffer[off] = (char) c;
-                int i = 1;
-                for (; i < len; i++) {
-                    c = read();
-                    if (c == -1) {
-                        break;
-                    }
-                    buffer[off + i] = (char) c;
-                }
-                return i;
-            }
+                   private Reader current;
+                   private boolean closed;
+                   @Override
+                   public int read() throws IOException {
+                       while (true) {
+                           try {
+                               if (current == null) {
+                                   if (closed) {
+                                       return -1;
+                                   }
+                                   if (!rs.next()) {
+                                       close();
+                                       return -1;
+                                   }
+                                   current = rs.getCharacterStream(1);
+                                   current = new BufferedReader(current);
+                               }
+                               int x = current.read();
+                               if (x >= 0) {
+                                   return x;
+                               }
+                               current = null;
+                           } catch (SQLException e) {
+                               throw DbException.convertToIOException(e);
+                           }
+                       }
+                   }
+                   @Override
+                   public void close() throws IOException {
+                       if (closed) {
+                           return;
+                       }
+                       closed = true;
+                       try {
+                           rs.close();
+                       } catch (SQLException e) {
+                           throw DbException.convertToIOException(e);
+                       }
+                   }
+                   @Override
+                   public int read(char[] buffer, int off, int len) throws IOException {
+                       if (len == 0) {
+                           return 0;
+                       }
+                       int c = read();
+                       if (c == -1) {
+                           return -1;
+                       }
+                       buffer[off] = (char) c;
+                       int i = 1;
+                       for (; i < len; i++) {
+                           c = read();
+                           if (c == -1) {
+                               break;
+                           }
+                           buffer[off + i] = (char) c;
+                       }
+                       return i;
+                   }
         };
     }
 
     private static ResultSet getLobStream(Connection conn, String column, int id)
     throws SQLException {
         PreparedStatement prep = conn.prepareStatement("SELECT " + column +
-                                 " FROM SYSTEM_LOB_STREAM WHERE ID=? ORDER BY PART");
+                " FROM SYSTEM_LOB_STREAM WHERE ID=? ORDER BY PART");
         prep.setInt(1, id);
         return prep.executeQuery();
     }
@@ -689,7 +688,7 @@ public class ScriptCommand extends ScriptBase {
         if (out != null) {
             byte[] buff = s.getBytes(charset);
             int len = MathUtils.roundUpInt(buff.length +
-                                           lineSeparator.length, Constants.FILE_BLOCK_SIZE);
+                    lineSeparator.length, Constants.FILE_BLOCK_SIZE);
             buffer = Utils.copy(buff, buffer);
 
             if (len > buffer.length) {

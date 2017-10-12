@@ -32,7 +32,7 @@ public class ConditionInSelect extends Condition {
     private int queryLevel;
 
     public ConditionInSelect(Database database, Expression left, Query query,
-                             boolean all, int compareType) {
+            boolean all, int compareType) {
         this.database = database;
         this.left = left;
         this.query = query;
@@ -57,7 +57,7 @@ public class ConditionInSelect extends Condition {
             return getValueSlow(rows, l);
         }
         if (all || (compareType != Comparison.EQUAL &&
-                    compareType != Comparison.EQUAL_NULL_SAFE)) {
+                compareType != Comparison.EQUAL_NULL_SAFE)) {
             return getValueSlow(rows, l);
         }
         int dataType = rows.getColumnType(0);

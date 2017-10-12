@@ -44,7 +44,7 @@ public abstract class DbObjectBase implements DbObject {
      * @param traceModuleId the trace module id
      */
     protected void initDbObjectBase(Database db, int objectId, String name,
-                                    int traceModuleId) {
+            int traceModuleId) {
         this.database = db;
         this.trace = db.getTrace(traceModuleId);
         this.id = objectId;
@@ -88,7 +88,7 @@ public abstract class DbObjectBase implements DbObject {
      */
     public void setModified() {
         this.modificationId = database == null ?
-                              -1 : database.getNextModificationMetaId();
+                -1 : database.getNextModificationMetaId();
     }
 
     public long getModificationId() {

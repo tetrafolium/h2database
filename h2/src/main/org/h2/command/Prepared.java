@@ -318,7 +318,7 @@ public abstract class Prepared {
             long deltaTimeNanos = System.nanoTime() - startTimeNanos;
             String params = Trace.formatParams(parameters);
             session.getTrace().infoSQL(sqlStatement, params, rowCount,
-                                       deltaTimeNanos / 1000 / 1000);
+                    deltaTimeNanos / 1000 / 1000);
         }
         // startTime_nanos can be zero for the command that actually turns on
         // statistics
@@ -367,8 +367,8 @@ public abstract class Prepared {
     private void setProgress() {
         if ((currentRowNumber & 127) == 0) {
             session.getDatabase().setProgress(
-                    DatabaseEventListener.STATE_STATEMENT_PROGRESS,
-                    sqlStatement, currentRowNumber, 0);
+                DatabaseEventListener.STATE_STATEMENT_PROGRESS,
+                sqlStatement, currentRowNumber, 0);
         }
     }
 

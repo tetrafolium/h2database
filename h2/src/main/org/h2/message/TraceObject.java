@@ -100,8 +100,7 @@ public class TraceObject {
     }
     private static final String[] PREFIX = { "call", "conn", "dbMeta", "prep",
                                              "rs", "rsMeta", "sp", "ex", "stat", "blob", "clob", "pMeta", "ds",
-                                             "xads", "xares", "xid", "ar"
-                                           };
+                                             "xads", "xares", "xid", "ar"};
 
     /**
      * The trace module used by this object.
@@ -176,10 +175,10 @@ public class TraceObject {
      * @param value the value to assign this new object to
      */
     protected void debugCodeAssign(String className, int newType, int newId,
-                                   String value) {
+            String value) {
         if (trace.isDebugEnabled()) {
             trace.debugCode(className + " " + PREFIX[newType] +
-                            newId + " = " + getTraceObjectName() + "." + value + ";");
+                    newId + " = " + getTraceObjectName() + "." + value + ";");
         }
     }
 
@@ -206,7 +205,7 @@ public class TraceObject {
     protected void debugCodeCall(String methodName, long param) {
         if (trace.isDebugEnabled()) {
             trace.debugCode(getTraceObjectName() + "." +
-                            methodName + "(" + param + ");");
+                    methodName + "(" + param + ");");
         }
     }
 
@@ -221,7 +220,7 @@ public class TraceObject {
     protected void debugCodeCall(String methodName, String param) {
         if (trace.isDebugEnabled()) {
             trace.debugCode(getTraceObjectName() + "." +
-                            methodName + "(" + quote(param) + ");");
+                    methodName + "(" + quote(param) + ");");
         }
     }
 

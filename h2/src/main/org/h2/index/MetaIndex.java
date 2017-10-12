@@ -54,13 +54,13 @@ public class MetaIndex extends BaseIndex {
 
     @Override
     public double getCost(Session session, int[] masks,
-                          TableFilter[] filters, int filter, SortOrder sortOrder,
-                          HashSet<Column> allColumnsSet) {
+            TableFilter[] filters, int filter, SortOrder sortOrder,
+            HashSet<Column> allColumnsSet) {
         if (scan) {
             return 10 * MetaTable.ROW_COUNT_APPROXIMATION;
         }
         return getCostRangeIndex(masks, MetaTable.ROW_COUNT_APPROXIMATION,
-                                 filters, filter, sortOrder, false, allColumnsSet);
+                       filters, filter, sortOrder, false, allColumnsSet);
     }
 
     @Override

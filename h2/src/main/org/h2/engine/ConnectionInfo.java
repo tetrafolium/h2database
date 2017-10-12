@@ -99,8 +99,7 @@ public class ConnectionInfo implements Cloneable {
                                     "CREATE", "CACHE_TYPE", "FILE_LOCK", "IGNORE_UNKNOWN_SETTINGS",
                                     "IFEXISTS", "INIT", "PASSWORD", "RECOVER", "RECOVER_TEST",
                                     "USER", "AUTO_SERVER", "AUTO_SERVER_PORT", "NO_UPGRADE",
-                                    "AUTO_RECONNECT", "OPEN_NEW", "PAGE_SIZE", "PASSWORD_HASH", "JMX"
-                                  };
+                                    "AUTO_RECONNECT", "OPEN_NEW", "PAGE_SIZE", "PASSWORD_HASH", "JMX"};
         for (String key : connectionTime) {
             if (SysProperties.CHECK && set.contains(key)) {
                 DbException.throwInternalError(key);
@@ -181,7 +180,7 @@ public class ConnectionInfo implements Cloneable {
                 // database name matches the baseDir or
                 // database name is clearly outside of the baseDir
                 throw DbException.get(ErrorCode.IO_EXCEPTION_1, normalizedName + " outside " +
-                                      absDir);
+                              absDir);
             }
             if (absDir.endsWith("/") || absDir.endsWith("\\")) {
                 // no further checks are needed for C:/ and similar
@@ -190,7 +189,7 @@ public class ConnectionInfo implements Cloneable {
                 // (with baseDir=/test, the database name must not be
                 // /test2/x and not /test2)
                 throw DbException.get(ErrorCode.IO_EXCEPTION_1, normalizedName + " outside " +
-                                      absDir);
+                              absDir);
             }
             if (!absolute) {
                 name = prefix + dir + SysProperties.FILE_SEPARATOR + FileUtils.unwrap(name);
@@ -321,7 +320,7 @@ public class ConnectionInfo implements Cloneable {
     }
 
     private static byte[] hashPassword(boolean passwordHash, String userName,
-                                       char[] password) {
+            char[] password) {
         if (passwordHash) {
             return StringUtils.convertHexToBytes(new String(password));
         }
@@ -399,8 +398,8 @@ public class ConnectionInfo implements Cloneable {
                         // absolute as the drive letter is missing,
                         // but we consider it absolute
                         throw DbException.get(
-                                ErrorCode.URL_RELATIVE_TO_CWD,
-                                originalURL);
+                                  ErrorCode.URL_RELATIVE_TO_CWD,
+                                  originalURL);
                     }
                 }
             }

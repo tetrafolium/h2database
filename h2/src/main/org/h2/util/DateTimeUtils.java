@@ -41,15 +41,13 @@ public class DateTimeUtils {
     private static final int SHIFT_MONTH = 5;
 
     private static final int[] NORMAL_DAYS_PER_MONTH = { 0, 31, 28, 31, 30, 31,
-                                                         30, 31, 31, 30, 31, 30, 31
-                                                       };
+                                                         30, 31, 31, 30, 31, 30, 31};
 
     /**
      * Offsets of month within a year, starting with March, April,...
      */
     private static final int[] DAYS_OFFSET = { 0, 31, 61, 92, 122, 153, 184,
-                                               214, 245, 275, 306, 337, 366
-                                             };
+                                               214, 245, 275, 306, 337, 366};
 
     /**
      * The thread local. Can not override initialValue because this would result
@@ -76,7 +74,7 @@ public class DateTimeUtils {
      * have this offset change, possibly midway through a long-running query.
      */
     private static int zoneOffsetMillis = Calendar.getInstance()
-                                          .get(Calendar.ZONE_OFFSET);
+            .get(Calendar.ZONE_OFFSET);
 
     private DateTimeUtils() {
         // utility class
@@ -139,8 +137,8 @@ public class DateTimeUtils {
         cal.setLenient(true);
         long dateValue = d.getDateValue();
         setCalendarFields(cal, yearFromDateValue(dateValue),
-                          monthFromDateValue(dateValue), dayFromDateValue(dateValue), 0,
-                          0, 0, 0);
+                monthFromDateValue(dateValue), dayFromDateValue(dateValue), 0,
+                0, 0, 0);
         long ms = cal.getTimeInMillis();
         return new Date(ms);
     }
@@ -170,7 +168,7 @@ public class DateTimeUtils {
         long h = m / 60;
         m -= h * 60;
         setCalendarFields(cal, 1970, 1, 1, (int) h, (int) m, (int) s,
-                          (int) millis);
+                (int) millis);
         long ms = cal.getTimeInMillis();
         return new Time(ms);
     }
@@ -201,8 +199,8 @@ public class DateTimeUtils {
         long h = m / 60;
         m -= h * 60;
         setCalendarFields(cal, yearFromDateValue(dateValue),
-                          monthFromDateValue(dateValue), dayFromDateValue(dateValue),
-                          (int) h, (int) m, (int) s, (int) millis);
+                monthFromDateValue(dateValue), dayFromDateValue(dateValue),
+                (int) h, (int) m, (int) s, (int) millis);
         long ms = cal.getTimeInMillis();
         Timestamp x = new Timestamp(ms);
         x.setNanos((int) (nanos + millis * 1000000));
@@ -336,7 +334,7 @@ public class DateTimeUtils {
      * @throws IllegalArgumentException if there is a problem
      */
     public static long parseTimeNanos(String s, int start, int end,
-                                      boolean timeOfDay) {
+            boolean timeOfDay) {
         int hour = 0, minute = 0, second = 0;
         long nanos = 0;
         int s1 = s.indexOf(':', start);
@@ -399,10 +397,10 @@ public class DateTimeUtils {
      * @return the number of milliseconds (UTC)
      */
     public static long getMillis(TimeZone tz, int year, int month, int day,
-                                 int hour, int minute, int second, int millis) {
+            int hour, int minute, int second, int millis) {
         try {
             return getTimeTry(false, tz, year, month, day, hour, minute, second,
-                              millis);
+                           millis);
         } catch (IllegalArgumentException e) {
             // special case: if the time simply doesn't exist because of
             // daylight saving time changes, use the lenient version
@@ -412,7 +410,7 @@ public class DateTimeUtils {
                     throw e;
                 }
                 return getTimeTry(true, tz, year, month, day, hour, minute,
-                                  second, millis);
+                               second, millis);
             } else if (message.indexOf("DAY_OF_MONTH") > 0) {
                 int maxDay;
                 if (month == 2) {
@@ -428,16 +426,16 @@ public class DateTimeUtils {
                 // for example for 2042-10-12 00:00:00.
                 hour += 6;
                 return getTimeTry(true, tz, year, month, day, hour, minute,
-                                  second, millis);
+                               second, millis);
             } else {
                 return getTimeTry(true, tz, year, month, day, hour, minute,
-                                  second, millis);
+                               second, millis);
             }
         }
     }
 
     private static long getTimeTry(boolean lenient, TimeZone tz, int year,
-                                   int month, int day, int hour, int minute, int second, int millis) {
+            int month, int day, int hour, int minute, int second, int millis) {
         Calendar c;
         if (tz == null) {
             c = getCalendar();
@@ -450,7 +448,7 @@ public class DateTimeUtils {
     }
 
     private static void setCalendarFields(Calendar cal, int year, int month,
-                                          int day, int hour, int minute, int second, int millis) {
+            int day, int hour, int minute, int second, int millis) {
         if (year <= 0) {
             cal.set(Calendar.ERA, GregorianCalendar.BC);
             cal.set(Calendar.YEAR, 1 - year);
@@ -594,7 +592,7 @@ public class DateTimeUtils {
      * @return the formatted date
      */
     public static String formatDateTime(java.util.Date date, String format,
-                                        String locale, String timeZone) {
+            String locale, String timeZone) {
         SimpleDateFormat dateFormat = getDateFormat(format, locale, timeZone);
         synchronized (dateFormat) {
             return dateFormat.format(date);
@@ -641,7 +639,7 @@ public class DateTimeUtils {
             return df;
         } catch (Exception e) {
             throw DbException.get(ErrorCode.PARSE_ERROR_1, e,
-                                  format + "/" + locale + "/" + timeZone);
+                          format + "/" + locale + "/" + timeZone);
         }
     }
 
@@ -686,8 +684,8 @@ public class DateTimeUtils {
      */
     public static Date convertDateValueToDate(long dateValue) {
         long millis = getMillis(null, yearFromDateValue(dateValue),
-                                monthFromDateValue(dateValue), dayFromDateValue(dateValue), 0,
-                                0, 0, 0);
+                monthFromDateValue(dateValue), dayFromDateValue(dateValue), 0,
+                0, 0, 0);
         return new Date(millis);
     }
 
@@ -700,8 +698,8 @@ public class DateTimeUtils {
      */
     public static long convertDateValueToMillis(TimeZone tz, long dateValue) {
         return getMillis(tz, yearFromDateValue(dateValue),
-                         monthFromDateValue(dateValue), dayFromDateValue(dateValue), 0,
-                         0, 0, 0);
+                       monthFromDateValue(dateValue), dayFromDateValue(dateValue), 0,
+                       0, 0, 0);
     }
 
     /**
@@ -723,8 +721,8 @@ public class DateTimeUtils {
         long h = m / 60;
         m -= h * 60;
         long ms = getMillis(null, yearFromDateValue(dateValue),
-                            monthFromDateValue(dateValue), dayFromDateValue(dateValue),
-                            (int) h, (int) m, (int) s, 0);
+                monthFromDateValue(dateValue), dayFromDateValue(dateValue),
+                (int) h, (int) m, (int) s, 0);
         Timestamp ts = new Timestamp(ms);
         ts.setNanos((int) (timeNanos + millis * 1000000));
         return ts;
@@ -745,7 +743,7 @@ public class DateTimeUtils {
         long h = m / 60;
         m -= h * 60;
         long ms = getMillis(null, 1970, 1, 1, (int) (h % 24), (int) m, (int) s,
-                            (int) millis);
+                (int) millis);
         return new Time(ms);
     }
 
@@ -865,7 +863,7 @@ public class DateTimeUtils {
             absoluteDay += d;
         }
         return ValueTimestamp.fromDateValueAndNanos(
-                       dateValueFromAbsoluteDay(absoluteDay), nanos);
+            dateValueFromAbsoluteDay(absoluteDay), nanos);
     }
 
     /**

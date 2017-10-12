@@ -366,7 +366,7 @@ public final class CompressLZF implements Compressor {
 
     @Override
     public void expand(byte[] in, int inPos, int inLen, byte[] out, int outPos,
-                       int outLen) {
+            int outLen) {
         // if ((inPos | outPos | outLen) < 0) {
         if (inPos < 0 || outPos < 0 || outLen < 0) {
             throw new IllegalArgumentException();

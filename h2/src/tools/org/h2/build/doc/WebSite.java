@@ -117,7 +117,7 @@ public class WebSite {
     }
 
     private void copy(File source, File target, boolean replaceFragments,
-                      boolean web) throws IOException {
+            boolean web) throws IOException {
         if (source.isDirectory()) {
             target.mkdirs();
             for (File f : source.listFiles()) {

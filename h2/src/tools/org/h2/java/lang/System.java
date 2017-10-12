@@ -28,11 +28,11 @@ public class System {
      * @param length the number of element to copy
      */
     public static void arraycopy(char[] src, int srcPos, char[] dest,
-                                 int destPos, int length) {
+            int destPos, int length) {
         /* c:
-        memmove(((jchar*)dest->getPointer()) + destPos,
+           memmove(((jchar*)dest->getPointer()) + destPos,
             ((jchar*)src->getPointer()) + srcPos, sizeof(jchar) * length);
-        */
+         */
         // c: return;
         java.lang.System.arraycopy(src, srcPos, dest, destPos, length);
     }
@@ -48,11 +48,11 @@ public class System {
      * @param length the number of element to copy
      */
     public static void arraycopy(byte[] src, int srcPos, byte[] dest,
-                                 int destPos, int length) {
+            int destPos, int length) {
         /* c:
-        memmove(((jbyte*)dest->getPointer()) + destPos,
+           memmove(((jbyte*)dest->getPointer()) + destPos,
             ((jbyte*)src->getPointer()) + srcPos, sizeof(jbyte) * length);
-        */
+         */
         // c: return;
         java.lang.System.arraycopy(src, srcPos, dest, destPos, length);
     }
@@ -64,12 +64,12 @@ public class System {
      */
     public static long nanoTime() {
         /* c:
-        #if CLOCKS_PER_SEC == 1000000
-        return (jlong) clock() * 1000;
-        #else
-        return (jlong) clock() * 1000000 / CLOCKS_PER_SEC;
-        #endif
-        */
+         #if CLOCKS_PER_SEC == 1000000
+           return (jlong) clock() * 1000;
+         #else
+           return (jlong) clock() * 1000000 / CLOCKS_PER_SEC;
+         #endif
+         */
         // c: return;
         return java.lang.System.nanoTime();
     }

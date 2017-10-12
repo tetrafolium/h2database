@@ -99,7 +99,7 @@ public class PgTcpRedirect {
         }
 
         private boolean processClient(InputStream inStream,
-                                      OutputStream outStream) throws IOException {
+                OutputStream outStream) throws IOException {
             DataInputStream dataIn = new DataInputStream(inStream);
             ByteArrayOutputStream buff = new ByteArrayOutputStream();
             DataOutputStream dataOut = new DataOutputStream(buff);
@@ -268,7 +268,7 @@ public class PgTcpRedirect {
         }
 
         private boolean processServer(InputStream inStream,
-                                      OutputStream outStream) throws IOException {
+                OutputStream outStream) throws IOException {
             DataInputStream dataIn = new DataInputStream(inStream);
             ByteArrayOutputStream buff = new ByteArrayOutputStream();
             DataOutputStream dataOut = new DataOutputStream(buff);

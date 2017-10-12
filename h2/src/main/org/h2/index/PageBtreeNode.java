@@ -50,7 +50,7 @@ public class PageBtreeNode extends PageBtree {
     private PageBtreeNode(PageBtreeIndex index, int pageId, Data data) {
         super(index, pageId, data);
         this.pageStoreInternalCount = index.getDatabase().
-                                      getSettings().pageStoreInternalCount;
+                getSettings().pageStoreInternalCount;
     }
 
     /**
@@ -76,9 +76,9 @@ public class PageBtreeNode extends PageBtree {
      * @return the page
      */
     static PageBtreeNode create(PageBtreeIndex index, int pageId,
-                                int parentPageId) {
+            int parentPageId) {
         PageBtreeNode p = new PageBtreeNode(index, pageId, index.getPageStore()
-                                            .createData());
+                .createData());
         index.getPageStore().logUndo(p, null);
         p.parentPageId = parentPageId;
         p.writeHead();
@@ -100,8 +100,8 @@ public class PageBtreeNode extends PageBtree {
         int indexId = data.readVarInt();
         if (indexId != index.getId()) {
             throw DbException.get(ErrorCode.FILE_CORRUPTED_1,
-                                  "page:" + getPos() + " expected index:" + index.getId() +
-                                  "got:" + indexId);
+                          "page:" + getPos() + " expected index:" + index.getId() +
+                          "got:" + indexId);
         }
         rowCount = rowCountStored = data.readInt();
         entryCount = data.readShortInt();
@@ -250,7 +250,7 @@ public class PageBtreeNode extends PageBtree {
         }
         int firstChild = childPageIds[splitPoint];
         readAllRows();
-        for (int i = splitPoint; i < entryCount;) {
+        for (int i = splitPoint; i < entryCount; ) {
             p2.addChild(p2.entryCount, childPageIds[splitPoint + 1], getRow(splitPoint));
             removeChild(splitPoint);
         }
@@ -384,8 +384,8 @@ public class PageBtreeNode extends PageBtree {
                 PageBtree page = index.getPage(child);
                 count += page.getRowCount();
                 index.getDatabase().setProgress(
-                        DatabaseEventListener.STATE_SCAN_FILE,
-                        index.getName(), count, Integer.MAX_VALUE);
+                    DatabaseEventListener.STATE_SCAN_FILE,
+                    index.getName(), count, Integer.MAX_VALUE);
             }
             rowCount = count;
         }
@@ -430,7 +430,7 @@ public class PageBtreeNode extends PageBtree {
     private void writeHead() {
         data.reset();
         data.writeByte((byte) (Page.TYPE_BTREE_NODE |
-                               (onlyPosition ? 0 : Page.FLAG_LAST)));
+                (onlyPosition ? 0 : Page.FLAG_LAST)));
         data.writeShortInt(0);
         data.writeInt(parentPageId);
         data.writeVarInt(index.getId());

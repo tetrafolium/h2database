@@ -23,37 +23,37 @@ public class QueryCondition<T, A> {
 
     public QueryWhere<T> is(A y) {
         query.addConditionToken(
-                new Condition<>(x, y, CompareType.EQUAL));
+            new Condition<>(x, y, CompareType.EQUAL));
         return new QueryWhere<>(query);
     }
 
     public QueryWhere<T> bigger(A y) {
         query.addConditionToken(
-                new Condition<>(x, y, CompareType.BIGGER));
+            new Condition<>(x, y, CompareType.BIGGER));
         return new QueryWhere<>(query);
     }
 
     public QueryWhere<T> biggerEqual(A y) {
         query.addConditionToken(
-                new Condition<>(x, y, CompareType.BIGGER_EQUAL));
+            new Condition<>(x, y, CompareType.BIGGER_EQUAL));
         return new QueryWhere<>(query);
     }
 
     public QueryWhere<T> smaller(A y) {
         query.addConditionToken(
-                new Condition<>(x, y, CompareType.SMALLER));
+            new Condition<>(x, y, CompareType.SMALLER));
         return new QueryWhere<>(query);
     }
 
     public QueryWhere<T> smallerEqual(A y) {
         query.addConditionToken(
-                new Condition<>(x, y, CompareType.SMALLER_EQUAL));
+            new Condition<>(x, y, CompareType.SMALLER_EQUAL));
         return new QueryWhere<>(query);
     }
 
     public QueryWhere<T> like(A pattern) {
         query.addConditionToken(
-                new Condition<>(x, pattern, CompareType.LIKE));
+            new Condition<>(x, pattern, CompareType.LIKE));
         return new QueryWhere<>(query);
     }
 

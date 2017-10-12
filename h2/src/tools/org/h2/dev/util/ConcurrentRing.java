@@ -127,27 +127,27 @@ public class ConcurrentRing<K> {
     public Iterator<K> iterator() {
         return new Iterator<K>() {
 
-            int offset;
+                   int offset;
 
-            @Override
-            public boolean hasNext() {
-                return readPos + offset < writePos;
-            }
+                   @Override
+                   public boolean hasNext() {
+                       return readPos + offset < writePos;
+                   }
 
-            @Override
-            public K next() {
-                if (buffer[getIndex(readPos + offset)] == null) {
-                    System.out.println("" + readPos);
-                    System.out.println("" + getIndex(readPos + offset));
-                    System.out.println("null?");
-                }
-                return buffer[getIndex(readPos + offset++)];
-            }
+                   @Override
+                   public K next() {
+                       if (buffer[getIndex(readPos + offset)] == null) {
+                           System.out.println("" + readPos);
+                           System.out.println("" + getIndex(readPos + offset));
+                           System.out.println("null?");
+                       }
+                       return buffer[getIndex(readPos + offset++)];
+                   }
 
-            @Override
-            public void remove() {
-                throw DataUtils.newUnsupportedOperationException("remove");
-            }
+                   @Override
+                   public void remove() {
+                       throw DataUtils.newUnsupportedOperationException("remove");
+                   }
 
         };
     }

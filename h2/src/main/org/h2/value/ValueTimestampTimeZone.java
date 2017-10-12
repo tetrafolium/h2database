@@ -58,15 +58,15 @@ public class ValueTimestampTimeZone extends Value {
     private final short timeZoneOffsetMins;
 
     private ValueTimestampTimeZone(long dateValue, long timeNanos,
-                                   short timeZoneOffsetMins) {
+            short timeZoneOffsetMins) {
         if (timeNanos < 0 || timeNanos >= 24L * 60 * 60 * 1000 * 1000 * 1000) {
             throw new IllegalArgumentException(
-                    "timeNanos out of range " + timeNanos);
+                      "timeNanos out of range " + timeNanos);
         }
         if (timeZoneOffsetMins < (-12 * 60)
                 || timeZoneOffsetMins >= (12 * 60)) {
             throw new IllegalArgumentException(
-                    "timeZoneOffsetMins out of range " + timeZoneOffsetMins);
+                      "timeZoneOffsetMins out of range " + timeZoneOffsetMins);
         }
         this.dateValue = dateValue;
         this.timeNanos = timeNanos;
@@ -85,7 +85,7 @@ public class ValueTimestampTimeZone extends Value {
     public static ValueTimestampTimeZone fromDateValueAndNanos(long dateValue,
             long timeNanos, short timeZoneOffsetMins) {
         return (ValueTimestampTimeZone) Value.cache(new ValueTimestampTimeZone(
-                        dateValue, timeNanos, timeZoneOffsetMins));
+                           dateValue, timeNanos, timeZoneOffsetMins));
     }
 
     /**
@@ -96,8 +96,8 @@ public class ValueTimestampTimeZone extends Value {
      */
     public static ValueTimestampTimeZone get(TimestampWithTimeZone timestamp) {
         return fromDateValueAndNanos(timestamp.getYMD(),
-                                     timestamp.getNanosSinceMidnight(),
-                                     timestamp.getTimeZoneOffsetMins());
+                       timestamp.getNanosSinceMidnight(),
+                       timestamp.getTimeZoneOffsetMins());
     }
 
     /**
@@ -113,7 +113,7 @@ public class ValueTimestampTimeZone extends Value {
             return parseTry(s);
         } catch (Exception e) {
             throw DbException.get(ErrorCode.INVALID_DATETIME_CONSTANT_2, e,
-                                  "TIMESTAMP WITH TIME ZONE", s);
+                          "TIMESTAMP WITH TIME ZONE", s);
         }
     }
 
@@ -150,7 +150,7 @@ public class ValueTimestampTimeZone extends Value {
                     tz = TimeZone.getTimeZone(tzName);
                     if (!tz.getID().startsWith(tzName)) {
                         throw new IllegalArgumentException(
-                                tzName + " (" + tz.getID() + "?)");
+                                  tzName + " (" + tz.getID() + "?)");
                     }
                     timeEnd = timeZoneStart;
                 } else {
@@ -166,14 +166,14 @@ public class ValueTimestampTimeZone extends Value {
                 }
                 if (tz != null) {
                     long millis = DateTimeUtils
-                                  .convertDateValueToMillis(GMT_TIMEZONE, dateValue);
+                            .convertDateValueToMillis(GMT_TIMEZONE, dateValue);
                     tzMinutes = (short) (tz.getOffset(millis) / 1000 / 60);
                 }
             }
             nanos = DateTimeUtils.parseTimeNanos(s, dateEnd + 1, timeEnd, true);
         }
         return ValueTimestampTimeZone.fromDateValueAndNanos(dateValue, nanos,
-                tzMinutes);
+                       tzMinutes);
     }
 
     /**
@@ -295,16 +295,16 @@ public class ValueTimestampTimeZone extends Value {
 
         // convert to minutes and add timezone offset
         long a = DateTimeUtils.convertDateValueToMillis(
-                         TimeZone.getTimeZone("UTC"), dateValue) /
-                 (1000L * 60L);
+            TimeZone.getTimeZone("UTC"), dateValue) /
+                (1000L * 60L);
         long ma = timeNanos / (1000L * 1000L * 1000L * 60L);
         a += ma;
         a -= timeZoneOffsetMins;
 
         // convert to minutes and add timezone offset
         long b = DateTimeUtils.convertDateValueToMillis(
-                         TimeZone.getTimeZone("UTC"), t.dateValue) /
-                 (1000L * 60L);
+            TimeZone.getTimeZone("UTC"), t.dateValue) /
+                (1000L * 60L);
         long mb = t.timeNanos / (1000L * 1000L * 1000L * 60L);
         b += mb;
         b -= t.timeZoneOffsetMins;
@@ -335,13 +335,13 @@ public class ValueTimestampTimeZone extends Value {
     @Override
     public int hashCode() {
         return (int) (dateValue ^ (dateValue >>> 32) ^ timeNanos
-                      ^ (timeNanos >>> 32) ^ timeZoneOffsetMins);
+               ^ (timeNanos >>> 32) ^ timeZoneOffsetMins);
     }
 
     @Override
     public Object getObject() {
         return new TimestampWithTimeZone(dateValue, timeNanos,
-                                         timeZoneOffsetMins);
+                       timeZoneOffsetMins);
     }
 
     @Override
@@ -353,13 +353,13 @@ public class ValueTimestampTimeZone extends Value {
     @Override
     public Value add(Value v) {
         throw DbException.getUnsupportedException(
-                "manipulating TIMESTAMP WITH TIME ZONE values is unsupported");
+                  "manipulating TIMESTAMP WITH TIME ZONE values is unsupported");
     }
 
     @Override
     public Value subtract(Value v) {
         throw DbException.getUnsupportedException(
-                "manipulating TIMESTAMP WITH TIME ZONE values is unsupported");
+                  "manipulating TIMESTAMP WITH TIME ZONE values is unsupported");
     }
 
 }

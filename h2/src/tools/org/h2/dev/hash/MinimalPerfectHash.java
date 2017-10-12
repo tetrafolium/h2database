@@ -95,8 +95,7 @@ public class MinimalPerfectHash<K> {
      * hash functions are tried for the given size.
      */
     private static final int[] MAX_OFFSETS = { 0, 0, 8, 18, 47, 123, 319, 831, 2162,
-                                               5622, 14617, 38006, 98815, 256920, 667993
-                                             };
+                                               5622, 14617, 38006, 98815, 256920, 667993};
 
     /**
      * The output value to split the bucket into many (more than 2) smaller
@@ -171,9 +170,9 @@ public class MinimalPerfectHash<K> {
         this.hash = hash;
         byte[] b = data = expand(desc);
         seed = ((b[0] & 255) << 24) |
-               ((b[1] & 255) << 16) |
-               ((b[2] & 255) << 8) |
-               (b[3] & 255);
+                ((b[1] & 255) << 16) |
+                ((b[2] & 255) << 8) |
+                (b[3] & 255);
         if (b[4] == SPLIT_MANY) {
             rootLevel = b[b.length - 1] & 255;
             int split = readVarInt(b, 5);
@@ -290,7 +289,7 @@ public class MinimalPerfectHash<K> {
      */
     private int getSizeSum(int start, int end) {
         int s = 0;
-        for (int pos = start; pos < end;) {
+        for (int pos = start; pos < end; ) {
             int n = readVarInt(data, pos);
             pos += getVarIntLength(data, pos);
             if (n < 2) {
@@ -305,7 +304,7 @@ public class MinimalPerfectHash<K> {
     }
 
     private static void writeSizeOffset(ByteArrayOutputStream out, int size,
-                                        int offset) {
+            int offset) {
         writeVarInt(out, SIZE_OFFSETS[size] + offset);
     }
 
@@ -353,7 +352,7 @@ public class MinimalPerfectHash<K> {
      * @param out the output stream
      */
     static <K> void generate(ArrayList<K> list, UniversalHash<K> hash,
-                             int level, int seed, ByteArrayOutputStream out) {
+            int level, int seed, ByteArrayOutputStream out) {
         int size = list.size();
         if (size <= 1) {
             out.write(size);
@@ -361,7 +360,7 @@ public class MinimalPerfectHash<K> {
         }
         if (level > 32) {
             throw new IllegalStateException("Too many recursions; " +
-                                            " incorrect universal hash function?");
+                          " incorrect universal hash function?");
         }
         if (size <= MAX_SIZE) {
             int maxOffset = MAX_OFFSETS[size];
@@ -380,7 +379,7 @@ public class MinimalPerfectHash<K> {
                 testSize++;
                 maxOffset /= testSize;
             }
-            nextOffset:
+nextOffset:
             for (int offset = 0; offset < maxOffset; offset++) {
                 int bits = 0;
                 for (int i = 0; i < size; i++) {
@@ -447,13 +446,13 @@ public class MinimalPerfectHash<K> {
     }
 
     private static <K> void generateMultiThreaded(
-            final ArrayList<ArrayList<K>> lists,
-            final UniversalHash<K> hash,
-            final int level,
-            final int seed,
-            ByteArrayOutputStream out) {
+        final ArrayList<ArrayList<K>> lists,
+        final UniversalHash<K> hash,
+        final int level,
+        final int seed,
+        ByteArrayOutputStream out) {
         final ArrayList<ByteArrayOutputStream> outList =
-                new ArrayList<>();
+            new ArrayList<>();
         int processors = Runtime.getRuntime().availableProcessors();
         Thread[] threads = new Thread[processors];
         final AtomicInteger success = new AtomicInteger();
@@ -520,7 +519,7 @@ public class MinimalPerfectHash<K> {
      * @return the hash (a value between 0, including, and the size, excluding)
      */
     private static <K> int hash(K o, UniversalHash<K> hash, int level,
-                                int seed, int offset, int size) {
+            int seed, int offset, int size) {
         int x = hash.hashCode(o, level, seed);
         x += level + offset * 32;
         x = ((x >>> 16) ^ x) * 0x45d9f3b;

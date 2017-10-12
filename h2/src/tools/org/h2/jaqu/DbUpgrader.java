@@ -40,7 +40,7 @@ public interface DbUpgrader {
      *         version registry is automatically updated.
      */
     boolean upgradeTable(Db db, String schema, String table, int fromVersion,
-                         int toVersion);
+            int toVersion);
 
     /**
      * The default database upgrader. It throws runtime exception instead of
@@ -52,14 +52,14 @@ public interface DbUpgrader {
         @Override
         public boolean upgradeDatabase(Db db, int fromVersion, int toVersion) {
             throw new RuntimeException(
-                    "Please provide your own DbUpgrader implementation.");
+                      "Please provide your own DbUpgrader implementation.");
         }
 
         @Override
         public boolean upgradeTable(Db db, String schema, String table,
-                                    int fromVersion, int toVersion) {
+                int fromVersion, int toVersion) {
             throw new RuntimeException(
-                    "Please provide your own DbUpgrader implementation.");
+                      "Please provide your own DbUpgrader implementation.");
         }
 
     }

@@ -128,7 +128,7 @@ public class JdbcUtils {
         if (customTypeHandlerClass != null) {
             try {
                 customDataTypesHandler = (CustomDataTypesHandler)
-                                         loadUserClass(customTypeHandlerClass).newInstance();
+                        loadUserClass(customTypeHandlerClass).newInstance();
             } catch (Exception e) {
                 throw DbException.convert(e);
             }
@@ -174,7 +174,7 @@ public class JdbcUtils {
             }
             if (!allowed) {
                 throw DbException.get(
-                        ErrorCode.ACCESS_DENIED_TO_CLASS_1, className);
+                          ErrorCode.ACCESS_DENIED_TO_CLASS_1, className);
             }
         }
         // Use provided class factory first.
@@ -183,33 +183,33 @@ public class JdbcUtils {
                 try {
                     Class<?> userClass = classFactory.loadClass(className);
                     if (!(userClass == null)) {
-                        return (Class<Z>) userClass;
+                        return (Class<Z>)userClass;
                     }
                 } catch (Exception e) {
                     throw DbException.get(
-                            ErrorCode.CLASS_NOT_FOUND_1, e, className);
+                              ErrorCode.CLASS_NOT_FOUND_1, e, className);
                 }
             }
         }
         // Use local ClassLoader
         try {
-            return (Class<Z>) Class.forName(className);
+            return (Class<Z>)Class.forName(className);
         } catch (ClassNotFoundException e) {
             try {
-                return (Class<Z>) Class.forName(
-                               className, true,
-                               Thread.currentThread().getContextClassLoader());
+                return (Class<Z>)Class.forName(
+                    className, true,
+                    Thread.currentThread().getContextClassLoader());
             } catch (Exception e2) {
                 throw DbException.get(
-                        ErrorCode.CLASS_NOT_FOUND_1, e, className);
+                          ErrorCode.CLASS_NOT_FOUND_1, e, className);
             }
         } catch (NoClassDefFoundError e) {
             throw DbException.get(
-                    ErrorCode.CLASS_NOT_FOUND_1, e, className);
+                      ErrorCode.CLASS_NOT_FOUND_1, e, className);
         } catch (Error e) {
             // UnsupportedClassVersionError
             throw DbException.get(
-                    ErrorCode.GENERAL_ERROR_1, e, className);
+                      ErrorCode.GENERAL_ERROR_1, e, className);
         }
     }
 
@@ -268,7 +268,7 @@ public class JdbcUtils {
      * @return the database connection
      */
     public static Connection getConnection(String driver, String url,
-                                           String user, String password) throws SQLException {
+            String user, String password) throws SQLException {
         Properties prop = new Properties();
         if (user != null) {
             prop.setProperty("user", user);
@@ -288,7 +288,7 @@ public class JdbcUtils {
      * @return the database connection
      */
     public static Connection getConnection(String driver, String url,
-                                           Properties prop) throws SQLException {
+            Properties prop) throws SQLException {
         if (StringUtils.isNullOrEmpty(driver)) {
             JdbcUtils.load(url);
         } else {

@@ -130,8 +130,8 @@ public class LocalDateTimeUtils {
         OFFSET_DATE_TIME = tryGetClass("java.time.OffsetDateTime");
         ZONE_OFFSET = tryGetClass("java.time.ZoneOffset");
         IS_JAVA8_DATE_API_PRESENT = LOCAL_DATE != null && LOCAL_TIME != null &&
-                                    LOCAL_DATE_TIME != null && OFFSET_DATE_TIME != null &&
-                                    ZONE_OFFSET != null;
+                LOCAL_DATE_TIME != null && OFFSET_DATE_TIME != null &&
+                ZONE_OFFSET != null;
 
         if (IS_JAVA8_DATE_API_PRESENT) {
 
@@ -149,9 +149,9 @@ public class LocalDateTimeUtils {
             LOCAL_TIME_TO_NANO = getMethod(LOCAL_TIME, "toNanoOfDay");
 
             LOCAL_DATE_OF_YEAR_MONTH_DAY = getMethod(LOCAL_DATE, "of",
-                                           int.class, int.class, int.class);
+                    int.class, int.class, int.class);
             LOCAL_DATE_PARSE = getMethod(LOCAL_DATE, "parse",
-                                         CharSequence.class);
+                    CharSequence.class);
             LOCAL_DATE_GET_YEAR = getMethod(LOCAL_DATE, "getYear");
             LOCAL_DATE_GET_MONTH_VALUE = getMethod(LOCAL_DATE, "getMonthValue");
             LOCAL_DATE_GET_DAY_OF_MONTH = getMethod(LOCAL_DATE, "getDayOfMonth");
@@ -169,7 +169,7 @@ public class LocalDateTimeUtils {
             OFFSET_DATE_TIME_TO_LOCAL_DATE_TIME = getMethod(OFFSET_DATE_TIME, "toLocalDateTime");
             OFFSET_DATE_TIME_GET_OFFSET = getMethod(OFFSET_DATE_TIME, "getOffset");
             OFFSET_DATE_TIME_OF_LOCAL_DATE_TIME_ZONE_OFFSET = getMethod(
-                            OFFSET_DATE_TIME, "of", LOCAL_DATE_TIME, ZONE_OFFSET);
+                OFFSET_DATE_TIME, "of", LOCAL_DATE_TIME, ZONE_OFFSET);
             OFFSET_DATE_TIME_PARSE = getMethod(OFFSET_DATE_TIME, "parse", CharSequence.class);
 
             ZONE_OFFSET_GET_TOTAL_SECONDS = getMethod(ZONE_OFFSET, "getTotalSeconds");
@@ -328,18 +328,18 @@ public class LocalDateTimeUtils {
             return Class.forName(className);
         } catch (ClassNotFoundException e) {
             throw new IllegalStateException("Java 8 or later but class " +
-                                            className + " is missing", e);
+                          className + " is missing", e);
         }
     }
 
     private static Method getMethod(Class<?> clazz, String methodName,
-                                    Class<?>... parameterTypes) {
+            Class<?>... parameterTypes) {
         try {
             return clazz.getMethod(methodName, parameterTypes);
         } catch (NoSuchMethodException e) {
             throw new IllegalStateException("Java 8 or later but method " +
-                                            clazz.getName() + "#" + methodName + "(" +
-                                            Arrays.toString(parameterTypes) + ") is missing", e);
+                          clazz.getName() + "#" + methodName + "(" +
+                          Arrays.toString(parameterTypes) + ") is missing", e);
         }
     }
 
@@ -348,7 +348,7 @@ public class LocalDateTimeUtils {
             return clazz.getField(fieldName).get(null);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new IllegalStateException("Java 8 or later but field " +
-                                            clazz.getName() + "#" + fieldName + " is missing", e);
+                          clazz.getName() + "#" + fieldName + " is missing", e);
         }
     }
 
@@ -423,7 +423,7 @@ public class LocalDateTimeUtils {
     public static Object valueToLocalTime(Value value) {
         try {
             return LOCAL_TIME_OF_NANO.invoke(null,
-                                             ((ValueTime) value.convertTo(Value.TIME)).getNanos());
+                           ((ValueTime) value.convertTo(Value.TIME)).getNanos());
         } catch (IllegalAccessException e) {
             throw DbException.convert(e);
         } catch (InvocationTargetException e) {
@@ -477,7 +477,7 @@ public class LocalDateTimeUtils {
     }
 
     private static Object timestampWithTimeZoneToOffsetDateTime(
-            TimestampWithTimeZone timestampWithTimeZone) {
+        TimestampWithTimeZone timestampWithTimeZone) {
 
         long dateValue = timestampWithTimeZone.getYMD();
         long timeNanos = timestampWithTimeZone.getNanosSinceMidnight();
@@ -490,7 +490,7 @@ public class LocalDateTimeUtils {
             Object offset = ZONE_OFFSET_OF_TOTAL_SECONDS.invoke(null, offsetSeconds);
 
             return OFFSET_DATE_TIME_OF_LOCAL_DATE_TIME_ZONE_OFFSET.invoke(null,
-                    localDateTime, offset);
+                           localDateTime, offset);
         } catch (IllegalAccessException e) {
             throw DbException.convert(e);
         } catch (InvocationTargetException e) {
@@ -566,7 +566,7 @@ public class LocalDateTimeUtils {
             long timeNanos = timeNanosFromLocalDate(localDateTime);
             short timeZoneOffsetMins = zoneOffsetToOffsetMinute(zoneOffset);
             return ValueTimestampTimeZone.fromDateValueAndNanos(dateValue,
-                    timeNanos, timeZoneOffsetMins);
+                           timeNanos, timeZoneOffsetMins);
         } catch (IllegalAccessException e) {
             throw DbException.convert(e);
         } catch (InvocationTargetException e) {

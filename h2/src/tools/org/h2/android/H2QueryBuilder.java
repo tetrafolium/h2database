@@ -51,8 +51,8 @@ public class H2QueryBuilder {
      * @return the query
      */
     static String buildQueryString(boolean distinct, String tables,
-                                   String[] columns, String where, String groupBy, String having,
-                                   String orderBy, String limit) {
+            String[] columns, String where, String groupBy, String having,
+            String orderBy, String limit) {
         StringBuilder s = new StringBuilder();
         s.append("select ");
         if (distinct) {
@@ -109,8 +109,8 @@ public class H2QueryBuilder {
      * @return the query
      */
     String buildQuery(String[] projectionIn, String selection,
-                      String[] selectionArgs, String groupBy, String having,
-                      String orderBy, String limit) {
+            String[] selectionArgs, String groupBy, String having,
+            String orderBy, String limit) {
         return null;
     }
 
@@ -142,10 +142,10 @@ public class H2QueryBuilder {
      * @return the query
      */
     String buildUnionSubQuery(String typeDiscriminatorColumn,
-                              String[] unionColumns, Set<String> columnsPresentInTable,
-                              int computedColumnsOffset, String typeDiscriminatorValue,
-                              String selection, String[] selectionArgs, String groupBy,
-                              String having) {
+            String[] unionColumns, Set<String> columnsPresentInTable,
+            int computedColumnsOffset, String typeDiscriminatorValue,
+            String selection, String[] selectionArgs, String groupBy,
+            String having) {
         return null;
 
     }
@@ -172,8 +172,8 @@ public class H2QueryBuilder {
      * @return the cursor
      */
     Cursor query(H2Database db, String[] projectionIn, String selection,
-                 String[] selectionArgs, String groupBy, String having,
-                 String orderBy) {
+            String[] selectionArgs, String groupBy, String having,
+            String orderBy) {
         return null;
     }
 
@@ -191,8 +191,8 @@ public class H2QueryBuilder {
      * @return the cursor
      */
     Cursor query(H2Database db, String[] projectionIn, String selection,
-                 String[] selectionArgs, String groupBy, String having,
-                 String orderBy, String limit) {
+            String[] selectionArgs, String groupBy, String having,
+            String orderBy, String limit) {
         return null;
     }
 

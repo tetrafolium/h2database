@@ -301,7 +301,7 @@ public class Server extends Tool implements Runnable, ShutdownHandler {
         if (tcpShutdown) {
             out.println("Shutting down TCP Server at " + tcpShutdownServer);
             shutdownTcpServer(tcpShutdownServer, tcpPassword,
-                              tcpShutdownForce, false);
+                    tcpShutdownForce, false);
         }
         try {
             if (tcpStart) {
@@ -367,7 +367,7 @@ public class Server extends Tool implements Runnable, ShutdownHandler {
      *            stopped
      */
     public static void shutdownTcpServer(String url, String password,
-                                         boolean force, boolean all) throws SQLException {
+            boolean force, boolean all) throws SQLException {
         TcpServer.shutdown(url, password, force, all);
     }
 
@@ -395,7 +395,7 @@ public class Server extends Tool implements Runnable, ShutdownHandler {
             buff.append("The ").
             append(service.getType()).
             append(" server could not be started. " +
-                   "Possible cause: another server is already running at ").
+                    "Possible cause: another server is already running at ").
             append(service.getURL());
         }
         return buff.toString();
@@ -496,8 +496,8 @@ public class Server extends Tool implements Runnable, ShutdownHandler {
                 return this;
             }
             throw DbException.get(ErrorCode.EXCEPTION_OPENING_PORT_2,
-                                  name, "timeout; " +
-                                  "please check your network configuration, specially the file /etc/hosts");
+                          name, "timeout; " +
+                          "please check your network configuration, specially the file /etc/hosts");
         } catch (DbException e) {
             throw DbException.toSQLException(e);
         }
@@ -617,7 +617,7 @@ public class Server extends Tool implements Runnable, ShutdownHandler {
     public static void openBrowser(String url) throws Exception {
         try {
             String osName = StringUtils.toLowerEnglish(
-                                    Utils.getProperty("os.name", "linux"));
+                Utils.getProperty("os.name", "linux"));
             Runtime rt = Runtime.getRuntime();
             String browser = Utils.getProperty(SysProperties.H2_BROWSER, null);
             if (browser == null) {
@@ -649,13 +649,13 @@ public class Server extends Tool implements Runnable, ShutdownHandler {
                 Class<?> desktopClass = Class.forName("java.awt.Desktop");
                 // Desktop.isDesktopSupported()
                 Boolean supported = (Boolean) desktopClass.
-                                    getMethod("isDesktopSupported").
-                                    invoke(null, new Object[0]);
+                        getMethod("isDesktopSupported").
+                        invoke(null, new Object[0]);
                 URI uri = new URI(url);
                 if (supported) {
                     // Desktop.getDesktop();
                     Object desktop = desktopClass.getMethod("getDesktop").
-                                     invoke(null, new Object[0]);
+                            invoke(null, new Object[0]);
                     // desktop.browse(uri);
                     desktopClass.getMethod("browse", URI.class).
                     invoke(desktop, uri);
@@ -672,8 +672,7 @@ public class Server extends Tool implements Runnable, ShutdownHandler {
             } else {
                 String[] browsers = { "xdg-open", "chromium", "google-chrome",
                                       "firefox", "mozilla-firefox", "mozilla", "konqueror",
-                                      "netscape", "opera", "midori"
-                                    };
+                                      "netscape", "opera", "midori"};
                 boolean ok = false;
                 for (String b : browsers) {
                     try {
@@ -687,14 +686,14 @@ public class Server extends Tool implements Runnable, ShutdownHandler {
                 if (!ok) {
                     // No success in detection.
                     throw new Exception(
-                            "Browser detection failed and system property " +
-                            SysProperties.H2_BROWSER + " not set");
+                              "Browser detection failed and system property " +
+                              SysProperties.H2_BROWSER + " not set");
                 }
             }
         } catch (Exception e) {
             throw new Exception(
-                    "Failed to start a browser to open the URL " +
-                    url + ": " + e.getMessage());
+                      "Failed to start a browser to open the URL " +
+                      url + ": " + e.getMessage());
         }
     }
 

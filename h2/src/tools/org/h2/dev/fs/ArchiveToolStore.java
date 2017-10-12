@@ -77,15 +77,15 @@ public class ArchiveToolStore {
         FileUtils.delete(tempFileName);
         FileUtils.delete(fileName);
         MVStore storeTemp = new MVStore.Builder().
-        fileName(tempFileName).
-        autoCommitDisabled().
-        open();
+                fileName(tempFileName).
+                autoCommitDisabled().
+                open();
         final MVStore store = new MVStore.Builder().
-        fileName(fileName).
-        pageSplitSize(2 * 1024 * 1024).
-        compressHigh().
-        autoCommitDisabled().
-        open();
+                fileName(fileName).
+                pageSplitSize(2 * 1024 * 1024).
+                compressHigh().
+                autoCommitDisabled().
+                open();
         MVMap<String, int[]> filesTemp = storeTemp.openMap("files");
         long currentSize = 0;
         int segmentId = 1;
@@ -119,7 +119,7 @@ public class ArchiveToolStore {
                         break;
                     }
                     int c = getChunkLength(buff.array(), buff.position(),
-                                           buff.limit()) - buff.position();
+                            buff.limit()) - buff.position();
                     byte[] bytes = new byte[c];
                     System.arraycopy(buff.array(), buff.position(), bytes, 0, c);
                     buff.position(buff.position() + c);
@@ -127,7 +127,7 @@ public class ArchiveToolStore {
                     key[3] = segmentId;
                     while (true) {
                         MVMap<int[], byte[]> data = storeTemp.
-                                                    openMap("data" + segmentId);
+                                openMap("data" + segmentId);
                         byte[] old = data.get(key);
                         if (old == null) {
                             // new
@@ -184,7 +184,7 @@ public class ArchiveToolStore {
 
                 @Override
                 public int compare(Cursor<int[], byte[]> o1,
-                                   Cursor<int[], byte[]> o2) {
+                Cursor<int[], byte[]> o2) {
                     int[] k1 = o1.getKey();
                     int[] k2 = o2.getKey();
                     int comp = 0;
@@ -272,7 +272,7 @@ public class ArchiveToolStore {
         store.close();
         System.out.println();
         System.out.println("Compressed to " +
-                           FileUtils.size(fileName) / MB + " MB");
+                FileUtils.size(fileName) / MB + " MB");
         printDone();
     }
 
@@ -291,8 +291,8 @@ public class ArchiveToolStore {
 
     private void printDone() {
         System.out.println("Done in " +
-                           TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - start) +
-                           " seconds");
+                TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - start) +
+                " seconds");
     }
 
     private static long addFiles(String dir, ArrayList<String> list) {
@@ -314,7 +314,7 @@ public class ArchiveToolStore {
         String tempFileName = fileName + ".temp";
         FileUtils.createDirectories(targetDir);
         MVStore store = new MVStore.Builder().
-        fileName(fileName).open();
+                fileName(fileName).open();
         MVMap<String, int[]> files = store.openMap("files");
         System.out.println("Extracting " + files.size() + " files");
         MVStore storeTemp = null;
@@ -329,9 +329,9 @@ public class ArchiveToolStore {
         }
 
         storeTemp = new MVStore.Builder().
-        fileName(tempFileName).
-        autoCommitDisabled().
-        open();
+                fileName(tempFileName).
+                autoCommitDisabled().
+                open();
 
         MVMap<Integer, String> fileNames = storeTemp.openMap("fileNames");
 
@@ -402,7 +402,7 @@ public class ArchiveToolStore {
 
                 @Override
                 public int compare(Cursor<int[], byte[]> o1,
-                                   Cursor<int[], byte[]> o2) {
+                Cursor<int[], byte[]> o2) {
                     int[] k1 = o1.getKey();
                     int[] k2 = o2.getKey();
                     int comp = 0;

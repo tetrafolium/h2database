@@ -52,21 +52,21 @@ public class CreateUserDataType extends DefineCommand {
                 return 0;
             }
             throw DbException.get(
-                    ErrorCode.USER_DATA_TYPE_ALREADY_EXISTS_1,
-                    typeName);
+                      ErrorCode.USER_DATA_TYPE_ALREADY_EXISTS_1,
+                      typeName);
         }
         DataType builtIn = DataType.getTypeByName(typeName);
         if (builtIn != null) {
             if (!builtIn.hidden) {
                 throw DbException.get(
-                        ErrorCode.USER_DATA_TYPE_ALREADY_EXISTS_1,
-                        typeName);
+                          ErrorCode.USER_DATA_TYPE_ALREADY_EXISTS_1,
+                          typeName);
             }
             Table table = session.getDatabase().getFirstUserTable();
             if (table != null) {
                 throw DbException.get(
-                        ErrorCode.USER_DATA_TYPE_ALREADY_EXISTS_1,
-                        typeName + " (" + table.getSQL() + ")");
+                          ErrorCode.USER_DATA_TYPE_ALREADY_EXISTS_1,
+                          typeName + " (" + table.getSQL() + ")");
             }
         }
         int id = getObjectId();

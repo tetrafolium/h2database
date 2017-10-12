@@ -241,45 +241,45 @@ public class ShardedMap<K, V> extends AbstractMap<K, V> {
         public Iterator<Entry<K, V>> iterator() {
             return new Iterator<Entry<K, V>>() {
 
-                boolean init;
-                Entry<K, V> current;
-                Iterator<Entry<K, V>> currentIterator;
-                int shardIndex;
+                       boolean init;
+                       Entry<K, V> current;
+                       Iterator<Entry<K, V>> currentIterator;
+                       int shardIndex;
 
-                private void fetchNext() {
-                    while (currentIterator == null || !currentIterator.hasNext()) {
-                        if (shardIndex >= shards.length) {
-                            current = null;
-                            return;
-                        }
-                        currentIterator = shards[shardIndex++].map.entrySet().iterator();
-                    }
-                    current = currentIterator.next();
-                }
+                       private void fetchNext() {
+                           while (currentIterator == null || !currentIterator.hasNext()) {
+                               if (shardIndex >= shards.length) {
+                                   current = null;
+                                   return;
+                               }
+                               currentIterator = shards[shardIndex++].map.entrySet().iterator();
+                           }
+                           current = currentIterator.next();
+                       }
 
-                @Override
-                public boolean hasNext() {
-                    if (!init) {
-                        fetchNext();
-                        init = true;
-                    }
-                    return current != null;
-                }
+                       @Override
+                       public boolean hasNext() {
+                           if (!init) {
+                               fetchNext();
+                               init = true;
+                           }
+                           return current != null;
+                       }
 
-                @Override
-                public Entry<K, V> next() {
-                    if (!hasNext()) {
-                        throw new NoSuchElementException();
-                    }
-                    Entry<K, V> e = current;
-                    fetchNext();
-                    return e;
-                }
+                       @Override
+                       public Entry<K, V> next() {
+                           if (!hasNext()) {
+                               throw new NoSuchElementException();
+                           }
+                           Entry<K, V> e = current;
+                           fetchNext();
+                           return e;
+                       }
 
-                @Override
-                public void remove() {
-                    throw new UnsupportedOperationException();
-                }
+                       @Override
+                       public void remove() {
+                           throw new UnsupportedOperationException();
+                       }
 
             };
         }

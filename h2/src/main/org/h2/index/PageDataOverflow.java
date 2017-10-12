@@ -105,8 +105,8 @@ public class PageDataOverflow extends Page {
      * @return the page
      */
     static PageDataOverflow create(PageStore store, int page,
-                                   int type, int parentPageId, int next,
-                                   Data all, int offset, int size) {
+            int type, int parentPageId, int next,
+            Data all, int offset, int size) {
         Data data = store.createData();
         PageDataOverflow p = new PageDataOverflow(store, page, data);
         store.logUndo(p, null);
@@ -143,7 +143,7 @@ public class PageDataOverflow extends Page {
             size = store.getPageSize() - data.length();
         } else {
             throw DbException.get(ErrorCode.FILE_CORRUPTED_1, "page:" +
-                                  getPos() + " type:" + type);
+                          getPos() + " type:" + type);
         }
         start = data.length();
     }
@@ -227,7 +227,7 @@ public class PageDataOverflow extends Page {
         }
         store.logUndo(this, data);
         PageDataOverflow p2 = PageDataOverflow.create(store, newPos, type,
-                              parentPageId, nextPage, data, start, size);
+                parentPageId, nextPage, data, start, size);
         store.update(p2);
         if (next != null) {
             next.setParentPageId(newPos);

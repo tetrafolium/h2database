@@ -41,7 +41,7 @@ public class CommandRemote implements CommandInterface {
     private final int created;
 
     public CommandRemote(SessionRemote session,
-                         ArrayList<Transfer> transferList, String sql, int fetchSize) {
+            ArrayList<Transfer> transferList, String sql, int fetchSize) {
         this.transferList = transferList;
         trace = session.getTrace();
         this.sql = sql;
@@ -70,10 +70,10 @@ public class CommandRemote implements CommandInterface {
 
                 if (createParams) {
                     s.traceOperation(v16 ? "SESSION_PREPARE_READ_PARAMS2"
-                                     : "SESSION_PREPARE_READ_PARAMS", id);
+                            : "SESSION_PREPARE_READ_PARAMS", id);
                     transfer.writeInt(
-                            v16 ? SessionRemote.SESSION_PREPARE_READ_PARAMS2
-                            : SessionRemote.SESSION_PREPARE_READ_PARAMS)
+                        v16 ? SessionRemote.SESSION_PREPARE_READ_PARAMS2
+                        : SessionRemote.SESSION_PREPARE_READ_PARAMS)
                     .writeInt(id).writeString(sql);
                 } else {
                     s.traceOperation("SESSION_PREPARE", id);
@@ -141,7 +141,7 @@ public class CommandRemote implements CommandInterface {
                     session.done(transfer);
                     int columnCount = transfer.readInt();
                     result = new ResultRemote(session, transfer, objectId,
-                                              columnCount, Integer.MAX_VALUE);
+                            columnCount, Integer.MAX_VALUE);
                     break;
                 } catch (IOException e) {
                     session.removeServer(e, i--, ++count);

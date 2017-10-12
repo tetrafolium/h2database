@@ -40,19 +40,19 @@ public class CreateFunctionAlias extends SchemaCommand {
         if (getSchema().findFunction(aliasName) != null) {
             if (!ifNotExists) {
                 throw DbException.get(
-                        ErrorCode.FUNCTION_ALIAS_ALREADY_EXISTS_1, aliasName);
+                          ErrorCode.FUNCTION_ALIAS_ALREADY_EXISTS_1, aliasName);
             }
         } else {
             int id = getObjectId();
             FunctionAlias functionAlias;
             if (javaClassMethod != null) {
                 functionAlias = FunctionAlias.newInstance(getSchema(), id,
-                                aliasName, javaClassMethod, force,
-                                bufferResultSetToLocalTemp);
+                        aliasName, javaClassMethod, force,
+                        bufferResultSetToLocalTemp);
             } else {
                 functionAlias = FunctionAlias.newInstanceFromSource(
-                                        getSchema(), id, aliasName, source, force,
-                                        bufferResultSetToLocalTemp);
+                    getSchema(), id, aliasName, source, force,
+                    bufferResultSetToLocalTemp);
             }
             functionAlias.setDeterministic(deterministic);
             db.addSchemaObject(session, functionAlias);

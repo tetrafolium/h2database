@@ -51,7 +51,7 @@ public class Migrate {
      */
     public static void main(String... args) throws Exception {
         new Migrate().execute(new File(args.length == 1 ? args[0] : "."), true,
-                              USER, PASSWORD, false);
+                USER, PASSWORD, false);
     }
 
     /**
@@ -66,7 +66,7 @@ public class Migrate {
      * @throws Exception if conversion fails
      */
     public void execute(File file, boolean recursive, String user,
-                        String password, boolean runQuiet) throws Exception {
+            String password, boolean runQuiet) throws Exception {
         String pathToJavaExe = getJavaExecutablePath();
         this.quiet = runQuiet;
         if (file.isDirectory() && recursive) {
@@ -85,15 +85,15 @@ public class Migrate {
         String url = "jdbc:h2:" + file.getAbsolutePath();
         url = url.substring(0, url.length() - Constants.SUFFIX_OLD_DATABASE_FILE.length());
         exec(new String[] {
-                     pathToJavaExe,
-                     "-Xmx128m",
-                     "-cp", OLD_H2_FILE.getAbsolutePath(),
-                     "org.h2.tools.Script",
-                     "-script", TEMP_SCRIPT,
-                     "-url", url,
-                     "-user", user,
-                     "-password", password
-             });
+            pathToJavaExe,
+            "-Xmx128m",
+            "-cp", OLD_H2_FILE.getAbsolutePath(),
+            "org.h2.tools.Script",
+            "-script", TEMP_SCRIPT,
+            "-url", url,
+            "-user", user,
+            "-password", password
+        });
         file.renameTo(new File(file.getAbsoluteFile() + ".backup"));
         RunScript.execute(url, user, password, TEMP_SCRIPT, Constants.UTF8, true);
         new File(TEMP_SCRIPT).delete();
@@ -103,10 +103,10 @@ public class Migrate {
         String pathToJava;
         if (File.separator.equals("\\")) {
             pathToJava = System.getProperty("java.home") + File.separator
-                         + "bin" + File.separator + "java.exe";
+                    + "bin" + File.separator + "java.exe";
         } else {
             pathToJava = System.getProperty("java.home") + File.separator
-                         + "bin" + File.separator + "java";
+                    + "bin" + File.separator + "java";
         }
         if (!new File(pathToJava).exists()) {
             // Fallback to old behaviour
@@ -242,7 +242,7 @@ public class Migrate {
                     throw new RuntimeException(e);
                 }
             }
-        } .start();
+        }.start();
     }
 
 }

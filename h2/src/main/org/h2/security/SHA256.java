@@ -29,12 +29,10 @@ public class SHA256 {
                                      0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3,
                                      0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3, 0x748f82ee, 0x78a5636f,
                                      0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7,
-                                     0xc67178f2
-                                   };
+                                     0xc67178f2};
 
     private static final int[] HH = { 0x6a09e667, 0xbb67ae85, 0x3c6ef372,
-                                      0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19
-                                    };
+                                      0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19};
 
     private final byte[] result = new byte[32];
     private final int[] w = new int[64];
@@ -109,7 +107,7 @@ public class SHA256 {
     }
 
     private void calculateHMAC(byte[] key, byte[] message, int len,
-                               byte[] iKey, byte[] oKey, byte[] byteBuff, int[] intBuff) {
+            byte[] iKey, byte[] oKey, byte[] byteBuff, int[] intBuff) {
         Arrays.fill(iKey, 0, 64, (byte) 0x36);
         xor(iKey, key, 64);
         System.arraycopy(message, 0, iKey, 64, len);
@@ -146,7 +144,7 @@ public class SHA256 {
      * @return the result
      */
     public static byte[] getPBKDF2(byte[] password, byte[] salt,
-                                   int iterations, int resultLen) {
+            int iterations, int resultLen) {
         byte[] result = new byte[resultLen];
         byte[] key = normalizeKeyForHMAC(password);
         SHA256 sha = new SHA256();
@@ -212,7 +210,7 @@ public class SHA256 {
     }
 
     private void calculateHash(byte[] data, int len,
-                               byte[] byteBuff, int[] intBuff) {
+            byte[] byteBuff, int[] intBuff) {
         int[] w = this.w;
         int[] hh = this.hh;
         byte[] result = this.result;
@@ -243,9 +241,9 @@ public class SHA256 {
 
             for (int i = 0; i < 64; i++) {
                 int t1 = h + (rot(e, 6) ^ rot(e, 11) ^ rot(e, 25))
-                         + ((e & f) ^ ((~e) & g)) + K[i] + w[i];
+                        + ((e & f) ^ ((~e) & g)) + K[i] + w[i];
                 int t2 = (rot(a, 2) ^ rot(a, 13) ^ rot(a, 22))
-                         + ((a & b) ^ (a & c) ^ (b & c));
+                        + ((a & b) ^ (a & c) ^ (b & c));
                 h = g;
                 g = f;
                 f = e;

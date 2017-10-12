@@ -56,30 +56,30 @@ public class SpatialTreeIndex extends BaseIndex implements SpatialIndex {
      * @param session the session.
      */
     public SpatialTreeIndex(Table table, int id, String indexName,
-                            IndexColumn[] columns, IndexType indexType, boolean persistent,
-                            boolean create, Session session) {
+            IndexColumn[] columns, IndexType indexType, boolean persistent,
+            boolean create, Session session) {
         if (indexType.isUnique()) {
             throw DbException.getUnsupportedException("not unique");
         }
         if (!persistent && !create) {
             throw DbException.getUnsupportedException(
-                    "Non persistent index called with create==false");
+                      "Non persistent index called with create==false");
         }
         if (columns.length > 1) {
             throw DbException.getUnsupportedException(
-                    "can only do one column");
+                      "can only do one column");
         }
         if ((columns[0].sortType & SortOrder.DESCENDING) != 0) {
             throw DbException.getUnsupportedException(
-                    "cannot do descending");
+                      "cannot do descending");
         }
         if ((columns[0].sortType & SortOrder.NULLS_FIRST) != 0) {
             throw DbException.getUnsupportedException(
-                    "cannot do nulls first");
+                      "cannot do nulls first");
         }
         if ((columns[0].sortType & SortOrder.NULLS_LAST) != 0) {
             throw DbException.getUnsupportedException(
-                    "cannot do nulls last");
+                      "cannot do nulls last");
         }
         initBaseIndex(table, id, indexName, columns, indexType);
         this.needRebuild = create;
@@ -87,26 +87,26 @@ public class SpatialTreeIndex extends BaseIndex implements SpatialIndex {
         if (!database.isStarting()) {
             if (columns[0].column.getType() != Value.GEOMETRY) {
                 throw DbException.getUnsupportedException(
-                        "spatial index on non-geometry column, " +
-                        columns[0].column.getCreateSQL());
+                          "spatial index on non-geometry column, " +
+                          columns[0].column.getCreateSQL());
             }
         }
         if (!persistent) {
             // Index in memory
             store = MVStore.open(null);
             treeMap =  store.openMap("spatialIndex",
-                                     new MVRTreeMap.Builder<Long>());
+                    new MVRTreeMap.Builder<Long>());
         } else {
             if (id < 0) {
                 throw DbException.getUnsupportedException(
-                        "Persistent index with id<0");
+                          "Persistent index with id<0");
             }
             MVTableEngine.init(session.getDatabase());
             store = session.getDatabase().getMvStore().getStore();
             // Called after CREATE SPATIAL INDEX or
             // by PageStore.addMeta
             treeMap =  store.openMap(MAP_PREFIX + getId(),
-                                     new MVRTreeMap.Builder<Long>());
+                    new MVRTreeMap.Builder<Long>());
             if (treeMap.isEmpty()) {
                 needRebuild = true;
             }
@@ -138,8 +138,8 @@ public class SpatialTreeIndex extends BaseIndex implements SpatialIndex {
         Geometry g = ((ValueGeometry) v.convertTo(Value.GEOMETRY)).getGeometryNoCopy();
         Envelope env = g.getEnvelopeInternal();
         return new SpatialKey(row.getKey(),
-                              (float) env.getMinX(), (float) env.getMaxX(),
-                              (float) env.getMinY(), (float) env.getMaxY());
+                       (float) env.getMinX(), (float) env.getMaxX(),
+                       (float) env.getMinY(), (float) env.getMaxY());
     }
 
     @Override
@@ -168,13 +168,13 @@ public class SpatialTreeIndex extends BaseIndex implements SpatialIndex {
 
     @Override
     public Cursor findByGeometry(TableFilter filter, SearchRow first,
-                                 SearchRow last, SearchRow intersection) {
+            SearchRow last, SearchRow intersection) {
         if (intersection == null) {
             return find(filter.getSession(), first, last);
         }
         return new SpatialCursor(
-                       treeMap.findIntersectingKeys(getKey(intersection)), table,
-                       filter.getSession());
+            treeMap.findIntersectingKeys(getKey(intersection)), table,
+            filter.getSession());
     }
 
     /**
@@ -200,8 +200,8 @@ public class SpatialTreeIndex extends BaseIndex implements SpatialIndex {
 
     @Override
     public double getCost(Session session, int[] masks,
-                          TableFilter[] filters, int filter, SortOrder sortOrder,
-                          HashSet<Column> allColumnsSet) {
+            TableFilter[] filters, int filter, SortOrder sortOrder,
+            HashSet<Column> allColumnsSet) {
         return getCostRangeIndex(masks, columns);
     }
 
@@ -240,7 +240,7 @@ public class SpatialTreeIndex extends BaseIndex implements SpatialIndex {
         }
         if (!first) {
             throw DbException.throwInternalError(
-                    "Spatial Index can only be fetch by ascending order");
+                      "Spatial Index can only be fetch by ascending order");
         }
         return find(session);
     }

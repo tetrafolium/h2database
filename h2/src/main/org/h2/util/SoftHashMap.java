@@ -36,7 +36,7 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> {
             if (o == null) {
                 return;
             }
-            SoftValue<V> k = (SoftValue<V>) o;
+            SoftValue<V> k = (SoftValue<V>)o;
             Object key = k.key;
             map.remove(key);
         }

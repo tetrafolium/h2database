@@ -272,7 +272,7 @@ public class WebServer implements Service {
     String getStartDateTime() {
         if (startDateTime == null) {
             SimpleDateFormat format = new SimpleDateFormat(
-                    "EEE, d MMM yyyy HH:mm:ss z", new Locale("en", ""));
+                "EEE, d MMM yyyy HH:mm:ss z", new Locale("en", ""));
             format.setTimeZone(TimeZone.getTimeZone("GMT"));
             startDateTime = format.format(System.currentTimeMillis());
         }
@@ -289,11 +289,11 @@ public class WebServer implements Service {
         }
         Properties prop = loadProperties();
         port = SortedProperties.getIntProperty(prop,
-                                               "webPort", Constants.DEFAULT_HTTP_PORT);
+                "webPort", Constants.DEFAULT_HTTP_PORT);
         ssl = SortedProperties.getBooleanProperty(prop,
                 "webSSL", false);
         allowOthers = SortedProperties.getBooleanProperty(prop,
-                      "webAllowOthers", false);
+                "webAllowOthers", false);
         commandHistoryString = prop.getProperty(COMMAND_HISTORY);
         for (int i = 0; args != null && i < args.length; i++) {
             String a = args[i];
@@ -345,7 +345,7 @@ public class WebServer implements Service {
     private void updateURL() {
         try {
             url = (ssl ? "https" : "http") + "://" +
-                  NetUtils.getLocalAddress() + ":" + port;
+                    NetUtils.getLocalAddress() + ":" + port;
         } catch (NoClassDefFoundError e) {
             // Google App Engine does not allow java.net.InetAddress
         }
@@ -562,7 +562,7 @@ public class WebServer implements Service {
                     break;
                 }
             } else if (commandHistoryString.charAt(end) == '\\' &&
-                       end < commandHistoryString.length() - 1) {
+                    end < commandHistoryString.length() - 1) {
                 sb.append(commandHistoryString.charAt(++end));
             } else {
                 sb.append(commandHistoryString.charAt(end));
@@ -623,7 +623,7 @@ public class WebServer implements Service {
                 return new Properties();
             }
             return SortedProperties.loadProperties(
-                           serverPropertiesDir + "/" + Constants.SERVER_PROPERTIES_NAME);
+                serverPropertiesDir + "/" + Constants.SERVER_PROPERTIES_NAME);
         } catch (Exception e) {
             DbException.traceThrowable(e);
             return new Properties();
@@ -688,14 +688,14 @@ public class WebServer implements Service {
                 Properties old = loadProperties();
                 prop = new SortedProperties();
                 prop.setProperty("webPort",
-                                 "" + SortedProperties.getIntProperty(old,
-                                         "webPort", port));
+                        "" + SortedProperties.getIntProperty(old,
+                        "webPort", port));
                 prop.setProperty("webAllowOthers",
-                                 "" + SortedProperties.getBooleanProperty(old,
-                                         "webAllowOthers", allowOthers));
+                        "" + SortedProperties.getBooleanProperty(old,
+                        "webAllowOthers", allowOthers));
                 prop.setProperty("webSSL",
-                                 "" + SortedProperties.getBooleanProperty(old,
-                                         "webSSL", ssl));
+                        "" + SortedProperties.getBooleanProperty(old,
+                        "webSSL", ssl));
                 if (commandHistoryString != null) {
                     prop.setProperty(COMMAND_HISTORY, commandHistoryString);
                 }
@@ -710,7 +710,7 @@ public class WebServer implements Service {
             }
             if (!"null".equals(serverPropertiesDir)) {
                 OutputStream out = FileUtils.newOutputStream(
-                                           serverPropertiesDir + "/" + Constants.SERVER_PROPERTIES_NAME, false);
+                    serverPropertiesDir + "/" + Constants.SERVER_PROPERTIES_NAME, false);
                 prop.store(out, "H2 Server Properties");
                 out.close();
             }
@@ -729,7 +729,7 @@ public class WebServer implements Service {
      * @return the database connection
      */
     Connection getConnection(String driver, String databaseUrl, String user,
-                             String password) throws SQLException {
+            String password) throws SQLException {
         driver = driver.trim();
         databaseUrl = databaseUrl.trim();
         org.h2.Driver.load();

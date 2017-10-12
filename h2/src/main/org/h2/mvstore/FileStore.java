@@ -145,7 +145,7 @@ public class FileStore {
         FilePath parent = f.getParent();
         if (parent != null && !parent.exists()) {
             throw DataUtils.newIllegalArgumentException(
-                    "Directory does not exist: {0}", parent);
+                      "Directory does not exist: {0}", parent);
         }
         if (f.exists() && !f.canWrite()) {
             readOnly = true;
@@ -166,19 +166,19 @@ public class FileStore {
                 }
             } catch (OverlappingFileLockException e) {
                 throw DataUtils.newIllegalStateException(
-                        DataUtils.ERROR_FILE_LOCKED,
-                        "The file is locked: {0}", fileName, e);
+                          DataUtils.ERROR_FILE_LOCKED,
+                          "The file is locked: {0}", fileName, e);
             }
             if (fileLock == null) {
                 throw DataUtils.newIllegalStateException(
-                        DataUtils.ERROR_FILE_LOCKED,
-                        "The file is locked: {0}", fileName);
+                          DataUtils.ERROR_FILE_LOCKED,
+                          "The file is locked: {0}", fileName);
             }
             fileSize = file.size();
         } catch (IOException e) {
             throw DataUtils.newIllegalStateException(
-                    DataUtils.ERROR_READING_FAILED,
-                    "Could not open file {0}", fileName, e);
+                      DataUtils.ERROR_READING_FAILED,
+                      "Could not open file {0}", fileName, e);
         }
     }
 
@@ -195,8 +195,8 @@ public class FileStore {
             freeSpace.clear();
         } catch (Exception e) {
             throw DataUtils.newIllegalStateException(
-                    DataUtils.ERROR_WRITING_FAILED,
-                    "Closing failed for file {0}", fileName, e);
+                      DataUtils.ERROR_WRITING_FAILED,
+                      "Closing failed for file {0}", fileName, e);
         } finally {
             file = null;
         }
@@ -210,8 +210,8 @@ public class FileStore {
             file.force(true);
         } catch (IOException e) {
             throw DataUtils.newIllegalStateException(
-                    DataUtils.ERROR_WRITING_FAILED,
-                    "Could not sync file {0}", fileName, e);
+                      DataUtils.ERROR_WRITING_FAILED,
+                      "Could not sync file {0}", fileName, e);
         }
     }
 
@@ -236,9 +236,9 @@ public class FileStore {
             fileSize = Math.min(fileSize, size);
         } catch (IOException e) {
             throw DataUtils.newIllegalStateException(
-                    DataUtils.ERROR_WRITING_FAILED,
-                    "Could not truncate file {0} to size {1}",
-                    fileName, size, e);
+                      DataUtils.ERROR_WRITING_FAILED,
+                      "Could not truncate file {0} to size {1}",
+                      fileName, size, e);
         }
     }
 

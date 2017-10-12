@@ -53,8 +53,8 @@ public class TcpServerThread implements Runnable {
             new SmallMap(SysProperties.SERVER_CACHED_OBJECTS);
     private final SmallLRUCache<Long, CachedInputStream> lobs =
             SmallLRUCache.newInstance(Math.max(
-                    SysProperties.SERVER_CACHED_OBJECTS,
-                    SysProperties.SERVER_RESULT_SET_FETCH_SIZE * 5));
+                SysProperties.SERVER_CACHED_OBJECTS,
+                SysProperties.SERVER_RESULT_SET_FETCH_SIZE * 5));
     private final int threadId;
     private int clientVersion;
     private String sessionId;
@@ -85,10 +85,10 @@ public class TcpServerThread implements Runnable {
                 int maxClientVersion = transfer.readInt();
                 if (maxClientVersion < Constants.TCP_PROTOCOL_VERSION_6) {
                     throw DbException.get(ErrorCode.DRIVER_VERSION_ERROR_2,
-                                          "" + clientVersion, "" + Constants.TCP_PROTOCOL_VERSION_6);
+                                  "" + clientVersion, "" + Constants.TCP_PROTOCOL_VERSION_6);
                 } else if (minClientVersion > Constants.TCP_PROTOCOL_VERSION_16) {
                     throw DbException.get(ErrorCode.DRIVER_VERSION_ERROR_2,
-                                          "" + clientVersion, "" + Constants.TCP_PROTOCOL_VERSION_16);
+                                  "" + clientVersion, "" + Constants.TCP_PROTOCOL_VERSION_16);
                 }
                 if (maxClientVersion >= Constants.TCP_PROTOCOL_VERSION_16) {
                     clientVersion = Constants.TCP_PROTOCOL_VERSION_16;
@@ -255,7 +255,7 @@ public class TcpServerThread implements Runnable {
     private void process() throws IOException {
         int operation = transfer.readInt();
         switch (operation) {
-        case SessionRemote.SESSION_PREPARE_READ_PARAMS:
+        case SessionRemote.SESSION_PREPARE_READ_PARAMS :
         case SessionRemote.SESSION_PREPARE_READ_PARAMS2:
         case SessionRemote.SESSION_PREPARE: {
             int id = transfer.readInt();

@@ -448,7 +448,7 @@ public class StringUtils {
                 if (SysProperties.CHECK) {
                     if (ch > 127 || ch < ' ') {
                         throw new IllegalArgumentException(
-                                "Unexpected char " + (int) ch + " decoding " + encoded);
+                                  "Unexpected char " + (int) ch + " decoding " + encoded);
                     }
                 }
                 buff[j++] = (byte) ch;
@@ -561,7 +561,7 @@ public class StringUtils {
      * @return the node
      */
     public static String xmlNode(String name, String attributes,
-                                 String content, boolean indent) {
+            String content, boolean indent) {
         String start = attributes == null ? name : name + attributes;
         if (content == null) {
             return "<" + start + "/>\n";
@@ -592,7 +592,7 @@ public class StringUtils {
      */
     public static String indent(String s, int spaces, boolean newline) {
         StringBuilder buff = new StringBuilder(s.length() + spaces);
-        for (int i = 0; i < s.length();) {
+        for (int i = 0; i < s.length(); ) {
             for (int j = 0; j < spaces; j++) {
                 buff.append(' ');
             }
@@ -734,7 +734,7 @@ public class StringUtils {
             return s;
         }
         StringBuilder buff = new StringBuilder(
-                s.length() - before.length() + after.length());
+            s.length() - before.length() + after.length());
         int index = 0;
         while (true) {
             buff.append(s.substring(index, next)).append(after);
@@ -859,7 +859,7 @@ public class StringUtils {
      * @return the trimmed string
      */
     public static String trim(String s, boolean leading, boolean trailing,
-                              String sp) {
+            String sp) {
         char space = (sp == null || sp.length() < 1) ? ' ' : sp.charAt(0);
         if (leading) {
             int len = s.length(), i = 0;
@@ -1002,7 +1002,7 @@ public class StringUtils {
      * @param positiveValue the number to append
      */
     public static void appendZeroPadded(StringBuilder buff, int length,
-                                        long positiveValue) {
+            long positiveValue) {
         if (length == 2) {
             if (positiveValue < 10) {
                 buff.append('0');

@@ -113,7 +113,7 @@ public final class JoinBatch {
             // This is because we store state in a 64 bit field, 2 bits per
             // joined table.
             throw DbException.getUnsupportedException(
-                    "Too many tables in join (at most 32 supported).");
+                      "Too many tables in join (at most 32 supported).");
         }
         filters = new JoinFilter[filtersCount];
         this.additionalFilter = additionalFilter;
@@ -224,7 +224,7 @@ public final class JoinBatch {
             }
             return false;
         }
-        for (;;) {
+        for (;; ) {
             if (!found) {
                 if (!batchedNext()) {
                     return false;
@@ -272,7 +272,7 @@ public final class JoinBatch {
             jfId--;
         }
 
-        for (;;) {
+        for (;; ) {
             fetchCurrent(jfId);
 
             if (!current.isDropped()) {
@@ -349,7 +349,7 @@ public final class JoinBatch {
             }
         } else if (current.isFuture(jfId)) {
             // get cursor from a future
-            x = get((Future<Cursor>) x);
+            x = get((Future<Cursor>)x);
             current.updateRow(jfId, x, JoinRow.S_FUTURE, JoinRow.S_CURSOR);
             newCursor = true;
         }
@@ -359,7 +359,7 @@ public final class JoinBatch {
         assert c != null;
         JoinFilter join = jf.join;
 
-        for (;;) {
+        for (;; ) {
             if (c == null || !c.next()) {
                 if (newCursor && jf.isOuterJoin()) {
                     // replace cursor with null-row
@@ -509,7 +509,7 @@ public final class JoinBatch {
             List<Future<Cursor>> result = lookupBatch.find();
 
             // go backwards and assign futures
-            for (int i = result.size(); i > 0;) {
+            for (int i = result.size(); i > 0; ) {
                 assert current.isRow(id - 1);
                 if (current.row(id) == EMPTY_CURSOR) {
                     // outer join support - skip row with existing empty cursor
@@ -924,9 +924,9 @@ public final class JoinBatch {
             List<Future<Cursor>> topFutureCursors = top.find();
             if (topFutureCursors.size() != resultSize) {
                 throw DbException
-                .throwInternalError("Unexpected result size: " +
-                                    topFutureCursors.size() + ", expected :" +
-                                    resultSize);
+                      .throwInternalError("Unexpected result size: " +
+                              topFutureCursors.size() + ", expected :" +
+                              resultSize);
             }
             for (int i = 0; i < resultSize; i++) {
                 QueryRunner r = queryRunner(i);

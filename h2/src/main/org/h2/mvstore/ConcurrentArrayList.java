@@ -94,23 +94,23 @@ public class ConcurrentArrayList<K> {
     public Iterator<K> iterator() {
         return new Iterator<K>() {
 
-            K[] a = array;
-            int index;
+                   K[] a = array;
+                   int index;
 
-            @Override
-            public boolean hasNext() {
-                return index < a.length;
-            }
+                   @Override
+                   public boolean hasNext() {
+                       return index < a.length;
+                   }
 
-            @Override
-            public K next() {
-                return a[index++];
-            }
+                   @Override
+                   public K next() {
+                       return a[index++];
+                   }
 
-            @Override
-            public void remove() {
-                throw DataUtils.newUnsupportedOperationException("remove");
-            }
+                   @Override
+                   public void remove() {
+                       throw DataUtils.newUnsupportedOperationException("remove");
+                   }
 
         };
     }

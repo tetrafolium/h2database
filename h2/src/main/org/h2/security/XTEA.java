@@ -25,12 +25,12 @@ public class XTEA implements BlockCipher {
     @Override
     public void setKey(byte[] b) {
         int[] key = new int[4];
-        for (int i = 0; i < 16;) {
+        for (int i = 0; i < 16; ) {
             key[i / 4] = (b[i++] << 24) + ((b[i++] & 255) << 16)
-                         + ((b[i++] & 255) << 8) + (b[i++] & 255);
+                    + ((b[i++] & 255) << 8) + (b[i++] & 255);
         }
         int[] r = new int[32];
-        for (int i = 0, sum = 0; i < 32;) {
+        for (int i = 0, sum = 0; i < 32; ) {
             r[i++] = sum + key[sum & 3];
             sum += DELTA;
             r[i++] = sum + key[ (sum >>> 11) & 3];

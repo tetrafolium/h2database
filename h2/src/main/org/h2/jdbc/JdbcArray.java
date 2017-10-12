@@ -229,7 +229,7 @@ public class JdbcArray extends TraceObject implements Array {
      */
     @Override
     public ResultSet getResultSet(long index, int count,
-                                  Map<String, Class<?>> map) throws SQLException {
+            Map<String, Class<?>> map) throws SQLException {
         try {
             if (isDebugEnabled()) {
                 debugCode("getResultSet("+index+", " + count+", " + quoteMap(map)+");");
@@ -277,11 +277,11 @@ public class JdbcArray extends TraceObject implements Array {
         Object[] array = get();
         if (count < 0 || count > array.length) {
             throw DbException.getInvalidValueException("count (1.."
-                    + array.length + ")", count);
+                          + array.length + ")", count);
         }
         if (index < 1 || index > array.length) {
             throw DbException.getInvalidValueException("index (1.."
-                    + array.length + ")", index);
+                          + array.length + ")", index);
         }
         Object[] subset = new Object[count];
         System.arraycopy(array, (int) (index - 1), subset, 0, count);

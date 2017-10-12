@@ -212,7 +212,7 @@ class FileRetryOnInterrupt extends FileBase {
 
     @Override
     public synchronized FileLock tryLock(long position, long size,
-                                         boolean shared) throws IOException {
+            boolean shared) throws IOException {
         FileLock l = channel.tryLock(position, size, shared);
         if (l == null) {
             return null;

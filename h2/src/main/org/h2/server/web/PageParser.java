@@ -93,7 +93,7 @@ public class PageParser {
                         String items = readParam("items");
                         read(">");
                         int start = pos;
-                        List<Object> list = (List<Object>) get(items);
+                        List<Object> list = (List<Object>)get(items);
                         if (list == null) {
                             result.append("?items?");
                             list = New.arrayList();
@@ -163,7 +163,7 @@ public class PageParser {
         if (dot >= 0) {
             String sub = item.substring(dot + 1);
             item = item.substring(0, dot);
-            HashMap<String, Object> map = (HashMap<String, Object>) settings.get(item);
+            HashMap<String, Object> map = (HashMap<String, Object>)settings.get(item);
             if (map == null) {
                 return "?" + item + "?";
             }

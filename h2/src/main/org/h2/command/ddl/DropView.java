@@ -30,8 +30,8 @@ public class DropView extends SchemaCommand {
     public DropView(Session session, Schema schema) {
         super(session, schema);
         dropAction = session.getDatabase().getSettings().dropRestrict ?
-                     ConstraintReferential.RESTRICT :
-                     ConstraintReferential.CASCADE;
+                ConstraintReferential.RESTRICT :
+                ConstraintReferential.CASCADE;
     }
 
     public void setIfExists(boolean b) {

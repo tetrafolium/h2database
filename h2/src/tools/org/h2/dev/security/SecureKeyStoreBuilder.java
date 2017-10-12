@@ -48,9 +48,9 @@ public class SecureKeyStoreBuilder {
 
     private static void printKeystore(KeyStore store, String password)
     throws KeyStoreException, NoSuchAlgorithmException,
-        UnrecoverableKeyException, CertificateEncodingException {
+    UnrecoverableKeyException, CertificateEncodingException {
         System.out.println("KeyStore store = KeyStore.getInstance(\""
-                           + store.getType() + "\");");
+                + store.getType() + "\");");
         System.out.println("store.load(null, password.toCharArray());");
         // System.out.println("keystore provider=" +
         //         store.getProvider().getName());
@@ -59,25 +59,25 @@ public class SecureKeyStoreBuilder {
             String alias = en.nextElement();
             Key key = store.getKey(alias, password.toCharArray());
             System.out.println(
-                    "KeyFactory keyFactory = KeyFactory.getInstance(\""
-                    + key.getAlgorithm() + "\");");
+                "KeyFactory keyFactory = KeyFactory.getInstance(\""
+                + key.getAlgorithm() + "\");");
             System.out.println("store.load(null, password.toCharArray());");
             String pkFormat = key.getFormat();
             String encoded = StringUtils.convertBytesToHex(key.getEncoded());
             System.out.println(
-                    pkFormat + "EncodedKeySpec keySpec = new "
-                    + pkFormat + "EncodedKeySpec(getBytes(\""
-                    + encoded + "\"));");
+                pkFormat + "EncodedKeySpec keySpec = new "
+                + pkFormat + "EncodedKeySpec(getBytes(\""
+                + encoded + "\"));");
             System.out.println(
-                    "PrivateKey privateKey = keyFactory.generatePrivate(keySpec);");
+                "PrivateKey privateKey = keyFactory.generatePrivate(keySpec);");
             System.out.println("Certificate[] certs = {");
             for (Certificate cert : store.getCertificateChain(alias)) {
                 System.out.println(
-                        "  CertificateFactory.getInstance(\""+cert.getType()+"\").");
+                    "  CertificateFactory.getInstance(\""+cert.getType()+"\").");
                 String enc = StringUtils.convertBytesToHex(cert.getEncoded());
                 System.out.println(
-                        "        generateCertificate(new ByteArrayInputStream(getBytes(\""
-                        + enc + "\"))),");
+                    "        generateCertificate(new ByteArrayInputStream(getBytes(\""
+                    + enc + "\"))),");
                 // PublicKey pubKey = cert.getPublicKey();
                 // System.out.println("    pubKey algorithm=" +
                 //         pubKey.getAlgorithm());
@@ -88,7 +88,7 @@ public class SecureKeyStoreBuilder {
             }
             System.out.println("};");
             System.out.println("store.setKeyEntry(\"" + alias
-                               + "\", privateKey, password.toCharArray(), certs);");
+                    + "\", privateKey, password.toCharArray(), certs);");
         }
     }
 

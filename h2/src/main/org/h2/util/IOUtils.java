@@ -394,7 +394,7 @@ public class IOUtils {
      */
     public static Reader getBufferedReader(InputStream in) {
         return in == null ? null : new BufferedReader(
-                       new InputStreamReader(in, Constants.UTF8));
+            new InputStreamReader(in, Constants.UTF8));
     }
 
     /**
@@ -409,7 +409,7 @@ public class IOUtils {
     public static Reader getReader(InputStream in) {
         // InputStreamReader may read some more bytes
         return in == null ? null : new BufferedReader(
-                       new InputStreamReader(in, Constants.UTF8));
+            new InputStreamReader(in, Constants.UTF8));
     }
 
     /**
@@ -421,7 +421,7 @@ public class IOUtils {
      */
     public static Writer getBufferedWriter(OutputStream out) {
         return out == null ? null : new BufferedWriter(
-                       new OutputStreamWriter(out, Constants.UTF8));
+            new OutputStreamWriter(out, Constants.UTF8));
     }
 
     /**

@@ -30,7 +30,7 @@ public class LinkedCursor implements Cursor {
     private Row current;
 
     LinkedCursor(TableLink tableLink, ResultSet rs, Session session,
-                 String sql, PreparedStatement prep) {
+            String sql, PreparedStatement prep) {
         this.session = session;
         this.tableLink = tableLink;
         this.rs = rs;

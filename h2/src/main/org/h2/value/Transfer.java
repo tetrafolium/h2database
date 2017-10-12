@@ -78,11 +78,11 @@ public class Transfer {
     public synchronized void init() throws IOException {
         if (socket != null) {
             in = new DataInputStream(
-                    new BufferedInputStream(
-                            socket.getInputStream(), Transfer.BUFFER_SIZE));
+                new BufferedInputStream(
+                    socket.getInputStream(), Transfer.BUFFER_SIZE));
             out = new DataOutputStream(
-                    new BufferedOutputStream(
-                            socket.getOutputStream(), Transfer.BUFFER_SIZE));
+                new BufferedOutputStream(
+                    socket.getOutputStream(), Transfer.BUFFER_SIZE));
         }
     }
 
@@ -436,13 +436,13 @@ public class Transfer {
             long length = v.getPrecision();
             if (length < 0) {
                 throw DbException.get(
-                        ErrorCode.CONNECTION_BROKEN_1, "length=" + length);
+                          ErrorCode.CONNECTION_BROKEN_1, "length=" + length);
             }
             writeLong(length);
             long written = IOUtils.copyAndCloseInput(v.getInputStream(), out);
             if (written != length) {
                 throw DbException.get(
-                        ErrorCode.CONNECTION_BROKEN_1, "length:" + length + " written:" + written);
+                          ErrorCode.CONNECTION_BROKEN_1, "length:" + length + " written:" + written);
             }
             writeInt(LOB_MAGIC);
             break;
@@ -466,11 +466,11 @@ public class Transfer {
             long length = v.getPrecision();
             if (length < 0) {
                 throw DbException.get(
-                        ErrorCode.CONNECTION_BROKEN_1, "length=" + length);
+                          ErrorCode.CONNECTION_BROKEN_1, "length=" + length);
             }
             if (length > Integer.MAX_VALUE) {
                 throw DbException.get(
-                        ErrorCode.CONNECTION_BROKEN_1, "length="+ length);
+                          ErrorCode.CONNECTION_BROKEN_1, "length="+ length);
             }
             writeLong(length);
             Reader reader = v.getReader();
@@ -580,18 +580,18 @@ public class Transfer {
         case Value.TIMESTAMP: {
             if (version >= Constants.TCP_PROTOCOL_VERSION_9) {
                 return ValueTimestamp.fromDateValueAndNanos(
-                               readLong(), readLong());
+                    readLong(), readLong());
             } else if (version >= Constants.TCP_PROTOCOL_VERSION_7) {
                 return ValueTimestamp.fromMillisNanos(
-                               DateTimeUtils.getTimeUTCWithoutDst(readLong()),
-                               readInt() % 1000000);
+                    DateTimeUtils.getTimeUTCWithoutDst(readLong()),
+                    readInt() % 1000000);
             }
             return ValueTimestamp.fromMillisNanos(readLong(),
-                                                  readInt() % 1000000);
+                           readInt() % 1000000);
         }
         case Value.TIMESTAMP_TZ: {
             return ValueTimestampTimeZone.fromDateValueAndNanos(readLong(),
-                    readLong(), (short) readInt());
+                           readLong(), (short) readInt());
         }
         case Value.DECIMAL:
             return ValueDecimal.get(new BigDecimal(readString()));
@@ -630,14 +630,14 @@ public class Transfer {
                     }
                     long precision = readLong();
                     return ValueLobDb.create(
-                                   Value.BLOB, session.getDataHandler(), tableId, id, hmac, precision);
+                        Value.BLOB, session.getDataHandler(), tableId, id, hmac, precision);
                 }
             }
             Value v = session.getDataHandler().getLobStorage().createBlob(in, length);
             int magic = readInt();
             if (magic != LOB_MAGIC) {
                 throw DbException.get(
-                        ErrorCode.CONNECTION_BROKEN_1, "magic=" + magic);
+                          ErrorCode.CONNECTION_BROKEN_1, "magic=" + magic);
             }
             return v;
         }
@@ -655,11 +655,11 @@ public class Transfer {
                     }
                     long precision = readLong();
                     return ValueLobDb.create(
-                                   Value.CLOB, session.getDataHandler(), tableId, id, hmac, precision);
+                        Value.CLOB, session.getDataHandler(), tableId, id, hmac, precision);
                 }
                 if (length < 0 || length > Integer.MAX_VALUE) {
                     throw DbException.get(
-                            ErrorCode.CONNECTION_BROKEN_1, "length="+ length);
+                              ErrorCode.CONNECTION_BROKEN_1, "length="+ length);
                 }
                 DataReader reader = new DataReader(in);
                 int len = (int) length;
@@ -668,17 +668,17 @@ public class Transfer {
                 int magic = readInt();
                 if (magic != LOB_MAGIC) {
                     throw DbException.get(
-                            ErrorCode.CONNECTION_BROKEN_1, "magic=" + magic);
+                              ErrorCode.CONNECTION_BROKEN_1, "magic=" + magic);
                 }
                 byte[] small = new String(buff).getBytes(Constants.UTF8);
                 return ValueLobDb.createSmallLob(Value.CLOB, small, length);
             }
             Value v = session.getDataHandler().getLobStorage().
-                      createClob(new DataReader(in), length);
+                    createClob(new DataReader(in), length);
             int magic = readInt();
             if (magic != LOB_MAGIC) {
                 throw DbException.get(
-                        ErrorCode.CONNECTION_BROKEN_1, "magic=" + magic);
+                          ErrorCode.CONNECTION_BROKEN_1, "magic=" + magic);
             }
             return v;
         }
@@ -722,7 +722,7 @@ public class Transfer {
         default:
             if (JdbcUtils.customDataTypesHandler != null) {
                 return JdbcUtils.customDataTypesHandler.convert(
-                               ValueBytes.getNoCopy(readBytes()), type);
+                    ValueBytes.getNoCopy(readBytes()), type);
             }
             throw DbException.get(ErrorCode.CONNECTION_BROKEN_1, "type=" + type);
         }
@@ -789,7 +789,7 @@ public class Transfer {
         byte[] result = calculateLobMac(lobId);
         if (!Utils.compareSecure(hmac,  result)) {
             throw DbException.get(ErrorCode.CONNECTION_BROKEN_1,
-                                  "Invalid lob hmac; possibly the connection was re-opened internally");
+                          "Invalid lob hmac; possibly the connection was re-opened internally");
         }
     }
 

@@ -125,24 +125,24 @@ public class ArchiveTool {
             log.println();
         }
         log.println("Compressing " + size / MB + " MB at " +
-                    new java.sql.Time(startMs).toString());
+                new java.sql.Time(startMs).toString());
         InputStream in = getDirectoryInputStream(fromDir);
         String temp = toFile + ".temp";
         OutputStream out =
                 new BufferedOutputStream(
-                new FileOutputStream(toFile), 1024 * 1024);
+            new FileOutputStream(toFile), 1024 * 1024);
         Deflater def = new Deflater();
         def.setLevel(level);
         out = new BufferedOutputStream(
-                new DeflaterOutputStream(out, def), 1024 * 1024);
+            new DeflaterOutputStream(out, def), 1024 * 1024);
         sort(log, in, out, temp, size);
         in.close();
         out.close();
         log.println();
         log.println("Compressed to " +
-                    new File(toFile).length() / MB + " MB in " +
-                    TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - start)  +
-                    " seconds");
+                new File(toFile).length() / MB + " MB in " +
+                TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - start)  +
+                " seconds");
         log.println();
     }
 
@@ -154,7 +154,7 @@ public class ArchiveTool {
         log.println("Extracting " + size / MB + " MB at " + new java.sql.Time(startMs).toString());
         InputStream in =
                 new BufferedInputStream(
-                new FileInputStream(fromFile), 1024 * 1024);
+            new FileInputStream(fromFile), 1024 * 1024);
         String temp = fromFile + ".temp";
         Inflater inflater = new Inflater();
         in = new InflaterInputStream(in, inflater, 1024 * 1024);
@@ -165,8 +165,8 @@ public class ArchiveTool {
         out.close();
         log.println();
         log.println("Extracted in " +
-                    TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - start) +
-                    " seconds");
+                TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - start) +
+                " seconds");
     }
 
     private static long getSize(File f, Runnable r) {
@@ -195,116 +195,116 @@ public class ArchiveTool {
 
         return new InputStream() {
 
-            private final String baseDir;
-            private final ArrayList<String> files = new ArrayList<>();
-            private String current;
-            private ByteArrayInputStream meta;
-            private DataInputStream fileIn;
-            private long remaining;
+                   private final String baseDir;
+                   private final ArrayList<String> files = new ArrayList<>();
+                   private String current;
+                   private ByteArrayInputStream meta;
+                   private DataInputStream fileIn;
+                   private long remaining;
 
-            {
-                File f = new File(dir);
-                baseDir = f.getAbsolutePath();
-                addDirectory(f);
-            }
+                   {
+                       File f = new File(dir);
+                       baseDir = f.getAbsolutePath();
+                       addDirectory(f);
+                   }
 
-            private void addDirectory(File f) {
-                File[] list = f.listFiles();
-                if (list != null) {
-                    // first all directories, then all files
-                    for (File c : list) {
-                        if (c.isDirectory()) {
-                            files.add(c.getAbsolutePath());
-                        }
-                    }
-                    for (File c : list) {
-                        if (c.isFile()) {
-                            files.add(c.getAbsolutePath());
-                        }
-                    }
-                }
-            }
+                   private void addDirectory(File f) {
+                       File[] list = f.listFiles();
+                       if (list != null) {
+                           // first all directories, then all files
+                           for (File c : list) {
+                               if (c.isDirectory()) {
+                                   files.add(c.getAbsolutePath());
+                               }
+                           }
+                           for (File c : list) {
+                               if (c.isFile()) {
+                                   files.add(c.getAbsolutePath());
+                               }
+                           }
+                       }
+                   }
 
-            // int: metadata length
-            // byte: 0: directory, 1: file
-            // varLong: lastModified
-            // byte: 0: read-write, 1: read-only
-            // (file only) varLong: file length
-            // utf-8: file name
+                   // int: metadata length
+                   // byte: 0: directory, 1: file
+                   // varLong: lastModified
+                   // byte: 0: read-write, 1: read-only
+                   // (file only) varLong: file length
+                   // utf-8: file name
 
-            @Override
-            public int read() throws IOException {
-                if (meta != null) {
-                    // read from the metadata
-                    int x = meta.read();
-                    if (x >= 0) {
-                        return x;
-                    }
-                    meta = null;
-                }
-                if (fileIn != null) {
-                    if (remaining > 0) {
-                        // read from the file
-                        int x = fileIn.read();
-                        remaining--;
-                        if (x < 0) {
-                            throw new EOFException();
-                        }
-                        return x;
-                    }
-                    fileIn.close();
-                    fileIn = null;
-                }
-                if (files.size() == 0) {
-                    // EOF
-                    return -1;
-                }
-                // breadth-first traversal
-                // first all files, then all directories
-                current = files.remove(files.size() - 1);
-                File f = new File(current);
-                if (f.isDirectory()) {
-                    addDirectory(f);
-                }
-                ByteArrayOutputStream metaOut = new ByteArrayOutputStream();
-                DataOutputStream out = new DataOutputStream(metaOut);
-                boolean isFile = f.isFile();
-                out.writeInt(0);
-                out.write(isFile ? 1 : 0);
-                out.write(!f.canWrite() ? 1 : 0);
-                writeVarLong(out, f.lastModified());
-                if (isFile) {
-                    remaining = f.length();
-                    writeVarLong(out, remaining);
-                    fileIn = new DataInputStream(new BufferedInputStream(
-                                                         new FileInputStream(current), 1024 * 1024));
-                }
-                if (!current.startsWith(baseDir)) {
-                    throw new IOException("File " + current + " does not start with " + baseDir);
-                }
-                String n = current.substring(baseDir.length() + 1);
-                out.writeUTF(n);
-                out.writeInt(metaOut.size());
-                out.flush();
-                byte[] bytes = metaOut.toByteArray();
-                // copy metadata length to beginning
-                System.arraycopy(bytes, bytes.length - 4, bytes, 0, 4);
-                // cut the length
-                bytes = Arrays.copyOf(bytes, bytes.length - 4);
-                meta = new ByteArrayInputStream(bytes);
-                return meta.read();
-            }
+                   @Override
+                   public int read() throws IOException {
+                       if (meta != null) {
+                           // read from the metadata
+                           int x = meta.read();
+                           if (x >= 0) {
+                               return x;
+                           }
+                           meta = null;
+                       }
+                       if (fileIn != null) {
+                           if (remaining > 0) {
+                               // read from the file
+                               int x = fileIn.read();
+                               remaining--;
+                               if (x < 0) {
+                                   throw new EOFException();
+                               }
+                               return x;
+                           }
+                           fileIn.close();
+                           fileIn = null;
+                       }
+                       if (files.size() == 0) {
+                           // EOF
+                           return -1;
+                       }
+                       // breadth-first traversal
+                       // first all files, then all directories
+                       current = files.remove(files.size() - 1);
+                       File f = new File(current);
+                       if (f.isDirectory()) {
+                           addDirectory(f);
+                       }
+                       ByteArrayOutputStream metaOut = new ByteArrayOutputStream();
+                       DataOutputStream out = new DataOutputStream(metaOut);
+                       boolean isFile = f.isFile();
+                       out.writeInt(0);
+                       out.write(isFile ? 1 : 0);
+                       out.write(!f.canWrite() ? 1 : 0);
+                       writeVarLong(out, f.lastModified());
+                       if (isFile) {
+                           remaining = f.length();
+                           writeVarLong(out, remaining);
+                           fileIn = new DataInputStream(new BufferedInputStream(
+                                       new FileInputStream(current), 1024 * 1024));
+                       }
+                       if (!current.startsWith(baseDir)) {
+                           throw new IOException("File " + current + " does not start with " + baseDir);
+                       }
+                       String n = current.substring(baseDir.length() + 1);
+                       out.writeUTF(n);
+                       out.writeInt(metaOut.size());
+                       out.flush();
+                       byte[] bytes = metaOut.toByteArray();
+                       // copy metadata length to beginning
+                       System.arraycopy(bytes, bytes.length - 4, bytes, 0, 4);
+                       // cut the length
+                       bytes = Arrays.copyOf(bytes, bytes.length - 4);
+                       meta = new ByteArrayInputStream(bytes);
+                       return meta.read();
+                   }
 
-            @Override
-            public int read(byte[] buff, int offset, int length) throws IOException {
-                if (meta != null || fileIn == null || remaining == 0) {
-                    return super.read(buff, offset, length);
-                }
-                int l = (int) Math.min(length, remaining);
-                fileIn.readFully(buff, offset, l);
-                remaining -= l;
-                return l;
-            }
+                   @Override
+                   public int read(byte[] buff, int offset, int length) throws IOException {
+                       if (meta != null || fileIn == null || remaining == 0) {
+                           return super.read(buff, offset, length);
+                       }
+                       int l = (int) Math.min(length, remaining);
+                       fileIn.readFully(buff, offset, l);
+                       remaining -= l;
+                       return l;
+                   }
 
         };
 
@@ -314,98 +314,98 @@ public class ArchiveTool {
         new File(dir).mkdirs();
         return new OutputStream() {
 
-            private ByteArrayOutputStream meta = new ByteArrayOutputStream();
-            private OutputStream fileOut;
-            private File file;
-            private long remaining = 4;
-            private long modified;
-            private boolean readOnly;
+                   private ByteArrayOutputStream meta = new ByteArrayOutputStream();
+                   private OutputStream fileOut;
+                   private File file;
+                   private long remaining = 4;
+                   private long modified;
+                   private boolean readOnly;
 
-            @Override
-            public void write(byte[] buff, int offset, int length) throws IOException {
-                while (length > 0) {
-                    if (fileOut == null || remaining <= 1) {
-                        write(buff[offset] & 255);
-                        offset++;
-                        length--;
-                    } else {
-                        int l = (int) Math.min(length, remaining - 1);
-                        fileOut.write(buff, offset, l);
-                        remaining -= l;
-                        offset += l;
-                        length -= l;
-                    }
-                }
-            }
+                   @Override
+                   public void write(byte[] buff, int offset, int length) throws IOException {
+                       while (length > 0) {
+                           if (fileOut == null || remaining <= 1) {
+                               write(buff[offset] & 255);
+                               offset++;
+                               length--;
+                           } else {
+                               int l = (int) Math.min(length, remaining - 1);
+                               fileOut.write(buff, offset, l);
+                               remaining -= l;
+                               offset += l;
+                               length -= l;
+                           }
+                       }
+                   }
 
-            @Override
-            public void write(int b) throws IOException {
-                if (fileOut != null) {
-                    fileOut.write(b);
-                    if (--remaining > 0) {
-                        return;
-                    }
-                    // this can be slow, but I don't know a way to avoid it
-                    fileOut.close();
-                    fileOut = null;
-                    file.setLastModified(modified);
-                    if (readOnly) {
-                        file.setReadOnly();
-                    }
-                    remaining = 4;
-                    return;
-                }
-                meta.write(b);
-                if (--remaining > 0) {
-                    return;
-                }
-                DataInputStream in = new DataInputStream(
-                        new ByteArrayInputStream(meta.toByteArray()));
-                if (meta.size() == 4) {
-                    // metadata is next
-                    remaining = in.readInt() - 4;
-                    if (remaining > 16 * 1024) {
-                        throw new IOException("Illegal directory stream");
-                    }
-                    return;
-                }
-                // read and ignore the length
-                in.readInt();
-                boolean isFile = in.read() == 1;
-                readOnly = in.read() == 1;
-                modified = readVarLong(in);
-                if (isFile) {
-                    remaining = readVarLong(in);
-                } else {
-                    remaining = 4;
-                }
-                String name = dir + "/" + in.readUTF();
-                file = new File(name);
-                if (isFile) {
-                    if (remaining == 0) {
-                        new File(name).createNewFile();
-                        remaining = 4;
-                    } else {
-                        fileOut = new BufferedOutputStream(
-                                new FileOutputStream(name), 1024 * 1024);
-                    }
-                } else {
-                    file.mkdirs();
-                    file.setLastModified(modified);
-                    if (readOnly) {
-                        file.setReadOnly();
-                    }
-                }
-                meta.reset();
-            }
+                   @Override
+                   public void write(int b) throws IOException {
+                       if (fileOut != null) {
+                           fileOut.write(b);
+                           if (--remaining > 0) {
+                               return;
+                           }
+                           // this can be slow, but I don't know a way to avoid it
+                           fileOut.close();
+                           fileOut = null;
+                           file.setLastModified(modified);
+                           if (readOnly) {
+                               file.setReadOnly();
+                           }
+                           remaining = 4;
+                           return;
+                       }
+                       meta.write(b);
+                       if (--remaining > 0) {
+                           return;
+                       }
+                       DataInputStream in = new DataInputStream(
+                           new ByteArrayInputStream(meta.toByteArray()));
+                       if (meta.size() == 4) {
+                           // metadata is next
+                           remaining = in.readInt() - 4;
+                           if (remaining > 16 * 1024) {
+                               throw new IOException("Illegal directory stream");
+                           }
+                           return;
+                       }
+                       // read and ignore the length
+                       in.readInt();
+                       boolean isFile = in.read() == 1;
+                       readOnly = in.read() == 1;
+                       modified = readVarLong(in);
+                       if (isFile) {
+                           remaining = readVarLong(in);
+                       } else {
+                           remaining = 4;
+                       }
+                       String name = dir + "/" + in.readUTF();
+                       file = new File(name);
+                       if (isFile) {
+                           if (remaining == 0) {
+                               new File(name).createNewFile();
+                               remaining = 4;
+                           } else {
+                               fileOut = new BufferedOutputStream(
+                                   new FileOutputStream(name), 1024 * 1024);
+                           }
+                       } else {
+                           file.mkdirs();
+                           file.setLastModified(modified);
+                           if (readOnly) {
+                               file.setReadOnly();
+                           }
+                       }
+                       meta.reset();
+                   }
         };
     }
 
     private static void sort(Log log, InputStream in, OutputStream out,
-                             String tempFileName, long size) throws IOException {
+            String tempFileName, long size) throws IOException {
         int bufferSize = 32 * 1024 * 1024;
         DataOutputStream tempOut = new DataOutputStream(new BufferedOutputStream(
-                        new FileOutputStream(tempFileName), 1024 * 1024));
+                    new FileOutputStream(tempFileName), 1024 * 1024));
         byte[] bytes = new byte[bufferSize];
         List<Long> segmentStart = new ArrayList<>();
         long outPos = 0;
@@ -423,7 +423,7 @@ public class ArchiveTool {
             }
             log.printProgress(len);
             TreeMap<Chunk, Chunk> map = new TreeMap<>();
-            for (int pos = 0; pos < len;) {
+            for (int pos = 0; pos < len; ) {
                 int[] key = getKey(bytes, pos, len);
                 int l = key[3];
                 byte[] buff = new byte[l];
@@ -462,7 +462,7 @@ public class ArchiveTool {
             ArrayList<Long> segmentStart2 = new ArrayList<>();
             outPos = 0;
             DataOutputStream tempOut2 = new DataOutputStream(new BufferedOutputStream(
-                            new FileOutputStream(tempFileName + ".b"), 1024 * 1024));
+                        new FileOutputStream(tempFileName + ".b"), 1024 * 1024));
             while (segmentStart.size() > 0) {
                 segmentStart2.add(outPos);
                 int s = Math.min(segmentStart.size(), blockSize);
@@ -538,7 +538,7 @@ public class ArchiveTool {
     }
 
     private static long openSegments(List<Long> segmentStart, TreeSet<ChunkStream> segmentIn,
-                                     String tempFileName, boolean readKey) throws IOException {
+            String tempFileName, boolean readKey) throws IOException {
         long inPos = 0;
         int bufferTotal = 64 * 1024 * 1024;
         int bufferPerStream = bufferTotal / segmentStart.size();
@@ -565,28 +565,28 @@ public class ArchiveTool {
     private static Iterator<Chunk> merge(final TreeSet<ChunkStream> segmentIn, final Log log) {
         return new Iterator<Chunk>() {
 
-            @Override
-            public boolean hasNext() {
-                return segmentIn.size() > 0;
-            }
+                   @Override
+                   public boolean hasNext() {
+                       return segmentIn.size() > 0;
+                   }
 
-            @Override
-            public Chunk next() {
-                ChunkStream s = segmentIn.first();
-                segmentIn.remove(s);
-                Chunk c = s.current;
-                int len = s.readNext();
-                log.printProgress(len);
-                if (s.current != null) {
-                    segmentIn.add(s);
-                }
-                return c;
-            }
+                   @Override
+                   public Chunk next() {
+                       ChunkStream s = segmentIn.first();
+                       segmentIn.remove(s);
+                       Chunk c = s.current;
+                       int len = s.readNext();
+                       log.printProgress(len);
+                       if (s.current != null) {
+                           segmentIn.add(s);
+                       }
+                       return c;
+                   }
 
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
+                   @Override
+                   public void remove() {
+                       throw new UnsupportedOperationException();
+                   }
 
         };
     }
@@ -665,7 +665,7 @@ public class ArchiveTool {
     }
 
     private static long getSipHash24(byte[] b, int start, int end, long k0,
-                                     long k1) {
+            long k1) {
         long v0 = k0 ^ 0x736f6d6570736575L;
         long v1 = k1 ^ 0x646f72616e646f6dL;
         long v2 = k0 ^ 0x6c7967656e657261L;
@@ -771,12 +771,12 @@ public class ArchiveTool {
     }
 
     private static void combine(Log log, InputStream in, OutputStream out,
-                                String tempFileName) throws IOException {
+            String tempFileName) throws IOException {
         int bufferSize = 16 * 1024 * 1024;
         DataOutputStream tempOut =
                 new DataOutputStream(
-                new BufferedOutputStream(
-                        new FileOutputStream(tempFileName), 1024 * 1024));
+            new BufferedOutputStream(
+                new FileOutputStream(tempFileName), 1024 * 1024));
 
         // File: header length chunk* 0
         // chunk: pos* 0 data
@@ -842,7 +842,7 @@ public class ArchiveTool {
             ArrayList<Long> segmentStart2 = new ArrayList<>();
             outPos = 0;
             DataOutputStream tempOut2 = new DataOutputStream(new BufferedOutputStream(
-                            new FileOutputStream(tempFileName + ".b"), 1024 * 1024));
+                        new FileOutputStream(tempFileName + ".b"), 1024 * 1024));
             while (segmentStart.size() > 0) {
                 segmentStart2.add(outPos);
                 int s = Math.min(segmentStart.size(), blockSize);

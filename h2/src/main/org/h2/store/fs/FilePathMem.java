@@ -54,7 +54,7 @@ public class FilePathMem extends FilePath {
             if (!atomicReplace && !newName.name.equals(name) &&
                     MEMORY_FILES.containsKey(newName.name)) {
                 throw DbException.get(ErrorCode.FILE_RENAME_FAILED_2,
-                                      new String[] { name, newName + " (exists)" });
+                              new String[] { name, newName + " (exists)" });
             }
             FileMemData f = getMemoryFile();
             f.setName(newName.name);
@@ -161,7 +161,7 @@ public class FilePathMem extends FilePath {
     public void createDirectory() {
         if (exists()) {
             throw DbException.get(ErrorCode.FILE_CREATION_FAILED_1,
-                                  name + " (a file with this name already exists)");
+                          name + " (a file with this name already exists)");
         }
         synchronized (MEMORY_FILES) {
             MEMORY_FILES.put(name, DIRECTORY);
@@ -193,7 +193,7 @@ public class FilePathMem extends FilePath {
             FileMemData m = MEMORY_FILES.get(name);
             if (m == DIRECTORY) {
                 throw DbException.get(ErrorCode.FILE_CREATION_FAILED_1,
-                                      name + " (a directory with this name already exists)");
+                              name + " (a directory with this name already exists)");
             }
             if (m == null) {
                 m = new FileMemData(name, compressed());
@@ -313,7 +313,7 @@ class FileMem extends FileBase {
         }
         data.touch(readOnly);
         data.readWrite(position, src.array(),
-                       src.arrayOffset() + src.position(), len, true);
+                src.arrayOffset() + src.position(), len, true);
         src.position(src.position() + len);
         return len;
     }
@@ -326,7 +326,7 @@ class FileMem extends FileBase {
         }
         data.touch(readOnly);
         pos = data.readWrite(pos, src.array(),
-                             src.arrayOffset() + src.position(), len, true);
+                src.arrayOffset() + src.position(), len, true);
         src.position(src.position() + len);
         return len;
     }
@@ -338,7 +338,7 @@ class FileMem extends FileBase {
             return 0;
         }
         long newPos = data.readWrite(position, dst.array(),
-                                     dst.arrayOffset() + dst.position(), len, false);
+                dst.arrayOffset() + dst.position(), len, false);
         len = (int) (newPos - position);
         if (len <= 0) {
             return -1;
@@ -354,7 +354,7 @@ class FileMem extends FileBase {
             return 0;
         }
         long newPos = data.readWrite(pos, dst.array(),
-                                     dst.arrayOffset() + dst.position(), len, false);
+                dst.arrayOffset() + dst.position(), len, false);
         len = (int) (newPos - pos);
         if (len <= 0) {
             return -1;
@@ -381,7 +381,7 @@ class FileMem extends FileBase {
 
     @Override
     public synchronized FileLock tryLock(long position, long size,
-                                         boolean shared) throws IOException {
+            boolean shared) throws IOException {
         if (shared) {
             if (!data.lockShared()) {
                 return null;

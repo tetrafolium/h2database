@@ -47,7 +47,7 @@ public class FtpControl extends Thread {
     public void run() {
         try {
             output = new PrintWriter(new OutputStreamWriter(
-                                             control.getOutputStream(), Constants.UTF8));
+                        control.getOutputStream(), Constants.UTF8));
             if (stop) {
                 reply(421, "Too many users");
             } else {
@@ -55,7 +55,7 @@ public class FtpControl extends Thread {
                 // TODO need option to configure the serverIpAddress?
                 serverIpAddress = control.getLocalAddress().getHostAddress().replace('.', ',');
                 BufferedReader input = new BufferedReader(
-                        new InputStreamReader(control.getInputStream()));
+                    new InputStreamReader(control.getInputStream()));
                 while (!stop) {
                     String command = null;
                     try {
@@ -221,7 +221,7 @@ public class FtpControl extends Thread {
                 data.start();
                 int port = dataSocket.getLocalPort();
                 reply(227, "Passive Mode (" + serverIpAddress + ","
-                      + (port >> 8) + "," + (port & 255) + ")");
+                        + (port >> 8) + "," + (port & 255) + ")");
             } else if ("PORT".equals(command)) {
                 String[] list = StringUtils.arraySplit(param, ',', true);
                 String host = list[0] + "." + list[1] + "." + list[2] + "." + list[3];
@@ -232,7 +232,7 @@ public class FtpControl extends Thread {
                     reply(200, "Ok");
                 } else {
                     server.trace("Port REJECTED:" + address + " expected:"
-                                 + control.getInetAddress());
+                            + control.getInetAddress());
                     reply(550, "Failed");
                 }
             }

@@ -74,7 +74,7 @@ public class Right extends DbObjectBase {
     }
 
     public Right(Database db, int id, RightOwner grantee, int grantedRight,
-                 DbObject grantedObject) {
+            DbObject grantedObject) {
         initDbObjectBase(db, id, "" + id, Trace.USER);
         this.grantee = grantee;
         this.grantedRight = grantedRight;
@@ -82,7 +82,7 @@ public class Right extends DbObjectBase {
     }
 
     private static boolean appendRight(StringBuilder buff, int right, int mask,
-                                       String name, boolean comma) {
+            String name, boolean comma) {
         if ((right & mask) != 0) {
             if (comma) {
                 buff.append(", ");
@@ -103,7 +103,7 @@ public class Right extends DbObjectBase {
             comma = appendRight(buff, grantedRight, DELETE, "DELETE", comma);
             comma = appendRight(buff, grantedRight, INSERT, "INSERT", comma);
             comma = appendRight(buff, grantedRight, ALTER_ANY_SCHEMA,
-                                "ALTER ANY SCHEMA", comma);
+                    "ALTER ANY SCHEMA", comma);
             appendRight(buff, grantedRight, UPDATE, "UPDATE", comma);
         }
         return buff.toString();

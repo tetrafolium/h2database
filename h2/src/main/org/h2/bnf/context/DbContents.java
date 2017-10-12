@@ -130,8 +130,8 @@ public class DbContents {
         isH2 = url.startsWith("jdbc:h2:");
         if (isH2) {
             PreparedStatement prep = conn.prepareStatement(
-                                             "SELECT UPPER(VALUE) FROM INFORMATION_SCHEMA.SETTINGS " +
-                                             "WHERE NAME=?");
+                "SELECT UPPER(VALUE) FROM INFORMATION_SCHEMA.SETTINGS " +
+                "WHERE NAME=?");
             prep.setString(1, "MODE");
             ResultSet rs = prep.executeQuery();
             rs.next();
@@ -158,15 +158,14 @@ public class DbContents {
         for (int i = 0; i < schemaNames.length; i++) {
             String schemaName = schemaNames[i];
             boolean isDefault = defaultSchemaName == null ||
-                                defaultSchemaName.equals(schemaName);
+                    defaultSchemaName.equals(schemaName);
             DbSchema schema = new DbSchema(this, schemaName, isDefault);
             if (isDefault) {
                 defaultSchema = schema;
             }
             schemas[i] = schema;
             String[] tableTypes = { "TABLE", "SYSTEM TABLE", "VIEW",
-                                    "SYSTEM VIEW", "TABLE LINK", "SYNONYM", "EXTERNAL"
-                                  };
+                                    "SYSTEM VIEW", "TABLE LINK", "SYNONYM", "EXTERNAL"};
             schema.readTables(meta, tableTypes);
             if (!isPostgreSQL && !isDB2) {
                 schema.readProcedures(meta);
@@ -206,21 +205,18 @@ public class DbContents {
                                              "DMSYS", "EXFSYS", "FLOWS_020100", "FLOWS_FILES",
                                              "MDDATA", "MDSYS", "MGMT_VIEW", "OLAPSYS", "ORDSYS",
                                              "ORDPLUGINS", "OUTLN", "SI_INFORMTN_SCHEMA", "SYS",
-                                             "SYSMAN", "SYSTEM", "TSMSYS", "WMSYS", "XDB"
-                                           };
+                                             "SYSMAN", "SYSTEM", "TSMSYS", "WMSYS", "XDB"};
             } else if (isMSSQLServer) {
                 ignoreNames = new String[] { "sys", "db_accessadmin",
                                              "db_backupoperator", "db_datareader", "db_datawriter",
                                              "db_ddladmin", "db_denydatareader",
-                                             "db_denydatawriter", "db_owner", "db_securityadmin"
-                                           };
+                                             "db_denydatawriter", "db_owner", "db_securityadmin"};
             } else if (isDB2) {
                 ignoreNames = new String[] { "NULLID", "SYSFUN",
                                              "SYSIBMINTERNAL", "SYSIBMTS", "SYSPROC", "SYSPUBLIC",
                                              // not empty, but not sure what they contain
                                              "SYSCAT",  "SYSIBM", "SYSIBMADM",
-                                             "SYSSTAT", "SYSTOOLS",
-                                           };
+                                             "SYSSTAT", "SYSTOOLS",};
 
             }
             if (ignoreNames != null) {

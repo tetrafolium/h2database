@@ -53,7 +53,7 @@ public class UploadBuild {
         boolean coverageFailed;
         if (coverage) {
             byte[] data = IOUtils.readBytesAndClose(
-                                  new FileInputStream("coverage/index.html"), -1);
+                new FileInputStream("coverage/index.html"), -1);
             String index = new String(data, "ISO-8859-1");
             coverageFailed = index.contains("CLASS=\"h\"");
             while (true) {
@@ -88,7 +88,7 @@ public class UploadBuild {
         boolean error;
         if (new File("docs/html/testOutput.html").exists()) {
             testOutput = IOUtils.readStringAndClose(
-                                 new FileReader("docs/html/testOutput.html"), -1);
+                new FileReader("docs/html/testOutput.html"), -1);
             error = testOutput.contains(OutputCatcher.START_ERROR);
         } else if (new File("log.txt").exists()) {
             testOutput = IOUtils.readStringAndClose(new FileReader("log.txt"), -1);
@@ -106,7 +106,7 @@ public class UploadBuild {
             buildSql = new String(ftp.retrieve("/httpdocs/automated/history.sql"));
         } else {
             buildSql = "create table item(id identity, title varchar, " +
-                       "issued timestamp, desc varchar);\n";
+                    "issued timestamp, desc varchar);\n";
         }
         String ts = new java.sql.Timestamp(System.currentTimeMillis()).toString();
         String now = ts.substring(0, 16);
@@ -115,21 +115,21 @@ public class UploadBuild {
             int end = testOutput.indexOf("<br />", idx);
             if (end >= 0) {
                 String result = testOutput.substring(idx +
-                                                     "Statements per second: ".length(), end);
+                        "Statements per second: ".length(), end);
                 now += " " + result + " op/s";
             }
         }
         String sql = "insert into item(title, issued, desc) values('Build " +
-                     now +
-                     (error ? " FAILED" : "") +
-                     (coverageFailed ? " COVERAGE" : "") +
-                     "', '" + ts +
-                     "', '<a href=\"http://www.h2database.com/" +
-                     "html/testOutput.html\">Output</a>" +
-                     " - <a href=\"http://www.h2database.com/" +
-                     "coverage/overview.html\">Coverage</a>" +
-                     " - <a href=\"http://www.h2database.com/" +
-                     "automated/h2-latest.jar\">Jar</a>');\n";
+                now +
+                (error ? " FAILED" : "") +
+                (coverageFailed ? " COVERAGE" : "") +
+                "', '" + ts +
+                "', '<a href=\"http://www.h2database.com/" +
+                "html/testOutput.html\">Output</a>" +
+                " - <a href=\"http://www.h2database.com/" +
+                "coverage/overview.html\">Coverage</a>" +
+                " - <a href=\"http://www.h2database.com/" +
+                "automated/h2-latest.jar\">Jar</a>');\n";
         buildSql += sql;
         Connection conn;
         try {
@@ -141,7 +141,7 @@ public class UploadBuild {
         }
         conn.createStatement().execute(buildSql);
         String newsfeed = IOUtils.readStringAndClose(
-                                  new FileReader("src/tools/org/h2/build/doc/buildNewsfeed.sql"), -1);
+            new FileReader("src/tools/org/h2/build/doc/buildNewsfeed.sql"), -1);
         ScriptReader r = new ScriptReader(new StringReader(newsfeed));
         Statement stat = conn.createStatement();
         ResultSet rs = null;
@@ -158,26 +158,26 @@ public class UploadBuild {
         String content = rs.getString("content");
         conn.close();
         ftp.store("/httpdocs/automated/history.sql",
-                  new ByteArrayInputStream(buildSql.getBytes()));
+                new ByteArrayInputStream(buildSql.getBytes()));
         ftp.store("/httpdocs/automated/news.xml",
-                  new ByteArrayInputStream(content.getBytes()));
+                new ByteArrayInputStream(content.getBytes()));
         ftp.store("/httpdocs/html/testOutput.html",
-                  new ByteArrayInputStream(testOutput.getBytes()));
+                new ByteArrayInputStream(testOutput.getBytes()));
         String jarFileName = "bin/h2-" + Constants.getVersion() + ".jar";
         if (FileUtils.exists(jarFileName)) {
             ftp.store("/httpdocs/automated/h2-latest.jar",
-                      new FileInputStream(jarFileName));
+                    new FileInputStream(jarFileName));
         }
         if (coverage) {
             ftp.store("/httpdocs/coverage/overview.html",
-                      new FileInputStream("coverage/overview.html"));
+                    new FileInputStream("coverage/overview.html"));
             ftp.store("/httpdocs/coverage/coverage.zip",
-                      new FileInputStream("coverage.zip"));
+                    new FileInputStream("coverage.zip"));
             FileUtils.delete("coverage.zip");
         }
         String mavenRepoDir = System.getProperty("user.home") + "/.m2/repository/";
         boolean mavenSnapshot = new File(mavenRepoDir +
-                                         "com/h2database/h2/1.0-SNAPSHOT/h2-1.0-SNAPSHOT.jar").exists();
+                "com/h2database/h2/1.0-SNAPSHOT/h2-1.0-SNAPSHOT.jar").exists();
         if (mavenSnapshot) {
             if (!ftp.exists("/httpdocs", "m2-repo")) {
                 ftp.makeDirectory("/httpdocs/m2-repo");
@@ -201,21 +201,21 @@ public class UploadBuild {
                 ftp.makeDirectory("/httpdocs/m2-repo/com/h2database/h2-mvstore/1.0-SNAPSHOT");
             }
             ftp.store("/httpdocs/m2-repo/com/h2database/h2" +
-                      "/1.0-SNAPSHOT/h2-1.0-SNAPSHOT.pom",
-                      new FileInputStream(mavenRepoDir +
-                                          "com/h2database/h2/1.0-SNAPSHOT/h2-1.0-SNAPSHOT.pom"));
+                    "/1.0-SNAPSHOT/h2-1.0-SNAPSHOT.pom",
+                    new FileInputStream(mavenRepoDir +
+                    "com/h2database/h2/1.0-SNAPSHOT/h2-1.0-SNAPSHOT.pom"));
             ftp.store("/httpdocs/m2-repo/com/h2database/h2" +
-                      "/1.0-SNAPSHOT/h2-1.0-SNAPSHOT.jar",
-                      new FileInputStream(mavenRepoDir +
-                                          "com/h2database/h2/1.0-SNAPSHOT/h2-1.0-SNAPSHOT.jar"));
+                    "/1.0-SNAPSHOT/h2-1.0-SNAPSHOT.jar",
+                    new FileInputStream(mavenRepoDir +
+                    "com/h2database/h2/1.0-SNAPSHOT/h2-1.0-SNAPSHOT.jar"));
             ftp.store("/httpdocs/m2-repo/com/h2database/h2-mvstore" +
-                      "/1.0-SNAPSHOT/h2-mvstore-1.0-SNAPSHOT.pom",
-                      new FileInputStream(mavenRepoDir +
-                                          "com/h2database/h2-mvstore/1.0-SNAPSHOT/h2-mvstore-1.0-SNAPSHOT.pom"));
+                    "/1.0-SNAPSHOT/h2-mvstore-1.0-SNAPSHOT.pom",
+                    new FileInputStream(mavenRepoDir +
+                    "com/h2database/h2-mvstore/1.0-SNAPSHOT/h2-mvstore-1.0-SNAPSHOT.pom"));
             ftp.store("/httpdocs/m2-repo/com/h2database/h2-mvstore" +
-                      "/1.0-SNAPSHOT/h2-mvstore-1.0-SNAPSHOT.jar",
-                      new FileInputStream(mavenRepoDir +
-                                          "com/h2database/h2-mvstore/1.0-SNAPSHOT/h2-mvstore-1.0-SNAPSHOT.jar"));
+                    "/1.0-SNAPSHOT/h2-mvstore-1.0-SNAPSHOT.jar",
+                    new FileInputStream(mavenRepoDir +
+                    "com/h2database/h2-mvstore/1.0-SNAPSHOT/h2-mvstore-1.0-SNAPSHOT.jar"));
         }
         ftp.close();
     }

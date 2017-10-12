@@ -18,7 +18,7 @@ import org.h2.mvstore.DataUtils;
 public final class ImmutableArray2<K> implements Iterable<K> {
 
     private static final ImmutableArray2<?> EMPTY = new ImmutableArray2<>(
-            new Object[0], 0);
+        new Object[0], 0);
 
     /**
      * The array.
@@ -181,7 +181,7 @@ public final class ImmutableArray2<K> implements Iterable<K> {
      */
     @SuppressWarnings("unchecked")
     public static <K> ImmutableArray2<K> empty() {
-        return (ImmutableArray2<K>) EMPTY;
+        return (ImmutableArray2<K>)EMPTY;
     }
 
     /**
@@ -193,23 +193,23 @@ public final class ImmutableArray2<K> implements Iterable<K> {
     public Iterator<K> iterator() {
         return new Iterator<K>() {
 
-            ImmutableArray2<K> a = ImmutableArray2.this;
-            int index;
+                   ImmutableArray2<K> a = ImmutableArray2.this;
+                   int index;
 
-            @Override
-            public boolean hasNext() {
-                return index < a.length();
-            }
+                   @Override
+                   public boolean hasNext() {
+                       return index < a.length();
+                   }
 
-            @Override
-            public K next() {
-                return a.get(index++);
-            }
+                   @Override
+                   public K next() {
+                       return a.get(index++);
+                   }
 
-            @Override
-            public void remove() {
-                throw DataUtils.newUnsupportedOperationException("remove");
-            }
+                   @Override
+                   public void remove() {
+                       throw DataUtils.newUnsupportedOperationException("remove");
+                   }
 
         };
     }

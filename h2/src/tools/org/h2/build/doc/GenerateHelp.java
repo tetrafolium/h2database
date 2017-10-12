@@ -52,10 +52,10 @@ public class GenerateHelp {
         }
         BufferedWriter writer = new BufferedWriter(new FileWriter(out));
         writer.write("# Copyright 2004-2014 H2 Group. " +
-                     "Multiple-Licensed under the MPL 2.0,\n" +
-                     "# and the EPL 1.0 " +
-                     "(http://h2database.com/html/license.html).\n" +
-                     "# Initial Developer: H2 Group)\n");
+                "Multiple-Licensed under the MPL 2.0,\n" +
+                "# and the EPL 1.0 " +
+                "(http://h2database.com/html/license.html).\n" +
+                "# Initial Developer: H2 Group)\n");
         csv = new Csv();
         csv.setLineSeparator("\n");
         csv.write(writer, rs2);

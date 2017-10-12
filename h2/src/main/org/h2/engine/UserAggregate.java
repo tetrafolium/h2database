@@ -25,7 +25,7 @@ public class UserAggregate extends DbObjectBase {
     private Class<?> javaClass;
 
     public UserAggregate(Database db, int id, String name, String className,
-                         boolean force) {
+            boolean force) {
         initDbObjectBase(db, id, name, Trace.FUNCTION);
         this.className = className;
         if (!force) {
@@ -112,7 +112,7 @@ public class UserAggregate extends DbObjectBase {
             for (int i = 0; i < inputTypes.length; i++) {
                 sqlTypes[i] = DataType.convertTypeToSQLType(inputTypes[i]);
             }
-            return  DataType.convertSQLTypeToValueType(aggregateFunction.getType(sqlTypes));
+            return DataType.convertSQLTypeToValueType(aggregateFunction.getType(sqlTypes));
         }
 
         @Override

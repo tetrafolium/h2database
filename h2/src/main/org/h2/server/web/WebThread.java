@@ -151,7 +151,7 @@ class WebThread extends WebApp implements Runnable {
                     if (session != null && file.endsWith(".jsp")) {
                         String page = new String(bytes, Constants.UTF8);
                         if (SysProperties.CONSOLE_STREAM) {
-                            Iterator<String> it = (Iterator<String>) session.map.remove("chunks");
+                            Iterator<String> it = (Iterator<String>)session.map.remove("chunks");
                             if (it != null) {
                                 message = "HTTP/1.1 200 OK\r\n";
                                 message += "Content-Type: " + mimeType + "\r\n";
@@ -317,7 +317,7 @@ class WebThread extends WebApp implements Runnable {
             // not supported
         } else if (session != null && len > 0) {
             byte[] bytes = DataUtils.newBytes(len);
-            for (int pos = 0; pos < len;) {
+            for (int pos = 0; pos < len; ) {
                 pos += input.read(bytes, pos, len - pos);
             }
             String s = new String(bytes);

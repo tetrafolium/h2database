@@ -30,7 +30,7 @@ public class DoneFuture<T> implements Future<T> {
 
     @Override
     public T get(long timeout, TimeUnit unit) throws InterruptedException,
-        ExecutionException, TimeoutException {
+    ExecutionException, TimeoutException {
         return x;
     }
 

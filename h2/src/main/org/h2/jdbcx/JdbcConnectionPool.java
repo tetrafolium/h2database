@@ -104,7 +104,7 @@ public class JdbcConnectionPool implements DataSource, ConnectionEventListener,
      * @return the connection pool
      */
     public static JdbcConnectionPool create(String url, String user,
-                                            String password) {
+            String password) {
         JdbcDataSource ds = new JdbcDataSource();
         ds.setURL(url);
         ds.setUser(user);

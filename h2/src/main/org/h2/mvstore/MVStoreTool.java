@@ -118,7 +118,7 @@ public class MVStoreTool {
             int len = Long.toHexString(fileSize).length();
             ByteBuffer block = ByteBuffer.allocate(4096);
             long pageCount = 0;
-            for (long pos = 0; pos < fileSize;) {
+            for (long pos = 0; pos < fileSize; ) {
                 block.rewind();
                 DataUtils.readFully(file, pos, block);
                 block.rewind();
@@ -126,7 +126,7 @@ public class MVStoreTool {
                 if (headerType == 'H') {
                     String header = new String(block.array(), DataUtils.LATIN).trim();
                     pw.printf("%0" + len + "x fileHeader %s%n",
-                              pos, header);
+                            pos, header);
                     pos += blockSize;
                     continue;
                 }
@@ -149,7 +149,7 @@ public class MVStoreTool {
                 }
                 int length = c.len * MVStore.BLOCK_SIZE;
                 pw.printf("%n%0" + len + "x chunkHeader %s%n",
-                          pos, c.toString());
+                        pos, c.toString());
                 ByteBuffer chunk = ByteBuffer.allocate(length);
                 DataUtils.readFully(file, pos, chunk);
                 int p = block.position();
@@ -178,16 +178,16 @@ public class MVStoreTool {
                     boolean node = (type & 1) != 0;
                     if (details) {
                         pw.printf(
-                                "+%0" + len +
-                                "x %s, map %x, %d entries, %d bytes, maxLen %x%n",
-                                p,
-                                (node ? "node" : "leaf") +
-                                (compressed ? " compressed" : ""),
-                                mapId,
-                                node ? entries + 1 : entries,
-                                pageSize,
-                                DataUtils.getPageMaxLength(DataUtils.getPagePos(0, 0, pageSize, 0))
-                        );
+                            "+%0" + len +
+                            "x %s, map %x, %d entries, %d bytes, maxLen %x%n",
+                            p,
+                            (node ? "node" : "leaf") +
+                            (compressed ? " compressed" : ""),
+                            mapId,
+                            node ? entries + 1 : entries,
+                            pageSize,
+                            DataUtils.getPageMaxLength(DataUtils.getPagePos(0, 0, pageSize, 0))
+                            );
                     }
                     p += pageSize;
                     Integer mapSize = mapSizes.get(mapId);
@@ -221,7 +221,7 @@ public class MVStoreTool {
                         ByteBuffer data;
                         if (compressed) {
                             boolean fast = !((type & DataUtils.PAGE_COMPRESSED_HIGH) ==
-                                             DataUtils.PAGE_COMPRESSED_HIGH);
+                                    DataUtils.PAGE_COMPRESSED_HIGH);
                             Compressor compressor = getCompressor(fast);
                             int lenAdd = DataUtils.readVarInt(chunk);
                             int compLen = pageSize + start - chunk.position();
@@ -242,20 +242,20 @@ public class MVStoreTool {
                             for (int i = 0; i < entries; i++) {
                                 long cp = children[i];
                                 pw.printf("    %d children < %s @ " +
-                                          "chunk %x +%0" +
-                                          len + "x%n",
-                                          counts[i],
-                                          keys[i],
-                                          DataUtils.getPageChunkId(cp),
-                                          DataUtils.getPageOffset(cp));
+                                        "chunk %x +%0" +
+                                        len + "x%n",
+                                        counts[i],
+                                        keys[i],
+                                        DataUtils.getPageChunkId(cp),
+                                        DataUtils.getPageOffset(cp));
                             }
                             long cp = children[entries];
                             pw.printf("    %d children >= %s @ chunk %x +%0" +
-                                      len + "x%n",
-                                      counts[entries],
-                                      keys.length >= entries ? null : keys[entries],
-                                      DataUtils.getPageChunkId(cp),
-                                      DataUtils.getPageOffset(cp));
+                                    len + "x%n",
+                                    counts[entries],
+                                    keys.length >= entries ? null : keys[entries],
+                                    DataUtils.getPageChunkId(cp),
+                                    DataUtils.getPageOffset(cp));
                         } else {
                             // meta map leaf
                             String[] values = new String[entries];
@@ -265,7 +265,7 @@ public class MVStoreTool {
                             }
                             for (int i = 0; i < entries; i++) {
                                 pw.println("    " + keys[i] +
-                                           " = " + values[i]);
+                                        " = " + values[i]);
                             }
                         }
                     } else {
@@ -273,10 +273,10 @@ public class MVStoreTool {
                             for (int i = 0; i <= entries; i++) {
                                 long cp = children[i];
                                 pw.printf("    %d children @ chunk %x +%0" +
-                                          len + "x%n",
-                                          counts[i],
-                                          DataUtils.getPageChunkId(cp),
-                                          DataUtils.getPageOffset(cp));
+                                        len + "x%n",
+                                        counts[i],
+                                        DataUtils.getPageChunkId(cp),
+                                        DataUtils.getPageOffset(cp));
                             }
                         }
                     }
@@ -290,10 +290,10 @@ public class MVStoreTool {
                 try {
                     chunk.position(footerPos);
                     pw.printf(
-                            "+%0" + len + "x chunkFooter %s%n",
-                            footerPos,
-                            new String(chunk.array(), chunk.position(),
-                                       Chunk.FOOTER_LENGTH, DataUtils.LATIN).trim());
+                        "+%0" + len + "x chunkFooter %s%n",
+                        footerPos,
+                        new String(chunk.array(), chunk.position(),
+                        Chunk.FOOTER_LENGTH, DataUtils.LATIN).trim());
                 } catch (IllegalArgumentException e) {
                     // too far
                     pw.printf("ERROR illegal footer position %d%n", footerPos);
@@ -303,7 +303,7 @@ public class MVStoreTool {
             pw.printf("\n");
             pageCount = Math.max(1, pageCount);
             pw.printf("page size total: %d bytes, page count: %d, average page size: %d bytes\n",
-                      pageSizeTotal, pageCount, pageSizeTotal / pageCount);
+                    pageSizeTotal, pageCount, pageSizeTotal / pageCount);
             pageSizeTotal = Math.max(1, pageSizeTotal);
             for (Integer mapId : mapSizesTotal.keySet()) {
                 int percent = (int) (100 * mapSizesTotal.get(mapId) / pageSizeTotal);
@@ -344,8 +344,8 @@ public class MVStoreTool {
         }
         long fileLength = FileUtils.size(fileName);
         MVStore store = new MVStore.Builder().
-        fileName(fileName).
-        readOnly().open();
+                fileName(fileName).
+                readOnly().open();
         try {
             MVMap<String, String> meta = store.getMetaMap();
             Map<String, Object> header = store.getStoreHeader();
@@ -370,28 +370,28 @@ public class MVStoreTool {
             }
             pw.printf("Created: %s\n", formatTimestamp(fileCreated, fileCreated));
             pw.printf("Last modified: %s\n",
-                      formatTimestamp(FileUtils.lastModified(fileName), fileCreated));
+                    formatTimestamp(FileUtils.lastModified(fileName), fileCreated));
             pw.printf("File length: %d\n", fileLength);
             pw.printf("The last chunk is not listed\n");
             pw.printf("Chunk length: %d\n", chunkLength);
             pw.printf("Chunk count: %d\n", chunks.size());
             pw.printf("Used space: %d%%\n", getPercent(chunkLength, fileLength));
             pw.printf("Chunk fill rate: %d%%\n", maxLength == 0 ? 100 :
-                      getPercent(maxLengthLive, maxLength));
+                    getPercent(maxLengthLive, maxLength));
             pw.printf("Chunk fill rate excluding empty chunks: %d%%\n",
-                      maxLengthNotEmpty == 0 ? 100 :
-                      getPercent(maxLengthLive, maxLengthNotEmpty));
+                    maxLengthNotEmpty == 0 ? 100 :
+                    getPercent(maxLengthLive, maxLengthNotEmpty));
             for (Entry<Integer, Chunk> e : chunks.entrySet()) {
                 Chunk c = e.getValue();
                 long created = fileCreated + c.time;
                 pw.printf("  Chunk %d: %s, %d%% used, %d blocks",
-                          c.id, formatTimestamp(created, fileCreated),
-                          getPercent(c.maxLenLive, c.maxLen),
-                          c.len
-                         );
+                        c.id, formatTimestamp(created, fileCreated),
+                        getPercent(c.maxLenLive, c.maxLen),
+                        c.len
+                        );
                 if (c.maxLenLive == 0) {
                     pw.printf(", unused: %s",
-                              formatTimestamp(fileCreated + c.unused, fileCreated));
+                            formatTimestamp(fileCreated + c.unused, fileCreated));
                 }
                 pw.printf("\n");
             }
@@ -481,12 +481,12 @@ public class MVStoreTool {
      */
     public static void compact(String sourceFileName, String targetFileName, boolean compress) {
         MVStore source = new MVStore.Builder().
-        fileName(sourceFileName).
-        readOnly().
-        open();
+                fileName(sourceFileName).
+                readOnly().
+                open();
         FileUtils.delete(targetFileName);
         MVStore.Builder b = new MVStore.Builder().
-        fileName(targetFileName);
+                fileName(targetFileName);
         if (compress) {
             b.compress();
         }
@@ -521,9 +521,9 @@ public class MVStoreTool {
         }
         for (String mapName : source.getMapNames()) {
             MVMap.Builder<Object, Object> mp =
-                    new MVMap.Builder<>().
-            keyType(new GenericDataType()).
-            valueType(new GenericDataType());
+                        new MVMap.Builder<>().
+                        keyType(new GenericDataType()).
+                        valueType(new GenericDataType());
             MVMap<Object, Object> sourceMap = source.openMap(mapName, mp);
             MVMap<Object, Object> targetMap = target.openMap(mapName, mp);
             targetMap.copyFrom(sourceMap);
@@ -546,7 +546,7 @@ public class MVStoreTool {
         };
         while (version >= 0) {
             pw.println(version == Long.MAX_VALUE ? "Trying latest version"
-                       : ("Trying version " + version));
+                    : ("Trying version " + version));
             pw.flush();
             version = rollback(fileName, version, new PrintWriter(ignore));
             try {
@@ -593,7 +593,7 @@ public class MVStoreTool {
             long fileSize = file.size();
             ByteBuffer block = ByteBuffer.allocate(4096);
             Chunk newestChunk = null;
-            for (long pos = 0; pos < fileSize;) {
+            for (long pos = 0; pos < fileSize; ) {
                 block.rewind();
                 DataUtils.readFully(file, pos, block);
                 block.rewind();

@@ -48,7 +48,7 @@ public class JdbcXAConnection extends TraceObject implements XAConnection,
     }
 
     JdbcXAConnection(JdbcDataSourceFactory factory, int id,
-                     JdbcConnection physicalConn) {
+            JdbcConnection physicalConn) {
         this.factory = factory;
         setTrace(factory.getTrace(), TraceObject.XA_DATA_SOURCE, id);
         this.physicalConn = physicalConn;
@@ -192,7 +192,7 @@ public class JdbcXAConnection extends TraceObject implements XAConnection,
         checkOpen();
         try (Statement stat = physicalConn.createStatement()) {
             ResultSet rs = stat.executeQuery("SELECT * FROM " +
-                                             "INFORMATION_SCHEMA.IN_DOUBT ORDER BY TRANSACTION");
+                    "INFORMATION_SCHEMA.IN_DOUBT ORDER BY TRANSACTION");
             ArrayList<Xid> list = New.arrayList();
             while (rs.next()) {
                 String tid = rs.getString("TRANSACTION");

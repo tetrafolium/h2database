@@ -61,7 +61,7 @@ public class CommandContainer extends Command {
             if (type == CommandInterface.SELECT) {
                 ((Query) prepared).prepareJoinBatch();
             } else if (type == CommandInterface.EXPLAIN ||
-                       type == CommandInterface.EXPLAIN_ANALYZE) {
+                    type == CommandInterface.EXPLAIN_ANALYZE) {
                 prepareJoinBatch(((Explain) prepared).getCommand());
             }
         }

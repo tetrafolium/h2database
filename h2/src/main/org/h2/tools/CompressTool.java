@@ -84,7 +84,7 @@ public class CompressTool {
     }
 
     private static int compress(byte[] in, int len, Compressor compress,
-                                byte[] out) {
+            byte[] out) {
         int newLen = 0;
         out[0] = (byte) compress.getAlgorithm();
         int start = 1 + writeVariableInt(out, 1, len);
@@ -261,8 +261,8 @@ public class CompressTool {
             return Compressor.DEFLATE;
         } else {
             throw DbException.get(
-                    ErrorCode.UNSUPPORTED_COMPRESSION_ALGORITHM_1,
-                    algorithm);
+                      ErrorCode.UNSUPPORTED_COMPRESSION_ALGORITHM_1,
+                      algorithm);
         }
     }
 
@@ -276,8 +276,8 @@ public class CompressTool {
             return new CompressDeflate();
         default:
             throw DbException.get(
-                    ErrorCode.UNSUPPORTED_COMPRESSION_ALGORITHM_1,
-                    "" + algorithm);
+                      ErrorCode.UNSUPPORTED_COMPRESSION_ALGORITHM_1,
+                      "" + algorithm);
         }
     }
 
@@ -299,8 +299,8 @@ public class CompressTool {
                 out = new LZFOutputStream(out);
             } else if (compressionAlgorithm != null) {
                 throw DbException.get(
-                        ErrorCode.UNSUPPORTED_COMPRESSION_ALGORITHM_1,
-                        compressionAlgorithm);
+                          ErrorCode.UNSUPPORTED_COMPRESSION_ALGORITHM_1,
+                          compressionAlgorithm);
             }
             return out;
         } catch (IOException e) {
@@ -334,8 +334,8 @@ public class CompressTool {
                 in = new LZFInputStream(in);
             } else if (compressionAlgorithm != null) {
                 throw DbException.get(
-                        ErrorCode.UNSUPPORTED_COMPRESSION_ALGORITHM_1,
-                        compressionAlgorithm);
+                          ErrorCode.UNSUPPORTED_COMPRESSION_ALGORITHM_1,
+                          compressionAlgorithm);
             }
             return in;
         } catch (IOException e) {

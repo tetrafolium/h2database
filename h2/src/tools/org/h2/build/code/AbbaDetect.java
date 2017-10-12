@@ -85,14 +85,14 @@ public class AbbaDetect {
         source = source.replaceAll("(// .* synchronized )([^ ])", "$1 $2");
 
         source = source.replaceAll("synchronized \\((.*)\\(\\)\\)",
-                                   "synchronized  \\(org.h2.util.AbbaDetector.begin\\($1\\(\\)\\)\\)");
+                "synchronized  \\(org.h2.util.AbbaDetector.begin\\($1\\(\\)\\)\\)");
         source = source.replaceAll("synchronized \\((.*)\\)",
-                                   "synchronized  \\(org.h2.util.AbbaDetector.begin\\($1\\)\\)");
+                "synchronized  \\(org.h2.util.AbbaDetector.begin\\($1\\)\\)");
 
         source = source.replaceAll("static synchronized ([^ (].*)\\{",
-                                   "static synchronized  $1{org.h2.util.AbbaDetector.begin\\(null\\);");
+                "static synchronized  $1{org.h2.util.AbbaDetector.begin\\(null\\);");
         source = source.replaceAll("synchronized ([^ (].*)\\{",
-                                   "synchronized  $1{org.h2.util.AbbaDetector.begin\\(this\\);");
+                "synchronized  $1{org.h2.util.AbbaDetector.begin\\(this\\);");
 
         return source;
     }

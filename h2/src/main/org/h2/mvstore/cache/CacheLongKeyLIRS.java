@@ -67,8 +67,8 @@ public class CacheLongKeyLIRS<V> {
         setMaxMemory(config.maxMemory);
         this.nonResidentQueueSize = config.nonResidentQueueSize;
         DataUtils.checkArgument(
-                Integer.bitCount(config.segmentCount) == 1,
-                "The segment count must be a power of 2, is {0}", config.segmentCount);
+            Integer.bitCount(config.segmentCount) == 1,
+            "The segment count must be a power of 2, is {0}", config.segmentCount);
         this.segmentCount = config.segmentCount;
         this.segmentMask = segmentCount - 1;
         this.stackMoveDistance = config.stackMoveDistance;
@@ -85,7 +85,7 @@ public class CacheLongKeyLIRS<V> {
         long max = getMaxItemSize();
         for (int i = 0; i < segmentCount; i++) {
             segments[i] = new Segment<>(
-                    max, stackMoveDistance, 8, nonResidentQueueSize);
+                max, stackMoveDistance, 8, nonResidentQueueSize);
         }
     }
 
@@ -278,8 +278,8 @@ public class CacheLongKeyLIRS<V> {
      */
     public void setMaxMemory(long maxMemory) {
         DataUtils.checkArgument(
-                maxMemory > 0,
-                "Max memory must be larger than 0, is {0}", maxMemory);
+            maxMemory > 0,
+            "Max memory must be larger than 0, is {0}", maxMemory);
         this.maxMemory = maxMemory;
         if (segments != null) {
             long max = 1 + maxMemory / segments.length;
@@ -796,7 +796,7 @@ public class CacheLongKeyLIRS<V> {
         synchronized V put(long key, int hash, V value, int memory) {
             if (value == null) {
                 throw DataUtils.newIllegalArgumentException(
-                        "The value may not be null");
+                          "The value may not be null");
             }
             V old;
             Entry<V> e = find(key, hash);

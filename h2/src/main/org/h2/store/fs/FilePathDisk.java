@@ -71,7 +71,7 @@ public class FilePathDisk extends FilePath {
      */
     public static String expandUserHomeDirectory(String fileName) {
         if (fileName.startsWith("~") && (fileName.length() == 1 ||
-                                         fileName.startsWith("~/"))) {
+                fileName.startsWith("~/"))) {
             String userDir = SysProperties.USER_HOME;
             fileName = userDir + fileName.substring(1);
         }
@@ -87,8 +87,8 @@ public class FilePathDisk extends FilePath {
         }
         if (!oldFile.exists()) {
             throw DbException.get(ErrorCode.FILE_RENAME_FAILED_2,
-                                  name + " (not found)",
-                                  newName.name);
+                          name + " (not found)",
+                          newName.name);
         }
         // Java 7: use java.nio.file.Files.move(Path source, Path target,
         //     CopyOption... options)
@@ -99,11 +99,11 @@ public class FilePathDisk extends FilePath {
                 return;
             }
             throw DbException.get(ErrorCode.FILE_RENAME_FAILED_2,
-                                  new String[] {name, newName.name});
+                          new String[] {name, newName.name});
         }
         if (newFile.exists()) {
             throw DbException.get(ErrorCode.FILE_RENAME_FAILED_2,
-                                  new String[] { name, newName + " (exists)" });
+                          new String[] { name, newName + " (exists)" });
         }
         for (int i = 0; i < SysProperties.MAX_FILE_RETRY; i++) {
             IOUtils.trace("rename", name + " >" + newName, null);
@@ -114,7 +114,7 @@ public class FilePathDisk extends FilePath {
             wait(i);
         }
         throw DbException.get(ErrorCode.FILE_RENAME_FAILED_2,
-                              new String[] {name, newName.name});
+                      new String[] {name, newName.name});
     }
 
     private static void wait(int i) {
@@ -265,7 +265,7 @@ public class FilePathDisk extends FilePath {
                     return;
                 }
                 throw DbException.get(ErrorCode.FILE_CREATION_FAILED_1,
-                                      name + " (a file with this name already exists)");
+                              name + " (a file with this name already exists)");
             } else if (dir.mkdir()) {
                 return;
             }
@@ -305,7 +305,7 @@ public class FilePathDisk extends FilePath {
                 InputStream in = getClass().getResourceAsStream(fileName);
                 if (in == null) {
                     in = Thread.currentThread().getContextClassLoader().
-                         getResourceAsStream(fileName);
+                            getResourceAsStream(fileName);
                 }
                 if (in == null) {
                     throw new FileNotFoundException("resource " + fileName);
@@ -365,7 +365,7 @@ public class FilePathDisk extends FilePath {
 
     @Override
     public FilePath createTempFile(String suffix, boolean deleteOnExit,
-                                   boolean inTempDir) throws IOException {
+            boolean inTempDir) throws IOException {
         String fileName = name + ".";
         String prefix = new File(fileName).getName();
         File dir;
@@ -442,7 +442,7 @@ class FileDisk extends FileBase {
 
     @Override
     public synchronized FileLock tryLock(long position, long size,
-                                         boolean shared) throws IOException {
+            boolean shared) throws IOException {
         return file.getChannel().tryLock(position, size, shared);
     }
 
@@ -464,7 +464,7 @@ class FileDisk extends FileBase {
     @Override
     public int read(ByteBuffer dst) throws IOException {
         int len = file.read(dst.array(), dst.arrayOffset() + dst.position(),
-                            dst.remaining());
+                dst.remaining());
         if (len > 0) {
             dst.position(dst.position() + len);
         }

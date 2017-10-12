@@ -34,8 +34,7 @@ import org.h2.util.StringUtils;
 public class PrepareTranslation {
     private static final String MAIN_LANGUAGE = "en";
     private static final String[] EXCLUDE = { "datatypes.html",
-                                              "functions.html", "grammar.html"
-                                            };
+                                              "functions.html", "grammar.html"};
 
     /**
      * This method is called when executing this application from the command
@@ -50,11 +49,11 @@ public class PrepareTranslation {
 
         // convert the txt files to properties files
         PropertiesToUTF8.textUTF8ToProperties(
-                "src/docsrc/text/_docs_de.utf8.txt",
-                "src/docsrc/text/_docs_de.properties");
+            "src/docsrc/text/_docs_de.utf8.txt",
+            "src/docsrc/text/_docs_de.properties");
         PropertiesToUTF8.textUTF8ToProperties(
-                "src/docsrc/text/_docs_ja.utf8.txt",
-                "src/docsrc/text/_docs_ja.properties");
+            "src/docsrc/text/_docs_ja.utf8.txt",
+            "src/docsrc/text/_docs_ja.properties");
 
         // create the .jsp files and extract the text in the main language
         extractFromHtml("docs/html", "src/docsrc/text");
@@ -70,14 +69,14 @@ public class PrepareTranslation {
         // convert the properties files back to utf8 text files, including the
         // main language (to be used as a template)
         PropertiesToUTF8.propertiesToTextUTF8(
-                "src/docsrc/text/_docs_en.properties",
-                "src/docsrc/text/_docs_en.utf8.txt");
+            "src/docsrc/text/_docs_en.properties",
+            "src/docsrc/text/_docs_en.utf8.txt");
         PropertiesToUTF8.propertiesToTextUTF8(
-                "src/docsrc/text/_docs_de.properties",
-                "src/docsrc/text/_docs_de.utf8.txt");
+            "src/docsrc/text/_docs_de.properties",
+            "src/docsrc/text/_docs_de.utf8.txt");
         PropertiesToUTF8.propertiesToTextUTF8(
-                "src/docsrc/text/_docs_ja.properties",
-                "src/docsrc/text/_docs_ja.utf8.txt");
+            "src/docsrc/text/_docs_ja.properties",
+            "src/docsrc/text/_docs_ja.utf8.txt");
 
         // delete temporary files
         for (File f : new File("src/docsrc/text").listFiles()) {
@@ -88,12 +87,12 @@ public class PrepareTranslation {
     }
 
     private static void buildHtml(String templateDir, String targetDir,
-                                  String language) throws IOException {
+            String language) throws IOException {
         File[] list = new File(templateDir).listFiles();
         new File(targetDir).mkdirs();
         // load the main 'translation'
         String propName = templateDir + "/_docs_" + MAIN_LANGUAGE
-                          + ".properties";
+                + ".properties";
         Properties prop = load(propName, false);
         propName = templateDir + "/_docs_" + language + ".properties";
         if (!(new File(propName)).exists()) {
@@ -128,14 +127,14 @@ public class PrepareTranslation {
             // remove '.jsp'
             name = name.substring(0, name.length() - 4);
             String template = IOUtils.readStringAndClose(new FileReader(
-                                      templateDir + "/" + name + ".jsp"), -1);
+                        templateDir + "/" + name + ".jsp"), -1);
             HashMap<String, Object> map = New.hashMap();
             for (Object k : prop.keySet()) {
                 map.put(k.toString(), prop.get(k));
             }
             String html = PageParser.parse(template, map);
             html = StringUtils.replaceAll(html, "lang=\"" + MAIN_LANGUAGE
-                                          + "\"", "lang=\"" + language + "\"");
+                    + "\"", "lang=\"" + language + "\"");
             for (String n : fileNames) {
                 if ("frame".equals(n)) {
                     // don't translate 'frame.html' to 'frame_ja.html',
@@ -143,10 +142,10 @@ public class PrepareTranslation {
                     continue;
                 }
                 html = StringUtils.replaceAll(html, n + ".html\"", n + "_"
-                                              + language + ".html\"");
+                        + language + ".html\"");
             }
             html = StringUtils.replaceAll(html,
-                                          "_" + MAIN_LANGUAGE + ".html\"", ".html\"");
+                    "_" + MAIN_LANGUAGE + ".html\"", ".html\"");
             String target;
             if (language.equals(MAIN_LANGUAGE)) {
                 target = targetDir + "/" + name + ".html";
@@ -232,7 +231,7 @@ public class PrepareTranslation {
     private static String extract(String documentName, File f, String target)
     throws Exception {
         String xml = IOUtils.readStringAndClose(new InputStreamReader(
-                new FileInputStream(f), "UTF-8"), -1);
+                    new FileInputStream(f), "UTF-8"), -1);
         // the template contains ${} instead of text
         StringBuilder template = new StringBuilder(xml.length());
         int id = 0;
@@ -258,30 +257,30 @@ public class PrepareTranslation {
                         template.append(s);
                     }
                 } else if ("p".equals(tag) || "li".equals(tag)
-                           || "a".equals(tag) || "td".equals(tag)
-                           || "th".equals(tag) || "h1".equals(tag)
-                           || "h2".equals(tag) || "h3".equals(tag)
-                           || "h4".equals(tag) || "body".equals(tag)
-                           || "b".equals(tag) || "code".equals(tag)
-                           || "form".equals(tag) || "span".equals(tag)
-                           || "em".equals(tag) || "div".equals(tag)
-                           || "strong".equals(tag) || "label".equals(tag)) {
+                        || "a".equals(tag) || "td".equals(tag)
+                        || "th".equals(tag) || "h1".equals(tag)
+                        || "h2".equals(tag) || "h3".equals(tag)
+                        || "h4".equals(tag) || "body".equals(tag)
+                        || "b".equals(tag) || "code".equals(tag)
+                        || "form".equals(tag) || "span".equals(tag)
+                        || "em".equals(tag) || "div".equals(tag)
+                        || "strong".equals(tag) || "label".equals(tag)) {
                     if (buff.length() == 0) {
                         nextKey = documentName + "_" + (1000 + id++) + "_"
-                                  + tag;
+                                + tag;
                         template.append(getSpace(s, true));
                     } else if (templateIsCopy) {
                         buff.append(getSpace(s, true));
                     }
                     buff.append(s);
                 } else if ("pre".equals(tag) || "title".equals(tag)
-                           || "script".equals(tag) || "style".equals(tag)) {
+                        || "script".equals(tag) || "style".equals(tag)) {
                     // ignore, don't translate
                     template.append(s);
                 } else {
                     System.out.println(f.getName()
-                                       + " invalid wrapper tag for text: " + tag
-                                       + " text: " + s);
+                            + " invalid wrapper tag for text: " + tag
+                            + " text: " + s);
                     System.out.println(parser.getRemaining());
                     throw new Exception();
                 }
@@ -299,10 +298,10 @@ public class PrepareTranslation {
                         template.append(parser.getToken());
                     }
                 } else if ("p".equals(tag) || "li".equals(tag)
-                           || "td".equals(tag) || "th".equals(tag)
-                           || "h1".equals(tag) || "h2".equals(tag)
-                           || "h3".equals(tag) || "h4".equals(tag)
-                           || "body".equals(tag) || "form".equals(tag)) {
+                        || "td".equals(tag) || "th".equals(tag)
+                        || "h1".equals(tag) || "h2".equals(tag)
+                        || "h3".equals(tag) || "h4".equals(tag)
+                        || "body".equals(tag) || "form".equals(tag)) {
                     if (buff.length() > 0) {
                         if (templateIsCopy) {
                             template.append(buff.toString());
@@ -354,7 +353,7 @@ public class PrepareTranslation {
             } else {
                 int eventType = parser.getEventType();
                 throw new Exception("Unexpected event " + eventType + " at "
-                                    + parser.getRemaining());
+                              + parser.getRemaining());
             }
             // if(!xml.startsWith(template.toString())) {
             // System.out.println(nextKey);
@@ -435,7 +434,7 @@ public class PrepareTranslation {
         for (File trans : translations) {
             String language = trans.getName();
             language = language.substring(language.lastIndexOf('_') + 1,
-                                          language.lastIndexOf('.'));
+                    language.lastIndexOf('.'));
             prepare(p, base, trans, utf8);
         }
         store(p, baseDir + "/" + main.getName(), utf8);
@@ -445,7 +444,7 @@ public class PrepareTranslation {
     throws IOException {
         if (utf8) {
             String s = new String(IOUtils.readBytesAndClose(
-                                          new FileInputStream(fileName), -1), "UTF-8");
+                        new FileInputStream(fileName), -1), "UTF-8");
             return SortedProperties.fromLines(s);
         }
         return SortedProperties.loadProperties(fileName);
@@ -464,7 +463,7 @@ public class PrepareTranslation {
     }
 
     private static void prepare(Properties main, Properties base, File trans,
-                                boolean utf8) throws IOException {
+            boolean utf8) throws IOException {
         SortedProperties p = load(trans.getAbsolutePath(), utf8);
         Properties oldTranslations = new Properties();
         for (Object k : base.keySet()) {
@@ -507,8 +506,8 @@ public class PrepareTranslation {
                         // main data changed since the last run: review
                         // translation
                         System.out.println(trans.getName() + ": key " + key
-                                           + " changed, please review; last=" + last
-                                           + " now=" + now);
+                                + " changed, please review; last=" + last
+                                + " now=" + now);
                         String old = p.getProperty(key);
                         t = "#" + now + " #" + old;
                         p.put(key, t);
@@ -523,9 +522,9 @@ public class PrepareTranslation {
             String t;
             System.out
             .println(trans.getName()
-                     + ": key "
-                     + key
-                     + " not found in translation file; added dummy # 'translation'");
+                    + ": key "
+                    + key
+                    + " not found in translation file; added dummy # 'translation'");
             t = "#" + now;
             p.put(key, t);
         }

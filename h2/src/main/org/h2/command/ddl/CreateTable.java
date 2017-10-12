@@ -145,7 +145,7 @@ public class CreateTable extends SchemaCommand {
                 if (!Constants.CLUSTERING_DISABLED
                         .equals(session.getDatabase().getCluster())) {
                     throw DbException.getUnsupportedException(
-                            "CLUSTERING && auto-increment columns");
+                              "CLUSTERING && auto-increment columns");
                 }
             }
             Sequence seq = c.getSequence();
@@ -206,12 +206,12 @@ public class CreateTable extends SchemaCommand {
                         Table t = (Table) obj;
                         if (t.getId() > table.getId()) {
                             throw DbException.get(
-                                    ErrorCode.FEATURE_NOT_SUPPORTED_1,
-                                    "Table depends on another table " +
-                                    "with a higher ID: " + t +
-                                    ", this is currently not supported, " +
-                                    "as it would prevent the database from " +
-                                    "being re-opened");
+                                      ErrorCode.FEATURE_NOT_SUPPORTED_1,
+                                      "Table depends on another table " +
+                                      "with a higher ID: " + t +
+                                      ", this is currently not supported, " +
+                                      "as it would prevent the database from " +
+                                      "being re-opened");
                         }
                     }
                 }
@@ -238,13 +238,13 @@ public class CreateTable extends SchemaCommand {
             int displaySize = expr.getDisplaySize();
             DataType dt = DataType.getDataType(type);
             if (precision > 0 && (dt.defaultPrecision == 0 ||
-                                  (dt.defaultPrecision > precision && dt.defaultPrecision < Byte.MAX_VALUE))) {
+                    (dt.defaultPrecision > precision && dt.defaultPrecision < Byte.MAX_VALUE))) {
                 // dont' set precision to MAX_VALUE if this is the default
                 precision = dt.defaultPrecision;
             }
             int scale = expr.getScale();
             if (scale > 0 && (dt.defaultScale == 0 ||
-                              (dt.defaultScale > scale && dt.defaultScale < precision))) {
+                    (dt.defaultScale > scale && dt.defaultScale < precision))) {
                 scale = dt.defaultScale;
             }
             if (scale > precision) {
@@ -257,7 +257,7 @@ public class CreateTable extends SchemaCommand {
                  */
                 if(!(expr instanceof ExpressionColumn)) {
                     throw DbException.get(ErrorCode.GENERAL_ERROR_1,
-                                          "Unable to resolve enumerators of expression");
+                                  "Unable to resolve enumerators of expression");
                 }
                 enumerators = ((ExpressionColumn)expr).getColumn().getEnumerators();
             }

@@ -28,11 +28,10 @@ public class MVDelegateIndex extends BaseIndex implements MVIndex {
     private final MVPrimaryIndex mainIndex;
 
     public MVDelegateIndex(MVTable table, int id, String name,
-                           MVPrimaryIndex mainIndex,
-                           IndexType indexType) {
+            MVPrimaryIndex mainIndex,
+            IndexType indexType) {
         IndexColumn[] cols = IndexColumn.wrap(new Column[] { table
-                                              .getColumn(mainIndex.getMainIndexColumn())
-                                                           });
+                                                             .getColumn(mainIndex.getMainIndexColumn())});
         this.initBaseIndex(table, id, name, cols, indexType);
         this.mainIndex = mainIndex;
         if (id < 0) {
@@ -68,11 +67,11 @@ public class MVDelegateIndex extends BaseIndex implements MVIndex {
     @Override
     public Cursor find(Session session, SearchRow first, SearchRow last) {
         ValueLong min = mainIndex.getKey(first,
-                                         MVPrimaryIndex.MIN, MVPrimaryIndex.MIN);
+                MVPrimaryIndex.MIN, MVPrimaryIndex.MIN);
         // ifNull is MIN_VALUE as well, because the column is never NULL
         // so avoid returning all rows (returning one row is OK)
         ValueLong max = mainIndex.getKey(last,
-                                         MVPrimaryIndex.MAX, MVPrimaryIndex.MIN);
+                MVPrimaryIndex.MAX, MVPrimaryIndex.MIN);
         return mainIndex.find(session, min, max);
     }
 
@@ -96,10 +95,10 @@ public class MVDelegateIndex extends BaseIndex implements MVIndex {
 
     @Override
     public double getCost(Session session, int[] masks,
-                          TableFilter[] filters, int filter, SortOrder sortOrder,
-                          HashSet<Column> allColumnsSet) {
+            TableFilter[] filters, int filter, SortOrder sortOrder,
+            HashSet<Column> allColumnsSet) {
         return 10 * getCostRangeIndex(masks, mainIndex.getRowCountApproximation(),
-                                      filters, filter, sortOrder, true, allColumnsSet);
+                       filters, filter, sortOrder, true, allColumnsSet);
     }
 
     @Override

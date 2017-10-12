@@ -42,7 +42,7 @@ import org.h2.value.ValueNull;
 public class TableFilter implements ColumnResolver {
 
     private static final int BEFORE_FIRST = 0, FOUND = 1, AFTER_LAST = 2,
-                             NULL_ROW = 3;
+            NULL_ROW = 3;
 
     /**
      * Whether this is a direct or indirect (nested) outer join
@@ -129,7 +129,7 @@ public class TableFilter implements ColumnResolver {
      * @param indexHints the index hints to be used by the query planner
      */
     public TableFilter(Session session, Table table, String alias,
-                       boolean rightsChecked, Select select, int orderInFrom, IndexHints indexHints) {
+            boolean rightsChecked, Select select, int orderInFrom, IndexHints indexHints) {
         this.session = session;
         this.table = table;
         this.alias = alias;
@@ -191,7 +191,7 @@ public class TableFilter implements ColumnResolver {
      * @return the best plan item
      */
     public PlanItem getBestPlanItem(Session s, TableFilter[] filters, int filter,
-                                    HashSet<Column> allColumnsSet) {
+            HashSet<Column> allColumnsSet) {
         PlanItem item1 = null;
         SortOrder sortOrder = null;
         if (select != null) {
@@ -200,9 +200,9 @@ public class TableFilter implements ColumnResolver {
         if (indexConditions.size() == 0) {
             item1 = new PlanItem();
             item1.setIndex(table.getScanIndex(s, null, filters, filter,
-                                              sortOrder, allColumnsSet));
+                    sortOrder, allColumnsSet));
             item1.cost = item1.getIndex().getCost(s, null, filters, filter,
-                                                  sortOrder, allColumnsSet);
+                    sortOrder, allColumnsSet);
         }
         int len = table.getColumns().length;
         int[] masks = new int[len];
@@ -373,7 +373,7 @@ public class TableFilter implements ColumnResolver {
         }
         // check if we are at the top table filters all the way up
         SubQueryInfo info = session.getSubQueryInfo();
-        for (;;) {
+        for (;; ) {
             if (info == null) {
                 return true;
             }
@@ -644,14 +644,14 @@ public class TableFilter implements ColumnResolver {
                 joinCondition = condition;
             } else {
                 joinCondition = new ConditionAndOr(ConditionAndOr.AND,
-                                                   joinCondition, condition);
+                        joinCondition, condition);
             }
         } else {
             if (filterCondition == null) {
                 filterCondition = condition;
             } else {
                 filterCondition = new ConditionAndOr(ConditionAndOr.AND,
-                                                     filterCondition, condition);
+                        filterCondition, condition);
             }
         }
     }
@@ -665,7 +665,7 @@ public class TableFilter implements ColumnResolver {
      * @param on the join condition
      */
     public void addJoin(TableFilter filter, boolean outer, boolean nested,
-                        final Expression on) {
+            final Expression on) {
         if (on != null) {
             on.mapColumns(this, 0);
             if (session.getDatabase().getSettings().nestedJoins) {

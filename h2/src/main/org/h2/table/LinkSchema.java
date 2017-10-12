@@ -39,8 +39,8 @@ public class LinkSchema {
      * @return a result set with the created tables
      */
     public static ResultSet linkSchema(Connection conn, String targetSchema,
-                                       String driver, String url, String user, String password,
-                                       String sourceSchema) {
+            String driver, String url, String user, String password,
+            String sourceSchema) {
         Connection c2 = null;
         Statement stat = null;
         ResultSet rs = null;
@@ -51,11 +51,11 @@ public class LinkSchema {
             c2 = JdbcUtils.getConnection(driver, url, user, password);
             stat = conn.createStatement();
             stat.execute("CREATE SCHEMA IF NOT EXISTS " +
-                         StringUtils.quoteIdentifier(targetSchema));
+                    StringUtils.quoteIdentifier(targetSchema));
             //Workaround for PostgreSQL to avoid index names
             if (url.startsWith("jdbc:postgresql:")) {
                 rs = c2.getMetaData().getTables(null, sourceSchema, null,
-                                                new String[] { "TABLE", "LINKED TABLE", "VIEW", "EXTERNAL" });
+                        new String[] { "TABLE", "LINKED TABLE", "VIEW", "EXTERNAL" });
             } else {
                 rs = c2.getMetaData().getTables(null, sourceSchema, null, null);
             }

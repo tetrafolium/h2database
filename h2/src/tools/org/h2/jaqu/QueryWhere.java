@@ -83,7 +83,7 @@ public class QueryWhere<T> {
     public QueryWhere<T> orderBy(Object... expressions) {
         for (Object expr : expressions) {
             OrderExpression<T> e =
-                    new OrderExpression<>(query, expr, false, false, false);
+                        new OrderExpression<>(query, expr, false, false, false);
             query.addOrderBy(e);
         }
         return this;

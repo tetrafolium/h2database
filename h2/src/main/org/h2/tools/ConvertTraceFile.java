@@ -108,16 +108,16 @@ public class ConvertTraceFile extends Tool {
      * Converts a trace file to a Java class file and a script file.
      */
     private void convertFile(String traceFileName, String javaClassName,
-                             String script) throws IOException {
+            String script) throws IOException {
         LineNumberReader reader = new LineNumberReader(
-                IOUtils.getBufferedReader(
-                        FileUtils.newInputStream(traceFileName)));
+            IOUtils.getBufferedReader(
+                FileUtils.newInputStream(traceFileName)));
         PrintWriter javaWriter = new PrintWriter(
-                IOUtils.getBufferedWriter(
-                        FileUtils.newOutputStream(javaClassName + ".java", false)));
+            IOUtils.getBufferedWriter(
+                FileUtils.newOutputStream(javaClassName + ".java", false)));
         PrintWriter scriptWriter = new PrintWriter(
-                IOUtils.getBufferedWriter(
-                        FileUtils.newOutputStream(script, false)));
+            IOUtils.getBufferedWriter(
+                FileUtils.newOutputStream(script, false)));
         javaWriter.println("import java.io.*;");
         javaWriter.println("import java.sql.*;");
         javaWriter.println("import java.math.*;");
@@ -129,7 +129,7 @@ public class ConvertTraceFile extends Tool {
         }
         javaWriter.println("public class " + cn + " {");
         javaWriter.println("    public static void main(String... args) " +
-                           "throws Exception {");
+                "throws Exception {");
         javaWriter.println("        Class.forName(\"org.h2.Driver\");");
         while (true) {
             String line = reader.readLine();

@@ -61,7 +61,7 @@ public class DocumentedMBean extends StandardMBean {
     protected String getDescription(MBeanAttributeInfo info) {
         String prefix = info.isIs() ? "is" : "get";
         String s = getResources().getProperty(
-                           interfaceName + "." + prefix + info.getName());
+            interfaceName + "." + prefix + info.getName());
         return s == null ? super.getDescription(info) : s;
     }
 

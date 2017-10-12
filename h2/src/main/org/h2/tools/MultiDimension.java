@@ -155,7 +155,7 @@ public class MultiDimension implements Comparator<long[]> {
      * @return the query
      */
     public String generatePreparedQuery(String table, String scalarColumn,
-                                        String[] columns) {
+            String[] columns) {
         StringBuilder buff = new StringBuilder("SELECT D.* FROM ");
         buff.append(StringUtils.quoteIdentifier(table)).
         append(" D, TABLE(_FROM_ BIGINT=?, _TO_ BIGINT=?) WHERE ").
@@ -270,7 +270,7 @@ public class MultiDimension implements Comparator<long[]> {
     }
 
     private void addMortonRanges(ArrayList<long[]> list, int[] min, int[] max,
-                                 int len, int level) {
+            int len, int level) {
         if (level > 100) {
             throw new IllegalArgumentException("" + level);
         }

@@ -28,7 +28,7 @@ public class ConcurrentLinkedList<K> {
      * The head entry.
      */
     @SuppressWarnings("unchecked")
-    volatile Entry<K> head = (Entry<K>) NULL;
+    volatile Entry<K> head = (Entry<K>)NULL;
 
     /**
      * Get the first element, or null if none.
@@ -98,24 +98,24 @@ public class ConcurrentLinkedList<K> {
     public Iterator<K> iterator() {
         return new Iterator<K>() {
 
-            Entry<K> current = head;
+                   Entry<K> current = head;
 
-            @Override
-            public boolean hasNext() {
-                return current != NULL;
-            }
+                   @Override
+                   public boolean hasNext() {
+                       return current != NULL;
+                   }
 
-            @Override
-            public K next() {
-                K x = current.obj;
-                current = current.next;
-                return x;
-            }
+                   @Override
+                   public K next() {
+                       K x = current.obj;
+                       current = current.next;
+                       return x;
+                   }
 
-            @Override
-            public void remove() {
-                throw DataUtils.newUnsupportedOperationException("remove");
-            }
+                   @Override
+                   public void remove() {
+                       throw DataUtils.newUnsupportedOperationException("remove");
+                   }
 
         };
     }
@@ -135,7 +135,7 @@ public class ConcurrentLinkedList<K> {
         @SuppressWarnings("unchecked")
         static <K> Entry<K> append(Entry<K> list, K obj) {
             if (list == NULL) {
-                return new Entry<>(obj, (Entry<K>) NULL);
+                return new Entry<>(obj, (Entry<K>)NULL);
             }
             return new Entry<>(list.obj, append(list.next, obj));
         }
@@ -143,7 +143,7 @@ public class ConcurrentLinkedList<K> {
         @SuppressWarnings("unchecked")
         static <K> Entry<K> removeLast(Entry<K> list) {
             if (list == NULL || list.next == NULL) {
-                return (Entry<K>) NULL;
+                return (Entry<K>)NULL;
             }
             return new Entry<>(list.obj, removeLast(list.next));
         }

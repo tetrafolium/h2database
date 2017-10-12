@@ -181,7 +181,7 @@ public final class BitField {
             m--;
         }
         maxLength = (m << ADDRESS_BITS) +
-                    (64 - Long.numberOfLeadingZeros(data[m]));
+                (64 - Long.numberOfLeadingZeros(data[m]));
         return maxLength;
     }
 

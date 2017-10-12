@@ -61,8 +61,8 @@ public class DropIndex extends SchemaCommand {
                         pkConstraint = cons;
                     } else {
                         throw DbException.get(
-                                ErrorCode.INDEX_BELONGS_TO_CONSTRAINT_2,
-                                indexName, cons.getName());
+                                  ErrorCode.INDEX_BELONGS_TO_CONSTRAINT_2,
+                                  indexName, cons.getName());
                     }
                 }
             }

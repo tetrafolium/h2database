@@ -112,7 +112,7 @@ public class Utils {
         }
         int last = bytes.length - pattern.length + 1;
         int patternLen = pattern.length;
-        next:
+next:
         for (; start < last; start++) {
             for (int i = 0; i < patternLen; i++) {
                 if (bytes[start + i] != pattern[i]) {
@@ -380,10 +380,10 @@ public class Utils {
      * @param comp the comparator.
      */
     public static <X> void sortTopN(X[] array, int offset, int limit,
-                                    Comparator<? super X> comp) {
+            Comparator<? super X> comp) {
         partitionTopN(array, offset, limit, comp);
         Arrays.sort(array, offset,
-                    (int) Math.min((long) offset + limit, array.length), comp);
+                (int) Math.min((long) offset + limit, array.length), comp);
     }
 
     /**
@@ -396,9 +396,9 @@ public class Utils {
      * @param comp the comparator
      */
     private static <X> void partitionTopN(X[] array, int offset, int limit,
-                                          Comparator<? super X> comp) {
+            Comparator<? super X> comp) {
         partialQuickSort(array, 0, array.length - 1, comp, offset, offset +
-                         limit - 1);
+            limit - 1);
     }
 
     private static <X> void partialQuickSort(X[] array, int low, int high,
@@ -447,7 +447,7 @@ public class Utils {
      * @return true if they have
      */
     public static boolean haveCommonComparableSuperclass(
-            Class<?> c1, Class<?> c2) {
+        Class<?> c1, Class<?> c2) {
         if (c1 == c2 || c1.isAssignableFrom(c2) || c2.isAssignableFrom(c1)) {
             return true;
         }
@@ -529,7 +529,7 @@ public class Utils {
      * @return the return value from this call
      */
     public static Object callStaticMethod(String classAndMethod,
-                                          Object... params) throws Exception {
+            Object... params) throws Exception {
         int lastDot = classAndMethod.lastIndexOf('.');
         String className = classAndMethod.substring(0, lastDot);
         String methodName = classAndMethod.substring(lastDot + 1);
@@ -547,22 +547,22 @@ public class Utils {
      * @return the return value from this call
      */
     public static Object callMethod(
-            Object instance,
-            String methodName,
-            Object... params) throws Exception {
+        Object instance,
+        String methodName,
+        Object... params) throws Exception {
         return callMethod(instance, instance.getClass(), methodName, params);
     }
 
     private static Object callMethod(
-            Object instance, Class<?> clazz,
-            String methodName,
-            Object... params) throws Exception {
+        Object instance, Class<?> clazz,
+        String methodName,
+        Object... params) throws Exception {
         Method best = null;
         int bestMatch = 0;
         boolean isStatic = instance == null;
         for (Method m : clazz.getMethods()) {
             if (Modifier.isStatic(m.getModifiers()) == isStatic &&
-                    m.getName().equals(methodName)) {
+                        m.getName().equals(methodName)) {
                 int p = match(m.getParameterTypes(), params);
                 if (p > bestMatch) {
                     bestMatch = p;
@@ -781,14 +781,14 @@ public class Utils {
         }
         try {
             OperatingSystemMXBean mxBean = ManagementFactory
-                                           .getOperatingSystemMXBean();
+                    .getOperatingSystemMXBean();
             // this method is only available on the class
             // com.sun.management.OperatingSystemMXBean, which mxBean
             // is an instance of under the Oracle JDK, but it is not present on
             // Android and other JDK's
             Method method = Class.forName(
-                                    "com.sun.management.OperatingSystemMXBean").
-                            getMethod("getTotalPhysicalMemorySize");
+                "com.sun.management.OperatingSystemMXBean").
+                    getMethod("getTotalPhysicalMemorySize");
             long physicalMemorySize = ((Number) method.invoke(mxBean)).longValue();
             return (int) (value * physicalMemorySize / (1024 * 1024 * 1024));
         } catch (Exception e) {

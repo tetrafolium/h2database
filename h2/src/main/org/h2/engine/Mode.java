@@ -195,7 +195,7 @@ public class Mode {
         //     com.ibm.db2z11.doc.java/src/tpc/imjcc_r0052001.dita
         mode.supportedClientInfoPropertiesRegEx =
                 Pattern.compile("ApplicationName|ClientAccountingInformation|" +
-                                "ClientUser|ClientCorrelationToken");
+                "ClientUser|ClientCorrelationToken");
         mode.prohibitEmptyInPredicate = true;
         mode.allowDB2TimestampFormat = true;
         add(mode);

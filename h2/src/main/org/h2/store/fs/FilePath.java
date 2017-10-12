@@ -67,19 +67,19 @@ public abstract class FilePath {
     private static void registerDefaultProviders() {
         if (providers == null || defaultProvider == null) {
             Map<String, FilePath> map = Collections.synchronizedMap(
-                                                New.<String, FilePath>hashMap());
+                New.<String, FilePath>hashMap());
             for (String c : new String[] {
-                            "org.h2.store.fs.FilePathDisk",
-                            "org.h2.store.fs.FilePathMem",
-                            "org.h2.store.fs.FilePathMemLZF",
-                            "org.h2.store.fs.FilePathNioMem",
-                            "org.h2.store.fs.FilePathNioMemLZF",
-                            "org.h2.store.fs.FilePathSplit",
-                            "org.h2.store.fs.FilePathNio",
-                            "org.h2.store.fs.FilePathNioMapped",
-                            "org.h2.store.fs.FilePathZip",
-                            "org.h2.store.fs.FilePathRetryOnInterrupt"
-                    }) {
+                "org.h2.store.fs.FilePathDisk",
+                "org.h2.store.fs.FilePathMem",
+                "org.h2.store.fs.FilePathMemLZF",
+                "org.h2.store.fs.FilePathNioMem",
+                "org.h2.store.fs.FilePathNioMemLZF",
+                "org.h2.store.fs.FilePathSplit",
+                "org.h2.store.fs.FilePathNio",
+                "org.h2.store.fs.FilePathNioMapped",
+                "org.h2.store.fs.FilePathZip",
+                "org.h2.store.fs.FilePathRetryOnInterrupt"
+            }) {
                 try {
                     FilePath p = (FilePath) Class.forName(c).newInstance();
                     map.put(p.getScheme(), p);
@@ -256,7 +256,7 @@ public abstract class FilePath {
      */
     @SuppressWarnings("unused")
     public FilePath createTempFile(String suffix, boolean deleteOnExit,
-                                   boolean inTempDir) throws IOException {
+            boolean inTempDir) throws IOException {
         while (true) {
             FilePath p = getPath(name + getNextTempFileNamePart(false) + suffix);
             if (p.exists() || !p.createFile()) {
@@ -276,7 +276,7 @@ public abstract class FilePath {
      * @return the file name part
      */
     protected static synchronized String getNextTempFileNamePart(
-            boolean newRandom) {
+        boolean newRandom) {
         if (newRandom || tempRandom == null) {
             tempRandom = MathUtils.randomInt(Integer.MAX_VALUE) + ".";
         }

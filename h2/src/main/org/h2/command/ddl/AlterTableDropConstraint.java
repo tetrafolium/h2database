@@ -23,7 +23,7 @@ public class AlterTableDropConstraint extends SchemaCommand {
     private final boolean ifExists;
 
     public AlterTableDropConstraint(Session session, Schema schema,
-                                    boolean ifExists) {
+            boolean ifExists) {
         super(session, schema);
         this.ifExists = ifExists;
     }

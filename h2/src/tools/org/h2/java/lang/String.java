@@ -10,40 +10,40 @@ import org.h2.java.Local;
 
 /* c:
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <time.h>
-#include <wchar.h>
-#include <stdint.h>
-#define __STDC_FORMAT_MACROS
-#include <inttypes.h>
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include <string.h>
+ #include <time.h>
+ #include <wchar.h>
+ #include <stdint.h>
+ #define __STDC_FORMAT_MACROS
+ #include <inttypes.h>
 
-#define jvoid void
-#define jboolean int8_t
-#define jbyte int8_t
-#define jchar wchar_t
-#define jint int32_t
-#define jlong int64_t
-#define jfloat float
-#define jdouble double
-#define ujint uint32_t
-#define ujlong uint64_t
-#define true 1
-#define false 0
-#define null 0
+ #define jvoid void
+ #define jboolean int8_t
+ #define jbyte int8_t
+ #define jchar wchar_t
+ #define jint int32_t
+ #define jlong int64_t
+ #define jfloat float
+ #define jdouble double
+ #define ujint uint32_t
+ #define ujlong uint64_t
+ #define true 1
+ #define false 0
+ #define null 0
 
-#define STRING_REF(s) ptr<java_lang_String> \
+ #define STRING_REF(s) ptr<java_lang_String> \
     (new java_lang_String(ptr< array<jchar> > \
     (new array<jchar>(s, (jint) wcslen(s)))));
 
-#define STRING_PTR(s) new java_lang_String \
+ #define STRING_PTR(s) new java_lang_String \
     (new array<jchar>(s, (jint) wcslen(s)));
 
-class RefBase {
-protected:
+   class RefBase {
+   protected:
     jint refCount;
-public:
+   public:
     RefBase() {
         refCount = 0;
     }
@@ -57,10 +57,10 @@ public:
     }
     virtual ~RefBase() {
     }
-};
-template <class T> class ptr {
+   };
+   template <class T> class ptr {
     T* pointer;
-public:
+   public:
     explicit ptr(T* p=0) : pointer(p) {
         if (p != 0) {
             ((RefBase*)p)->reference();
@@ -103,11 +103,11 @@ public:
     jboolean operator==(const RefBase* t) {
         return pointer == t;
     }
-};
-template <class T> class array : RefBase {
+   };
+   template <class T> class array : RefBase {
     jint len;
     T* data;
-public:
+   public:
     array(const T* d, jint len) {
         this->len = len;
         data = new T[len];
@@ -138,9 +138,9 @@ public:
         }
         return data[index];
     }
-};
+   };
 
-*/
+ */
 
 /**
  * A java.lang.String implementation.

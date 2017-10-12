@@ -71,7 +71,7 @@ public class Delete extends Prepared {
             while (limitRows != 0 && tableFilter.next()) {
                 setCurrentRowNumber(rows.size() + 1);
                 if (condition == null || Boolean.TRUE.equals(
-                                condition.getBooleanValue(session))) {
+                            condition.getBooleanValue(session))) {
                     Row row = tableFilter.get();
                     boolean done = false;
                     if (table.fireRow()) {
@@ -87,7 +87,7 @@ public class Delete extends Prepared {
                 }
             }
             int rowScanCount = 0;
-            for (rows.reset(); rows.hasNext();) {
+            for (rows.reset(); rows.hasNext(); ) {
                 if ((++rowScanCount & 127) == 0) {
                     checkCanceled();
                 }
@@ -96,7 +96,7 @@ public class Delete extends Prepared {
                 session.log(table, UndoLogRecord.DELETE, row);
             }
             if (table.fireRow()) {
-                for (rows.reset(); rows.hasNext();) {
+                for (rows.reset(); rows.hasNext(); ) {
                     Row row = rows.next();
                     table.fireAfterRow(session, row, null, false);
                 }
@@ -115,11 +115,11 @@ public class Delete extends Prepared {
         buff.append("FROM ").append(tableFilter.getPlanSQL(false));
         if (condition != null) {
             buff.append("\nWHERE ").append(StringUtils.unEnclose(
-                                                   condition.getSQL()));
+                        condition.getSQL()));
         }
         if (limitExpr != null) {
             buff.append("\nLIMIT (").append(StringUtils.unEnclose(
-                                                    limitExpr.getSQL())).append(')');
+                        limitExpr.getSQL())).append(')');
         }
         return buff.toString();
     }
@@ -133,7 +133,7 @@ public class Delete extends Prepared {
         }
         TableFilter[] filters = new TableFilter[] { tableFilter };
         PlanItem item = tableFilter.getBestPlanItem(session, filters, 0,
-                        ExpressionVisitor.allColumnsForTableFilters(filters));
+                ExpressionVisitor.allColumnsForTableFilters(filters));
         tableFilter.setPlanItem(item);
         tableFilter.prepare();
     }

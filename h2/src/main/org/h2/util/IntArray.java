@@ -167,7 +167,7 @@ public class IntArray {
         if (SysProperties.CHECK) {
             if (fromIndex > toIndex || toIndex > size) {
                 throw new ArrayIndexOutOfBoundsException("from=" + fromIndex +
-                        " to=" + toIndex + " size=" + size);
+                              " to=" + toIndex + " size=" + size);
             }
         }
         System.arraycopy(data, toIndex, data, fromIndex, size - toIndex);

@@ -1046,9 +1046,9 @@ public class ErrorCode {
     public static final int UNSUPPORTED_CIPHER = 90055;
 
     /**
-    * The error with code <code>90056</code> is thrown when trying to format a
-    * timestamp using TO_DATE and TO_TIMESTAMP  with an invalid format.
-    */
+     * The error with code <code>90056</code> is thrown when trying to format a
+     * timestamp using TO_DATE and TO_TIMESTAMP  with an invalid format.
+     */
     public static final int INVALID_TO_DATE_FORMAT = 90056;
 
     /**

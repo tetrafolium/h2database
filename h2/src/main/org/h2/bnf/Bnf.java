@@ -223,14 +223,14 @@ public class Bnf {
             r = new RuleOptional(r2);
             if (firstChar != ']') {
                 throw new AssertionError("expected ], got " + currentToken
-                                         + " syntax:" + syntax);
+                              + " syntax:" + syntax);
             }
         } else if (firstChar == '{') {
             read();
             r = parseOr();
             if (firstChar != '}') {
                 throw new AssertionError("expected }, got " + currentToken
-                                         + " syntax:" + syntax);
+                              + " syntax:" + syntax);
             }
         } else if ("@commaDots@".equals(currentToken)) {
             r = new RuleList(new RuleElement(",", currentTopic), lastRepeat, false);

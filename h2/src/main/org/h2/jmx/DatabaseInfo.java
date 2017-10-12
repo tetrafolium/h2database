@@ -68,7 +68,7 @@ public class DatabaseInfo implements DatabaseInfoMBean {
      * @param database database
      */
     public static void registerMBean(ConnectionInfo connectionInfo,
-                                     Database database) throws JMException {
+            Database database) throws JMException {
         String path = connectionInfo.getName();
         if (!MBEANS.containsKey(path)) {
             MBeanServer mbeanServer = ManagementFactory.getPlatformMBeanServer();
@@ -230,7 +230,7 @@ public class DatabaseInfo implements DatabaseInfoMBean {
         StringBuilder buff = new StringBuilder();
         for (Map.Entry<String, String> e :
                 new TreeMap<>(
-                        database.getSettings().getSettings()).entrySet()) {
+                    database.getSettings().getSettings()).entrySet()) {
             buff.append(e.getKey()).append(" = ").append(e.getValue()).append('\n');
         }
         return buff.toString();
@@ -255,7 +255,7 @@ public class DatabaseInfo implements DatabaseInfoMBean {
                 long commandStart = session.getCurrentCommandStart();
                 if (commandStart != 0) {
                     buff.append("started: ").append(
-                            new Timestamp(commandStart)).
+                        new Timestamp(commandStart)).
                     append('\n');
                 }
             }

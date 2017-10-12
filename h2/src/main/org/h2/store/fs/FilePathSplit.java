@@ -167,9 +167,9 @@ public class FilePathSplit extends FilePathWrapper {
     }
 
     private void closeAndThrow(int id, FileChannel[] array, FileChannel o,
-                               long maxLength) throws IOException {
+            long maxLength) throws IOException {
         String message = "Expected file length: " + maxLength + " got: " +
-                         o.size() + " for " + getName(id);
+                o.size() + " for " + getName(id);
         for (FileChannel f : array) {
             f.close();
         }
@@ -254,7 +254,7 @@ class FileSplit extends FileBase {
     private long length;
 
     FileSplit(FilePathSplit file, String mode, FileChannel[] list, long length,
-              long maxLength) {
+            long maxLength) {
         this.file = file;
         this.mode = mode;
         this.list = list;
@@ -437,7 +437,7 @@ class FileSplit extends FileBase {
 
     @Override
     public synchronized FileLock tryLock(long position, long size,
-                                         boolean shared) throws IOException {
+            boolean shared) throws IOException {
         return list[0].tryLock(position, size, shared);
     }
 

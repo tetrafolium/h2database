@@ -241,7 +241,7 @@ public class SourceCompiler {
      * @return the full source code
      */
     static String getCompleteSourceCode(String packageName, String className,
-                                        String source) {
+            String source) {
         if (source.startsWith("package ")) {
             return source;
         }
@@ -260,9 +260,9 @@ public class SourceCompiler {
         }
         buff.append(importCode);
         buff.append("public class ").append(className).append(
-                " {\n" +
-                "    public static ").append(source).append("\n" +
-                        "}\n");
+            " {\n" +
+            "    public static ").append(source).append("\n" +
+                "}\n");
         return buff.toString();
     }
 
@@ -278,14 +278,14 @@ public class SourceCompiler {
         String fullClassName = packageName + "." + className;
         StringWriter writer = new StringWriter();
         JavaFileManager fileManager = new
-        ClassFileManager(JAVA_COMPILER
-                         .getStandardFileManager(null, null, null));
+                ClassFileManager(JAVA_COMPILER
+                .getStandardFileManager(null, null, null));
         ArrayList<JavaFileObject> compilationUnits = new ArrayList<>();
         compilationUnits.add(new StringJavaFileObject(fullClassName, source));
         // cannot concurrently compile
         synchronized (JAVA_COMPILER) {
             JAVA_COMPILER.getTask(writer, fileManager, null, null,
-                                  null, compilationUnits).call();
+                    null, compilationUnits).call();
         }
         String output = writer.toString();
         handleSyntaxError(output);
@@ -298,10 +298,10 @@ public class SourceCompiler {
 
     private static void javacProcess(File javaFile) {
         exec("javac",
-             "-sourcepath", COMPILE_DIR,
-             "-d", COMPILE_DIR,
-             "-encoding", "UTF-8",
-             javaFile.getAbsolutePath());
+                "-sourcepath", COMPILE_DIR,
+                "-d", COMPILE_DIR,
+                "-encoding", "UTF-8",
+                javaFile.getAbsolutePath());
     }
 
     private static int exec(String... args) {
@@ -333,7 +333,7 @@ public class SourceCompiler {
             public void call() throws IOException {
                 IOUtils.copy(in, out);
             }
-        } .execute();
+        }.execute();
     }
 
     private static synchronized void javacSun(File javaFile) {
@@ -346,12 +346,12 @@ public class SourceCompiler {
             compile = JAVAC_SUN.getMethod("compile", String[].class);
             Object javac = JAVAC_SUN.newInstance();
             compile.invoke(javac, (Object) new String[] {
-                                   "-sourcepath", COMPILE_DIR,
-                                   // "-Xlint:unchecked",
-                                   "-d", COMPILE_DIR,
-                                   "-encoding", "UTF-8",
-                                   javaFile.getAbsolutePath()
-                           });
+                "-sourcepath", COMPILE_DIR,
+                // "-Xlint:unchecked",
+                "-d", COMPILE_DIR,
+                "-encoding", "UTF-8",
+                javaFile.getAbsolutePath()
+            });
             String output = new String(buff.toByteArray(), Constants.UTF8);
             handleSyntaxError(output);
         } catch (Exception e) {
@@ -365,11 +365,11 @@ public class SourceCompiler {
         boolean syntaxError = false;
         final BufferedReader reader = new BufferedReader(new StringReader(output));
         try {
-            for (String line; (line = reader.readLine()) != null;) {
+            for (String line; (line = reader.readLine()) != null; ) {
                 if (line.endsWith("warning")) {
                     // ignore summary line
                 } else if (line.startsWith("Note:")
-                           || line.startsWith("warning:")) {
+                        || line.startsWith("warning:")) {
                     // just a warning (e.g. unchecked or unsafe operations)
                 } else {
                     syntaxError = true;
@@ -402,16 +402,16 @@ public class SourceCompiler {
             try {
                 // Create an instance of ImportCustomizer
                 Class<?> importCustomizerClass = Class.forName(
-                        "org.codehaus.groovy.control.customizers.ImportCustomizer");
+                    "org.codehaus.groovy.control.customizers.ImportCustomizer");
                 Object importCustomizer = Utils.newInstance(
-                                                  "org.codehaus.groovy.control.customizers.ImportCustomizer");
+                    "org.codehaus.groovy.control.customizers.ImportCustomizer");
                 // Call the method ImportCustomizer.addImports(String[])
                 String[] importsArray = new String[] {
-                        "java.sql.Connection",
-                        "java.sql.Types",
-                        "java.sql.ResultSet",
-                        "groovy.sql.Sql",
-                        "org.h2.tools.SimpleResultSet"
+                    "java.sql.Connection",
+                    "java.sql.Types",
+                    "java.sql.ResultSet",
+                    "groovy.sql.Sql",
+                    "org.h2.tools.SimpleResultSet"
                 };
                 Utils.callMethod(importCustomizer, "addImports", new Object[] { importsArray });
 
@@ -421,13 +421,13 @@ public class SourceCompiler {
                 Object importCustomizerArray = Array.newInstance(importCustomizerClass, 1);
                 Array.set(importCustomizerArray, 0, importCustomizer);
                 Object configuration = Utils.newInstance(
-                                               "org.codehaus.groovy.control.CompilerConfiguration");
+                    "org.codehaus.groovy.control.CompilerConfiguration");
                 Utils.callMethod(configuration,
-                                 "addCompilationCustomizers", new Object[] { importCustomizerArray });
+                        "addCompilationCustomizers", new Object[] { importCustomizerArray });
 
                 ClassLoader parent = GroovyCompiler.class.getClassLoader();
                 loader = Utils.newInstance(
-                                 "groovy.lang.GroovyClassLoader", parent, configuration);
+                    "groovy.lang.GroovyClassLoader", parent, configuration);
             } catch (Exception ex) {
                 initFailException = ex;
             }
@@ -436,17 +436,17 @@ public class SourceCompiler {
         }
 
         public static Class<?> parseClass(String source,
-                                          String packageAndClassName) {
+                String packageAndClassName) {
             if (LOADER == null) {
                 throw new RuntimeException(
-                        "Compile fail: no Groovy jar in the classpath", INIT_FAIL_EXCEPTION);
+                          "Compile fail: no Groovy jar in the classpath", INIT_FAIL_EXCEPTION);
             }
             try {
                 Object codeSource = Utils.newInstance("groovy.lang.GroovyCodeSource",
-                                                      source, packageAndClassName + ".groovy", "UTF-8");
+                        source, packageAndClassName + ".groovy", "UTF-8");
                 Utils.callMethod(codeSource, "setCachable", false);
-                Class<?> clazz = (Class<?>) Utils.callMethod(
-                                         LOADER, "parseClass", codeSource);
+                Class<?> clazz = (Class<?>)Utils.callMethod(
+                    LOADER, "parseClass", codeSource);
                 return clazz;
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -463,7 +463,7 @@ public class SourceCompiler {
 
         public StringJavaFileObject(String className, String sourceCode) {
             super(URI.create("string:///" + className.replace('.', '/')
-                             + Kind.SOURCE.extension), Kind.SOURCE);
+            + Kind.SOURCE.extension), Kind.SOURCE);
             this.sourceCode = sourceCode;
         }
 
@@ -483,7 +483,7 @@ public class SourceCompiler {
 
         public JavaClassObject(String name, Kind kind) {
             super(URI.create("string:///" + name.replace('.', '/')
-                             + kind.extension), kind);
+            + kind.extension), kind);
         }
 
         public byte[] getBytes() {
@@ -514,13 +514,13 @@ public class SourceCompiler {
         @Override
         public ClassLoader getClassLoader(Location location) {
             return new SecureClassLoader() {
-                @Override
-                protected Class<?> findClass(String name)
-                throws ClassNotFoundException {
-                    byte[] bytes = classObject.getBytes();
-                    return super.defineClass(name, bytes, 0,
-                                             bytes.length);
-                }
+                       @Override
+                       protected Class<?> findClass(String name)
+                       throws ClassNotFoundException {
+                           byte[] bytes = classObject.getBytes();
+                           return super.defineClass(name, bytes, 0,
+                                          bytes.length);
+                       }
             };
         }
 

@@ -54,12 +54,12 @@ public class LobStorageFrontend implements LobStorageInterface {
      */
     @Override
     public InputStream getInputStream(ValueLobDb lob, byte[] hmac,
-                                      long byteCount) throws IOException {
+            long byteCount) throws IOException {
         if (byteCount < 0) {
             byteCount = Long.MAX_VALUE;
         }
         return new BufferedInputStream(new LobStorageRemoteInputStream(
-                                               handler, lob, hmac, byteCount));
+                           handler, lob, hmac, byteCount));
     }
 
     @Override

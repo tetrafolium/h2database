@@ -75,7 +75,7 @@ public class Db {
     public static Db open(String url, String user, String password) {
         try {
             Connection conn = JdbcUtils
-                              .getConnection(null, url, user, password);
+                    .getConnection(null, url, user, password);
             return new Db(conn);
         } catch (SQLException e) {
             throw convert(e);
@@ -150,7 +150,7 @@ public class Db {
             upgradeChecked.add(dbUpgrader.getClass());
 
             JQDatabase model = dbUpgrader.getClass().getAnnotation(
-                                       JQDatabase.class);
+                JQDatabase.class);
             if (model.version() > 0) {
                 DbVersion v = new DbVersion();
                 DbVersion dbVersion =
@@ -169,7 +169,7 @@ public class Db {
                             && (dbUpgrader != null)) {
                         // database is an older version than the model
                         boolean success = dbUpgrader.upgradeDatabase(this,
-                                          dbVersion.version, model.version());
+                                dbVersion.version, model.version());
                         if (success) {
                             dbVersion.version = model.version();
                             update(dbVersion);
@@ -190,9 +190,9 @@ public class Db {
                 // table is using JaQu version tracking.
                 DbVersion v = new DbVersion();
                 String schema = StringUtils.isNullOrEmpty(model.schemaName) ? ""
-                                : model.schemaName;
+                        : model.schemaName;
                 DbVersion dbVersion = from(v).where(v.schema).like(schema)
-                                      .and(v.table).like(model.tableName).selectFirst();
+                        .and(v.table).like(model.tableName).selectFirst();
                 if (dbVersion == null) {
                     // table has no version registration, but model specifies
                     // version: insert DbVersion entry
@@ -207,8 +207,8 @@ public class Db {
                             && (dbUpgrader != null)) {
                         // table is an older version than model
                         boolean success = dbUpgrader.upgradeTable(this, schema,
-                                          model.tableName, dbVersion.version,
-                                          model.tableVersion);
+                                model.tableName, dbVersion.version,
+                                model.tableVersion);
                         if (success) {
                             dbVersion.version = model.tableVersion;
                             update(dbVersion);
@@ -243,7 +243,7 @@ public class Db {
     public synchronized void setDbUpgrader(DbUpgrader upgrader) {
         if (!upgrader.getClass().isAnnotationPresent(JQDatabase.class)) {
             throw new RuntimeException("DbUpgrader must be annotated with "
-                                       + JQDatabase.class.getSimpleName());
+                          + JQDatabase.class.getSimpleName());
         }
         this.dbUpgrader = upgrader;
         upgradeChecked.clear();
@@ -299,7 +299,7 @@ public class Db {
         try {
             if (returnGeneratedKeys) {
                 return conn.prepareStatement(sql,
-                                             Statement.RETURN_GENERATED_KEYS);
+                               Statement.RETURN_GENERATED_KEYS);
             }
             return conn.prepareStatement(sql);
         } catch (SQLException e) {
@@ -309,7 +309,7 @@ public class Db {
 
     @SuppressWarnings("unchecked")
     <T> TableDefinition<T> getTableDefinition(Class<T> clazz) {
-        return (TableDefinition<T>) classMap.get(clazz);
+        return (TableDefinition<T>)classMap.get(clazz);
     }
 
     /**

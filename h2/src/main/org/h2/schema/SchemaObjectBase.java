@@ -24,7 +24,7 @@ public abstract class SchemaObjectBase extends DbObjectBase implements
      * @param traceModuleId the trace module id
      */
     protected void initSchemaObjectBase(Schema newSchema, int id, String name,
-                                        int traceModuleId) {
+            int traceModuleId) {
         initDbObjectBase(newSchema.getDatabase(), id, name, traceModuleId);
         this.schema = newSchema;
     }

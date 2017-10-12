@@ -52,7 +52,7 @@ public class ResultTempTable implements ResultExternal {
         for (int i = 0; i < expressions.length; i++) {
             int type = expressions[i].getType();
             Column col = new Column(COLUMN_NAME + i,
-                                    type);
+                    type);
             if (type == Value.CLOB || type == Value.BLOB) {
                 containsLob = true;
             }
@@ -109,11 +109,11 @@ public class ResultTempTable implements ResultExternal {
             }
         }
         String indexName = table.getSchema().getUniqueIndexName(session,
-                           table, Constants.PREFIX_INDEX);
+                table, Constants.PREFIX_INDEX);
         int indexId = session.getDatabase().allocateObjectId();
         IndexType indexType = IndexType.createNonUnique(true);
         index = table.addIndex(session, indexName, indexId, indexCols,
-                               indexType, true, null);
+                indexType, true, null);
     }
 
     @Override

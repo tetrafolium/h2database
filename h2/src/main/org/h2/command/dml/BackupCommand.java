@@ -104,7 +104,7 @@ public class BackupCommand extends Prepared {
     }
 
     private void backupPageStore(ZipOutputStream out, String fileName,
-                                 PageStore store) throws IOException {
+            PageStore store) throws IOException {
         Database db = session.getDatabase();
         fileName = FileUtils.getName(fileName);
         out.putNextEntry(new ZipEntry(fileName));
@@ -132,7 +132,7 @@ public class BackupCommand extends Prepared {
     }
 
     private static void backupFile(ZipOutputStream out, String base, String fn,
-                                   InputStream in) throws IOException {
+            InputStream in) throws IOException {
         String f = FileUtils.toRealPath(fn);
         base = FileUtils.toRealPath(base);
         if (!f.startsWith(base)) {

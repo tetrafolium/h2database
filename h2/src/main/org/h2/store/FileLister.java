@@ -39,14 +39,14 @@ public class FileLister {
         for (String fileName : files) {
             if (fileName.endsWith(Constants.SUFFIX_LOCK_FILE)) {
                 FileLock lock = new FileLock(new TraceSystem(null), fileName,
-                                             Constants.LOCK_SLEEP);
+                        Constants.LOCK_SLEEP);
                 try {
                     lock.lock(FileLock.LOCK_FILE);
                     lock.unlock();
                 } catch (DbException e) {
                     throw DbException.get(
-                            ErrorCode.CANNOT_CHANGE_SETTING_WHEN_OPEN_1,
-                            message).getSQLException();
+                              ErrorCode.CANNOT_CHANGE_SETTING_WHEN_OPEN_1,
+                              message).getSQLException();
                 }
             } else if (fileName.endsWith(Constants.SUFFIX_MV_FILE)) {
                 try (FileChannel f = FilePath.get(fileName).open("r")) {
@@ -54,8 +54,8 @@ public class FileLister {
                     lock.release();
                 } catch (Exception e) {
                     throw DbException.get(
-                            ErrorCode.CANNOT_CHANGE_SETTING_WHEN_OPEN_1, e,
-                            message).getSQLException();
+                              ErrorCode.CANNOT_CHANGE_SETTING_WHEN_OPEN_1, e,
+                              message).getSQLException();
                 }
             }
         }

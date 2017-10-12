@@ -61,11 +61,11 @@ public class MVRTreeMap<V> extends MVMap<SpatialKey, V> {
      */
     public RTreeCursor findIntersectingKeys(SpatialKey x) {
         return new RTreeCursor(root, x) {
-            @Override
-            protected boolean check(boolean leaf, SpatialKey key,
-                                    SpatialKey test) {
-                return keyType.isOverlap(key, test);
-            }
+                   @Override
+                   protected boolean check(boolean leaf, SpatialKey key,
+                           SpatialKey test) {
+                       return keyType.isOverlap(key, test);
+                   }
         };
     }
 
@@ -78,14 +78,14 @@ public class MVRTreeMap<V> extends MVMap<SpatialKey, V> {
      */
     public RTreeCursor findContainedKeys(SpatialKey x) {
         return new RTreeCursor(root, x) {
-            @Override
-            protected boolean check(boolean leaf, SpatialKey key,
-                                    SpatialKey test) {
-                if (leaf) {
-                    return keyType.isInside(key, test);
-                }
-                return keyType.isOverlap(key, test);
-            }
+                   @Override
+                   protected boolean check(boolean leaf, SpatialKey key,
+                           SpatialKey test) {
+                       if (leaf) {
+                           return keyType.isInside(key, test);
+                       }
+                       return keyType.isOverlap(key, test);
+                   }
         };
     }
 
@@ -210,9 +210,9 @@ public class MVRTreeMap<V> extends MVMap<SpatialKey, V> {
                     new Page.PageReference(null, 0, 0)
                 };
                 p = Page.create(this, v,
-                                keys, null,
-                                children,
-                                totalCount, 0);
+                        keys, null,
+                        children,
+                        totalCount, 0);
                 // now p is a node; continues
             }
             add(p, v, key, value);
@@ -255,7 +255,7 @@ public class MVRTreeMap<V> extends MVMap<SpatialKey, V> {
             }
         }
         throw DataUtils.newIllegalStateException(DataUtils.ERROR_INTERNAL,
-                "Not found: {0}", key);
+                      "Not found: {0}", key);
     }
 
     private void add(Page p, long writeVersion, Object key, Object value) {
@@ -408,12 +408,12 @@ public class MVRTreeMap<V> extends MVMap<SpatialKey, V> {
         } else {
             values = null;
             refs = new Page.PageReference[] {
-                    new Page.PageReference(null, 0, 0)
+                new Page.PageReference(null, 0, 0)
             };
         }
         return Page.create(this, writeVersion,
-                           Page.EMPTY_OBJECT_ARRAY, values,
-                           refs, 0, 0);
+                       Page.EMPTY_OBJECT_ARRAY, values,
+                       refs, 0, 0);
     }
 
     private static void move(Page source, Page target, int sourceIndex) {
@@ -509,7 +509,7 @@ public class MVRTreeMap<V> extends MVMap<SpatialKey, V> {
         @Override
         public void remove() {
             throw DataUtils.newUnsupportedOperationException(
-                    "Removing is not supported");
+                      "Removing is not supported");
         }
 
         /**

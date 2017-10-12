@@ -28,7 +28,7 @@ public class JdbcParameterMetaData extends TraceObject implements
     private final ArrayList<? extends ParameterInterface> parameters;
 
     JdbcParameterMetaData(Trace trace, JdbcPreparedStatement prep,
-                          CommandInterface command, int id) {
+            CommandInterface command, int id) {
         setTrace(trace, TraceObject.PARAMETER_META_DATA, id);
         this.prep = prep;
         this.parameters = command.getParameters();

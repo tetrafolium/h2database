@@ -43,41 +43,41 @@ public class Profiler implements Runnable {
     private int pid;
 
     private final String[] ignoreLines = (
-            "java," +
-            "sun," +
-            "com.sun.," +
-            "com.google.common.," +
-            "com.mongodb.," +
-            "org.bson.,"
-                                         ).split(",");
+        "java," +
+        "sun," +
+        "com.sun.," +
+        "com.google.common.," +
+        "com.mongodb.," +
+        "org.bson.,"
+        ).split(",");
     private final String[] ignorePackages = (
-            "java," +
-            "sun," +
-            "com.sun.," +
-            "com.google.common.," +
-            "com.mongodb.," +
-            "org.bson"
-                                            ).split(",");
+        "java," +
+        "sun," +
+        "com.sun.," +
+        "com.google.common.," +
+        "com.mongodb.," +
+        "org.bson"
+        ).split(",");
     private final String[] ignoreThreads = (
-            "java.lang.Object.wait," +
-            "java.lang.Thread.dumpThreads," +
-            "java.lang.Thread.getThreads," +
-            "java.lang.Thread.sleep," +
-            "java.lang.UNIXProcess.waitForProcessExit," +
-            "java.net.PlainDatagramSocketImpl.receive0," +
-            "java.net.PlainSocketImpl.accept," +
-            "java.net.PlainSocketImpl.socketAccept," +
-            "java.net.SocketInputStream.socketRead," +
-            "java.net.SocketOutputStream.socketWrite," +
-            "org.eclipse.jetty.io.nio.SelectorManager$SelectSet.doSelect," +
-            "sun.awt.windows.WToolkit.eventLoop," +
-            "sun.misc.Unsafe.park," +
-            "sun.nio.ch.EPollArrayWrapper.epollWait," +
-            "sun.nio.ch.KQueueArrayWrapper.kevent0," +
-            "sun.nio.ch.ServerSocketChannelImpl.accept," +
-            "dalvik.system.VMStack.getThreadStackTrace," +
-            "dalvik.system.NativeStart.run"
-                                           ).split(",");
+        "java.lang.Object.wait," +
+        "java.lang.Thread.dumpThreads," +
+        "java.lang.Thread.getThreads," +
+        "java.lang.Thread.sleep," +
+        "java.lang.UNIXProcess.waitForProcessExit," +
+        "java.net.PlainDatagramSocketImpl.receive0," +
+        "java.net.PlainSocketImpl.accept," +
+        "java.net.PlainSocketImpl.socketAccept," +
+        "java.net.SocketInputStream.socketRead," +
+        "java.net.SocketOutputStream.socketWrite," +
+        "org.eclipse.jetty.io.nio.SelectorManager$SelectSet.doSelect," +
+        "sun.awt.windows.WToolkit.eventLoop," +
+        "sun.misc.Unsafe.park," +
+        "sun.nio.ch.EPollArrayWrapper.epollWait," +
+        "sun.nio.ch.KQueueArrayWrapper.kevent0," +
+        "sun.nio.ch.ServerSocketChannelImpl.accept," +
+        "dalvik.system.VMStack.getThreadStackTrace," +
+        "dalvik.system.NativeStart.run"
+        ).split(",");
 
     private volatile boolean stop;
     private final HashMap<String, Integer> counts =
@@ -130,7 +130,7 @@ public class Profiler implements Runnable {
         if (args.length == 0) {
             System.out.println("Show profiling data");
             System.out.println("Usage: java " + getClass().getName() +
-                               " <pid> | <stackTraceFileNames>");
+                    " <pid> | <stackTraceFileNames>");
             System.out.println("Processes:");
             String processes = exec("jps", "-l");
             System.out.println(processes);
@@ -169,7 +169,7 @@ public class Profiler implements Runnable {
                 Reader reader;
                 LineNumberReader r;
                 reader = new InputStreamReader(
-                        new FileInputStream(file), "CP1252");
+                    new FileInputStream(file), "CP1252");
                 r = new LineNumberReader(reader);
                 while (true) {
                     String line = r.readLine();
@@ -181,7 +181,7 @@ public class Profiler implements Runnable {
                 }
                 reader.close();
                 reader = new InputStreamReader(
-                        new FileInputStream(file), "CP1252");
+                    new FileInputStream(file), "CP1252");
                 r = new LineNumberReader(reader);
                 processList(readStackTrace(r));
                 reader.close();
@@ -213,7 +213,7 @@ public class Profiler implements Runnable {
         try {
             String jstack = exec("jstack", "" + pid);
             LineNumberReader r = new LineNumberReader(
-                    new StringReader(jstack));
+                new StringReader(jstack));
             return readStackTrace(r);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -284,7 +284,7 @@ public class Profiler implements Runnable {
     }
 
     private static void copyInThread(final InputStream in,
-                                     final OutputStream out) {
+            final OutputStream out) {
         new Thread("Profiler stream copy") {
             @Override
             public void run() {
@@ -301,7 +301,7 @@ public class Profiler implements Runnable {
                     throw new RuntimeException(e);
                 }
             }
-        } .start();
+        }.start();
     }
 
     /**
@@ -426,7 +426,7 @@ public class Profiler implements Runnable {
     }
 
     private static int increment(HashMap<String, Integer> map, String trace,
-                                 int minCount) {
+            int minCount) {
         Integer oldCount = map.get(trace);
         if (oldCount == null) {
             map.put(trace, 1);
@@ -435,7 +435,7 @@ public class Profiler implements Runnable {
         }
         while (map.size() > MAX_ELEMENTS) {
             for (Iterator<Map.Entry<String, Integer>> ei =
-                            map.entrySet().iterator(); ei.hasNext();) {
+                    map.entrySet().iterator(); ei.hasNext(); ) {
                 Map.Entry<String, Integer> e = ei.next();
                 if (e.getValue() <= minCount) {
                     ei.remove();
@@ -482,8 +482,8 @@ public class Profiler implements Runnable {
     }
 
     private static void appendTop(StringBuilder buff,
-                                  HashMap<String, Integer> map, int count, int total, boolean table) {
-        for (int x = 0, min = 0;;) {
+            HashMap<String, Integer> map, int count, int total, boolean table) {
+        for (int x = 0, min = 0;; ) {
             int highest = 0;
             Map.Entry<String, Integer> best = null;
             for (Map.Entry<String, Integer> el : map.entrySet()) {

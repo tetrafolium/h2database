@@ -76,7 +76,7 @@ public class ValueDataType implements DataType {
     SpatialDataType spatialType;
 
     public ValueDataType(CompareMode compareMode, DataHandler handler,
-                         int[] sortTypes) {
+            int[] sortTypes) {
         this.compareMode = compareMode;
         this.handler = handler;
         this.sortTypes = sortTypes;
@@ -193,7 +193,7 @@ public class ValueDataType implements DataType {
         switch (type) {
         case Value.BOOLEAN:
             buff.put((byte) (v.getBoolean().booleanValue() ?
-                             BOOLEAN_TRUE : BOOLEAN_FALSE));
+                    BOOLEAN_TRUE : BOOLEAN_FALSE));
             break;
         case Value.BYTE:
             buff.put((byte) type).put(v.getByte());
@@ -411,7 +411,7 @@ public class ValueDataType implements DataType {
                         int t = org.h2.value.DataType.
                                 getValueTypeFromResultSet(meta, i + 1);
                         Value val = org.h2.value.DataType.readValue(
-                                            null, rs, i + 1, t);
+                            null, rs, i + 1, t);
                         writeValue(buff, val);
                     }
                 }
@@ -481,11 +481,11 @@ public class ValueDataType implements DataType {
             return ValueDecimal.ONE;
         case DECIMAL_SMALL_0:
             return ValueDecimal.get(BigDecimal.valueOf(
-                                            readVarLong(buff)));
+                               readVarLong(buff)));
         case DECIMAL_SMALL: {
             int scale = readVarInt(buff);
             return ValueDecimal.get(BigDecimal.valueOf(
-                                            readVarLong(buff), scale));
+                               readVarLong(buff), scale));
         }
         case Value.DECIMAL: {
             int scale = readVarInt(buff);
@@ -543,10 +543,10 @@ public class ValueDataType implements DataType {
             return ValueDouble.get(1);
         case Value.DOUBLE:
             return ValueDouble.get(Double.longBitsToDouble(
-                                           Long.reverse(readVarLong(buff))));
+                               Long.reverse(readVarLong(buff))));
         case Value.FLOAT:
             return ValueFloat.get(Float.intBitsToFloat(
-                                          Integer.reverse(readVarInt(buff))));
+                               Integer.reverse(readVarInt(buff))));
         case Value.BLOB:
         case Value.CLOB: {
             int smallLen = readVarInt(buff);
@@ -559,11 +559,11 @@ public class ValueDataType implements DataType {
                 long lobId = readVarLong(buff);
                 long precision = readVarLong(buff);
                 ValueLobDb lob = ValueLobDb.create(type,
-                                                   handler, tableId, lobId, null, precision);
+                        handler, tableId, lobId, null, precision);
                 return lob;
             } else {
                 throw DbException.get(ErrorCode.FILE_CORRUPTED_1,
-                                      "lob type: " + smallLen);
+                              "lob type: " + smallLen);
             }
         }
         case Value.ARRAY: {
@@ -580,9 +580,9 @@ public class ValueDataType implements DataType {
             int columns = readVarInt(buff);
             for (int i = 0; i < columns; i++) {
                 rs.addColumn(readString(buff),
-                             readVarInt(buff),
-                             readVarInt(buff),
-                             readVarInt(buff));
+                        readVarInt(buff),
+                        readVarInt(buff),
+                        readVarInt(buff));
             }
             while (true) {
                 if (buff.get() == 0) {
@@ -611,10 +611,10 @@ public class ValueDataType implements DataType {
                 byte[] b = DataUtils.newBytes(len);
                 buff.get(b, 0, len);
                 return JdbcUtils.customDataTypesHandler.convert(
-                               ValueBytes.getNoCopy(b), customType);
+                    ValueBytes.getNoCopy(b), customType);
             }
             throw DbException.get(ErrorCode.UNKNOWN_DATA_TYPE_1,
-                                  "No CustomDataTypesHandler has been set up");
+                          "No CustomDataTypesHandler has been set up");
         }
         default:
             if (type >= INT_0_15 && type < INT_0_15 + 16) {

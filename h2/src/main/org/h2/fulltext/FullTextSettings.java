@@ -51,8 +51,8 @@ final class FullTextSettings {
      * The prepared statement cache.
      */
     private final SoftHashMap<Connection,
-            SoftHashMap<String, PreparedStatement>> cache =
-                    new SoftHashMap<>();
+    SoftHashMap<String, PreparedStatement>> cache =
+            new SoftHashMap<>();
 
     /**
      * The whitespace characters.
@@ -186,13 +186,13 @@ final class FullTextSettings {
     private static String getIndexPath(Connection conn) throws SQLException {
         Statement stat = conn.createStatement();
         ResultSet rs = stat.executeQuery(
-                               "CALL IFNULL(DATABASE_PATH(), 'MEM:' || DATABASE())");
+            "CALL IFNULL(DATABASE_PATH(), 'MEM:' || DATABASE())");
         rs.next();
         String path = rs.getString(1);
         if ("MEM:UNNAMED".equals(path)) {
             throw FullText.throwException(
-                    "Fulltext search for private (unnamed) " +
-                    "in-memory databases is not supported.");
+                      "Fulltext search for private (unnamed) " +
+                      "in-memory databases is not supported.");
         }
         rs.close();
         return path;

@@ -161,7 +161,7 @@ public class Csv implements SimpleRowSource {
      * @return the number of rows written
      */
     public int write(Connection conn, String outputFileName, String sql,
-                     String charset) throws SQLException {
+            String charset) throws SQLException {
         Statement stat = conn.createStatement();
         ResultSet rs = stat.executeQuery(sql);
         int rows = write(outputFileName, rs, charset);
@@ -188,7 +188,7 @@ public class Csv implements SimpleRowSource {
      * @return the result set
      */
     public ResultSet read(String inputFileName, String[] colNames,
-                          String charset) throws SQLException {
+            String charset) throws SQLException {
         init(inputFileName, charset);
         try {
             return readResultSet(colNames);
@@ -461,7 +461,7 @@ public class Csv implements SimpleRowSource {
                     }
                 }
                 String s = new String(inputBuffer,
-                                      inputBufferStart, inputBufferPos - inputBufferStart - sep);
+                        inputBufferStart, inputBufferPos - inputBufferStart - sep);
                 if (containsEscape) {
                     s = unEscape(s);
                 }
@@ -513,7 +513,7 @@ public class Csv implements SimpleRowSource {
                     }
                 }
                 String s = new String(inputBuffer,
-                                      inputBufferStart, inputBufferPos - inputBufferStart - 1);
+                        inputBufferStart, inputBufferPos - inputBufferStart - 1);
                 if (!preserveWhitespace) {
                     s = s.trim();
                 }

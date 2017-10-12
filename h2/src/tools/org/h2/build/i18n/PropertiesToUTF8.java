@@ -57,7 +57,7 @@ public class PropertiesToUTF8 {
         FileOutputStream out = new FileOutputStream(target);
         PrintWriter writer = new PrintWriter(new OutputStreamWriter(out, "UTF-8"));
         // keys is sorted
-        for (Enumeration<Object> en = prop.keys(); en.hasMoreElements();) {
+        for (Enumeration<Object> en = prop.keys(); en.hasMoreElements(); ) {
             String key = (String) en.nextElement();
             String value = prop.getProperty(key, null);
             writer.print("@" + key + "\n");
@@ -79,7 +79,7 @@ public class PropertiesToUTF8 {
             return;
         }
         LineNumberReader reader = new LineNumberReader(new InputStreamReader(
-                        new FileInputStream(source), "UTF-8"));
+                    new FileInputStream(source), "UTF-8"));
         try {
             SortedProperties prop = new SortedProperties();
             StringBuilder buff = new StringBuilder();

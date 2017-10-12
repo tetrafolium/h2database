@@ -351,12 +351,12 @@ class ForStatement extends StatementBase {
             if (it != null && it.arrayLevel > 0) {
                 String idx = "i_" + iterableVariable;
                 buff.append("int " + idx + " = 0; " +
-                            idx + " < " + iterable.asString() + "->length(); " +
-                            idx + "++");
+                        idx + " < " + iterable.asString() + "->length(); " +
+                        idx + "++");
                 buff.append(") {\n");
                 buff.append(JavaParser.indent(iterableType +
-                                              " " + iterableVariable + " = " +
-                                              iterable.asString() + "->at("+ idx +");\n"));
+                        " " + iterableVariable + " = " +
+                        iterable.asString() + "->at("+ idx +");\n"));
                 buff.append(block.toString()).append("}");
             } else {
                 // TODO iterate over a collection

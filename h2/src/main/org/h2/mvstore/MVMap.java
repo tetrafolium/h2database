@@ -148,9 +148,9 @@ public class MVMap<K, V> extends AbstractMap<K, V>
             new Page.PageReference(split, split.getPos(), split.getTotalCount()),
         };
         p = Page.create(this, writeVersion,
-                        keys, null,
-                        children,
-                        totalCount, 0);
+                keys, null,
+                children,
+                totalCount, 0);
         return p;
     }
 
@@ -261,21 +261,21 @@ public class MVMap<K, V> extends AbstractMap<K, V>
     public List<K> keyList() {
         return new AbstractList<K>() {
 
-            @Override
-            public K get(int index) {
-                return getKey(index);
-            }
+                   @Override
+                   public K get(int index) {
+                       return getKey(index);
+                   }
 
-            @Override
-            public int size() {
-                return MVMap.this.size();
-            }
+                   @Override
+                   public int size() {
+                       return MVMap.this.size();
+                   }
 
-            @Override
-            @SuppressWarnings("unchecked")
-            public int indexOf(Object key) {
-                return (int) getKeyIndex((K) key);
-            }
+                   @Override
+                   @SuppressWarnings("unchecked")
+                   public int indexOf(Object key) {
+                       return (int) getKeyIndex((K) key);
+                   }
 
         };
     }
@@ -827,40 +827,40 @@ public class MVMap<K, V> extends AbstractMap<K, V>
         final Page root = this.root;
         return new AbstractSet<Entry<K, V>>() {
 
-            @Override
-            public Iterator<Entry<K, V>> iterator() {
-                final Cursor<K, V> cursor = new Cursor<>(map, root, null);
-                return new Iterator<Entry<K, V>>() {
+                   @Override
+                   public Iterator<Entry<K, V>> iterator() {
+                       final Cursor<K, V> cursor = new Cursor<>(map, root, null);
+                       return new Iterator<Entry<K, V>>() {
 
-                    @Override
-                    public boolean hasNext() {
-                        return cursor.hasNext();
-                    }
+                                  @Override
+                                  public boolean hasNext() {
+                                      return cursor.hasNext();
+                                  }
 
-                    @Override
-                    public Entry<K, V> next() {
-                        K k = cursor.next();
-                        return new DataUtils.MapEntry<>(k, cursor.getValue());
-                    }
+                                  @Override
+                                  public Entry<K, V> next() {
+                                      K k = cursor.next();
+                                      return new DataUtils.MapEntry<>(k, cursor.getValue());
+                                  }
 
-                    @Override
-                    public void remove() {
-                        throw DataUtils.newUnsupportedOperationException(
-                                "Removing is not supported");
-                    }
-                };
+                                  @Override
+                                  public void remove() {
+                                      throw DataUtils.newUnsupportedOperationException(
+                                                "Removing is not supported");
+                                  }
+                       };
 
-            }
+                   }
 
-            @Override
-            public int size() {
-                return MVMap.this.size();
-            }
+                   @Override
+                   public int size() {
+                       return MVMap.this.size();
+                   }
 
-            @Override
-            public boolean contains(Object o) {
-                return MVMap.this.containsKey(o);
-            }
+                   @Override
+                   public boolean contains(Object o) {
+                       return MVMap.this.containsKey(o);
+                   }
 
         };
 
@@ -872,20 +872,20 @@ public class MVMap<K, V> extends AbstractMap<K, V>
         final Page root = this.root;
         return new AbstractSet<K>() {
 
-            @Override
-            public Iterator<K> iterator() {
-                return new Cursor<K, V>(map, root, null);
-            }
+                   @Override
+                   public Iterator<K> iterator() {
+                       return new Cursor<K, V>(map, root, null);
+                   }
 
-            @Override
-            public int size() {
-                return MVMap.this.size();
-            }
+                   @Override
+                   public int size() {
+                       return MVMap.this.size();
+                   }
 
-            @Override
-            public boolean contains(Object o) {
-                return MVMap.this.containsKey(o);
-            }
+                   @Override
+                   public boolean contains(Object o) {
+                       return MVMap.this.containsKey(o);
+                   }
 
         };
     }
@@ -1000,11 +1000,11 @@ public class MVMap<K, V> extends AbstractMap<K, V>
     protected void beforeWrite() {
         if (closed) {
             throw DataUtils.newIllegalStateException(
-                    DataUtils.ERROR_CLOSED, "This map is closed");
+                      DataUtils.ERROR_CLOSED, "This map is closed");
         }
         if (readOnly) {
             throw DataUtils.newUnsupportedOperationException(
-                    "This map is read-only");
+                      "This map is read-only");
         }
         store.beforeWrite(this);
     }
@@ -1069,20 +1069,20 @@ public class MVMap<K, V> extends AbstractMap<K, V>
     public MVMap<K, V> openVersion(long version) {
         if (readOnly) {
             throw DataUtils.newUnsupportedOperationException(
-                    "This map is read-only; need to call " +
-                    "the method on the writable map");
+                      "This map is read-only; need to call " +
+                      "the method on the writable map");
         }
         DataUtils.checkArgument(version >= createVersion,
-                                "Unknown version {0}; this map was created in version is {1}",
-                                version, createVersion);
+                "Unknown version {0}; this map was created in version is {1}",
+                version, createVersion);
         Page newest = null;
         // need to copy because it can change
         Page r = root;
         if (version >= r.getVersion() &&
                 (version == writeVersion ||
-                 r.getVersion() >= 0 ||
-                 version <= createVersion ||
-                 store.getFileStore() == null)) {
+                r.getVersion() >= 0 ||
+                version <= createVersion ||
+                store.getFileStore() == null)) {
             newest = r;
         } else {
             Page last = oldRoots.peekFirst();

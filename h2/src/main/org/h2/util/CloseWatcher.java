@@ -45,7 +45,7 @@ public class CloseWatcher extends PhantomReference<Object> {
     private Closeable closeable;
 
     public CloseWatcher(Object referent, ReferenceQueue<Object> q,
-                        Closeable closeable) {
+            Closeable closeable) {
         super(referent, q);
         this.closeable = closeable;
     }
@@ -89,7 +89,7 @@ public class CloseWatcher extends PhantomReference<Object> {
      * @return the close watcher
      */
     public static CloseWatcher register(Object o, Closeable closeable,
-                                        boolean stackTrace) {
+            boolean stackTrace) {
         ReferenceQueue<Object> q = queue;
         if (q == null) {
             q = new ReferenceQueue<>();

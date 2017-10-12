@@ -55,7 +55,7 @@ public class MVPrimaryIndex extends BaseIndex {
     private int mainIndexColumn = -1;
 
     public MVPrimaryIndex(Database db, MVTable table, int id,
-                          IndexColumn[] columns, IndexType indexType) {
+            IndexColumn[] columns, IndexType indexType) {
         this.mvTable = table;
         initBaseIndex(table, id, table.getName() + "_DATA", columns, indexType);
         int[] sortTypes = new int[columns.length];
@@ -162,7 +162,7 @@ public class MVPrimaryIndex extends BaseIndex {
             Value old = map.remove(ValueLong.get(row.getKey()));
             if (old == null) {
                 throw DbException.get(ErrorCode.ROW_NOT_FOUND_WHEN_DELETING_1,
-                                      getSQL() + ": " + row.getKey());
+                              getSQL() + ": " + row.getKey());
             }
         } catch (IllegalStateException e) {
             throw mvTable.convertException(e);
@@ -211,7 +211,7 @@ public class MVPrimaryIndex extends BaseIndex {
         Value v = map.get(ValueLong.get(key));
         if (v == null) {
             throw DbException.get(ErrorCode.ROW_NOT_FOUND_IN_PRIMARY_INDEX,
-                                  getSQL() + ": " + key);
+                          getSQL() + ": " + key);
         }
         ValueArray array = (ValueArray) v;
         Row row = session.createRow(array.getList(), 0);
@@ -221,11 +221,11 @@ public class MVPrimaryIndex extends BaseIndex {
 
     @Override
     public double getCost(Session session, int[] masks,
-                          TableFilter[] filters, int filter, SortOrder sortOrder,
-                          HashSet<Column> allColumnsSet) {
+            TableFilter[] filters, int filter, SortOrder sortOrder,
+            HashSet<Column> allColumnsSet) {
         try {
             return 10 * getCostRangeIndex(masks, dataMap.sizeAsLongMax(),
-                                          filters, filter, sortOrder, true, allColumnsSet);
+                           filters, filter, sortOrder, true, allColumnsSet);
         } catch (IllegalStateException e) {
             throw DbException.get(ErrorCode.OBJECT_CLOSED, e);
         }
@@ -271,7 +271,7 @@ public class MVPrimaryIndex extends BaseIndex {
         ValueLong v = (ValueLong) (first ? map.firstKey() : map.lastKey());
         if (v == null) {
             return new MVStoreCursor(session, Collections
-                                     .<Entry<Value, Value>> emptyList().iterator(), null);
+                           .<Entry<Value, Value>> emptyList().iterator(), null);
         }
         Value value = map.get(v);
         Entry<Value, Value> e = new DataUtils.MapEntry<Value, Value>(v, value);

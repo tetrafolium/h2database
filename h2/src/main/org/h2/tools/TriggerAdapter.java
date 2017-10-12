@@ -64,10 +64,10 @@ public abstract class TriggerAdapter implements Trigger {
      */
     @Override
     public void init(Connection conn, String schemaName,
-                     String triggerName, String tableName,
-                     boolean before, int type) throws SQLException {
+            String triggerName, String tableName,
+            boolean before, int type) throws SQLException {
         ResultSet rs = conn.getMetaData().getColumns(
-                               null, schemaName, tableName, null);
+            null, schemaName, tableName, null);
         oldSource = new TriggerRowSource();
         newSource = new TriggerRowSource();
         oldResultSet = new SimpleResultSet(oldSource);
@@ -142,7 +142,7 @@ public abstract class TriggerAdapter implements Trigger {
     public void fire(Connection conn, Object[] oldRow, Object[] newRow)
     throws SQLException {
         fire(conn, wrap(oldResultSet, oldSource, oldRow),
-             wrap(newResultSet, newSource, newRow));
+                wrap(newResultSet, newSource, newRow));
     }
 
     /**
@@ -163,10 +163,10 @@ public abstract class TriggerAdapter implements Trigger {
      * @throws SQLException if the operation must be undone
      */
     public abstract void fire(Connection conn, ResultSet oldRow,
-                              ResultSet newRow) throws SQLException;
+            ResultSet newRow) throws SQLException;
 
     private static SimpleResultSet wrap(SimpleResultSet rs,
-                                        TriggerRowSource source, Object[] row) throws SQLException {
+            TriggerRowSource source, Object[] row) throws SQLException {
         if (row == null) {
             return null;
         }

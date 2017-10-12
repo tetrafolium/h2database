@@ -93,7 +93,7 @@ public class ClassUtils {
                 }
             }
             throw new RuntimeException("Exception trying to create "
-                                       + clazz.getName() + ": " + e, e);
+                          + clazz.getName() + ": " + e, e);
         }
     }
 
@@ -122,8 +122,8 @@ public class ClassUtils {
                     return IOUtils.readStringAndClose(r, -1);
                 } catch (Exception e) {
                     throw new RuntimeException(
-                            "Error converting CLOB to String: " + e.toString(),
-                            e);
+                              "Error converting CLOB to String: " + e.toString(),
+                              e);
                 }
             }
             return o.toString();
@@ -145,12 +145,12 @@ public class ClassUtils {
             }
         }
         throw new RuntimeException("Can not convert the value " + o + " from "
-                                   + currentType + " to " + targetType);
+                      + currentType + " to " + targetType);
     }
 
     @SuppressWarnings("unchecked")
     public static <X> Class<X> getClass(X x) {
-        return (Class<X>) x.getClass();
+        return (Class<X>)x.getClass();
     }
 
 }

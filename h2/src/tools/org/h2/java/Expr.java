@@ -86,7 +86,7 @@ class CallExpr extends ExprBase {
                 buff.append(args.get(0));
             } else {
                 throw new IllegalArgumentException(
-                        "Cannot ignore method with multiple arguments: " + method);
+                          "Cannot ignore method with multiple arguments: " + method);
             }
         } else {
             if (expr == null) {

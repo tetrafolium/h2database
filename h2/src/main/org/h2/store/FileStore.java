@@ -77,7 +77,7 @@ public class FileStore {
             }
         } catch (IOException e) {
             throw DbException.convertIOException(
-                    e, "name: " + name + " mode: " + mode);
+                      e, "name: " + name + " mode: " + mode);
         }
         this.mode = mode;
     }
@@ -105,9 +105,9 @@ public class FileStore {
      * @return the created object
      */
     public static FileStore open(DataHandler handler, String name, String mode,
-                                 String cipher, byte[] key) {
+            String cipher, byte[] key) {
         return open(handler, name, mode, cipher, key,
-                    Constants.ENCRYPTION_KEY_HASH_ITERATIONS);
+                       Constants.ENCRYPTION_KEY_HASH_ITERATIONS);
     }
 
     /**
@@ -122,13 +122,13 @@ public class FileStore {
      * @return the created object
      */
     public static FileStore open(DataHandler handler, String name, String mode,
-                                 String cipher, byte[] key, int keyIterations) {
+            String cipher, byte[] key, int keyIterations) {
         FileStore store;
         if (cipher == null) {
             store = new FileStore(handler, name, mode);
         } else {
             store = new SecureFileStore(handler, name, mode,
-                                        cipher, key, keyIterations);
+                    cipher, key, keyIterations);
         }
         return store;
     }
@@ -266,7 +266,7 @@ public class FileStore {
         if (SysProperties.CHECK &&
                 (len < 0 || len % Constants.FILE_BLOCK_SIZE != 0)) {
             DbException.throwInternalError(
-                    "unaligned read " + name + " len " + len);
+                "unaligned read " + name + " len " + len);
         }
         checkPowerOff();
         try {
@@ -286,7 +286,7 @@ public class FileStore {
         if (SysProperties.CHECK &&
                 pos % Constants.FILE_BLOCK_SIZE != 0) {
             DbException.throwInternalError(
-                    "unaligned seek " + name + " pos " + pos);
+                "unaligned seek " + name + " pos " + pos);
         }
         try {
             if (pos != filePos) {
@@ -318,9 +318,9 @@ public class FileStore {
      */
     public void write(byte[] b, int off, int len) {
         if (SysProperties.CHECK && (len < 0 ||
-                                    len % Constants.FILE_BLOCK_SIZE != 0)) {
+                len % Constants.FILE_BLOCK_SIZE != 0)) {
             DbException.throwInternalError(
-                    "unaligned write " + name + " len " + len);
+                "unaligned write " + name + " len " + len);
         }
         checkWritingAllowed();
         checkPowerOff();
@@ -342,7 +342,7 @@ public class FileStore {
     public void setLength(long newLength) {
         if (SysProperties.CHECK && newLength % Constants.FILE_BLOCK_SIZE != 0) {
             DbException.throwInternalError(
-                    "unaligned setLength " + name + " pos " + newLength);
+                "unaligned setLength " + name + " pos " + newLength);
         }
         checkPowerOff();
         checkWritingAllowed();
@@ -374,16 +374,16 @@ public class FileStore {
                 len = file.size();
                 if (len != fileLength) {
                     DbException.throwInternalError(
-                            "file " + name + " length " + len + " expected " + fileLength);
+                        "file " + name + " length " + len + " expected " + fileLength);
                 }
             }
             if (SysProperties.CHECK2 && len % Constants.FILE_BLOCK_SIZE != 0) {
                 long newLength = len + Constants.FILE_BLOCK_SIZE -
-                                 (len % Constants.FILE_BLOCK_SIZE);
+                        (len % Constants.FILE_BLOCK_SIZE);
                 file.truncate(newLength);
                 fileLength = newLength;
                 DbException.throwInternalError(
-                        "unaligned file length " + name + " len " + len);
+                    "unaligned file length " + name + " len " + len);
             }
             return len;
         } catch (IOException e) {

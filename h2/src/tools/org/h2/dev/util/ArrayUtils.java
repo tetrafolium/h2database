@@ -26,7 +26,7 @@ public class ArrayUtils {
         for (int i = left + 1; i <= right; i++) {
             T t = d[i];
             int l = left;
-            for (int r = i; l < r;) {
+            for (int r = i; l < r; ) {
                 int m = (l + r) >>> 1;
                 if (comp.compare(t, d[m]) >= 0) {
                     l = m + 1;
@@ -34,7 +34,7 @@ public class ArrayUtils {
                     r = m;
                 }
             }
-            for (int n = i - l; n > 0;) {
+            for (int n = i - l; n > 0; ) {
                 d[l + n--] = d[l + n];
             }
             d[l] = t;
@@ -51,7 +51,7 @@ public class ArrayUtils {
      * @param comp the comparison class
      */
     public static <T> void insertionSort(T[] d, int left, int right,
-                                         Comparator<T> comp) {
+            Comparator<T> comp) {
         for (int i = left + 1, j; i <= right; i++) {
             T t = d[i];
             for (j = i - 1; j >= left && comp.compare(d[j], t) > 0; j--) {

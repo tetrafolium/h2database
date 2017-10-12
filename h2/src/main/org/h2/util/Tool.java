@@ -66,7 +66,7 @@ public abstract class Tool {
     protected SQLException throwUnsupportedOption(String option)
     throws SQLException {
         throw DbException.get(
-                ErrorCode.FEATURE_NOT_SUPPORTED_1, option).getSQLException();
+                  ErrorCode.FEATURE_NOT_SUPPORTED_1, option).getSQLException();
     }
 
     /**
@@ -113,7 +113,7 @@ public abstract class Tool {
         out.println("Usage: java "+getClass().getName() + " <options>");
         out.println(resources.get(className + ".main"));
         out.println("See also http://h2database.com/javadoc/" +
-                    className.replace('.', '/') + ".html");
+                className.replace('.', '/') + ".html");
     }
 
     /**
@@ -130,7 +130,7 @@ public abstract class Tool {
             return true;
         } else if (arg.startsWith(option)) {
             throw DbException.getUnsupportedException(
-                    "expected: " + option + " got: " + arg);
+                      "expected: " + option + " got: " + arg);
         }
         return false;
     }

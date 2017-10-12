@@ -66,9 +66,9 @@ public class UpdatableRow {
         }
         final DatabaseMetaData meta = conn.getMetaData();
         ResultSet rs = meta.getTables(null,
-                                      StringUtils.escapeMetaDataPattern(schemaName),
-                                      StringUtils.escapeMetaDataPattern(tableName),
-                                      new String[] { "TABLE" });
+                StringUtils.escapeMetaDataPattern(schemaName),
+                StringUtils.escapeMetaDataPattern(tableName),
+                new String[] { "TABLE" });
         if (!rs.next()) {
             return;
         }
@@ -83,8 +83,8 @@ public class UpdatableRow {
         boolean toUpper = !table.equals(tableName) && table.equalsIgnoreCase(tableName);
         key = New.arrayList();
         rs = meta.getPrimaryKeys(null,
-                                 StringUtils.escapeMetaDataPattern(schemaName),
-                                 tableName);
+                StringUtils.escapeMetaDataPattern(schemaName),
+                tableName);
         while (rs.next()) {
             String c = rs.getString("COLUMN_NAME");
             key.add(toUpper ? StringUtils.toUpperEnglish(c) : c);
@@ -95,8 +95,8 @@ public class UpdatableRow {
         }
         key.clear();
         rs = meta.getIndexInfo(null,
-                               StringUtils.escapeMetaDataPattern(schemaName),
-                               tableName, true, true);
+                StringUtils.escapeMetaDataPattern(schemaName),
+                tableName, true, true);
         while (rs.next()) {
             int pos = rs.getShort("ORDINAL_POSITION");
             if (pos == 1) {

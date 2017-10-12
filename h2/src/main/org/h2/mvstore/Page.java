@@ -98,9 +98,9 @@ public class Page {
      */
     static Page createEmpty(MVMap<?, ?> map, long version) {
         return create(map, version,
-                      EMPTY_OBJECT_ARRAY, EMPTY_OBJECT_ARRAY,
-                      null,
-                      0, DataUtils.PAGE_MEMORY);
+                       EMPTY_OBJECT_ARRAY, EMPTY_OBJECT_ARRAY,
+                       null,
+                       0, DataUtils.PAGE_MEMORY);
     }
 
     /**
@@ -116,8 +116,8 @@ public class Page {
      * @return the page
      */
     public static Page create(MVMap<?, ?> map, long version,
-                              Object[] keys, Object[] values, PageReference[] children,
-                              long totalCount, int memory) {
+            Object[] keys, Object[] values, PageReference[] children,
+            long totalCount, int memory) {
         Page p = new Page(map, version);
         // the position is 0
         p.keys = keys;
@@ -148,7 +148,7 @@ public class Page {
      */
     public static Page create(MVMap<?, ?> map, long version, Page source) {
         return create(map, version, source.keys, source.values, source.children,
-                      source.totalCount, source.memory);
+                       source.totalCount, source.memory);
     }
 
     /**
@@ -162,7 +162,7 @@ public class Page {
      * @return the page
      */
     static Page read(FileStore fileStore, long pos, MVMap<?, ?> map,
-                     long filePos, long maxPos) {
+            long filePos, long maxPos) {
         ByteBuffer buff;
         int maxLength = DataUtils.getPageMaxLength(pos);
         if (maxLength == DataUtils.PAGE_LARGE) {
@@ -174,9 +174,9 @@ public class Page {
         int length = maxLength;
         if (length < 0) {
             throw DataUtils.newIllegalStateException(
-                    DataUtils.ERROR_FILE_CORRUPT,
-                    "Illegal page length {0} reading at {1}; max pos {2} ",
-                    length, filePos, maxPos);
+                      DataUtils.ERROR_FILE_CORRUPT,
+                      "Illegal page length {0} reading at {1}; max pos {2} ",
+                      length, filePos, maxPos);
         }
         buff = fileStore.readFully(filePos, length);
         Page p = new Page(map, 0);
@@ -291,9 +291,9 @@ public class Page {
      */
     public Page copy(long version) {
         Page newPage = create(map, version,
-                              keys, values,
-                              children, totalCount,
-                              memory);
+                keys, values,
+                children, totalCount,
+                memory);
         // mark the old as deleted
         removePage();
         newPage.cachedCompare = cachedCompare;
@@ -381,9 +381,9 @@ public class Page {
         values = aValues;
         totalCount = a;
         Page newPage = create(map, version,
-                              bKeys, bValues,
-                              null,
-                              b, 0);
+                bKeys, bValues,
+                null,
+                b, 0);
         return newPage;
     }
 
@@ -412,9 +412,9 @@ public class Page {
             t += x.count;
         }
         Page newPage = create(map, version,
-                              bKeys, null,
-                              bChildren,
-                              t, 0);
+                bKeys, null,
+                bChildren,
+                t, 0);
         return newPage;
     }
 
@@ -435,8 +435,8 @@ public class Page {
             }
             if (check != totalCount) {
                 throw DataUtils.newIllegalStateException(
-                        DataUtils.ERROR_INTERNAL,
-                        "Expected: {0} got: {1}", check, totalCount);
+                          DataUtils.ERROR_INTERNAL,
+                          "Expected: {0} got: {1}", check, totalCount);
             }
         }
         return totalCount;
@@ -468,7 +468,7 @@ public class Page {
             children[index] = ref;
             totalCount -= oldCount;
         } else if (c != children[index].page ||
-                   c.getPos() != children[index].pos) {
+                c.getPos() != children[index].pos) {
             long oldCount = children[index].count;
             // this is slightly slower:
             // children = Arrays.copyOf(children, children.length);
@@ -516,7 +516,7 @@ public class Page {
         DataType valueType = map.getValueType();
         if(isPersistent()) {
             addMemory(valueType.getMemory(value) -
-                      valueType.getMemory(old));
+                    valueType.getMemory(old));
         }
         values[index] = value;
         return old;
@@ -566,7 +566,7 @@ public class Page {
         totalCount++;
         if(isPersistent()) {
             addMemory(map.getKeyType().getMemory(key) +
-                      map.getValueType().getMemory(value));
+                    map.getValueType().getMemory(value));
         }
     }
 
@@ -588,13 +588,13 @@ public class Page {
         PageReference[] newChildren = new PageReference[childCount + 1];
         DataUtils.copyWithGap(children, newChildren, childCount, index);
         newChildren[index] = new PageReference(
-                childPage, childPage.getPos(), childPage.totalCount);
+            childPage, childPage.getPos(), childPage.totalCount);
         children = newChildren;
 
         totalCount += childPage.totalCount;
         if(isPersistent()) {
             addMemory(map.getKeyType().getMemory(key) +
-                      DataUtils.PAGE_MEMORY_CHILD);
+                    DataUtils.PAGE_MEMORY_CHILD);
         }
     }
 
@@ -652,27 +652,27 @@ public class Page {
         int pageLength = buff.getInt();
         if (pageLength > maxLength || pageLength < 4) {
             throw DataUtils.newIllegalStateException(
-                    DataUtils.ERROR_FILE_CORRUPT,
-                    "File corrupted in chunk {0}, expected page length 4..{1}, got {2}",
-                    chunkId, maxLength, pageLength);
+                      DataUtils.ERROR_FILE_CORRUPT,
+                      "File corrupted in chunk {0}, expected page length 4..{1}, got {2}",
+                      chunkId, maxLength, pageLength);
         }
         buff.limit(start + pageLength);
         short check = buff.getShort();
         int mapId = DataUtils.readVarInt(buff);
         if (mapId != map.getId()) {
             throw DataUtils.newIllegalStateException(
-                    DataUtils.ERROR_FILE_CORRUPT,
-                    "File corrupted in chunk {0}, expected map id {1}, got {2}",
-                    chunkId, map.getId(), mapId);
+                      DataUtils.ERROR_FILE_CORRUPT,
+                      "File corrupted in chunk {0}, expected map id {1}, got {2}",
+                      chunkId, map.getId(), mapId);
         }
         int checkTest = DataUtils.getCheckValue(chunkId)
-                        ^ DataUtils.getCheckValue(offset)
-                        ^ DataUtils.getCheckValue(pageLength);
+                ^ DataUtils.getCheckValue(offset)
+                ^ DataUtils.getCheckValue(pageLength);
         if (check != (short) checkTest) {
             throw DataUtils.newIllegalStateException(
-                    DataUtils.ERROR_FILE_CORRUPT,
-                    "File corrupted in chunk {0}, expected check value {1}, got {2}",
-                    chunkId, checkTest, check);
+                      DataUtils.ERROR_FILE_CORRUPT,
+                      "File corrupted in chunk {0}, expected check value {1}, got {2}",
+                      chunkId, checkTest, check);
         }
         int len = DataUtils.readVarInt(buff);
         keys = new Object[len];
@@ -708,7 +708,7 @@ public class Page {
             int l = compLen + lenAdd;
             buff = ByteBuffer.allocate(l);
             compressor.expand(comp, 0, compLen, buff.array(),
-                              buff.arrayOffset(), l);
+                    buff.arrayOffset(), l);
         }
         map.getKeyType().read(buff, keys, len, true);
         if (!node) {
@@ -730,7 +730,7 @@ public class Page {
         int start = buff.position();
         int len = keys.length;
         int type = children != null ? DataUtils.PAGE_TYPE_NODE
-                   : DataUtils.PAGE_TYPE_LEAF;
+                : DataUtils.PAGE_TYPE_LEAF;
         buff.putInt(0).
         putShort((byte) 0).
         putVarInt(map.getId()).
@@ -779,13 +779,13 @@ public class Page {
         int pageLength = buff.position() - start;
         int chunkId = chunk.id;
         int check = DataUtils.getCheckValue(chunkId)
-                    ^ DataUtils.getCheckValue(start)
-                    ^ DataUtils.getCheckValue(pageLength);
+                ^ DataUtils.getCheckValue(start)
+                ^ DataUtils.getCheckValue(pageLength);
         buff.putInt(start, pageLength).
         putShort(start + 4, (short) check);
         if (pos != 0) {
             throw DataUtils.newIllegalStateException(
-                    DataUtils.ERROR_INTERNAL, "Page already stored");
+                      DataUtils.ERROR_INTERNAL, "Page already stored");
         }
         pos = DataUtils.getPagePos(chunkId, start, pageLength, type);
         store.cachePage(pos, this, getMemory());
@@ -857,7 +857,7 @@ public class Page {
             if (ref.page != null) {
                 if (ref.page.getPos() == 0) {
                     throw DataUtils.newIllegalStateException(
-                            DataUtils.ERROR_INTERNAL, "Page not written");
+                              DataUtils.ERROR_INTERNAL, "Page not written");
                 }
                 ref.page.writeEnd();
                 children[i] = new PageReference(null, ref.pos, ref.count);
@@ -903,7 +903,7 @@ public class Page {
                 recalculateMemory();
                 if (mem != memory) {
                     throw DataUtils.newIllegalStateException(
-                            DataUtils.ERROR_INTERNAL, "Memory calculation error");
+                              DataUtils.ERROR_INTERNAL, "Memory calculation error");
                 }
             }
             return memory;
@@ -1038,7 +1038,7 @@ public class Page {
          * @return the page children object
          */
         static PageChildren read(FileStore fileStore, long pos, int mapId,
-                                 long filePos, long maxPos) {
+                long filePos, long maxPos) {
             ByteBuffer buff;
             int maxLength = DataUtils.getPageMaxLength(pos);
             if (maxLength == DataUtils.PAGE_LARGE) {
@@ -1050,9 +1050,9 @@ public class Page {
             int length = maxLength;
             if (length < 0) {
                 throw DataUtils.newIllegalStateException(
-                        DataUtils.ERROR_FILE_CORRUPT,
-                        "Illegal page length {0} reading at {1}; max pos {2} ",
-                        length, filePos, maxPos);
+                          DataUtils.ERROR_FILE_CORRUPT,
+                          "Illegal page length {0} reading at {1}; max pos {2} ",
+                          length, filePos, maxPos);
             }
             buff = fileStore.readFully(filePos, length);
             int chunkId = DataUtils.getPageChunkId(pos);
@@ -1061,27 +1061,27 @@ public class Page {
             int pageLength = buff.getInt();
             if (pageLength > maxLength) {
                 throw DataUtils.newIllegalStateException(
-                        DataUtils.ERROR_FILE_CORRUPT,
-                        "File corrupted in chunk {0}, expected page length =< {1}, got {2}",
-                        chunkId, maxLength, pageLength);
+                          DataUtils.ERROR_FILE_CORRUPT,
+                          "File corrupted in chunk {0}, expected page length =< {1}, got {2}",
+                          chunkId, maxLength, pageLength);
             }
             buff.limit(start + pageLength);
             short check = buff.getShort();
             int m = DataUtils.readVarInt(buff);
             if (m != mapId) {
                 throw DataUtils.newIllegalStateException(
-                        DataUtils.ERROR_FILE_CORRUPT,
-                        "File corrupted in chunk {0}, expected map id {1}, got {2}",
-                        chunkId, mapId, m);
+                          DataUtils.ERROR_FILE_CORRUPT,
+                          "File corrupted in chunk {0}, expected map id {1}, got {2}",
+                          chunkId, mapId, m);
             }
             int checkTest = DataUtils.getCheckValue(chunkId)
-                            ^ DataUtils.getCheckValue(offset)
-                            ^ DataUtils.getCheckValue(pageLength);
+                    ^ DataUtils.getCheckValue(offset)
+                    ^ DataUtils.getCheckValue(pageLength);
             if (check != (short) checkTest) {
                 throw DataUtils.newIllegalStateException(
-                        DataUtils.ERROR_FILE_CORRUPT,
-                        "File corrupted in chunk {0}, expected check value {1}, got {2}",
-                        chunkId, checkTest, check);
+                          DataUtils.ERROR_FILE_CORRUPT,
+                          "File corrupted in chunk {0}, expected check value {1}, got {2}",
+                          chunkId, checkTest, check);
             }
             int len = DataUtils.readVarInt(buff);
             int type = buff.get();

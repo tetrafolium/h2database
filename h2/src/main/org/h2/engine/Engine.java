@@ -45,7 +45,7 @@ public class Engine implements SessionFactory {
     }
 
     private Session openSession(ConnectionInfo ci, boolean ifExists,
-                                String cipher) {
+            String cipher) {
         String name = ci.getName();
         Database database;
         ci.removeProperty("NO_UPGRADE", false);
@@ -67,7 +67,7 @@ public class Engine implements SessionFactory {
                 // users is the last thing we add, so if no user is around,
                 // the database is new (or not initialized correctly)
                 user = new User(database, database.allocateObjectId(),
-                                ci.getUserName(), false);
+                        ci.getUserName(), false);
                 user.setAdmin(true);
                 user.setUserPasswordHash(ci.getUserPasswordHash());
                 database.setMasterUser(user);
@@ -103,7 +103,7 @@ public class Engine implements SessionFactory {
         if (user == null) {
             DbException er = DbException.get(ErrorCode.WRONG_USER_OR_PASSWORD);
             database.getTrace(Trace.DATABASE).error(er, "wrong user or password; user: \"" +
-                                                    ci.getUserName() + "\"");
+                    ci.getUserName() + "\"");
             database.removeSession(null);
             throw er;
         }
@@ -116,7 +116,7 @@ public class Engine implements SessionFactory {
         if (ci.getProperty("JMX", false)) {
             try {
                 Utils.callStaticMethod(
-                        "org.h2.jmx.DatabaseInfo.registerMBean", ci, database);
+                    "org.h2.jmx.DatabaseInfo.registerMBean", ci, database);
             } catch (Exception e) {
                 database.removeSession(session);
                 throw DbException.get(ErrorCode.FEATURE_NOT_SUPPORTED_1, e, "JMX");
@@ -168,7 +168,7 @@ public class Engine implements SessionFactory {
     private synchronized Session openSession(ConnectionInfo ci) {
         boolean ifExists = ci.removeProperty("IFEXISTS", false);
         boolean ignoreUnknownSetting = ci.removeProperty(
-                                               "IGNORE_UNKNOWN_SETTINGS", false);
+            "IGNORE_UNKNOWN_SETTINGS", false);
         String cipher = ci.removeProperty("CIPHER", null);
         String init = ci.removeProperty("INIT", null);
         Session session;
@@ -182,7 +182,7 @@ public class Engine implements SessionFactory {
             if (i > 60 * 1000) {
                 // retry at most 1 minute
                 throw DbException.get(ErrorCode.DATABASE_ALREADY_OPEN_1,
-                                      "Waited for database closing longer than 1 minute");
+                              "Waited for database closing longer than 1 minute");
             }
             try {
                 Thread.sleep(1);
@@ -201,13 +201,13 @@ public class Engine implements SessionFactory {
                 String value = ci.getProperty(setting);
                 try {
                     CommandInterface command = session.prepareCommand(
-                                                       "SET " + Parser.quoteIdentifier(setting) + " " + value,
-                                                       Integer.MAX_VALUE);
+                        "SET " + Parser.quoteIdentifier(setting) + " " + value,
+                        Integer.MAX_VALUE);
                     command.executeUpdate();
                 } catch (DbException e) {
                     if (e.getErrorCode() == ErrorCode.ADMIN_RIGHTS_REQUIRED) {
                         session.getTrace().error(e, "admin rights required; user: \"" +
-                                                 ci.getUserName() + "\"");
+                                ci.getUserName() + "\"");
                     } else {
                         session.getTrace().error(e, "");
                     }
@@ -220,7 +220,7 @@ public class Engine implements SessionFactory {
             if (init != null) {
                 try {
                     CommandInterface command = session.prepareCommand(init,
-                                               Integer.MAX_VALUE);
+                            Integer.MAX_VALUE);
                     command.executeUpdate();
                 } catch (DbException e) {
                     if (!ignoreUnknownSetting) {
@@ -248,11 +248,11 @@ public class Engine implements SessionFactory {
                 if (!StringUtils.equals(clusterSession, clusterDb)) {
                     if (clusterDb.equals(Constants.CLUSTERING_DISABLED)) {
                         throw DbException.get(
-                                ErrorCode.CLUSTER_ERROR_DATABASE_RUNS_ALONE);
+                                  ErrorCode.CLUSTER_ERROR_DATABASE_RUNS_ALONE);
                     }
                     throw DbException.get(
-                            ErrorCode.CLUSTER_ERROR_DATABASE_RUNS_CLUSTERED_1,
-                            clusterDb);
+                              ErrorCode.CLUSTER_ERROR_DATABASE_RUNS_CLUSTERED_1,
+                              clusterDb);
                 }
             }
         }

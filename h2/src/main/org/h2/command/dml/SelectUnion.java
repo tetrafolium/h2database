@@ -392,7 +392,7 @@ public class SelectUnion extends Query {
 
     @Override
     public void addGlobalCondition(Parameter param, int columnId,
-                                   int comparisonType) {
+            int comparisonType) {
         addParameter(param);
         switch (unionType) {
         case UNION_ALL:
@@ -438,15 +438,15 @@ public class SelectUnion extends Query {
         }
         if (limitExpr != null) {
             buff.append("\nLIMIT ").append(
-                    StringUtils.unEnclose(limitExpr.getSQL()));
+                StringUtils.unEnclose(limitExpr.getSQL()));
             if (offsetExpr != null) {
                 buff.append("\nOFFSET ").append(
-                        StringUtils.unEnclose(offsetExpr.getSQL()));
+                    StringUtils.unEnclose(offsetExpr.getSQL()));
             }
         }
         if (sampleSizeExpr != null) {
             buff.append("\nSAMPLE_SIZE ").append(
-                    StringUtils.unEnclose(sampleSizeExpr.getSQL()));
+                StringUtils.unEnclose(sampleSizeExpr.getSQL()));
         }
         if (isForUpdate) {
             buff.append("\nFOR UPDATE");

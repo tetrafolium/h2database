@@ -129,8 +129,8 @@ public class ExpressionList extends Expression {
         for (int i = 0; i < list.length; i++) {
             Expression e = list[i];
             Column col = new Column("C" + (i + 1),
-                                    e.getType(), e.getPrecision(), e.getScale(),
-                                    e.getDisplaySize());
+                    e.getType(), e.getPrecision(), e.getScale(),
+                    e.getDisplaySize());
             expr[i] = new ExpressionColumn(session.getDatabase(), col);
         }
         return expr;

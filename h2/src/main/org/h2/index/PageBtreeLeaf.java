@@ -63,9 +63,9 @@ public class PageBtreeLeaf extends PageBtree {
      * @return the page
      */
     static PageBtreeLeaf create(PageBtreeIndex index, int pageId,
-                                int parentPageId) {
+            int parentPageId) {
         PageBtreeLeaf p = new PageBtreeLeaf(index, pageId, index.getPageStore()
-                                            .createData());
+                .createData());
         index.getPageStore().logUndo(p, null);
         p.rows = SearchRow.EMPTY_ARRAY;
         p.parentPageId = parentPageId;
@@ -83,8 +83,8 @@ public class PageBtreeLeaf extends PageBtree {
         int indexId = data.readVarInt();
         if (indexId != index.getId()) {
             throw DbException.get(ErrorCode.FILE_CORRUPTED_1,
-                                  "page:" + getPos() + " expected index:" + index.getId() +
-                                  "got:" + indexId);
+                          "page:" + getPos() + " expected index:" + index.getId() +
+                          "got:" + indexId);
         }
         entryCount = data.readShortInt();
         offsets = new int[entryCount];
@@ -156,7 +156,7 @@ public class PageBtreeLeaf extends PageBtree {
                 int dataStart = offsets[entryCount - 1];
                 int dataEnd = offset;
                 System.arraycopy(d, dataStart, d, dataStart - rowLength,
-                                 dataEnd - dataStart + rowLength);
+                        dataEnd - dataStart + rowLength);
             }
             index.writeRow(data, offset, row, onlyPosition);
         }
@@ -188,7 +188,7 @@ public class PageBtreeLeaf extends PageBtree {
                 byte[] d = data.getBytes();
                 int dataStart = offsets[entryCount];
                 System.arraycopy(d, dataStart, d,
-                                 dataStart + rowLength, offsets[at] - dataStart);
+                        dataStart + rowLength, offsets[at] - dataStart);
                 Arrays.fill(d, dataStart, dataStart + rowLength, (byte) 0);
             }
         }
@@ -206,7 +206,7 @@ public class PageBtreeLeaf extends PageBtree {
     PageBtree split(int splitPoint) {
         int newPageId = index.getPageStore().allocatePage();
         PageBtreeLeaf p2 = PageBtreeLeaf.create(index, newPageId, parentPageId);
-        for (int i = splitPoint; i < entryCount;) {
+        for (int i = splitPoint; i < entryCount; ) {
             p2.addRow(getRow(splitPoint), false);
             removeRow(splitPoint);
         }
@@ -231,7 +231,7 @@ public class PageBtreeLeaf extends PageBtree {
         SearchRow delete = getRow(at);
         if (index.compareRows(row, delete) != 0 || delete.getKey() != row.getKey()) {
             throw DbException.get(ErrorCode.ROW_NOT_FOUND_WHEN_DELETING_1,
-                                  index.getSQL() + ": " + row);
+                          index.getSQL() + ": " + row);
         }
         index.getPageStore().logUndo(this, data);
         if (entryCount == 1) {
@@ -274,7 +274,7 @@ public class PageBtreeLeaf extends PageBtree {
     private void writeHead() {
         data.reset();
         data.writeByte((byte) (Page.TYPE_BTREE_LEAF |
-                               (onlyPosition ? 0 : Page.FLAG_LAST)));
+                (onlyPosition ? 0 : Page.FLAG_LAST)));
         data.writeShortInt(0);
         data.writeInt(parentPageId);
         data.writeVarInt(index.getId());

@@ -334,7 +334,7 @@ public class FileShell extends Tool {
     }
 
     private static void zip(String zipFileName, String base,
-                            ArrayList<String> source) {
+            ArrayList<String> source) {
         FileUtils.delete(zipFileName);
         OutputStream fileOut = null;
         try {
@@ -389,16 +389,16 @@ public class FileShell extends Tool {
                 String fileName = entry.getName();
                 // restoring windows backups on linux and vice versa
                 fileName = fileName.replace('\\',
-                                            SysProperties.FILE_SEPARATOR.charAt(0));
+                        SysProperties.FILE_SEPARATOR.charAt(0));
                 fileName = fileName.replace('/',
-                                            SysProperties.FILE_SEPARATOR.charAt(0));
+                        SysProperties.FILE_SEPARATOR.charAt(0));
                 if (fileName.startsWith(SysProperties.FILE_SEPARATOR)) {
                     fileName = fileName.substring(1);
                 }
                 OutputStream o = null;
                 try {
                     o = FileUtils.newOutputStream(targetDir
-                                                  + SysProperties.FILE_SEPARATOR + fileName, false);
+                            + SysProperties.FILE_SEPARATOR + fileName, false);
                     IOUtils.copy(zipIn, o);
                     o.close();
                 } finally {
@@ -416,7 +416,7 @@ public class FileShell extends Tool {
     }
 
     private int readFileList(String[] list, int i, ArrayList<String> target,
-                             boolean recursive) throws IOException {
+            boolean recursive) throws IOException {
         while (i < list.length) {
             String c = list[i++];
             if (";".equals(c)) {
